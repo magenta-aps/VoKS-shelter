@@ -1,0 +1,33 @@
+.error__text {
+    color: $cError;
+    font-weight: normal;
+    text-align: left;
+}
+
+.error__message {
+    padding-top: 5px;
+}
+
+.error__text,
+.error__message {
+    &:empty {
+        margin: 0;
+        padding: 0;
+        height: 0;
+    }
+}
+
+.error__block {
+    border: 1px solid $cError;
+}
+
+table .error__text {
+    display: none;
+}
+
+.required:after {
+    content: '*';
+    color: $cError;
+    margin-left: 3px;
+    display: inline-block;
+}

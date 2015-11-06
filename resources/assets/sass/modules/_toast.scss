@@ -1,0 +1,54 @@
+.toasts {
+    max-width: 310px;
+    z-index: 99;
+    @include position(fixed, null 18px 30px null);
+}
+
+.toast {
+    width: 100%;
+    border-width: 1px;
+    border-style: solid;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: $borderRadiusDefault;
+    box-shadow: 0 2px 6px -1px $shadowColorDark;
+
+    &__title,
+    .toast__text {
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 20px;
+    }
+
+    .toast__title {
+        padding-right: 7px;
+    }
+
+    .toast__text {
+        font-weight: normal;
+    }
+
+    &.-success {
+        background-color: $bgToastSuccess;
+        border-color: $borderToastSuccess;
+        color: $cToastSuccess;
+    }
+
+    &.-info {
+        background-color: $bgToastInfo;
+        border-color: $borderToastInfo;
+        color: $cToastInfo;
+    }
+
+    &.-warning {
+        background-color: $bgToastWarning;
+        border-color: $borderToastWarning;
+        color: $cToastWarning;
+    }
+
+    &.-error {
+        background-color: $bgToastError;
+        border-color: $borderToastError;
+        color: $cToastError;
+    }
+}

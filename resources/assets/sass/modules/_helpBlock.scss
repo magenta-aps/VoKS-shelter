@@ -1,0 +1,159 @@
+.help-block {
+    &__container {
+        padding: 30px 0;
+        @include clearfix;
+    }
+
+    &__nav {
+        margin-bottom: 30px;
+        box-shadow: none;
+        @include clearfix;
+
+        .button {
+            margin-right: $mDefault;
+        }
+
+        ~ &__container {
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+    }
+
+    &__description {
+        padding-bottom: 20px;
+        border-bottom: 1px solid $brIcons;
+        @include clearfix;
+
+        .-title {
+            margin-bottom: 15px;
+        }
+    }
+
+    &__bottom-nav {
+        padding: $mDefault 0 0;
+        border-top: 1px solid $brIcons;
+
+        .buttons {
+            text-align: right;
+
+            .button {
+                display: inline-block;
+                margin-left: $mDefault;
+            }
+        }
+    }
+
+    &__side-left,
+    &__side-right {
+        width: 42%;
+        margin: 0 4%;
+    }
+
+    &__side-left {
+        float: left;
+
+        > .-title {
+            padding-left: 15px;
+        }
+    }
+
+    &__side-right {
+        background-color: $bgInactive;
+        border-radius: $borderRadius;
+        float: left;
+        padding: 40px 0;
+        text-align: center;
+    }
+
+    .-print,
+    .-pdf {
+        width: 275px;
+        height: 50px;
+        display: inline-block;
+        text-align: center;
+        text-decoration: none;
+        padding: 15px 0;
+        border: 1px solid $brButtonBorder;
+        border-radius: $borderRadiusDefault;
+        margin-bottom: 11px;
+        background-color: $bgHelpBlockIcon;
+
+        &:hover {
+            .-text {
+                text-decoration: underline;
+            }
+        }
+
+        .-text {
+            color: $cBlockStyle;
+            font-weight: bold;
+
+            &:hover {
+                color: $cBlockStyle;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .-print {
+        padding-left: 45px;
+        background-position: 4px 7px;
+    }
+
+    .-pdf {
+        padding-left: 45px;
+        background-position: 10px 5px;
+    }
+
+    &__faq {
+        &-item {
+            padding: 15px 0;
+            border-bottom: 1px solid $brIcons;
+
+            &:first-child {
+                border-top: 1px solid $brIcons;
+            }
+
+            .-title,
+            .-text {
+                font-size: 12px;
+            }
+
+            .-title {
+                padding-left: 15px;
+                padding-right: 15px;
+                position: relative;
+                cursor: pointer;
+            }
+
+            .-text {
+                display: none;
+                padding: 5px 10px;
+                margin: 7px 0 5px;
+                border-radius: $borderRadiusDefault;
+                background-color: $bgInactive;
+
+                ul,
+                ol {
+                    margin-left: 20px;
+                }
+            }
+
+            &.-active {
+                p {
+                    display: block;
+                }
+
+                .-icon {
+                    @include transform(rotate(0deg));
+                }
+            }
+
+            .-icon {
+                @include transition(all 0.1s ease-in-out);
+                @include transform(rotate(180deg));
+                @include position(absolute, 5px 0 null auto);
+            }
+        }
+    }
+}

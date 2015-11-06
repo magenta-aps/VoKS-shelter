@@ -1,0 +1,244 @@
+$images: '/images';
+
+// Fonts
+$ffDefault: 'Open Sans', sans-serif;
+$fsDefault: 12px;
+
+
+// Color
+$cMenuActive: #4586b2;
+$cMenuDefault: #5f5f5f;
+$cChatName: #2793e6;
+$cChatMessage: #555;
+$cCalled: #fff;
+$cBlockStyle: #666;
+$cError: #db5858;
+$cSideBlock: #555;
+$switchLabel: #fff;
+$cNameBlockText: #fff;
+$cIconsCount: #fff;
+$cHeader: #fff;
+$cEmptyBlockTitle: #333;
+$cEmptyBlockText: #666;
+$cHeaderTitle: #fff;
+
+
+// Width
+$wDefault: 100%;
+$wPageMin: 1600px;
+$wPageMax: 2200px;
+$wMessageFeed: 220px;
+$wWaitingList: $wMessageFeed;
+$wHeaderButton: 44px;
+$wStatusBar: 160px;
+$wBullet: 30px;
+$wBulletSelected: 36px;
+
+
+// Height
+$hPageMin: 768px;
+$hHeader: 50px;
+$hHeaderInner: 46px;
+$hStreamButtons: 47px;
+$hStreamSmallButtons: 36px;
+$hChatInput: 50px;
+$hBullet: $wBullet;
+$hBulletSelected: $wBulletSelected;
+$hSelect: 32px;
+
+
+// BG
+$bgHeaderBase: #fff;
+$bgHeader: #f26522;
+$bgHeaderCalled: #c83232;
+$bgHeaderButtonHover: #f5844e;
+$bgHeaderButtonActive: #fff;
+$bgDefault: #f9f9fb;
+$bgSideBlock: #fff;
+$bgSideBlockTitle: #f8f8f8;
+$bgMenuDefault: #f7f7f7;
+$bgMenuHover: #fff;
+$bgMenuActive: $bgMenuHover;
+$bgCalled: #ed1c24;
+$bgChatUser: #e3f6fd;
+$bgSwitchDefault: #fff;
+$bgSwitchButtonDefault: #f0f0f0;
+$bgSwitchButtonActive: #fff;
+$bgBlockHeader: #717783;
+$bgInputContainer: #f2f2f2;
+$bgTab: #e3e4e6;
+$bgTabHover: #e8e9eb;
+$bgTabActive: #fff;
+$bgButton: #4e9ed4;
+$bgHover: #3e90c7;
+$bgInactive: #f0f6fa;
+$bgNameDefault: #25cc7b;
+$bgNameHover: #15a45e;
+$bgNameInactiveDefault: #c4c4c4;
+$bgNameInactiveHover: #b5b5b5;
+$bgHeaderButtonHoverCalled: #d35b5b;
+$bgTableStyle: #fff;
+$bgTextarea: #fff;
+$bgTextareaDisabled: $bgDefault;
+$bgDanger: #f00;
+$bgBuildingListIcon: #fff;
+$bgHelpBlockIcon: #fff;
+$bgBlockStyle: #fff;
+$bgBulletWrapper: #fff;
+$bgBulletState: #989898;
+$gradientColor1: rgba(0, 0, 0, 1);
+$gradientColor2: rgba(0, 0, 0, 0);
+$bgIconsCount: #fa9f3d;
+$bgSelect: #fff;
+$bgOverlay: #fff;
+$bgSettings: #fff;
+$bgBlockStyle: #fff;
+$bgAddedNameContent: #fff;
+$bgHistoryTableTrFirst: #fff;
+$bgHistoryTableTr1: #faf9f9;
+$bgHistoryTableTr2: #ebf2f8;
+
+
+// Borders
+$brDefault: #d9d9d9;
+$brIcons: #ccc7c7;
+$brBlocks: #dcdcdc;
+$brButtonBorder: #b7b8bc;
+$brSelect2: $brIcons;
+$brHeaderSeparators: #d95b1f;
+$brHeaderSeparatorsCalled: #aa2b2b;
+$brIconsCount: #e68d2d;
+$brEmptyBlockTitle: #c7c7c9;
+$brTableStyle: #ececec;
+$brTableStyleHeader: #999da5;
+$brAudio: #d6d6d8;
+$brHistoryTable: #fff;
+
+
+// Margin, pading
+$mDefault: 12px;
+$mInner: 5px;
+
+
+// Z-index
+$zHeader: 2;
+$zContainer: 1;
+
+
+// Others
+$borderRadiusDefault: 3px;
+$borderRadius: 5px;
+
+
+// Shadows
+$shadowColorDefault: rgba(0, 0, 0, 0.22);
+$shadowColorLight: rgba(0, 0, 0, 0.12);
+$shadowColorMedium: rgba(0, 0, 0, 0.3);
+$shadowColorDark: rgba(0, 0, 0, 0.5);
+
+
+// Toast
+$bgToastSuccess: #dff0d8;
+$borderToastSuccess: #c3deb9;
+$cToastSuccess: #3c763d;
+$bgToastInfo: #d9edf7;
+$borderToastInfo: #b3d2e1;
+$cToastInfo: #31708f;
+$bgToastWarning: #fcf8e3;
+$borderToastWarning: #e6e0c3;
+$cToastWarning: #8a6d3b;
+$bgToastError: #f2dede;
+$borderToastError: #dfbebe;
+$cToastError: #a94442;
+
+
+// Chat
+$bgChat: #fff;
+$brChatInput: #ccc7c7;
+$cChatInput: #777;
+$cChatInputFocus: #555;
+$brChatInput: $brIcons;
+$brChatInputFocus: #a09a9a;
+$brChatUserTriangle: #fff;
+
+// Popover
+$bgPopoverTitle: #f8f8f8;
+$cPopoverTitle: #555;
+$brPopoverTitle: #d9d9d9;
+$brPopoverClose: #a0a0a0;
+$bgPopoverCloseCrs: #a0a0a0;
+$cPopoverStatus: #fff;
+$bgMinMax: #000;
+$bgTourHeaderButton: #f5844e;
+$bgTourPlanBlock: #fff;
+
+
+// Buttons
+$brButtonActive: #2e9259;
+$bgButtonActive1: #3bb46e;
+$bgButtonActive2: #2ca661;
+$bgButtonActiveHover1: #48c37d;
+$bgButtonActiveHover2: #3ab56f;
+$cButtonActive: #fff;
+$brButtonInactive: $brIcons;
+$bgButtonInactive1: #fcfcfc;
+$bgButtonInactive2: #eeeff0;
+$bgButtonInactiveHover1: #fff;
+$bgButtonInactiveHover2: #fcfcfc;
+$cButtonInactive: #c2c2c2;
+$brButtonOnHold: #b73334;
+$bgButtonOnHold1: #cb4545;
+$bgButtonOnHold2: #bd3638;
+$bgButtonOnHoldHover1: #da5656;
+$bgButtonOnHoldHover2: #cb4849;
+$cButtonOnHold: #fff;
+$brButtonUnmute: $brIcons;
+$bgButtonUnmute: #fff;
+$cButtonUnmute: $cBlockStyle;
+$brButtonGray: $brButtonBorder;
+$bgButtonGray1: #f4f4f4;
+$bgButtonGray2: #d9dadb;
+$bgButtonGrayHover1: #f4f4f4;
+$bgButtonGrayHover2: #e1e2e3;
+$cButtonGray: $cBlockStyle;
+$cButtonGrayActive: #fff;
+$bgButtonSubmit: $bgButton;
+$bgButtonSubmitHover: $bgHover;
+$bgButtonSubmitInactive: $bgButton;
+$cButtonSubmit: #fff;
+$brButtonDefault: #bfc0c2;
+$brButtonSettings: $brIcons;
+$bgButtonSettings: #fff;
+$bgButtonSettingsHover: $bgInactive;
+$bgButtonSettingsSave: #fff;
+$cButtonText: #fff;
+
+
+// Popup
+$bgPopup: #fff;
+$bgPopupButton: #fff;
+$bgPopupButtonHover: $bgInactive;
+$brPopupButtonTriangle: #fff;
+
+
+// Streams
+$bgStreamsItem: #fff;
+$bgStreamsVideo: #000;
+$cStreamsVideo: #fff;
+$brStreamsVideoMinMax: #fff;
+$shadowColorStream: rgba(62, 144, 199, 0.9);
+$cStreamClose: #fff;
+$brStreamClose: #fff;
+$bgStreamsButton: #fff;
+$cStreamsButtonMessages: #fff;
+$brStreamsMainMinMax: #9b9a9b;
+$brStreamsMainMinMaxHover: #fff;
+$bgStreamsMainName: #fff;
+$cStreamsMainNameButtonMute: #fff;
+$bgStreamsMainNameButtonUnmute: #fff;
+$cStreamsMainNameButtonUnmute: $cMenuActive;
+$brStreamsMinimize: $brStreamsMainMinMax;
+$cStreamsMinimize: #fff;
+$cMessageStreamName: #fff;
+$cMessageStreamClose: #aaa;
+$brMessageStreamClose: #aaa;

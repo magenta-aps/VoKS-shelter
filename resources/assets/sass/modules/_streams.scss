@@ -1,0 +1,731 @@
+.streams {
+    padding: $mDefault ($mDefault / 2) 0;
+    @extend .-full;
+    @include clearfix;
+
+    &__video-tag-block {
+        @include position(absolute, 0 0 0 0);
+        background: $bgStreamsVideo;
+    }
+
+    &__video-element {
+        display: block;
+        position: relative;
+    }
+
+    &__unit {
+        width: 25%;
+        height: 50%;
+        float: left;
+        padding: 0 ($mDefault / 2) $mDefault;
+    }
+
+    &__item {
+        background-color: $bgStreamsItem;
+        @extend .-full;
+    }
+
+    &__stream {
+        @extend .-full;
+        @extend .blockStyle;
+
+        &.-current {
+            border: 1px solid $bgHover;
+            box-shadow: 0 0 2px 1px $shadowColorStream;
+
+            .icons.-minimize-maximize .-icon {
+                background-position: 0 -16px;
+            }
+        }
+
+        .-close-stream {
+            height: 17px;
+            font-size: 0;
+            font-weight: bold;
+            line-height: 10px;
+            text-decoration: none;
+            color: $cStreamClose;
+            border-radius: $borderRadiusDefault;
+            border: 1px solid $brStreamClose;
+            padding: 3px 12px 2px 3px;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.8;
+            @include transition(font 0.05s ease-in-out);
+            @include position(absolute, 9px 9px null null);
+
+
+            .-icon {
+                @include position(absolute, 4px 4px auto auto);
+            }
+
+            &:hover {
+                font-size: 10px;
+                opacity: 1;
+                padding: 2px 17px 3px 5px;
+            }
+        }
+    }
+
+    &__empty {
+        padding: 15px 20px;
+        background-color: $bgDefault;
+        @extend .-full;
+    }
+
+    &__buttons,
+    &__button {
+        height: $hStreamButtons;
+    }
+
+    &__buttons {
+        width: 100%;
+        font-size: 0;
+        box-shadow: 0 -1px 2px 0 $shadowColorDefault;
+        border-radius: 0;
+        @include position(absolute, null 0 0 0);
+        @include user-select(none);
+    }
+
+    &__button {
+        margin: 0;
+        display: block;
+        float: left;
+        position: relative;
+        background-color: $bgStreamsButton;
+        border-radius: 0;
+        border: 0;
+        border-left: 1px solid $brBlocks;
+        box-shadow: none;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        cursor: pointer;
+
+        &:first-child {
+            border: 0;
+            border-bottom-left-radius: 3px;
+        }
+
+        &:nth-child(4),
+        &:nth-child(5) {
+            border-bottom-right-radius: 3px;
+        }
+
+        &:nth-child(1),
+        &:nth-child(2) {
+            width: 15%;
+        }
+
+        &:nth-child(3),
+        &:nth-child(4),
+        &:nth-child(5) {
+            width: 35%;
+        }
+
+        &.-active {
+            background-color: $bgButton;
+        }
+
+        &:hover {
+            background-color: $bgInactive;
+
+            &.-active {
+                background-color: $bgHover;
+            }
+        }
+
+        .-icon,
+        .-text {
+            position: relative;
+            display: inline-block;
+            color: $cMenuActive;
+        }
+
+        &.-messages {
+            .-icon {
+                top: 15px;
+                margin-right: 2px;
+            }
+
+            .-text {
+                top: 9px;
+            }
+
+            &.-active {
+                .-text {
+                    color: $cStreamsButtonMessages;
+                }
+            }
+        }
+
+        &.-answer {
+
+            .-icon {
+                top: 12px;
+                background-position: 0 -79px;
+            }
+
+            &.-active {
+                @include background(linear-gradient($bgButtonActive1, $bgButtonActive2) top repeat);
+
+                &:hover {
+                    @include background(linear-gradient($bgButtonActiveHover1, $bgButtonActiveHover2) left repeat);
+                }
+            }
+        }
+
+        &.-on-hold {
+
+            .-icon {
+                top: 13px;
+                background-position: 0 -78px;
+            }
+
+            &.-active {
+                @include background(linear-gradient($bgButtonOnHold1, $bgButtonOnHold2) top repeat);
+
+                &:hover {
+                    @include background(linear-gradient($bgButtonOnHoldHover1, $bgButtonOnHoldHover2) left repeat);
+                }
+            }
+        }
+
+        &.-on-hold,
+        &.-answer {
+            display: none;
+
+            .-text {
+                top: 3px;
+                color: $cButtonInactive;
+            }
+
+            &.-inactive {
+                display: block;
+            }
+
+            &.-active {
+                display: block;
+
+                .-text {
+                    top: 3px;
+                    color: $cButtonActive;
+                }
+            }
+        }
+    }
+
+    &__video {
+        background-color: $bgStreamsVideo;
+        @include position(absolute, 3px 3px $hStreamButtons + 8px 3px);
+
+        .-time {
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 10px;
+            color: $cStreamsVideo;
+            z-index: 3;
+            @include position(absolute, null null 8px 8px);
+        }
+
+        .-minimize-maximize {
+            width: 18px;
+            height: 18px;
+            border-radius: $borderRadiusDefault;
+            border: 1px solid $brStreamsVideoMinMax;
+            cursor: pointer;
+            z-index: 3;
+            opacity: 0.8;
+            @include position(absolute, null 7px 7px null);
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+
+        &-box {
+            overflow: hidden;
+            @include position(absolute, 0 0 0 0);
+        }
+
+        &-overlay {
+            background: linear-gradient(to bottom, $gradientColor1 0%, $gradientColor2 15%, $gradientColor2 85%, $gradientColor1 100%);
+            @include position(absolute, 0 0 0 0);
+        }
+    }
+
+    .streams__buttons,
+    .streams__button.-min,
+    .streams__button.-max {
+        height: $hStreamButtons;
+    }
+
+    .streams__stream.-message-stream {
+        .streams__chat {
+            bottom: $hStreamButtons;
+        }
+
+        .streams__video {
+            bottom: $hStreamButtons;
+        }
+    }
+
+    &__large {
+        @extend .-full;
+
+        .streams__unit {
+            width: auto;
+            height: auto;
+            float: none;
+            min-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            @include position(absolute, 0 0 0 0);
+        }
+
+        .streams__buttons,
+        .streams__button {
+            height: $hStreamSmallButtons;
+        }
+
+        .streams__stream.-message-stream {
+            .streams__chat {
+                bottom: $hStreamSmallButtons;
+            }
+
+            .streams__video {
+                bottom: $hStreamSmallButtons;
+            }
+        }
+    }
+
+    &__main {
+        width: 100%;
+        position: relative;
+        padding-bottom: 10px;
+
+        .-large-video {
+            width: 40%;
+            height: 100%;
+            float: left;
+            position: relative;
+
+            .streams__video {
+                bottom: 3px;
+            }
+
+            .button.-minimizeMaximize {
+                z-index: 1;
+                border: 1px solid $brStreamsMainMinMax;
+                border-radius: $borderRadiusDefault;
+                padding: 5px 10px 5px 30px;
+                @include position(absolute, null 7px 7px null);
+
+                &:hover {
+                    border-color: $brStreamsMainMinMaxHover;
+
+                    .icons {
+                        opacity: 1;
+                    }
+                }
+            }
+
+            .icons.-minimize-maximize {
+                @include position(absolute, 5px auto auto 5px);
+
+                .-icon {
+                    background-position: 0 -16px;
+                }
+            }
+        }
+
+        .-info-block {
+            width: 60%;
+            height: 100%;
+            float: left;
+            position: relative;
+            padding: 0 4px;
+        }
+
+        .-name-block {
+            width: 100%;
+            height: 58px;
+            border: 1px solid $brBlocks;
+            border-radius: $borderRadiusDefault;
+            background-color: $bgStreamsMainName;
+            padding: 5px 10px;
+            @extend .shadowStream;
+
+            .-user-photo {
+                width: 46px;
+                height: 46px;
+                background-position: center center;
+                background-repeat: no-repeat;
+                border-radius: 50px;
+                float: left;
+                margin-right: 10px;
+            }
+
+            .name-block {
+                width: auto;
+                float: left;
+                display: block;
+                position: relative;
+                top: 7px;
+                margin-right: 15px;
+                padding-right: 0;
+
+                &__called {
+                    width: auto;
+                }
+
+                .-called {
+                    margin-right: 7px;
+                    float: left;
+                }
+
+                &__title {
+                    font-size: 14px;
+                    color: $cChatMessage;
+                    display: block;
+                    width: auto;
+                    cursor: auto;
+                    margin-bottom: 2px;
+                }
+            }
+
+            .button.icons {
+                float: left;
+                padding-left: 35px;
+                top: 6px;
+                margin-right: 10px;
+
+                .-answer {
+                    display: block;
+                }
+
+                &.-inactive.-answer .-icon {
+                    background-position: 1px -79px;
+                    @include position(absolute, 4px null null 8px);
+                }
+
+                &.-active .-icon {
+                    background-position: 0 0;
+                    @include position(absolute, 4px null null 8px);
+                }
+
+                &.-on-hold .-icon {
+                    background-position: 0 -154px;
+                    @include position(absolute, 4px null null 8px);
+                }
+
+                &.-mute.-volume {
+                    border-radius: $borderRadiusDefault;
+                    padding: 8px 10px 6px 35px;
+                    box-shadow: 0 0 1px 0 $shadowColorDefault;
+                    background-color: $bgButton;
+                    border: 0;
+
+                    &:hover {
+                        background-color: $bgHover;
+                    }
+
+                    .-icon {
+                        background-position: 0 -98px;
+                        @include position(absolute, 7px null null 10px);
+                    }
+
+                    .button__text {
+                        font-weight: bold;
+                        color: $cStreamsMainNameButtonMute;
+                    }
+                }
+
+                &.-unmute.-volume {
+                    border-radius: $borderRadiusDefault;
+                    padding: 7px 10px 5px 34px;
+                    box-shadow: 0 0 1px 0 $shadowColorDefault;
+                    background-color: $bgStreamsMainNameButtonUnmute;
+                    border: 1px solid $brIcons;
+
+                    &:hover {
+                        background-color: $bgInactive;
+                    }
+
+                    .-icon {
+                        background-position: 0 -43px;
+                        @include position(absolute, 7px null null 10px);
+                    }
+
+                    .button__text {
+                        font-weight: bold;
+                        color: $cStreamsMainNameButtonUnmute;
+                    }
+                }
+            }
+        }
+
+        .-inner-block {
+            @include position(absolute, 70px 4px 0 4px);
+        }
+
+        .-map-wrapper {
+            width: 55%;
+            height: 100%;
+            float: left;
+            padding-left: 10px;
+        }
+
+        .-chat-wrapper {
+            width: 45%;
+            height: 100%;
+            float: left;
+            position: relative;
+            @extend .blockStyle;
+        }
+
+        .chat {
+            top: 36px;
+            display: block;
+
+            &__input-block {
+                background-color: $bgInputContainer;
+            }
+        }
+
+        .-minimize-button {
+            z-index: 10;
+            border: 1px solid $brStreamsMinimize;
+            border-radius: $borderRadiusDefault;
+            padding: 5px;
+            cursor: pointer;
+            @include position(absolute, null 7px 7px null);
+
+            .icons,
+            .-text {
+                display: block;
+                float: left;
+                @include position(relative, 0 0 0 0);
+            }
+
+            .-text {
+                text-decoration: none;
+                margin-left: 5px;
+                color: $cStreamsMinimize;
+            }
+
+            .-icon {
+                background-position: 0 -16px;
+            }
+        }
+    }
+
+
+    &__chat {
+        display: none;
+    }
+
+
+    &.-reset {
+        padding: 0;
+
+        .map {
+            box-shadow: none;
+            border-radius: 0;
+            border: 0;
+            border-bottom: 1px solid $brBlocks;
+
+            &-container {
+                box-shadow: inset 0 -4px 9px -7px $shadowColorDark;
+                @include position(absolute, 0 0 0 0);
+            }
+        }
+
+        .streams__small {
+            padding-left: $mDefault / 2;
+            padding-right: $mDefault / 2;
+        }
+    }
+
+
+    &__small {
+        @include position(absolute, null 0 0 0);
+
+        .-small-video-container {
+            float: left;
+            padding-bottom: $mDefault;
+            @include calc(width, '100% / 7');
+        }
+
+        .-small-video {
+            width: 100%;
+            position: relative;
+            @include calc(padding-top, '100% + #{$hStreamSmallButtons}');
+
+            .streams__video {
+                bottom: $hStreamSmallButtons + 5px;
+            }
+
+            .streams__buttons {
+                height: $hStreamSmallButtons;
+
+                .-text {
+                    display: none;
+                }
+            }
+
+            .streams__item {
+                background-color: transparent;
+            }
+        }
+
+        .name-block {
+            padding-right: 40px;
+        }
+
+        .name-block__title {
+            font-size: 12px;
+            font-weight: normal;
+            padding-top: 2px;
+        }
+
+        .streams__empty {
+            padding: 0;
+
+            .empty-block {
+                background-color: transparent;
+
+                &__title {
+                    font-size: 14px;
+                    margin-top: 9%;
+                    line-height: 18px;
+                    padding-bottom: 5px;
+                    margin-bottom: 6%;
+                }
+
+                &__text {
+                    font-weight: normal;
+                    margin-bottom: 9%;
+                    font-size: 12px;
+                }
+
+                &__content {
+                    padding-left: 10px;
+                    padding-right: 10px;
+                }
+
+                &__select {
+                    margin-bottom: 7%;
+                }
+
+                .button.-submit {
+                    height: 27px;
+                    padding-top: 5px;
+                }
+            }
+        }
+
+        .streams__button {
+            width: 25%;
+        }
+
+        .-close-stream {
+            &:hover {
+                font-size: 0;
+                padding-left: 3px;
+                padding-right: 12px;
+            }
+        }
+
+        .streams__stream.-message-stream {
+            .streams__chat {
+                left: 0;
+            }
+
+            .streams__video {
+                display: none;
+            }
+        }
+    }
+
+    .name-block__called {
+        vertical-align: top;
+    }
+}
+
+
+.-message-stream {
+    .streams__chat {
+        display: block;
+        @include position(absolute, 30px 0 null 40%);
+    }
+
+    .chat {
+        display: block;
+    }
+
+    .streams__video-overlay {
+        display: none;
+    }
+
+    .streams__video {
+        box-shadow: inset -2px 0 3px 0 $shadowColorLight;
+        background-color: $bgDefault;
+        padding: 0 7px 0 5px;
+        @include position(absolute, 0 60% null 0);
+
+        .-time {
+            font-size: 10px;
+        }
+
+        .-minimize-maximize .-icon {
+            background-position: 0 -32px;
+        }
+
+        .name-block__title {
+            padding-right: 0;
+        }
+    }
+
+    .streams__video-box {
+        width: 100%;
+        padding-top: 100%;
+        display: block;
+        @include position(relative, auto auto auto auto);
+    }
+
+    .name-block {
+        margin: 0 0 10px 2px;
+        display: block;
+        width: auto;
+        padding-right: 5px;
+    }
+
+    .name-block__called {
+        display: block;
+    }
+
+    .name-block__title {
+        font-size: 14px;
+        color: $cMessageStreamName;
+        display: block;
+        line-height: 18px;
+    }
+
+    .chat__with {
+        display: block;
+        margin: 5px 0 0 2px;
+    }
+
+    .-close-stream {
+        color: $cMessageStreamClose;
+        border: 1px solid $brMessageStreamClose;
+        @include position(absolute, 6px 6px null null);
+
+
+        .-icon {
+            background-position: 0 -21px;
+        }
+    }
+}

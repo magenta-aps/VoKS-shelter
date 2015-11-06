@@ -1,0 +1,62 @@
+.table-style {
+
+    &__table {
+        display: table;
+    }
+
+    &__row {
+        display: table-row;
+    }
+
+    &__cell {
+        display: table-cell;
+        vertical-align: top;
+    }
+
+    &__settings {
+        width: 100%;
+
+        &,
+        td,
+        th {
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            padding: 12px 15px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        tbody {
+            tr {
+                border-top: 1px solid $brIcons;
+                border-bottom: 1px solid $brIcons;
+                background-color: $bgTableStyle;
+
+                &:nth-child(2n-1) {
+                    background-color: $bgInputContainer;
+                }
+            }
+        }
+    }
+
+    td.-cell-options {
+        font-size: 0;
+        padding: 0 15px;
+    }
+
+    .-cell-options {
+        width: 160px;
+        min-width: 160px;
+        white-space: nowrap;
+        text-align: center;
+
+        .button {
+            margin: 0 2px;
+        }
+    }
+}

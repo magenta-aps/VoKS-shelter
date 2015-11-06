@@ -1,0 +1,47 @@
+.menu {
+    list-style-type: none;
+
+    &__unit {
+        background-color: $bgMenuDefault;
+        float: left;
+        margin: 0 5px 4px 0;
+        @extend .innerMenuShadow;
+        @include border-top-radius(5px);
+
+        &:hover {
+            background-color: $bgMenuHover;
+        }
+    }
+
+    &__item {
+        font-weight: bold;
+        color: $cMenuDefault;
+        text-decoration: none;
+        white-space: nowrap;
+        opacity: 0.8;
+        display: inline-table;
+        padding: 13px 14px 10px;
+        position: relative;
+
+        &.-active {
+            opacity: 1;
+        }
+    }
+
+    &.-header {
+        float: left;
+        margin: 5px 0 0 220px;
+    }
+
+
+    .-active {
+        background-color: $bgMenuActive;
+        color: $cMenuActive;
+        box-shadow: none;
+        @include border-top-radius(5px);
+    }
+
+    .-video { padding-left: 42px; }
+    .-location { padding-left: 33px; }
+    .-help2 { padding-left: 37px; }
+}

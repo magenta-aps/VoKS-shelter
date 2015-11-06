@@ -1,0 +1,95 @@
+.building-list {
+    &,
+    ul {
+        list-style-type: none;
+        list-style-position: inside;
+    }
+
+    &__item {
+        padding: 10px 20px 10px 35px;
+        background-color: $bgInputContainer;
+        border-radius: $borderRadius;
+        border: 1px solid $brDefault;
+        margin-bottom: 9px;
+        position: relative;
+        cursor: pointer;
+
+        &:before {
+            content: '';
+            display: none;
+            width: 10px;
+            height: 25px;
+            border-bottom: 1px solid $brDefault;
+            @include position(absolute, -7px null null -13px);
+        }
+    }
+
+    .-text {
+        font-weight: bold;
+    }
+
+    .-sub {
+        display: none;
+        padding: 0 0 0 25px;
+
+        .-sub {
+            li:last-child {
+                .building-list__item:before {
+                    width: 38px;
+                    left: -38px;
+                }
+            }
+        }
+    }
+
+    .-active {
+        position: relative;
+
+        &.-active:before {
+            content: '';
+            width: 1px;
+            background-color: $brDefault;
+            @include position(absolute, 42px null 20px 13px);
+        }
+
+        > .building-list__item .-icon {
+            background-position: 0 -36px;
+        }
+
+        > .-sub {
+            display: block;
+
+            .building-list__item {
+                &:before {
+                    display: block;
+                }
+            }
+        }
+    }
+
+
+    li > .building-list__item:only-child .-icon {
+        display: none;
+    }
+
+    .-icon {
+        width: 14px;
+        height: 14px;
+        background-color: $bgBuildingListIcon;
+        border: 1px solid $brDefault;
+        @include position(absolute, 11px null null 10px);
+    }
+
+    .-name,
+    .-file {
+        display: inline-block;
+    }
+
+    .-name {
+        width: 300px;
+    }
+
+    .button {
+        @include position(absolute, 5px null null null);
+    }
+}

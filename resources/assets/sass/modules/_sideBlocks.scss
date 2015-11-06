@@ -1,0 +1,47 @@
+.side-block {
+    height: 100%;
+    background-color: $bgSideBlock;
+
+    &__title {
+        padding: 13px 14px 12px;
+        border-bottom: 1px solid $brDefault;
+        background-color: $bgSideBlockTitle;
+        position: relative;
+        z-index: 2;
+    }
+
+    &__text {
+        font-weight: bold;
+        color: $cSideBlock;
+    }
+
+    &__container {
+        @include position(absolute, 45px 0 0 0);
+        // Z-index removed because it breaks tour javascript
+        // z-index: 1;
+    }
+
+    &__wrapper {
+        overflow-x: hidden;
+        overflow-y: scroll;
+        @include position(absolute, 0 0 0 0);
+    }
+}
+
+.waiting-list {
+    width: $wWaitingList;
+    border-left: 1px solid $brDefault;
+    @include position(absolute, 0 0 0 null);
+
+    .side-block__title {
+        height: 80px;
+    }
+
+    .side-block__text {
+        margin-bottom: 10px;
+    }
+
+    .side-block__container {
+        top: 80px;
+    }
+}

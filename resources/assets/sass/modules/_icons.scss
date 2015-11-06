@@ -1,0 +1,359 @@
+.icons {
+    position: relative;
+
+    .-icon {
+        display: inline-block;
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        @include position(absolute, 0 null null 0);
+    }
+
+    &.-video {
+        .-icon {
+            width: 22px;
+            height: 14px;
+            background-image: url('#{$images}/icons/icon_video.png');
+        }
+
+        &.-active .-icon {background-position: 0 -42px;}
+    }
+
+    &.-video2 {
+        .-icon {
+            width: 17px;
+            height: 12px;
+            background-image: url('#{$images}/icons/icon_video2.png');
+            background-position: 1px -36px;
+        }
+
+        &.-active .-icon {background-position: 1px 0;}
+    }
+
+    &.-alarm {
+        .-icon {
+            width: 16px;
+            height: 16px;
+            background-image: url('#{$images}/icons/icon_alarm.png');
+            background-position: 1px -36px;
+        }
+
+        &.-active .-icon {background-position: 1px 0;}
+    }
+
+    &.-location {
+        .-icon {
+            width: 12px;
+            height: 16px;
+            background-image: url('#{$images}/icons/icon_location.png');
+        }
+
+        &.-active .-icon {background-position: 0 -48px;}
+    }
+
+    &.-help2 {
+        .-icon {
+            width: 16px;
+            height: 21px;
+            background-image: url('#{$images}/icons/icon_help2.png');
+        }
+
+        &.-active .-icon {background-position: 0 -62px;}
+    }
+
+    &.-help {
+        .-icon {
+            width: 24px;
+            height: 24px;
+            background-image: url('#{$images}/icons/icon_help.png');
+        }
+
+        &.-active .-icon {background-position: 0 -71px;}
+    }
+
+    &.-logout {
+        .-icon {
+            width: 17px;
+            height: 20px;
+            background-image: url('#{$images}/icons/icon_logout.png');
+            top: 13px;
+            left: 14px;
+        }
+    }
+
+    &.-settings {
+        .-icon {
+            width: 18px;
+            height: 18px;
+            background-image: url('#{$images}/icons/icon_settings.png');
+        }
+
+        &.-active .-icon {background-position: 0 -54px;}
+    }
+
+    &.-messages {
+        .-icon {
+            width: 17px;
+            height: 19px;
+            background-image: url('#{$images}/icons/icon_messages.png');
+            background-position: 1px -56px;
+        }
+
+        &.-active .-icon { background-position: 1px 1px; }
+
+        .-count {
+            border: 1px solid $brIconsCount;
+            border-radius: 3px;
+            background-color: $bgIconsCount;
+            color: $cIconsCount;
+            font-size: 10px;
+            line-height: 10px;
+            padding: 1px 4px 2px;
+            @include position(absolute, -7px -5px null null);
+        }
+    }
+
+    &.-volume {
+        .-icon {
+            width: 17px;
+            height: 16px;
+            background-image: url('#{$images}/icons/icon_volume.png');
+            background-position: 1px -43px;
+        }
+
+        &.-active .-icon {background-position: 0 -98px;}
+    }
+
+    &.-answer {
+        .-icon {
+            width: 22px;
+            height: 25px;
+            background-image: url('#{$images}/icons/icon_answer.png');
+            background-position: 0 0;
+        }
+
+        &.-active .-icon {background-position: 0 0;}
+    }
+
+    &.-on-hold {
+        .-icon {
+            width: 22px;
+            height: 25px;
+            background-image: url('#{$images}/icons/icon_answer.png');
+            background-position: 0 0;
+        }
+
+        &.-active .-icon {background-position: 0 -155px;}
+    }
+
+    &.-close-stream {
+        .-icon {
+            width: 7px;
+            height: 7px;
+            background-image: url('#{$images}/icons/icon_closeStream.png');
+            background-position: 0 0;
+        }
+
+        &.-active .-icon {background-position: 0 -32px;}
+    }
+
+    &.-minimize-maximize {
+        .-icon {
+            width: 12px;
+            height: 12px;
+            background-image: url('#{$images}/icons/icon_minimizeMaximize.png');
+            background-position: 0 0;
+            top: 2px;
+            left: 2px;
+        }
+
+        &.-active .-icon {background-position: 0 -32px;}
+    }
+
+    &.-print {
+        background: url('#{$images}/icons/icon_printer.png') 0 0 no-repeat;
+    }
+
+    &.-pdf {
+        background: url('#{$images}/icons/icon_pdf.png') 0 0 no-repeat;
+    }
+
+    &.-expand {
+        .-icon {
+            width: 7px;
+            height: 5px;
+            background: url('#{$images}/icons/icon_expand.png') 0 0 no-repeat;
+        }
+    }
+
+    &.-add {
+        background-image: url('#{$images}/icons/icon_plus.png');
+        background-position: 10px center;
+        background-repeat: no-repeat;
+    }
+
+    &.-sync {
+        padding-left: 27px;
+        background-image: url('#{$images}/icons/icon_sync.png');
+        background-position: 10px center;
+        background-repeat: no-repeat;
+    }
+
+    &.-list-expand {
+
+        .-icon {
+            background-image: url('#{$images}/icons/icon_list-expand.png');
+            background-position: 0 0;
+            background-repeat: no-repeat;
+        }
+    }
+
+    &.-close {
+
+        .-icon {
+            width: 13px;
+            height: 13px;
+            cursor: pointer;
+            background-image: url('#{$images}/icons/icon_close.png');
+            background-position: 0 0;
+            background-repeat: no-repeat;
+            opacity: 0.8;
+            top: 7px;
+            right: 8px;
+            left: auto;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+
+    &.-desktop .-icon {
+        width: 17px;
+        height: 15px;
+        background: url('#{$images}/icons/icon_devices.png') 0 0 no-repeat;
+    }
+
+    &.-mobile .-icon {
+        width: 14px;
+        height: 17px;
+        background: url('#{$images}/icons/icon_devices.png') 0 -15px no-repeat;
+    }
+
+    &.-plus .-icon,
+    &.-minus .-icon,
+    &.-center .-icon,
+    &.-select .-icon,
+    &.-move .-icon {
+        background-position: center center;
+        background-repeat: no-repeat;
+        @include position(absolute, 0 0 0 0);
+    }
+
+    &.-plus .-icon {
+        background-image: url('#{$images}/icons/icon-plus.png');
+    }
+
+    &.-minus .-icon {
+        background-image: url('#{$images}/icons/icon-minus.png');
+    }
+
+    &.-center .-icon {
+        background-image: url('#{$images}/icons/icon-center.png');
+    }
+
+    &.-select .-icon {
+        background-image: url('#{$images}/icons/icon-select.png');
+    }
+
+    &.-move .-icon {
+        background-image: url('#{$images}/icons/icon-move.png');
+    }
+}
+
+
+.menu {
+    .icons {
+        .-icon { left: 13px; }
+
+        &.-video .-icon { top: 15px; }
+        &.-location .-icon { top: 13px; }
+        &.-help2 .-icon { top: 10px; }
+    }
+}
+
+
+.header__button {
+    &.-help .-icon { top: 11px; left: 9px; }
+    &.-settings .-icon { top: 13px; left: 12px; }
+}
+
+
+.waiting-list {
+    .icons {
+        text-align: center;
+
+        .-icon {
+            position: relative;
+            display: inline-block;
+        }
+    }
+
+    .popup__button.icons.-messages .-icon { top: 2px; left: -1px; }
+    .popup__button.icons.-volume .-icon { top: 3px; }
+    .popup__button.icons.-video2 .-icon { top: 5px; left: -1px; }
+
+    .button.icons {
+        padding-left: 36px;
+
+        .-icon {
+            @include position(absolute, 5px null null 8px);
+        }
+    }
+}
+
+.streams {
+    .icons {
+        &.-location {
+            .-icon {
+                position: relative;
+                top: 16px;
+                left: 1px;
+                background-position: 0 -48px;
+            }
+
+            &.-active .-icon {
+                background-position: 0 -95px;
+            }
+        }
+
+        &.-volume .-icon {
+            position: relative;
+            top: 15px;
+            left: 1px;
+        }
+    }
+
+    .-small-video {
+        .icons {
+            &.-location .-icon {
+                top: 11px;
+            }
+
+            &.-volume .-icon {
+                top: 10px;
+            }
+
+            &.-messages .-icon {
+                top: 10px;
+            }
+
+            &.-answer .-icon {
+                top: 8px;
+            }
+
+            &.-on-hold .-icon {
+                top: 8px;
+            }
+        }
+    }
+}

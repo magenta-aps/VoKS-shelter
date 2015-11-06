@@ -1,0 +1,61 @@
+{
+    "name": "laravel/laravel",
+    "description": "The Laravel Framework.",
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "laravel/framework": "5.0.*",
+        "doctrine/dbal": "~2.3",
+        "illuminate/html": "5.*",
+        "barryvdh/laravel-ide-helper": "2.1.*",
+        "textalk/websocket": "1.2.*",
+        "illuminate/workbench": "^5.0@dev",
+        "guzzlehttp/guzzle": "~6.0",
+        "soapbox/laravel-formatter": "2.*",
+        "adldap2/adldap2": "5.2.*"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Devristo/phpws"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "phpspec/phpspec": "~2.1",
+        "xethron/migrations-generator": "dev-l5"
+    },
+    "autoload": {
+        "classmap": [
+            "database"
+        ],
+        "psr-4": {
+            "BComeSafe\\": "app/",
+            "UCP\\": "workbench/alarm/ucp/lib/"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php"
+        ]
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "php artisan clear-compiled",
+            "php artisan ide-helper:generate",
+            "php artisan optimize"
+        ],
+        "post-create-project-cmd": [
+            "php -r \"copy('.env.example', '.env');\"",
+            "php artisan key:generate"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "dev"
+}

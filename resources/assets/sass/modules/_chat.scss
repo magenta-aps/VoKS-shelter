@@ -1,0 +1,149 @@
+.chat {
+    display: none;
+    @include position(absolute, 0 0 0 0);
+
+    &__wrapper {
+        padding: 10px 15px 0;
+        background-color: $bgChat;
+        border-radius: $borderRadiusDefault;
+        @include position(absolute, 0 0 $hChatInput 0);
+        @extend .-v-scroll;
+    }
+
+    &__conversation {
+        width: 100%;
+        height: 100%;
+        display: table;
+    }
+
+    &__board {
+        display: table-cell;
+        vertical-align: bottom;
+        background-color: $bgChat;
+        @include clearfix;
+    }
+
+    &__input-block {
+        height: auto;
+        background-color: $bgInputContainer;
+        padding: 10px;
+        @include position(absolute, null 0 0 0);
+    }
+
+    &__input-field {
+        width: 100%;
+        display: block;
+        padding: 5px 10px;
+        border: 1px solid $brChatInput;
+        border-radius: $borderRadiusDefault;
+        font-size: 12px;
+        font-weight: normal;
+        line-height: 18px;
+        color: $cChatInput;
+
+        &:focus {
+            color: $cChatInputFocus;
+            border: 1px solid $brChatInputFocus;
+            outline: none;
+        }
+    }
+
+    &__item {
+        max-width: 80%;
+        position: relative;
+        border: 2px solid $bgChatUser;
+        border-radius: $borderRadiusDefault;
+        padding: 6px 10px;
+        clear: both;
+        margin-bottom: 7px;
+
+        &.-main {
+            float: left;
+            background-color: $bgChatUser;
+        }
+
+        &.-user {
+            float: right;
+            background-color: $bgChat;
+        }
+
+        &.-triangle-tl {
+            &.-main::before {
+                content: '';
+                @include triangle(10px 6px, $bgChatUser, left);
+                @include position(absolute, 12px null null -8px);
+            }
+        }
+
+        &.-triangle-tr {
+            &.-user::after,
+            &.-user::before {
+                content: '';
+                @include triangle(10px 6px, $bgChatUser, right);
+                @include position(absolute, 12px -8px null null);
+            }
+
+            &.-user::after {
+                right: -5px;
+                border-left-color: $brChatUserTriangle;
+            }
+        }
+    }
+
+
+    &__name {
+        color: $cChatName;
+        font-weight: bold;
+        text-decoration: none;
+        position: relative;
+
+        .-called {
+
+            &::after {
+                content: '112';
+                background-color: $bgCalled;
+                color: $cCalled;
+                font-size: 10px;
+                font-weight: normal;
+                line-height: 10px;
+                display: inline-block;
+                border-radius: $borderRadiusDefault;
+                padding: 2px;
+                margin-left: 5px;
+            }
+        }
+    }
+
+    &__message {
+        color: $cChatMessage;
+        line-height: 16px;
+        margin-bottom: 3px;
+        word-break: break-word;
+    }
+
+    &__time {
+        font-size: 10px;
+        color: $cChatMessage;
+        text-align: right;
+        opacity: 0.6;
+        white-space: nowrap;
+    }
+
+    &__with {
+        font-size: 12px;
+        font-weight: normal;
+        color: $cChatMessage;
+        display: none;
+    }
+
+    textarea {
+        height: 30px;
+        min-height: 30px;
+        max-height: 200px;
+        resize: none;
+    }
+
+    &.-active {
+        display: block;
+    }
+}

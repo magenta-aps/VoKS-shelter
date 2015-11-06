@@ -1,0 +1,185 @@
+.popup {
+    width: 140px;
+    display: none;
+    background-color: $bgPopup;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px 0 $shadowColorDefault;
+    padding: 9px;
+    z-index: 1;
+    @include position(absolute, -60px null null 0);
+    @include user-select(none);
+    @include clearfix;
+
+    &__button {
+        display: block;
+        float: left;
+        width: 38px;
+        height: 32px;
+        margin: 0 2px;
+        border: 1px solid $brIcons;
+        border-radius: 3px;
+        box-shadow: 0 0 1px 0 $shadowColorDefault;
+        background-color: $bgPopupButton;
+        background-position: center center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        position: relative;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &:hover {
+            background-color: $bgPopupButtonHover;
+        }
+
+        &.-active {
+            background-color: $cMenuActive;
+            border: 1px solid $cMenuActive;
+        }
+
+        .-title {
+            margin-left: 40px;
+        }
+    }
+
+    &.-triangle-cl {
+        position: relative;
+        background-color: $bgPopupButton;
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            top: 21px;
+            left: 0;
+            box-sizing: border-box;
+            border: 0.4em solid $brPopupButtonTriangle;
+            border-color: transparent transparent $brPopupButtonTriangle $brPopupButtonTriangle;
+            transform-origin: 0 0;
+            transform: rotate(45deg);
+            box-shadow: -2px 1px 3px 0 $shadowColorLight;
+        }
+    }
+
+    &.-triangle-bc {
+        background-color: $bgPopupButton;
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            bottom: -16px;
+            left: 60px;
+            box-sizing: border-box;
+            border: 0.7em solid $brPopupButtonTriangle;
+            border-color: transparent transparent $brPopupButtonTriangle $brPopupButtonTriangle;
+            transform-origin: 0 0;
+            transform: rotate(-45deg);
+            box-shadow: -2px 1px 3px 0 $shadowColorLight;
+        }
+    }
+
+    &.-waiting-list {
+        width: 83px;
+        background-color: transparent;
+        box-shadow: none;
+
+        .popup__button {
+            width: 25px;
+            height: 25px;
+
+            &.-icon-messages {
+                background-position: 4px -54px;
+
+                &.-active,
+                &:active {
+                    background-position: 4px 3px;
+                }
+            }
+
+            &.-mute {
+                background-position: 4px -39px;
+
+                &.-active,
+                &:active {
+                    background-position: 4px -94px;
+                }
+            }
+
+            &.-icon-video {
+                background-position: 3px -30px;
+
+                &.-active,
+                &:active {
+                    background-position: 3px 6px;
+                }
+            }
+        }
+    }
+
+    .icons {
+        text-align: center;
+
+        .-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        &.-messages .-icon { top: 6px; left: -1px; }
+        &.-volume .-icon { top: 6px; }
+        &.-video2 .-icon { top: 9px; left: -1px; }
+    }
+}
+
+
+
+.message-feed {
+    .popup {
+        &.-triangle-cl {
+            &::before {
+                top: 20px;
+            }
+        }
+
+        &.-active {
+            display: block;
+        }
+    }
+
+    &__unit:first-child {
+        .popup {
+            top: 25px;
+
+            &.-triangle-bc::after {
+                top: 0;
+                left: 76px;
+                transform: rotate(138deg);
+            }
+        }
+    }
+}
+
+
+
+.waiting-list {
+    &__unit {
+        &.-active,
+        &:hover {
+            .popup {
+                display: table-cell;
+            }
+        }
+
+        .popup {
+            padding: 0;
+            @include position(relative, auto auto auto auto);
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+  "name":           "BComeSafe",
+  "version":        "1.0.0",
+  "description":    "http://bcomesafe.com, Copyright 2015 Magenta ApS, http://magenta.dk",
+  "author":         "Baltic Amadeus <info@ba.lt> (http://ba.lt/)",
+  "license":        "MPL-2.0",
+  "private":        true,
+  "devDependencies": {
+    "gulp": "^3.8.8"
+  },
+  "dependencies": {
+    "laravel-elixir": "^3.0.0"
+  }
+}

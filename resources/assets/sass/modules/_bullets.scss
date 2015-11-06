@@ -1,0 +1,173 @@
+$whiteBorder: 3px;
+$radius: 50px;
+$bulletsGreenColor: #25cc7b;
+$bulletsBlueColor: #5577d8;
+
+.bullets {
+    @include position(absolute, 0 0 0 0);
+}
+
+.bullet {
+    border-radius: $radius;
+    @include size($wBullet $wBullet);
+    @include position(absolute, 0 null null 0);
+
+    &-container {
+        cursor: pointer;
+        border-radius: $radius;
+        @include size($wBullet $wBullet);
+        @include position(absolute, 0 null null 0);
+    }
+
+    &-wrapper {
+        display: block;
+        background-color: $bgBulletWrapper;
+        box-shadow: 0 0 5px 0 $shadowColorDark;
+        border-radius: $radius;
+        @include size(100% 100%);
+    }
+
+    &-state {
+        background-color: $bgBulletState;
+        box-shadow: 1px 1px 1px 1px $shadowColorMedium;
+        z-index: 1;
+        border-radius: $radius;
+        @include position(absolute, $whiteBorder $whiteBorder $whiteBorder $whiteBorder);
+
+        &.icons .-icon {
+            top: 8px;
+            left: 6px;
+            background-position: 0 0;
+            background-size: 80% auto;
+        }
+    }
+
+    &.ui-selecting,
+    &.bullet-selected {
+        .bullet-container {
+            border: 3px solid $bulletsGreenColor;
+            box-sizing: content-box;
+            z-index: 120;
+            @include position(absolute, (-$whiteBorder) null null (-$whiteBorder));
+        }
+    }
+
+    &.ui-selecting.bullet-selected.ctrlKey {
+        .bullet-container {
+            border: 0 solid $bulletsGreenColor;
+            box-sizing: border-box;
+            z-index: 1;
+            @include position(absolute, 0 null null 0);
+        }
+    }
+
+    &.icons {
+        z-index: 7;
+    }
+
+    &.-active {
+        z-index: 3000 !important;
+        width: $wBulletSelected !important;
+        height: $hBulletSelected !important;
+
+        .bullet-container {
+            width: $wBulletSelected !important;
+            height: $hBulletSelected !important;
+
+            .-icon {
+                background-size: 100% auto;
+                top: 10px;
+                left: 7px;
+            }
+        }
+
+        .bullet-state.icons .-icon {
+            top: 10px;
+            left: 7px;
+            background-size: 100% auto;
+        }
+
+        // Popup
+        .popup {
+            display: none;
+            left: -53px;
+        }
+
+        &.-selected {
+            .popup {
+                display: block;
+                left: -53px;
+            }
+        }
+    }
+
+    &.-inactive {
+        z-index: 1 !important;
+    }
+
+    &.-blue {
+        z-index: 1000 !important;
+
+        .bullet-state {
+            background-color: $bulletsBlueColor;
+        }
+    }
+
+    &.-red {
+        z-index: 2000 !important;
+
+        .bullet-state {
+            background-color: $bgCalled;
+        }
+    }
+
+    // Moved from _icons.css
+    &.-video2 {
+        .-icon {
+            width: 17px;
+            height: 12px;
+            background-image: url('#{$images}/icons/icon_video2.png');
+            background-position: 1px 0;
+        }
+    }
+
+    .bullet-state.icons.-alarm .-icon {
+        top: 6px;
+        left: 7px;
+    }
+
+    &.-selected {
+        .popup {
+            display: block;
+            @include position(absolute, -60px null null -56px);
+        }
+    }
+}
+
+// Bullet popup (2015 08 24)
+.bullet-popup {
+    left: -9px !important;
+    bottom: 0 !important;
+
+    .leaflet-popup-content {
+        margin: 0;
+        position: relative;
+    }
+
+    .leaflet-popup-content-wrapper {
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+        border-radius: 0;
+    }
+
+    .leaflet-popup-tip-container {
+        display: none;
+    }
+
+    .popup {
+        display: block;
+        top: -67px;
+        left: -59px !important;
+    }
+}

@@ -1,0 +1,179 @@
+.header {
+    width: $wDefault;
+    height: $hHeader;
+    background-color: $bgHeaderBase;
+    z-index: $zHeader;
+    position: relative;
+    @extend .shadow;
+
+
+    &__container {
+        width: $wDefault;
+        background-color: $bgHeader;
+        @include calc(height, "#{$hHeaderInner}");
+        @extend .innerShadow;
+    }
+
+
+    &__logo {
+        color: $cHeader;
+        font-size: 16px;
+        font-weight: bold;
+        font-style: italic;
+        text-decoration: none;
+        @include position(absolute, 0 null null 25px);
+        @extend .headerLogo;
+    }
+
+
+    &__status {
+        text-align: center;
+        height: $hHeaderInner;
+        line-height: $hHeaderInner;
+
+        &-text {
+            font-size: 22px;
+            font-weight: bold;
+            color: $cHeader;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            @extend .headerStatus;
+        }
+    }
+
+
+    .police-status {
+        float: right;
+        height: $hHeaderInner;
+        padding: 14px $mDefault + 2 0 $mDefault;
+        @extend .headerSeparator;
+
+        &__text,
+        &__toggle {
+            display: block;
+            float: left;
+        }
+
+        &__text {
+            color: $cHeader;
+            font-weight: bold;
+            margin-right: 15px;
+
+            &::after {
+                content: ':';
+            }
+        }
+
+        &__toggle {
+            @include user-select(none);
+        }
+    }
+
+
+    .status-bar {
+        float: right;
+        min-width: $wStatusBar;
+        height: $hHeaderInner;
+        margin-right: $wHeaderButton * 2;
+        padding: 10px 15px 0 10px;
+        list-style-type: none;
+        @extend .headerSeparator;
+
+        &__unit {
+            @include clearfix;
+        }
+
+        &__item {
+            font-size: 10px;
+            line-height: 13px;
+            color: $cHeader;
+            display: block;
+            float: left;
+
+            &.-left {
+                width: 70px;
+                text-align: right;
+                margin-right: 5px;
+            }
+
+            &.-right {
+                font-weight: bold;
+            }
+        }
+    }
+
+    &__button {
+        width: $wHeaderButton;
+        height: $hHeaderInner;
+        display: block;
+        @extend .headerSeparator;
+
+        &.-settings {
+            @include position(absolute, 0 0 null null);
+        }
+
+        &.-help {
+            @include position(absolute, 0 $wHeaderButton null null);
+        }
+
+        &.-logout {
+            display: none;
+        }
+
+        &:hover {
+            background-color: $bgHeaderButtonHover;
+        }
+
+        &.-active {
+            background-color: $bgHeaderButtonActive;
+        }
+    }
+
+
+    &.-active {
+        .header__container {
+            background-color: $bgHeaderCalled;
+        }
+
+        .police-status,
+        .status-bar,
+        .header__button {
+            @extend .headerSeparatorCalled;
+        }
+
+        .header__button:hover {
+            background-color: $bgHeaderButtonHoverCalled;
+        }
+    }
+
+    .table-style__table {
+        width: 100%;
+    }
+
+    .header__is-logout {
+
+        .police-status {
+            margin-right: $wStatusBar + $wHeaderButton * 3;
+        }
+
+        .status-bar {
+            right: $wHeaderButton * 3;
+        }
+
+        .header__button {
+            &.-settings {
+                right: $wHeaderButton;
+            }
+
+            &.-help {
+                right: $wHeaderButton * 2;
+            }
+
+            &.-logout {
+                display: block;
+                @include position(absolute, 0 0 null null);
+            }
+        }
+    }
+}

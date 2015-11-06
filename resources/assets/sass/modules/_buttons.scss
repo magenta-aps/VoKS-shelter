@@ -1,0 +1,260 @@
+.button {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+
+    &.-answer,
+    &.-on-hold {
+        border-radius: 3px;
+        padding: 6px 15px;
+        display: none;
+        margin: auto;
+
+        &.-active {
+            display: table;
+        }
+
+        &.-inactive {
+            display: table;
+        }
+    }
+
+    &.-answer,
+    &.-answer.-active {
+        border: 1px solid $brButtonActive;
+        @include background(linear-gradient($bgButtonActive1, $bgButtonActive2) top repeat);
+
+        &:hover {
+            @include background(linear-gradient($bgButtonActiveHover1, $bgButtonActiveHover2) left repeat);
+        }
+
+        .button__text {
+            color: $cButtonActive;
+        }
+    }
+
+    &.-inactive {
+        border: 1px solid $brButtonInactive;
+        @include background(linear-gradient($bgButtonInactive1, $bgButtonInactive2) top repeat);
+
+        &:hover {
+            @include background(linear-gradient($bgButtonInactiveHover1, $bgButtonInactiveHover2) left repeat);
+        }
+
+        .button__text {
+            color: $cButtonInactive;
+        }
+    }
+
+    &.-on-hold {
+        border: 1px solid $brButtonOnHold;
+        @include background(linear-gradient($bgButtonOnHold1, $bgButtonOnHold2) top repeat);
+
+        &:hover {
+            @include background(linear-gradient($bgButtonOnHoldHover1, $bgButtonOnHoldHover2) left repeat);
+        }
+
+        .button__text {
+            color: $cButtonOnHold;
+        }
+    }
+
+    &.-mute {
+
+        &.-volume {
+            background-position: 0 0;
+        }
+
+        .-text {
+            font-weight: bold;
+            color: $cBlockStyle;
+        }
+    }
+
+    &.-unmute {
+
+        &.-volume {
+            border-radius: $borderRadiusDefault;
+            padding: 6px 10px;
+            box-shadow: 0 0 1px 0 $shadowColorDefault;
+            background-color: $bgButtonUnmute;
+            border: 1px solid $brButtonUnmute;
+
+            .-icon {
+                background-position: 0 -44px;
+            }
+        }
+
+        .-text {
+            font-weight: bold;
+            color: $cButtonUnmute;
+        }
+    }
+
+    &.-gray {
+        border: 1px solid $brButtonGray;
+        border-radius: $borderRadiusDefault;
+        padding: 7px 13px 5px;
+        @include background(linear-gradient($bgButtonGray1, $bgButtonGray2) top repeat);
+
+        .-text {
+            font-weight: bold;
+            line-height: 18px;
+            color: $cButtonGray;
+        }
+
+        &:hover {
+            @include background(linear-gradient($bgButtonGrayHover1, $bgButtonGrayHover2) top repeat);
+        }
+
+        &.-active {
+            background: none;
+            background-color: $cButtonGrayActive;
+        }
+
+        &.-inactive {
+            opacity: 0.5;
+        }
+    }
+
+    &.-submit {
+        background-color: $bgButtonSubmit;
+        color: $cButtonSubmit;
+        border-radius: $borderRadiusDefault;
+        cursor: pointer;
+        padding: 7px 15px;
+        height: $hSelect;
+
+        &:hover {
+            background-color: $bgButtonSubmitHover;
+        }
+
+        &.-inactive {
+            background: none;
+            background-color: $bgButtonSubmitInactive;
+            border: 0;
+            opacity: 0.2;
+        }
+    }
+
+    &.-browse {
+        height: auto;
+        padding: 3px 15px;
+        float: left;
+    }
+
+    &.-default {
+        border-radius: 3px;
+        padding: 6px 15px;
+        border: solid 1px $brButtonDefault;
+    }
+
+    &.-cancel {
+        text-decoration: underline;
+        color: $cMenuActive;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    &.-minimizeMaximize {
+
+        .button__text {
+            font-weight: normal;
+        }
+    }
+
+    &.-settings {
+        width: 27px;
+        height: 27px;
+        border: 1px solid $brButtonSettings;
+        border-radius: $borderRadiusDefault;
+        background-repeat: no-repeat;
+        font-size: 0;
+        background-color: $bgButtonSettings;
+
+        &:hover {
+            background-color: $bgButtonSettingsHover;
+        }
+
+        &.-save {
+            font-size: $fsDefault;
+            background-color: $bgButtonSettingsSave;
+            padding-left: 10px;
+            padding-right: 10px;
+            width: auto;
+            padding-top: 2px;
+        }
+
+        &.-cancel {
+            width: auto;
+            height: auto;
+            background-color: transparent;
+            border: 0;
+            padding-top: 2px;
+            font-size: $fsDefault;
+        }
+    }
+
+    &.-add {
+        background-position: 5px 5px;
+        background-image: url('#{$images}/icons/icon_add.png');
+
+        &.-active {
+            background-position: 5px -98px;
+        }
+    }
+
+    &.-edit {
+        background-position: 4px 3px;
+        background-image: url('#{$images}/icons/icon_edit.png');
+
+        &.-active {
+            background-position: 3px -97px;
+        }
+    }
+
+    &.-direction-top {
+        background-position: 7px 7px;
+        background-image: url('#{$images}/icons/icon_directions.png');
+    }
+
+    &.-direction-bottom {
+        background-position: 7px -182px;
+        background-image: url('#{$images}/icons/icon_directions.png');
+    }
+
+    &.-drop {
+        background-position: 7px 5px;
+        background-image: url('#{$images}/icons/icon_drop.png');
+    }
+
+    &.-preview {
+        background-position: 3px 7px;
+        background-image: url('#{$images}/icons/icon_preview_map.png');
+    }
+
+    &.-check {
+        background-position: 6px 6px;
+        background-image: url('#{$images}/icons/icon_check.png');
+    }
+
+
+    &.-delete {
+        background-position: 5px 5px;
+        background-image: url('#{$images}/icons/icon_delete.png');
+
+        &.-active {
+            background-position: 5px -97px;
+        }
+    }
+
+    &__text {
+        font-size: 12px;
+        font-weight: bold;
+        color: $cButtonText;
+        text-decoration: none;
+    }
+}

@@ -1,0 +1,40 @@
+.message-feed {
+    width: $wMessageFeed;
+    border-right: 1px solid $brDefault;
+    @extend .shadowRight;
+    @include position(absolute, 0 null 0 0);
+
+    &__messages {
+        display: table;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__wrapper {
+        display: table-cell;
+        vertical-align: bottom;
+    }
+
+    &__unit {
+        max-width: none;
+        float: none;
+        margin: 0 10px $mDefault;
+
+        &:first-child {
+            margin-top: 13px;
+        }
+    }
+
+
+
+    // Related
+
+    .chat__item {
+        float: none;
+    }
+
+    .chat__name {
+        margin-bottom: 5px;
+        padding-right: 0;
+    }
+}

@@ -1,0 +1,29 @@
+.map {
+    overflow: hidden;
+    @extend .-full;
+    @extend .blockStyle;
+
+    &-container {
+        background-position: center center;
+        background-repeat: no-repeat;
+        @include position(absolute, 5px 5px 5px 5px);
+    }
+
+    &-tools {
+        .container__header {
+            background-color: transparent;
+
+            > .container__header-title {
+                background-color: $bgBlockHeader;
+
+                &:first-child {
+                    border-top-left-radius: $borderRadiusDefault;
+                }
+
+                &:last-child {
+                    border-top-right-radius: $borderRadiusDefault;
+                }
+            }
+        }
+    }
+}

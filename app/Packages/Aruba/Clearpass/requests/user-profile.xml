@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TipsApiRequest xmlns="http://www.avendasys.com/tipsapiDefs/1.0">
+    <TipsHeader version="3.0" />
+    <Filter entity="Endpoint">
+        <Criteria fieldName="macAddress" filterString="{{ $mac }}" match="equals"/>
+    </Filter>
+</TipsApiRequest>

@@ -1,0 +1,484 @@
+.wrapper {
+    width: $wDefault;
+    min-width: $wPageMin;
+    max-width: $wPageMax;
+    height: $wDefault;
+    min-height: $hPageMin;
+}
+
+.container {
+    width: $wDefault;
+    position: relative;
+    // z-index: $zContainer;
+    @include calc(height, "100% - #{$hHeader}");
+
+    &__wrapper {
+        @include position(absolute, 0 $wWaitingList 0 $wMessageFeed);
+
+        &.-help {
+            @include position(absolute, 5% 15% 10% 15%);
+        }
+    }
+
+    &__header {
+        height: 36px;
+        border-bottom: 1px solid $brBlocks;
+        background-color: $bgBlockHeader;
+        @include border-top-radius($borderRadiusDefault);
+
+        &-title {
+            font-weight: bold;
+            color: $cHeaderTitle;
+            position: relative;
+            padding: 10px 10px 0;
+        }
+
+
+        .-title {
+            font-weight: bold;
+            color: $cHeaderTitle;
+            position: relative;
+            top: 9px;
+            left: 15px;
+        }
+
+        .table-style__cell:first-child {
+            border-top-left-radius: $borderRadiusDefault;
+        }
+
+        .table-style__cell:last-child {
+            border-top-right-radius: $borderRadiusDefault;
+        }
+    }
+}
+
+.settings {
+    width: 100%;
+    border: 1px solid $brBlocks;
+    border-radius: $borderRadiusDefault;
+    background-color: $bgSettings;
+    padding: 40px 60px;
+    margin-bottom: 60px;
+}
+
+
+.block-style {
+    z-index: 100;
+    color: $cBlockStyle;
+    font-weight: bold;
+    border-radius: $borderRadiusDefault;
+    background-color: $bgBlockStyle;
+    @extend .shadow;
+
+    &__content {
+        padding: 15px 20px;
+        @include clearfix;
+        @include border-bottom-radius($borderRadiusDefault);
+    }
+
+    &__nav-block {
+        min-height: 98px;
+        padding: 15px;
+        @include clearfix;
+
+        .-title {
+            margin-bottom: 5px;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    &__buttons {
+        float: left;
+
+        .button {
+            padding: 3px 11px;
+        }
+    }
+}
+
+.-school-plan-block {
+    &.block-style {
+        @include position(absolute, 16px null null 16px);
+    }
+
+    .table-style__cell {
+        padding: 10px 12px;
+    }
+
+    .table-style__row {
+        &.container__header {
+            .table-style__cell {
+                border-left: 1px solid $brTableStyleHeader;
+            }
+        }
+
+        .table-style__cell {
+            border-left: 1px solid $brTableStyle;
+
+            &:first-child {
+                border-left: 0;
+            }
+        }
+    }
+
+    .block-style__buttons {
+        .button {
+            min-width: 38px;
+            height: 30px;
+            margin-right: 4px;
+            padding-top: 6px;
+            vertical-align: top;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+.-send-messages-block {
+
+    &.block-style {
+        @include position(absolute, 16px 16px null null);
+    }
+
+    .block-style__tabs {
+        background-color: $bgBlockHeader;
+        margin-top: -1px;
+    }
+
+    .tabs {
+        &__item:last-child {
+            float: right;
+            margin-right: 0;
+        }
+
+        &__content {
+            padding: 0;
+            @include position(absolute, 0 0 0 0);
+        }
+    }
+
+    .block-style__content {
+        width: 400px;
+        height: 390px;
+        position: relative;
+        padding: 0;
+    }
+
+    .-sms-push {
+        @include clearfix;
+
+        &__content {
+            @include position(absolute, null 15px 15px 15px);
+        }
+
+        .textarea-block {
+            height: auto;
+            z-index: 1;
+            background-color: $bgTextarea;
+
+            &__field {
+                margin-bottom: 0;
+            }
+
+            &__settings {
+                padding-top: 10px;
+
+                .select2-choice {
+                    height: $hSelect;
+                    padding-top: 3px;
+
+                    .select2-arrow b {
+                        background-position: 3px 2px;
+                    }
+                }
+            }
+        }
+
+        .block-style__nav-block {
+            margin: 0;
+            border-bottom: 1px solid $brBlocks;
+            box-shadow: 0 3px 4px -3px $shadowColorDefault;
+
+            .-title {
+                font-weight: normal;
+            }
+        }
+
+        .-added-names {
+            z-index: 0;
+            height: 135px;
+            padding-right: 15px;
+            margin-bottom: 5px;
+            @extend .-v-scroll;
+            @include position(relative, null);
+
+            &-empty {
+                padding-top: 50px;
+                color: $cBlockStyle;
+                font-weight: normal;
+                text-align: center;
+            }
+        }
+
+        .-added-name {
+            font-size: 11px;
+            display: inline-block;
+            position: relative;
+            border-radius: $borderRadius;
+            line-height: 18px;
+            font-weight: normal;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: none;
+            margin: 0 7px 7px 0;
+            background-color: $bgNameDefault;
+            padding: 2px 2px 2px 25px;
+            @include position(relative, auto auto auto auto);
+
+            &-content {
+                background-color: $bgAddedNameContent;
+                display: block;
+                color: $cChatMessage;
+                border-radius: $borderRadiusDefault;
+                padding: 1px 20px 1px 7px;
+                text-decoration: none;
+                box-shadow: 2px 3px 3px -2px $shadowColorDark;
+            }
+
+            &.-desktop .-icon {
+                @include position(absolute, 5px auto auto 4px);
+            }
+
+            &.-mobile .-icon {
+                @include position(absolute, 4px auto auto 4px);
+            }
+
+            .-close-stream .-icon {
+                top: 1px;
+                left: auto;
+                right: 1px;
+                background-position: 6px -15px;
+                width: 18px;
+                height: 18px;
+                opacity: 0.8;
+                background-image: url('#{$images}/icons/icon_closeStream.png');
+            }
+
+            &:hover {
+                background-color: $bgNameHover;
+
+                .-close-stream .-icon {
+                    opacity: 1;
+                }
+            }
+
+            &.-inactive {
+                background-color: $bgNameInactiveDefault;
+
+                &:hover {
+                    background-color: $bgNameInactiveHover;
+                }
+            }
+        }
+    }
+
+    .-audio {
+        &__content {
+            padding: 20px;
+        }
+
+        &__top {
+            padding: 0 0 20px;
+            text-align: center;
+            border-bottom: 1px solid $brAudio;
+
+            .button {
+                margin-top: 5px;
+            }
+        }
+
+        &__select,
+        &__input {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        &__input {
+            label {
+                font-weight: normal;
+            }
+        }
+
+        &__bottom {
+            padding: 10px 0 0;
+            text-align: center;
+
+            h3 {
+                font-size: 14px;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+            .-text-list {
+                padding: 0 20px;
+
+                li {
+                    line-height: 20px;
+                    font-weight: normal;
+                    list-style-type: default;
+                    margin-bottom: 10px;
+                    text-align: left;
+                }
+            }
+        }
+    }
+
+    .-history {
+        &__content {
+            @include position(absolute, 15px 5px 5px 5px);
+            @extend .-v-scroll;
+        }
+
+        table,
+        th,
+        td {
+            border-collapse: collapse;
+            border: 1px solid $brHistoryTable;
+        }
+
+        .-history {
+            width: 100%;
+
+            tr:nth-child(2n) {
+                background-color: $bgHistoryTableTr1;
+            }
+
+            tr:nth-child(2n-1) {
+                background-color: $bgHistoryTableTr2;
+            }
+
+            thead tr:first-child {
+                background-color: $bgHistoryTableTrFirst;
+            }
+
+            th,
+            td {
+                text-align: center;
+                font-weight: normal;
+                padding: 10px;
+            }
+
+            th {
+                padding: 0 7px 5px;
+            }
+
+            td.message {
+                width: 100%;
+            }
+
+            tr th:nth-child(2),
+            tr td:nth-child(2) {
+                text-align: left;
+            }
+
+            tr th:last-child {
+                width: 70px;
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            thead .-border {
+                border-top: 2px solid $brIcons;
+                background-color: transparent;
+
+                th {
+                    font-size: 0;
+                    height: 3px;
+                    padding: 0;
+                }
+            }
+        }
+    }
+}
+
+.tabs {
+
+    &__nav {
+        padding: 0 15px;
+        @include clearfix;
+    }
+
+    &__item {
+        float: left;
+        padding: 6px 20px 4px;
+        background-color: $bgTab;
+        cursor: pointer;
+        text-decoration: none;
+        color: $cBlockStyle;
+        margin-right: 4px;
+        @include border-top-radius($borderRadiusDefault);
+
+        &:hover {
+            background-color: $bgTabHover;
+        }
+
+        &.-active {
+            background: none;
+            background-color: $bgTabActive;
+        }
+    }
+
+    &__content {
+        @include clearfix;
+        padding: 15px;
+    }
+}
+
+
+.custom {
+    .table-style__table {
+        .table-style__cell {
+            padding: 5px;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .-label {
+            max-width: 300px;
+            min-width: 200px;
+            white-space: normal;
+            padding-top: 10px;
+            padding-right: 10px;
+
+            &:after {
+                content: ':';
+                margin-left: -2px;
+            }
+        }
+
+        .-form-element {
+            width: 320px;
+            vertical-align: middle;
+
+            &.textarea-block {
+                width: 320px;
+            }
+
+            .textarea-block__field {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .button.-submit.-add {
+        margin-bottom: 15px;
+        padding-left: 28px;
+    }
+}
