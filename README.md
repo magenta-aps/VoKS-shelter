@@ -157,7 +157,7 @@ Go to project folder located here: /var/www/html/application/
 Create new file “.env” with lines inside:
     APP_ENV=local
     APP_DEBUG=false
-    APP_KEY=TQ4zDeXRFJ5jotGdHRH5yfixjM8dhu5E
+    APP_KEY=
     
     DB_HOST=127.0.0.1
     DB_DATABASE=<voks database name>
@@ -182,21 +182,21 @@ Create new file “.env” with lines inside:
     AD_USERNAME=<ad server username>
     AD_GROUP=<ad parent crisis team group>
     AD_PASSWORD=<ad server pass>
-    AD_ACCOUNT_SUFFIX=@akershus-fk.no
-    AD_HOST=ldap.akershus-fk.no
-    AD_DN='dc=akershus-fk,dc=no'
-    AD_BIOS=AKERSHUS-FK
-    AD_COMPANY_ID=FYLKESADMINISTRASJONEN
+    AD_ACCOUNT_SUFFIX=<account suffix>
+    AD_HOST=
+    AD_DN=
+    AD_BIOS=
+    AD_COMPANY_ID=
     
-    ARUBA_ALE_URL=148.83.249.210
+    ARUBA_ALE_URL=
     
-    ARUBA_CLEARPASS_URL=https://900-arcp-01.akershus-fk.no
-    ARUBA_CLEARPASS_USERNAME=app-amadeus-01
-    ARUBA_CLEARPASS_PASSWORD=amadeus01
+    ARUBA_CLEARPASS_URL=
+    ARUBA_CLEARPASS_USERNAME=
+    ARUBA_CLEARPASS_PASSWORD=
     
-    ARUBA_AIRWAVE_URL=https://900-araw-01.akershus-fk.no
-    ARUBA_AIRWAVE_USERNAME=app-amadeus-01
-    ARUBA_AIRWAVE_PASSWORD=amadeus01
+    ARUBA_AIRWAVE_URL=
+    ARUBA_AIRWAVE_USERNAME=
+    ARUBA_AIRWAVE_PASSWORD=
     
     COORDINATES_TIME_INTERVAL=120
     COORDINATES_EXPIRATION_TIME=15
