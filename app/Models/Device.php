@@ -382,7 +382,7 @@ class Device extends BaseModel
         "
         );
 
-        \DB::update("UPDATE devices SET active = 0 WHERE mac_address NOT IN('" . join("','", $macAddresses) . "')");
+        \DB::update("UPDATE devices SET active = 0 WHERE active = 1 AND mac_address NOT IN('" . join("','", $macAddresses) . "')");
     }
 
     /**
