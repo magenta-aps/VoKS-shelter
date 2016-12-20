@@ -37,22 +37,25 @@ Route::group(
     }
 );
 
-Route::controllers(
-    [
-    'test' => 'TestController',
+Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
     'download' => 'DownloadFileController',
     'maps' => 'Maps\MainController'
-    ]
-);
+]);
+
+Route::get('log/websockets', 'Log\ViewerController@getWebsockets');
+Route::get('log/laravel', 'Log\ViewerController@getLaravel');
 
 // API
 Route::group(
     ['prefix' => 'api'],
     function () {
-        Route::controller('device', 'Api\DeviceController');
+        // IP API for websockets
+        Route::controller('system/ip-whitelist', 'System\Api\IpWhitelistController');
 
+        Route::controller('device', 'Api\DeviceController');
+	        Route::controller('voks', 'Api\DeviceController');
         Route::match(['get', 'post'], 'shelter/coordinates', ['uses' => 'Api\ShelterController@getCoordinates']);
         Route::controller('shelter', 'Api\ShelterController');
 

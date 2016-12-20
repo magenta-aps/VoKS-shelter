@@ -1,5 +1,5 @@
-<div class="streams__item">
-    <div class="streams__stream" ng-show="client" ng-class="{
+<div class="streams__item" ng-mouseenter="hover=true" ng-mouseleave="hover=false" ng-init="hover=false">
+    <div class="streams__stream" ng-if="client" ng-class="{
     '-message-stream': client.state.chatOpen,
     '-current': client.position.inLargeView
     }">
@@ -84,17 +84,23 @@
             </div>
         </div>
     </div>
-    <div class="streams__empty" ng-show="!client">
+    <div class="streams__empty" ng-if="!client">
         <div class="empty-block">
             <div class="empty-block__content">
                 <div class="empty-block__title">{{ Lang::get('app.stream.empty.title') }}</div>
                 <div class="empty-block__text">{{ Lang::get('app.stream.empty.select') }}</div>
-                <ui-select ng-model="selected.client" on-select="$item.placeIntoView(position); selected.client = null;">
+                <ui-select ng-if="hover" ng-model="selected.client" on-select="$item.placeIntoView(position); selected.client = null;">
                     <ui-select-match placeholder="{{ Lang::get('app.stream.empty.placeholder') }}"><% $select.selected.profile.name %></ui-select-match>
-                    <ui-select-choices repeat="item in clients | filter: {profile: {name: $select.search} } | filter: {position: {inQueue: true} }">
+                    <ui-select-choices repeat="item in ::clients | filter: {profile: {name: $select.search} } | filter: {position: {inQueue: true} }">
                         <div ng-bind-html="item.profile.name | highlight: $select.search"></div>
                     </ui-select-choices>
                 </ui-select>
+                <div ng-if="!hover" class="ui-select-container select2 select2-container">
+                    <a class="select2-choice ui-select-match select2-default">
+                        <span class="select2-chosen ng-binding">{{ Lang::get('app.stream.empty.placeholder') }}</span>
+                        <span class="select2-arrow ui-select-toggle"><b></b></span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

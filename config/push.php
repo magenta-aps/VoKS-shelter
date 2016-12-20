@@ -17,6 +17,6 @@ return [
         'password'         => '',
         'certificate_path' => app_path() . '/Path/to/certificate.pem',
         'action_loc_key'   => '',
-        'expiry'           => env('IOS_PUSH_EXPIRY', 3600),
+        'expiry'           => env('IOS_PUSH_EXPIRY', 3600),    
     ]
 ];

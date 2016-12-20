@@ -35,8 +35,8 @@
          *
          * @type integer
          */
-        var activeTimeout = 3000,
-            inactiveTimeout = 7000;
+        var activeTimeout = 5000,
+            inactiveTimeout = 10000;
 
         /**
          * -----------------------------------------------
@@ -135,47 +135,92 @@
          * -----------------------------------------------
          */
         // Gets all coordinates
-        function getAllCoordinates() {
-            var timeout = inactiveTimeout;
-            if (undefined !== $route.current && 'plan' === $route.current.active) {
-                timeout = activeTimeout;
-            }
+        var inCall = false;
+        var inTimeOut = false;
 
-            ShelterAPI.getCoordinates()
-                .then(function(response) {
-                    _updateCoordinates(response.data);
-                    $timeout(getAllCoordinates, timeout);
-                }, function() {
-                    $timeout(getAllCoordinates, timeout);
-                });
+        var safeCall = function(){
+            inTimeOut = false;
+            getAllCoordinates();
+        };
+
+        var safeTimeOut = function(timeout){
+            inCall = false;
+            inTimeOut = true;
+            $timeout(safeCall, timeout);
+        };
+
+        function getAllCoordinates() {
+            if(!inCall && !inTimeOut) {
+
+                var timeout = inactiveTimeout;
+
+                if (undefined !== $route.current && 'plan' === $route.current.active) {
+                    timeout = activeTimeout;
+                }
+
+                inCall = true;
+
+                ShelterAPI.getCoordinates()
+                    .then(
+                        function(response) {
+                            _updateCoordinates(response.data);
+                            safeTimeOut(timeout);
+                        },
+                        function() {
+                            safeTimeOut(timeout);
+                        }
+                    )
+                ;
+
+            } else {
+                return;
+            }
         }
 
         // Gets only seven active client coordinates
+        var inCall7 = false;
+        var inTimeOut7 = false;
+
+        var safeCall7 = function(){
+            inTimeOut7 = false;
+            getSevenCoordinates();
+        };
+
+        var safeTimeOut7 = function(timeout){
+            inCall7 = false;
+            inTimeOut7 = true;
+            $timeout(safeCall7, timeout);
+        };
+
         function getSevenCoordinates() {
-            var timeout = inactiveTimeout;
-            if (undefined !== $route.current && 'stream' === $route.current.active) {
-                timeout = activeTimeout;
-            }
-
-            // Filter active
-            var macs = [],
-                list = _clients,
-                length = list.length;
-
-            for (var index = 0; index < length; index++) {
-                var client = list[index];
-                if (0 < client.position.index) {
-                    macs.push(client.profile.mac_address);
+            if(!inCall7 && !inTimeOut7) {
+                var timeout = inactiveTimeout;
+                if (undefined !== $route.current && 'stream' === $route.current.active) {
+                    timeout = activeTimeout;
                 }
-            }
 
-            ShelterAPI.getCoordinates(macs)
-                .then(function(response) {
-                    _updateCoordinates(response.data);
-                    $timeout(getSevenCoordinates, timeout);
-                }, function() {
-                    $timeout(getSevenCoordinates, timeout);
-                });
+                // Filter active
+                var macs = [],
+                    list = _clients,
+                    length = list.length;
+
+                for (var index = 0; index < length; index++) {
+                    var client = list[index];
+                    if (0 < client.position.index) {
+                        macs.push(client.profile.mac_address);
+                    }
+                }
+
+                ShelterAPI.getCoordinates(macs)
+                    .then(function (response) {
+                        _updateCoordinates(response.data);
+                        safeTimeOut7(timeout);
+                    }, function () {
+                        safeTimeOut7(timeout);
+                    });
+            } else {
+                return;
+            }
         }
 
         // Updates clients and their coordinates
@@ -461,7 +506,9 @@
                 _message.calledPolice = client.state.calledPolice;
 
                 client.messages.list.push(angular.copy(_message));
-                client.markUnread();
+                if (!self.state.chatOpen && !self.state.focused) {
+                    client.markUnread();
+                }
 
                 client.updateActivity();
                 client.save();

@@ -71,14 +71,10 @@
         $routeProvider
             .when('/stream', {
                 active: 'stream',
-                controller: 'StreamController',
-                controllerAs: 'StreamCtrl',
                 templateUrl: '/views/streams.html'
             })
             .when('/stream/:clientId', {
                 active: 'stream',
-                controller: 'StreamController',
-                controllerAs: 'StreamCtrl',
                 templateUrl: '/views/stream.html'
             })
             .when('/plan', {

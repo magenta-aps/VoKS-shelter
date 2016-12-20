@@ -69,6 +69,6 @@ return [
         ]
     ],
     'trigger' => [
-        'message' => 'Connecting to the shelter, please wait...'
+        'message' => 'Connecting to the shelter, please wait.....'
     ]
 ];

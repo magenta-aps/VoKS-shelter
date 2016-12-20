@@ -10,8 +10,8 @@
 return [
     'ale' => [
         'errors' => [
-            'unsynchronized' => 'There are no coordinates or campuses not synchronized. Please wait.',
-            'unavailable' => 'We could not locate you. Please wait.'
+            'unsynchronized' => 'Det mangler koordinater eller lokasjonen er ikke synkronisert. Vennligst vent.',
+            'unavailable' => 'Ikke mulig å lokalisere deg. Vennligst vent.'
         ]
     ]
 ];

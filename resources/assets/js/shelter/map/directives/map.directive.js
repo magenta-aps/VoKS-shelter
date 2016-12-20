@@ -9,7 +9,9 @@
 (function() {
     'use strict';
 
-    var mapDirective = function($compile, $templateCache) {
+    var intervalCycle = 5000;
+
+    var mapDirective = function($compile, $templateCache, $interval) {
         // Compile and add container HTML
         var compileContainer = function($scope, parent) {
             var html = $templateCache.get('map.directive.html');
@@ -66,18 +68,13 @@
             $scope.$watch(watchFloor, createMap);
 
             // Watch clients, filter them and create markers
-            var watchClients = function() {
-                return angular.toJson(Map.clients);
-            };
-
             var createMarkers = function() {
                 var map = Map.getMap();
                 if (null !== map) {
                     Map.createMarkers();
                 }
             };
-
-            $scope.$watch(watchClients, createMarkers);
+            $interval(createMarkers, intervalCycle, 0, false);
 
             // Watch state pan property
             var watchPan = function() {
@@ -110,6 +107,6 @@
         };
     };
 
-    mapDirective.$inject = ['$compile', '$templateCache'];
+    mapDirective.$inject = ['$compile', '$templateCache', '$interval'];
     angular.module('map.directives').directive('map', mapDirective);
 })();

@@ -10,8 +10,6 @@
 
     var streamDirective = function() {
         return {
-            controller: 'StreamController',
-            controllerAs: 'StreamCtrl',
             templateUrl: '/views/app-stream.html'
         };
     };

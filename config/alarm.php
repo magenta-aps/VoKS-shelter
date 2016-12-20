@@ -21,7 +21,7 @@ return [
     'activity_timeout' => env('ACTIVITY_TIMEOUT', 10),
     'url' => env('SHELTER_URL'),
     'php_ws_url' => !env('SSL_ON', false)
-        ? 'ws://'.env('PHP_WS_URL', '127.0.0.1'). ':9000'
-        : 'wss://'.env('PHP_WS_URL', '127.0.0.1'). ':9001',
+        ? 'ws://' . env('PHP_WS_URL', '127.0.0.1') . ':9000'
+        : 'wss://' . env('PHP_WS_URL', '127.0.0.1') . ':9001',
     'php_ws_client' => 'php-client'
 ];

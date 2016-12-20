@@ -55,6 +55,7 @@ class DeviceController extends Controller
             $device->setAttribute('mac_address', $request->get('mac_address', config('alarm.default.mac')));
             $device->setAttribute('push_notification_id', $request->get('gcm_id'));
             $device->updateDeviceProfile();
+            
         } catch (\Exception $e) {
             $message = $e->getMessage();
 
@@ -70,7 +71,7 @@ class DeviceController extends Controller
             return response()->json(
                 [
                 'success' => false,
-                'message' => $message
+                'message' => $message,
                 ]
             );
         }

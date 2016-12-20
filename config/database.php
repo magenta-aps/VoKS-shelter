@@ -72,7 +72,6 @@ return [
 			'strict'    => false,
 		],
 
-
 	],
 
 	/*

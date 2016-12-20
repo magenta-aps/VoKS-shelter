@@ -9,14 +9,14 @@
     'use strict';
 
     var streamController = function($location, $route, State, Connections, MapState) {
-        var StreamCtrl = this;
+        var vm = this;
 
-        StreamCtrl.minimize = function(clientId) {
+        vm.minimize = function(clientId) {
             Connections.getClient(clientId).minimize();
             $location.path('/stream').replace();
         };
 
-        StreamCtrl.maximize = function(clientId) {
+        vm.maximize = function(clientId) {
             if (null !== State.singleStream) {
                 Connections.getClient(State.singleStream).minimize();
             }
@@ -31,14 +31,14 @@
         };
 
         if ($route.current.params.clientId) {
-            StreamCtrl.maximize($route.current.params.clientId);
+            vm.maximize($route.current.params.clientId);
         }
 
-        StreamCtrl.isActive = function(clientId) {
+        vm.isActive = function(clientId) {
             return clientId === State.selected.marker;
         };
 
-        StreamCtrl.setActive = function(clientId) {
+        vm.setActive = function(clientId) {
             var client = Connections.getClient(clientId);
 
             if (undefined !== client.position.floor && undefined !== client.profile.mac_address) {

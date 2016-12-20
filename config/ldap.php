@@ -10,6 +10,6 @@
 
 return array(
     'account_suffix' => "",
-    'domain_controllers' => array(""), // Load balancing domain controllers
+    'domain_controllers' => [], // Load balancing domain controllers
     'base_dn' => '',
 );

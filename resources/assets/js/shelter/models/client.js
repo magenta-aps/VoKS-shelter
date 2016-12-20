@@ -71,15 +71,6 @@
             this.connection = null;
             this.timestamp = null;
 
-            // Watch when new message arrives
-            $rootScope.$watch(function() {
-                return self.messages.list.length;
-            }, function() {
-                if (true === self.state.chatOpen && true === self.state.focused) {
-                    self.markRead();
-                }
-            });
-
             self.preload();
         };
 
@@ -475,6 +466,10 @@
          */
         Client.prototype.init = function() {
             var self = this;
+
+            if(self.position.index > 0 && self.position.inView) {
+                return;
+            }
 
             // we need to preload the messages before the save() method call
             self.preload();

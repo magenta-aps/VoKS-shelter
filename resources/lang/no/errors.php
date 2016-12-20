@@ -9,6 +9,6 @@
 
 return [
     'websockets' => [
-        'down' => 'Server is unreachable. Please wait.'
+        'down' => 'Serveren er utilgjengelig. Vennligst vent.'
     ]
 ];

@@ -24,7 +24,7 @@ return [
         'sso'                => false
     ],
     'fields'        => [
-        'displayname', 		//full name
+        'displayname', //full name
         'telephonenumber',  // phone number
         'mobile',
         'samaccountname',  // username

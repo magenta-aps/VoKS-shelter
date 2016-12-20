@@ -11,7 +11,8 @@
 (function() {
     'use strict';
 
-    var QuickHelpService = function($q, $http, $route, $timeout, $translate, Toast, Client, Connections, Messages, State, ShelterAPI) {
+    var QuickHelpService = function($q, $http, $route, $timeout, $location,
+                                    $translate, Toast, Client, Connections, Messages, State, ShelterAPI) {
         /**
          * Fake information
          *
@@ -47,15 +48,17 @@
         var state = {
             client: {
                 real: false,
+                large: true,
                 chat: false,
-                waiting: false,
-                index: 1
+                waiting: false
             },
             message: {
                 real: false,
                 popup: false
             }
         };
+
+        var index = 1;
 
         /**
          * List of names that is resolved to CSS selectors
@@ -150,13 +153,13 @@
             client.profile.type = fakeClient.type;
             client.profile.name = fakeClient.name;
 
-            client.position.index = 1;
+            client.position.index = Number(index);
             client.position.inView = true;
 
             client.timestamps.connected = Date.now();
 
             // Add to list
-            State.addStream(1);
+            State.addStream(client.position.index);
 
             return client;
         };
@@ -172,7 +175,7 @@
             for (i; i < l; i++) {
                 var _client = clients[i];
                 if (fakeClient.id === _client.profile.id) {
-                    State.removeStream(1);
+                    State.removeStream(_client.position.index);
                     clients.splice(i, 1);
                     break;
                 }
@@ -243,7 +246,7 @@
          *
          * @param {Client} client
          */
-        var removeFakeMessage = function(client) {
+        var removeFakeMessage = function() {
             var messages = Messages.list,
                 i = 0, l = messages.length;
 
@@ -305,15 +308,6 @@
         };
 
         /**
-         * Executed before each step is shown
-         *
-         * @param {Object} tour
-         */
-        var tourShow = function(tour) {
-
-        };
-
-        /**
          * Executed after each step is shown
          *
          * @param {Object} tour
@@ -331,38 +325,44 @@
                         state.message.popup = true;
                     }
                     break;
-
-                // Open chat before it is visible
-                case selectors['STREAM_MESSAGE_BUTTON']:
-                    if (false === client.state.chatOpen) {
-                        client.state.chatOpen = true;
-                        state.client.chat = true;
-                    }
-                    break;
-
-                // Move client to waiting line, but hold its position in stream list
-                case selectors['SMALL_MAP']:
-                    if (true === client.state.chatOpen) {
-                        client.state.chatOpen = false;
-                    }
-
-                    state.client.index = client.position.index;
-                    state.client.waiting = true;
-                    client.hideFromView();
-                    State.addStream(state.client.index);
-                    break;
                 default:
                     break;
             }
         };
 
-        /**
-         * Next tour step
-         *
-         * @param {Object} tour
-         */
         var tourNext = function(tour) {
+            var next = tour._current + 1,
+                steps = tour._options.steps;
 
+            if (next < steps.length) {
+                var step = steps[next];
+                switch (step.element) {
+                    // Open user chat
+                    case selectors['STREAM_MESSAGE_BUTTON']:
+                        if (false === client.state.chatOpen) {
+                            client.state.chatOpen = true;
+                            state.client.chat = true;
+                        }
+                        break;
+
+                    // Move client to waiting line, but hold its position in stream list
+                    case selectors['WAITING_LINE']:
+                        if (true === client.state.chatOpen) {
+                            client.state.chatOpen = false;
+                        }
+
+                        // Save client position and remove from stream list
+                        index = Number(client.position.index);
+                        state.client.waiting = true;
+                        client.hideFromView();
+
+                        // Reserve stream position for the client
+                        State.addStream(index);
+                        break;
+                    default:
+                        break;
+                }
+            }
         };
 
         /**
@@ -377,11 +377,20 @@
             if (prev >= 0) {
                 var step = steps[prev];
                 switch (step.element) {
+                    // Move client back from waiting line to a reserved stream list position
                     case selectors['EMPTY_STREAM_WINDOW']:
-                        client.placeIntoView(state.client.index);
-                        state.client.waiting = false;
-                        state.client.index = 0;
+                    case selectors['SMALL_EMPTY_STREAM']:
+                        State.removeStream(index);
+
+                        // Add client back to stream list
+                        client.placeIntoView(index);
                         client.state.chatOpen = true;
+                        state.client.waiting = false;
+
+                        if (true === state.client.large) {
+                            client.state.chatOpen = false;
+                            $location.path('/stream/' + client.profile.id);
+                        }
                         break;
                     default:
                         break;
@@ -398,7 +407,7 @@
 
             // Remove fake message
             if (false === state.message.real) {
-                removeFakeMessage(client);
+                removeFakeMessage();
                 removeFakeClientMessage(client);
 
                 state.message.popup = false;
@@ -419,9 +428,14 @@
 
             // Put client back to its place if it was moved
             if (true === state.client.waiting) {
-                client.placeIntoView(state.client.index);
+                State.removeStream(index);
+                client.placeIntoView(index);
                 state.client.waiting = false;
-                state.client.index = 0;
+                index = 1;
+            }
+
+            if (true === state.client.large) {
+                $location.path('/stream/' + client.profile.id);
             }
 
             // Close client chat if opened by QH
@@ -480,7 +494,6 @@
                 backdropContainer: 'body',
                 backdropPadding: 0,
                 onShown: tourShown,
-                onShow: tourShow,
                 onEnd: tourEnd,
                 onNext: tourNext,
                 onPrev: tourPrev,
@@ -542,6 +555,7 @@
             if (undefined === currentRoute.params.clientId
                 && 'stream' === currentView) {
                 currentView = 'streams';
+                state.client.large = false;
             }
 
             // Add required classes
@@ -609,6 +623,7 @@
         '$http',
         '$route',
         '$timeout',
+        '$location',
         '$translate',
         'Toast',
         'Client',

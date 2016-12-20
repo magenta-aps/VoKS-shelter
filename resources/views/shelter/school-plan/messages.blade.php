@@ -12,13 +12,13 @@
     </div>
 
     <div class="block-style__content">
-        <div ng-show="currentMessageTab === 'push'">
+        <div ng-if="currentMessageTab === 'push'">
             @include('shelter/school-plan/message-tabs/push')
         </div>
-        <div ng-show="currentMessageTab === 'audio'">
+        <div ng-if="currentMessageTab === 'audio'">
             @include('shelter/school-plan/message-tabs/audio')
         </div>
-        <div ng-show="currentMessageTab === 'history'">
+        <div ng-if="currentMessageTab === 'history'">
             @include('shelter/school-plan/message-tabs/history')
         </div>
     </div>

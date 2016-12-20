@@ -11,43 +11,73 @@ namespace BComeSafe\Http\Controllers\System\Schools;
 
 use BComeSafe\Http\Controllers\System\BaseController;
 use BComeSafe\Http\Requests;
+use BComeSafe\Libraries\SchoolIpHandler;
 use BComeSafe\Models\CrisisTeamMember;
 use BComeSafe\Models\School;
 use BComeSafe\Models\SchoolDefault;
+use BComeSafe\Packages\Websocket\ShelterClient;
 use Illuminate\Http\Request;
 
+/**
+ * Class MainController
+ *
+ * @package  BComeSafe\Http\Controllers\System\Schools
+ */
 class MainController extends BaseController
 {
+    /**
+     * @return \Illuminate\View\View
+     */
     public function getIndex()
     {
         return view('system.schools.index', ['shelterId' => config('alarm.default_id')]);
     }
 
+    /**
+     * @return mixed
+     */
     public function getList()
     {
         return School::orderBy('name', 'asc')->get();
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Support\Collection|null|static
+     */
     public function postSaveSchool(Request $request)
     {
         $data = $request->only(['id', 'ip_address', 'mac_address', 'ad_id', 'phone_system_id', 'campus_id', 'name']);
 
-        if ($data['id']) {
-            $item = School::find($data['id']);
+        $item = School::find($data['id']);
 
-            $adId = $item->ad_id;
-            $item->update($data);
+        $adId = $item->ad_id;
+        $ipAddress = $item->ip_address;
 
-            //If active directory group id has changed
-            //then update the crisis team
-            if ($adId !== $data['ad_id']) {
-                CrisisTeamMember::sync($data['id']);
+        $item->update($data);
+
+        // if active directory group id has changed
+        // then update the crisis team
+        if ($adId !== $data['ad_id']) {
+            CrisisTeamMember::sync($data['id']);
+        }
+
+        if ($ipAddress !== $data['ip_address']) {
+            $ipHandler = new SchoolIpHandler();
+            try {
+                $client = new ShelterClient(config('alarm.php_ws_url') . '/' . config('alarm.php_ws_client'));
+                $client->updateIpWhitelist($ipHandler->getMappedList());
+            } catch(\Exception $e) {
+
             }
         }
 
         return $item;
     }
 
+    /**
+     * @return mixed
+     */
     private function getPhoneSystemIdList()
     {
         // Get integration
@@ -58,6 +88,10 @@ class MainController extends BaseController
         return $integration->getNodes();
     }
 
+    /**
+     * @param Request $request
+     * @return string|\Symfony\Component\HttpFoundation\Response
+     */
     public function postPhoneSystemIdValidate(Request $request)
     {
         $nodeId = $request->get('nodeId');
@@ -73,18 +107,13 @@ class MainController extends BaseController
     }
 
 
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function postValidateIp(Request $request)
     {
-        $data = $request->only(['id', 'ip']);
-        if (filter_var($data['ip'], FILTER_VALIDATE_IP) === false) {
-            return \Lang::get('validation.valid_ip');
-        } else {
-            $model=School::where('ip_address', '=', $data['ip'])->first();
-            if (!is_null($model) && $model->id != $data['id']) {
-                return \Lang::get('validation.ip_in_use');
-            } elseif (!is_null($model) && $model->id == $data['id']) {
-                return 'true';
-            }
-        }
+        $ip = new SchoolIpHandler();
+        return $ip->validateUniqueness($request->get('ip'), $request->get('id'));
     }
 }

@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    var schoolPlanController = function($scope, $timeout, $translate, State, Toast, ShelterAPI, MapData, MapState) {
+    var schoolPlanController = function($scope, $interval, $translate, State, Toast, ShelterAPI, MapData, MapState) {
         $scope.currentMessageTab = 'push';
 
         /**
@@ -119,51 +119,17 @@
         var getHistory = function() {
             ShelterAPI.getHistory().success(function(history) {
                 $scope.history = history;
-                $timeout(getHistory, 2000);
             });
         };
-        getHistory();
-
-        /**
-         * States
-         * @deprecated ?
-         */
-        angular.extend($scope, {
-            buildings: [],
-            selectedBuilding: 0,
-            selectBuilding: function($index) {
-                $scope.selectedBuilding = $index;
-                $scope.selectFloor(0);
-            },
-            selectedFloor: 0,
-            selectedFloorId: 0,
-            selectFloor: function($index) {
-                $scope.selectedFloor = $index;
-                $scope.selectedFloorId = $scope.buildings[$scope.selectedBuilding].floors[$scope.selectedFloor].floor_id;
-                State.selected.map = $scope.buildings[$scope.selectedBuilding].floors[$scope.selectedFloor].image;
-            },
-            selection: true,
-            action_move: true,
-            action_selection: false,
-            press_shift: false,
-            toggleAction: function(move, drag) {
-                $scope.action_move = move;
-                $scope.action_selection = drag;
-            }
-        });
-
-        /**
-         * @deprecated ?
-         */
-        ShelterAPI.getMaps().success(function(buildings) {
-            $scope.buildings = buildings;
-            $scope.selectBuilding(0);
+        var timer = $interval(getHistory, 2000, 0, false);
+        $scope.$on('$destroy', function() {
+            $interval.cancel(timer);
         });
     };
 
     schoolPlanController.$inject = [
         '$scope',
-        '$timeout',
+        '$interval',
         '$translate',
         'State',
         'Toast',

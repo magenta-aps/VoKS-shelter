@@ -36,6 +36,9 @@
                     // - on
                     called: 'off',
 
+                    // Police callers counter
+                    count: 0,
+
                     // List of users that called the police
                     callers: [],
 
@@ -87,7 +90,8 @@
                 // Temporary police status
                 var police = 0;
 
-                // Callers array
+                // Callers
+                this.status.police.count = data.police_called;
                 this.status.police.callers = data.callers;
 
                 // Asked to call police

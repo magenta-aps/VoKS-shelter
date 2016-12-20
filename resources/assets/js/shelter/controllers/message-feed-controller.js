@@ -8,15 +8,13 @@
 (function() {
     'use strict';
 
-    var messageFeedController = function($scope, Connections, Messages) {
+    var intervalCycle = 5000;
+
+    var messageFeedController = function($scope, Connections, Messages, $interval) {
         $scope.messages = Messages.list;
 
         $scope.users = {};
         $scope.streams = [];
-
-        var watchClients = function() {
-            return angular.toJson($scope.clients);
-        };
 
         var updateUsers = function() {
             $scope.users = {};
@@ -32,7 +30,7 @@
             }
         };
 
-        $scope.$watch(watchClients, updateUsers);
+        $interval(updateUsers, intervalCycle);
 
         $scope.togglePopup = function(message) {
             // toggle popup off
@@ -60,6 +58,6 @@
         $scope.watch = function() {};
     };
 
-    messageFeedController.$inject = ['$scope', 'Connections', 'Messages'];
+    messageFeedController.$inject = ['$scope', 'Connections', 'Messages', '$interval'];
     angular.module('app').controller('MessageFeedController', messageFeedController);
 })();

@@ -157,7 +157,8 @@ return [
         'Illuminate\Workbench\WorkbenchServiceProvider',
         'BComeSafe\Packages\Configuration\ComponentServiceProvider',
         'BComeSafe\Packages\Configuration\ShelterServiceProvider',
-        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider'
+        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+        'Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider'
     ],
 
     /*

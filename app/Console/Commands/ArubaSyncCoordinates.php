@@ -16,8 +16,14 @@ use BComeSafe\Packages\Aruba\Ale\Location;
 use GuzzleHttp\Promise;
 use Illuminate\Console\Command;
 
+/**
+ * Class ArubaSyncCoordinates
+ *
+ * @package  BComeSafe\Console\Commands
+ */
 class ArubaSyncCoordinates extends Command
 {
+    const RUNS_PER_MINUTE = 6;
 
     /**
      * The console command name.
@@ -43,47 +49,65 @@ class ArubaSyncCoordinates extends Command
         $floors = Floor::with('image')->get()->toArray();
         $floors = array_map_by_key($floors, 'floor_hash_id');
 
-        $start = microtime(true);
+        for ($i = 0; $i < self::RUNS_PER_MINUTE; $i++) {
+            $this->runUpdate($floors);
 
+            if ($i !== self::RUNS_PER_MINUTE - 1) {
+                sleep(round(60 / self::RUNS_PER_MINUTE));
+            }
+        }
+    }
+
+    /**
+     * Pull locations and update device records
+     *
+     * @param $floors
+     */
+    public function runUpdate($floors)
+    {
         $locations = Location::getAllCoordinates();
         $count = count($locations);
 
         $clients = [];
 
         for ($i = 0; $i < $count; $i++) {
-            $location = $locations[$i];
-
             if (!isset($floors[$locations[$i]['floor_id']])) {
                 continue;
             }
 
-            $floor = $floors[$location['floor_id']];
-
-            $client['x'] = $location['x'];
-            $client['y'] = $location['y'];
-            $client['floor_id'] = $floors[$location['floor_id']]['id'];
-            $client['school_id'] = $floors[$location['floor_id']]['school_id'];
-            $client['mac_address'] = $location['mac_address'];
-
-            $client = array_merge_filled(
-                $client,
-                Coordinates::convert(
-                    $floor['image']['pixel_width'],
-                    $floor['image']['real_width'],
-                    $floor['image']['pixel_height'],
-                    $floor['image']['real_height'],
-                    $client['x'],
-                    $client['y']
-                )
-            );
-
-            $clients[] = $client;
+            $clients[] = $this->mapClientModel($floors, $locations[$i]);
         }
-
+	echo "Total: ", $count, PHP_EOL, "Count: ", count($clients), PHP_EOL;
         Device::updateClientCoordinates($clients);
+    }
 
-        $end = (double)number_format(microtime(true) - $start, 4);
+    /**
+     * @param $floors
+     * @param $location
+     * @return array
+     */
+    protected function mapClientModel($floors, $location)
+    {
+        $floor = $floors[$location['floor_id']];
 
-        echo $end, PHP_EOL;
+        $client['x'] = $location['x'];
+        $client['y'] = $location['y'];
+        $client['floor_id'] = $floors[$location['floor_id']]['id'];
+        $client['school_id'] = $floors[$location['floor_id']]['school_id'];
+        $client['mac_address'] = $location['mac_address'];
+
+        $client = array_merge_filled(
+            $client,
+            Coordinates::convert(
+                $floor['image']['pixel_width'],
+                $floor['image']['real_width'],
+                $floor['image']['pixel_height'],
+                $floor['image']['real_height'],
+                $client['x'],
+                $client['y']
+            )
+        );
+
+        return $client;
     }
 }

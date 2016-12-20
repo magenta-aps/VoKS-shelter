@@ -21,6 +21,7 @@ use BComeSafe\Models\History;
 use BComeSafe\Models\PushNotification;
 use BComeSafe\Models\PushNotificationMessage;
 use BComeSafe\Models\School;
+use BComeSafe\Models\Floor;
 use BComeSafe\Models\SchoolStatus;
 use BComeSafe\Models\SentPushNotification;
 use BComeSafe\Models\TriggeredDevice;
@@ -29,6 +30,7 @@ use BComeSafe\Packages\Websocket\ShelterClient;
 use Illuminate\Http\Request;
 use Shelter;
 use Zend\Http\PhpEnvironment\Response;
+
 
 /**
  * Class ShelterController
@@ -115,8 +117,8 @@ class ShelterController extends Controller
         $item['result'] = \Lang::get(
             'shelter/history.push.result',
             [
-            'count' => $result['read'],
-            'total' => $result['total']
+                'count' => $result['read'],
+                'total' => $result['total']
             ]
         );
 
@@ -138,8 +140,8 @@ class ShelterController extends Controller
         $item['result'] = \Lang::get(
             'shelter/history.sms.result',
             [
-            'count' => $result['count'],
-            'total' => $result['total']
+                'count' => $result['count'],
+                'total' => $result['total']
             ]
         );
 
@@ -175,8 +177,8 @@ class ShelterController extends Controller
 
                 // Updated params
                 $params = [
-                'voice' => $result['voice'],
-                'group' => $result['group']
+                    'voice' => $result['voice'],
+                    'group' => $result['group']
                 ];
                 break;
 
@@ -188,8 +190,8 @@ class ShelterController extends Controller
 
                 // Updated params
                 $params = [
-                'number' => $result['number'],
-                'group' => $result['group']
+                    'number' => $result['number'],
+                    'group' => $result['group']
                 ];
                 break;
         }
@@ -367,12 +369,16 @@ class ShelterController extends Controller
     /**
      * Gets coordinates
      *
+     * ALTER TABLE `devices` ADD INDEX( `school_id`, `active`);
+     * ALTER TABLE `devices` ADD INDEX( `floor_id`, `active`);
+     *
      * @param Request $request
      *
      * @return Response JSON encoded response
      */
     public function getCoordinates(Request $request)
     {
+
         if ($request->has('list')) {
             $macs = $request->get('list');
 
@@ -387,8 +393,18 @@ class ShelterController extends Controller
 
             $devices = Device::whereIn('mac_address', $macs)->get();
         } else {
-            $devices = Device::where('active', '=', 1)
-                ->where('school_id', '=', \Shelter::getID())->get();
+            // fetch all clients that are active and belong to this school
+
+            $floors = Floor::where('school_id', '=', \Shelter::getID())->get();
+            $floorIds = [];
+
+            foreach( $floors as $floor ) {
+                $floorIds[] = $floor->id;
+            }
+
+            $devices =
+                Device::where('active', '=', 1)
+                    ->whereIn('floor_id', $floorIds)->get();
         }
 
         $response = [];
@@ -409,8 +425,8 @@ class ShelterController extends Controller
     {
         $faq = Faq::where(
             [
-            'school_id' => $id,
-            'visible' => '1'
+                'school_id' => $id,
+                'visible' => '1'
             ]
         )->orderBy('order', 'ASC')->get();
 
@@ -439,8 +455,8 @@ class ShelterController extends Controller
 
         $notification = SentPushNotification::create(
             [
-            'school_id' => Shelter::getID(),
-            'message' => $message
+                'school_id' => Shelter::getID(),
+                'message' => $message
             ]
         );
 

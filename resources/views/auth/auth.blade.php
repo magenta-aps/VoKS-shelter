@@ -12,8 +12,8 @@
 
     <link href='//fonts.googleapis.com/css?family=Open+Sans:700,400&subset=latin,latin-ext' rel='stylesheet'
           type='text/css'/>
-    <link href="/css/app.css" rel="stylesheet"/>
-    <link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="{{ elixir('css/app.css') }}" rel="stylesheet" />
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 
 <body>

@@ -205,7 +205,7 @@ class Import
 
                     // loop through images and only pick the original image since it's largest one
                     foreach ($floor['image'] as $image) {
-                        if ($image['@attributes']['type'] === 'original') {
+                        if ($image['@attributes']['type'] === 'background') {
                             $mapped = $this->mapper->mapImage($this->options['baseUrl'], $floor, $image);
 
                             $this->downloadImage($mapped['name'], $mapped['path']);
@@ -247,11 +247,25 @@ class Import
      */
     protected function downloadImage($name, $file)
     {
-        $image = (new CurlRequest())
-            ->setUrl($file)
-            ->setCookieJar($this->options['cookiePath'])
-            ->execute();
 
-        \File::put($this->options['uploadDir'] . $name, $image);
+$post = [
+
+'credential_0'  => $this->options['loginData']['credential_0'],
+'credential_1' => $this->options['loginData']['credential_1'],
+'destination' => '/',
+'login' => 'Log in',
+];
+$loginUrl = $this->options['loginUrl'];
+
+
+$dest = $this->options['uploadDir'] . $name;
+
+echo `curl -k -c /tmp/cjar -d "credential_0={$post['credential_0']}" -d "credential_1={$post['credential_1']}" -d "destination=/" -d "login=Log In" {$loginUrl}`;
+
+echo `curl -k -b /tmp/cjar --output {$dest} {$file}`;
+
+
+    
+//        \File::put($this->options['uploadDir'] . $name, $image);
     }
 }

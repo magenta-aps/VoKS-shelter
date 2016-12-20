@@ -49,23 +49,22 @@ class CrisisTeamMember extends BaseModel
             $schools = School::where('id', '=', $schoolId)->get();
         }
 
-        $members = ActiveDirectory::getGroupMembers(config('ad.default-group'));
 
         foreach ($schools as $school) {
+            $members = ActiveDirectory::getGroupMembers($school->ad_id);
+
             if (!empty($members)) {
                 $attributes = config('ad.field-map');
                 /**
                  * @var $member \Adldap\Models\User
                  */
                 foreach ($members as $member) {
-                    if (strtolower($member->getCompany()) == strtolower($school->ad_id)) {
-                        foreach ($attributes as $key => $attribute) {
-                            $model[$key] = (string)$member->getAttribute($attribute, 0);
-                        }
-
-                        $model['school_id'] = $school->id;
-                        static::create($model);
+                    foreach ($attributes as $key => $attribute) {
+                        $model[$key] = (string)$member->getAttribute($attribute, 0);
                     }
+
+                    $model['school_id'] = $school->id;
+                    static::create($model);
                 }
             }
         }

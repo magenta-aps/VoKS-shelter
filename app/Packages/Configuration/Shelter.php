@@ -155,7 +155,7 @@ class Shelter
     }
 
     /**
-     * @param null   $id
+     * @param null $id
      * @param string $timezone
      * @return array
      */
@@ -167,11 +167,18 @@ class Shelter
 
         $response = ['success' => true];
 
-        $clients = Device::where('school_id', '=', $id)->orderBy('triggered_at', 'asc')->get(
-            [
-            'device_id', 'device_type', 'triggered_at', 'push_notification_id', 'trigger_status', 'fullname'
-            ]
-        );
+        $clients = Device::where('school_id', '=', $id)
+            ->where('device_id', '<>', '')
+            ->where('trigger_status', '>', 0)
+            ->orderBy('triggered_at', 'asc')
+            ->get([
+                'device_id',
+                'device_type',
+                'triggered_at',
+                'push_notification_id',
+                'trigger_status',
+                'fullname'
+            ]);
 
         $response['time'] = null;
         $response['police_called'] = 0;

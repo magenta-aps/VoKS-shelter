@@ -1,6 +1,7 @@
 <?php
 
 namespace BComeSafe\Packages\Websocket;
+use BComeSafe\Packages\Websocket\Messages\IpWhitelist;
 
 /**
  * Class ShelterClient
@@ -64,6 +65,16 @@ class ShelterClient extends Client
     public function profile($profile)
     {
         $this->sendMessage(new Messages\Profile($profile));
+    }
+
+    /**
+     * Updates websockets with a list of school
+     * IP addresses and IDs
+     *
+     * @param $whitelist
+     */
+    public function updateIpWhitelist($whitelist) {
+        $this->sendMessage(new IpWhitelist($whitelist));
     }
 
     /**

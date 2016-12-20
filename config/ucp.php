@@ -27,7 +27,7 @@ return [
      */
     'httpClient' => [
         'debug'         => false,
-        
+
         'base_uri'      => env('UCP_BASE_URI'),
 
         /**

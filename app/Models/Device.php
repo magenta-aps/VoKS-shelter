@@ -159,7 +159,7 @@ class Device extends BaseModel
     protected function getProfileData()
     {
         $clearpass = new User();
-
+        
         if (!$this->getAttribute('mac_address')) {
             $device = $clearpass->getByIp(\Request::ip());
         } else {
@@ -167,7 +167,7 @@ class Device extends BaseModel
         }
 
         if (!isset($device['mac_address'])) {
-            throw new ArubaIntegrationException('Couldn\'t fetch the mac_address');
+            throw new ArubaIntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Aruba wifi?');
         }
 
         return $device;
@@ -180,11 +180,16 @@ class Device extends BaseModel
     protected function getLocationData()
     {
         $location = Location::getCoordinates($this->getAttribute('mac_address'));
-
         $device = [];
 
         if (env('SCHOOL_ID')) {
             $floor = Floor::where('school_id', '=', env('SCHOOL_ID'))->orderBy('id', 'desc')->get()->first();
+
+            if(empty($floor)) {
+                throw new \Exception(
+                    'Structure not synchronized on campus #'.env('SCHOOL_ID').'. Please wait.'
+                );
+            }
 
             $device['school_id'] = env('SCHOOL_ID');
             $device['active'] = 1;
@@ -245,6 +250,7 @@ class Device extends BaseModel
 
         if ($macModel) {
             $attributes = $this->getAttributes();
+            
             unset($attributes['id']);
 
             // just update don't insert
@@ -348,7 +354,7 @@ class Device extends BaseModel
             'position' => [
                 'x' => $device->x,
                 'y' => $device->y,
-                'floor_id' => $device->floor_id
+                'floor_id' => (string) $device->floor_id
             ]
         ];
     }
@@ -416,21 +422,22 @@ class Device extends BaseModel
                         ]
                     )
                 )
-                . ", CURRENT_TIMESTAMP),";
+                . ", CURRENT_TIMESTAMP, 1),";
         }
 
         $join = rtrim($join, ',');
 
         \DB::insert(
             "
-          INSERT INTO devices (`x`, `y`, `floor_id`, `school_id`, `mac_address`, `updated_at`) VALUES $join
+          INSERT INTO devices (`x`, `y`, `floor_id`, `school_id`, `mac_address`, `updated_at`, `active`) VALUES $join
           ON DUPLICATE KEY UPDATE
           `x` = VALUES(`x`),
           `y` = VALUES(`y`),
           `floor_id` = VALUES(`floor_id`),
           `school_id` = VALUES(`school_id`),
           `mac_address` = VALUES(`mac_address`),
-          `updated_at` = CURRENT_TIMESTAMP;
+          `updated_at` = CURRENT_TIMESTAMP,
+          `active` = 1;
         "
         );
     }
