@@ -32,12 +32,13 @@ class ShelterController extends Controller
         $shelter = new Shelter();
         $config = $shelter->getConfig();
 
+        if (env('SSL_ON') === true && (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off")) {
+            $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+            return redirect($redirect);
+        }
+
         // View
-        return view(
-            'shelter',
-            [
-            'config' => $config
-            ]
-        );
+        return view('shelter', ['config' => $config]);
     }
 }

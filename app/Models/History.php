@@ -67,13 +67,11 @@ class History extends BaseModel
      */
     public static function gotIt($device_id, $notification_id)
     {
-        $history = GotItHistory::firstOrNew(
-            [
-            'device_id' => $device_id,
-            'school_id' => \Shelter::getID(),
+        $history = GotItHistory::firstOrNew([
+            'device_id'       => $device_id,
+            'school_id'       => \Shelter::getID(),
             'notification_id' => $notification_id
-            ]
-        );
+        ]);
 
         // create a new record if one doesn't exist
         if (!$history->exists) {
@@ -94,13 +92,11 @@ class History extends BaseModel
      */
     public static function pushNotification($notification, $count)
     {
-        History::create(
-            [
-            'type' => 'push',
-            'message' => $notification->message,
+        History::create([
+            'type'      => 'push',
+            'message'   => $notification->message,
             'source_id' => $notification->id,
-            'result' => json_encode(['total' => $count, 'read' => 0])
-            ]
-        );
+            'result'    => json_encode(['total' => $count, 'read' => 0])
+        ]);
     }
 }

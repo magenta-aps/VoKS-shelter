@@ -27,7 +27,7 @@
                         <span class="name-block__called" ng-show="client.state.calledPolice"><span class="-nr">112</span></span>
                         <span class="name-block__title waiting-list__title"><% client.profile.name %></span>
 
-                        <audio class="streams__video-element ng-hide" src="<% client.stream.url | trusted %>" listen="client.state.muted" autoplay></audio>
+                        <audio class="streams__video-element ng-hide" ng-src="<% client.stream.url | trusted %>" listen="client.state.muted" autoplay></audio>
 
                         <div class="popup -waiting-list">
                             <div class="popup__button icons -messages" ng-class="{

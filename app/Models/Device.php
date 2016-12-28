@@ -90,8 +90,8 @@ class Device extends BaseModel
     public static function updateAllToInactive($schoolId)
     {
         \DB::table('devices')
-            ->where('school_id', '=', $schoolId)
-            ->update(['trigger_status' => self::INACTIVE]);
+           ->where('school_id', '=', $schoolId)
+           ->update(['trigger_status' => self::INACTIVE]);
     }
 
     /**
@@ -100,9 +100,9 @@ class Device extends BaseModel
     public static function updateAllToNotCalled($schoolId)
     {
         \DB::table('devices')
-            ->where('school_id', '=', $schoolId)
-            ->where('trigger_status', '>', self::INACTIVE)
-            ->update(['trigger_status' => self::TRIGGERED]);
+           ->where('school_id', '=', $schoolId)
+           ->where('trigger_status', '>', self::INACTIVE)
+           ->update(['trigger_status' => self::TRIGGERED]);
 
         // Set Shelter police status to not called
         SchoolStatus::statusPolice($schoolId, 0);
@@ -117,7 +117,7 @@ class Device extends BaseModel
     {
         $device = static::where('mac_address', '=', $mac)->first(
             [
-            'mac_address', 'device_id', 'fullname', 'push_notification_id', 'device_type'
+                'mac_address', 'device_id', 'fullname', 'push_notification_id', 'device_type'
             ]
         );
 
@@ -158,8 +158,12 @@ class Device extends BaseModel
      */
     protected function getProfileData()
     {
+        if (config('aruba.clearpass.enabled') === false) {
+            return [];
+        }
+
         $clearpass = new User();
-        
+
         if (!$this->getAttribute('mac_address')) {
             $device = $clearpass->getByIp(\Request::ip());
         } else {
@@ -185,15 +189,15 @@ class Device extends BaseModel
         if (env('SCHOOL_ID')) {
             $floor = Floor::where('school_id', '=', env('SCHOOL_ID'))->orderBy('id', 'desc')->get()->first();
 
-            if(empty($floor)) {
+            if (empty($floor) && config('aruba.airwave.enabled') === true) {
                 throw new \Exception(
-                    'Structure not synchronized on campus #'.env('SCHOOL_ID').'. Please wait.'
+                    'Structure not synchronized on campus #' . env('SCHOOL_ID') . '. Please wait.'
                 );
             }
 
             $device['school_id'] = env('SCHOOL_ID');
             $device['active'] = 1;
-            $device['floor_id'] = $floor->id;
+            $device['floor_id'] = isset($floor->id) ? $floor->id : 0;
 
             if (\Request::get('test')) {
                 $device['x'] = mt_rand(100, 500);
@@ -250,7 +254,7 @@ class Device extends BaseModel
 
         if ($macModel) {
             $attributes = $this->getAttributes();
-            
+
             unset($attributes['id']);
 
             // just update don't insert
@@ -288,12 +292,12 @@ class Device extends BaseModel
 
         $data['already_triggered'] = false;
 
-        $before = (int)@$client->trigger_status;
+        $before = (int) @$client->trigger_status;
         $now = $data['trigger_status'];
 
         if ($before >= $now) {
             return [
-                'trigger_status' => $client->trigger_status,
+                'trigger_status'    => $client->trigger_status,
                 'already_triggered' => true
             ];
         }
@@ -301,9 +305,10 @@ class Device extends BaseModel
         return $data;
     }
 
-    public static function deactivate($deviceId) {
+    public static function deactivate($deviceId)
+    {
         $device = Device::where('device_id', '=', $deviceId)->first();
-        if(!empty($device)) {
+        if (!empty($device)) {
             $device->update([
                 'active' => 0
             ]);
@@ -323,11 +328,12 @@ class Device extends BaseModel
         $triggered = $update['already_triggered'];
 
         unset($update['already_triggered']);
+
         if (!empty($client)) {
             //only update the device model if it hasn't called the police
             $device = Device::findAndUpdate(
                 [
-                'device_id' => $device['device_id']
+                    'device_id' => $device['device_id']
                 ],
                 $update
             );
@@ -344,16 +350,16 @@ class Device extends BaseModel
     public static function mapDeviceCoordinates($device)
     {
         return [
-            'profile' => [
-                'name' => empty($device->fullname) ? $device->mac_address : $device->fullname,
+            'profile'  => [
+                'name'        => empty($device->fullname) ? $device->mac_address : $device->fullname,
                 'mac_address' => $device->mac_address,
-                'device' => $device->device_type,
-                'device_id' => $device->device_id,
-                'gcm_id' => $device->push_notification_id
+                'device'      => $device->device_type,
+                'device_id'   => $device->device_id,
+                'gcm_id'      => $device->push_notification_id
             ],
             'position' => [
-                'x' => $device->x,
-                'y' => $device->y,
+                'x'        => $device->x,
+                'y'        => $device->y,
                 'floor_id' => (string) $device->floor_id
             ]
         ];
@@ -414,11 +420,11 @@ class Device extends BaseModel
                     array_map_keys(
                         $locations[$i],
                         [
-                        'x' => 'x',
-                        'y' => 'y',
-                        'floor_id' => 'floor_id',
-                        'school_id' => 'school_id',
-                        'mac_address' => 'mac_address'
+                            'x'           => 'x',
+                            'y'           => 'y',
+                            'floor_id'    => 'floor_id',
+                            'school_id'   => 'school_id',
+                            'mac_address' => 'mac_address'
                         ]
                     )
                 )
@@ -446,7 +452,7 @@ class Device extends BaseModel
      * @param array $device
      * @return bool|int
      */
-    public function update(array $device = array())
+    public function update(array $device = [])
     {
         // if multi-shelter is disabled, set the
         // shelter ID to the configured one
