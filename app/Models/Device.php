@@ -145,10 +145,10 @@ class Device extends BaseModel
      */
     public function setFullnameAttribute($fullname)
     {
-        if (empty($this->getAttribute('fullname'))) {
-            $this->attributes['fullname'] = ucfirst(strtolower($this->getAttribute('device_type')));
-        } else {
+        if (!empty($fullname)) {
             $this->attributes['fullname'] = $fullname;
+        } elseif (empty($this->getAttribute('fullname'))) {
+            $this->attributes['fullname'] = ucfirst(strtolower($this->getAttribute('device_type')));
         }
     }
 
