@@ -65,8 +65,13 @@ class ArubaSyncCoordinates extends Command
      */
     public function runUpdate($floors)
     {
+        $time_start = microtime(true);
         $locations = Location::getAllCoordinates();
+        $time_end = microtime(true);
+        $execution_time = $time_end - $time_start;
+        echo "Time for geting locations from ALE: ", $execution_time, PHP_EOL;
         $count = count($locations);
+        echo "Count (locations): ", $count, PHP_EOL;
 
         $clients = [];
 
@@ -77,8 +82,14 @@ class ArubaSyncCoordinates extends Command
 
             $clients[] = $this->mapClientModel($floors, $locations[$i]);
         }
-	echo "Total: ", $count, PHP_EOL, "Count: ", count($clients), PHP_EOL;
+
+        $time_start = microtime(true);
         Device::updateClientCoordinates($clients);
+        $time_end = microtime(true);
+        $execution_time = $time_end - $time_start;
+        echo "Execution time for updating DB (location) : ", $execution_time, PHP_EOL;
+        echo "Count (Clients): ", count($clients), PHP_EOL;
+        echo "*****************", PHP_EOL;
     }
 
     /**

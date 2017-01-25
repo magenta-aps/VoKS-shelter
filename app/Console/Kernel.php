@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         'BComeSafe\Console\Commands\Inspire',
         'BComeSafe\Console\Commands\Sync',
         'BComeSafe\Console\Commands\ArubaSyncActive',
+        'BComeSafe\Console\Commands\ArubaSyncActiveQuick',
         'BComeSafe\Console\Commands\ArubaSyncCoordinates',
         'BComeSafe\Console\Commands\ArubaSyncMacs',
     ];

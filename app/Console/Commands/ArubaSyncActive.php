@@ -42,7 +42,22 @@ class ArubaSyncActive extends Command
      */
     public function handle()
     {
+        $full_time_start = $time_start = microtime(true);
         $macAddresses = Location::getStations();
+        $time_end = microtime(true);
+        $execution_time = $time_end - $time_start;
+        echo "Time for geting active devices from ALE: ", $execution_time, PHP_EOL;
+        echo "Count (active): ", count($macAddresses), PHP_EOL;
+        //
+        $time_start = microtime(true);
         Device::updateActiveClients($macAddresses);
+        $time_end = microtime(true);
+        $execution_time = $time_end - $time_start;
+        echo "Execution time for updating DB (active): ", $execution_time, PHP_EOL;
+
+        $full_time_end = microtime(true);
+        $execution_time = $full_time_end - $full_time_start;
+        echo "Execution time for ALL: ", $execution_time, PHP_EOL;
+
     }
 }
