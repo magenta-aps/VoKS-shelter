@@ -19,21 +19,21 @@ use Illuminate\Console\Command;
  *
  * @package BComeSafe\Console\Commands
  */
-class ArubaSyncActiveQuick extends Command
+class ArubaSyncDetails extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'aruba:sync:active_quick';
+    protected $name = 'aruba:sync:details';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Update active Aruba clients (quick)';
+    protected $description = 'Check active Aruba clients';
 
     /**
      * Execute the console command.
@@ -42,6 +42,7 @@ class ArubaSyncActiveQuick extends Command
      */
     public function handle()
     {
+
         //Get from ALE
         $full_time_start = $time_start = microtime(true);
         $macAddresses = Location::getStations();

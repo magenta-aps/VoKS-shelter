@@ -443,6 +443,14 @@ class Device extends BaseModel
     }
 
     /**
+     * Delete all clients.
+     */
+    public static function deleteAllClients()
+    {
+      Device::truncate();
+    }
+
+    /**
      * @param array $device
      * @return bool|int
      */
