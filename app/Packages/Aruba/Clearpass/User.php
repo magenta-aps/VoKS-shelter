@@ -52,7 +52,7 @@ class User
         $postData = $this->renderTemplate(
             'user-profile',
             [
-            'mac' => $macAddress
+            'mac' => strtolower(str_replace(':', '', $macAddress))
             ]
         );
 

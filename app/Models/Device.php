@@ -145,10 +145,10 @@ class Device extends BaseModel
      */
     public function setFullnameAttribute($fullname)
     {
-        if (empty($this->getAttribute('fullname'))) {
-            $this->attributes['fullname'] = ucfirst(strtolower($this->getAttribute('device_type')));
-        } else {
+        if (!empty($fullname)) {
             $this->attributes['fullname'] = $fullname;
+        } elseif (empty($this->getAttribute('fullname'))) {
+            $this->attributes['fullname'] = ucfirst(strtolower($this->getAttribute('device_type')));
         }
     }
 
@@ -159,7 +159,7 @@ class Device extends BaseModel
     protected function getProfileData()
     {
         $clearpass = new User();
-        
+
         if (!$this->getAttribute('mac_address')) {
             $device = $clearpass->getByIp(\Request::ip());
         } else {
@@ -250,7 +250,7 @@ class Device extends BaseModel
 
         if ($macModel) {
             $attributes = $this->getAttributes();
-            
+
             unset($attributes['id']);
 
             // just update don't insert
