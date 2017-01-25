@@ -46,6 +46,8 @@ class ArubaSyncCoordinates extends Command
      */
     public function handle()
     {
+
+        $full_time_start = microtime(true);
         $floors = Floor::with('image')->get()->toArray();
         $floors = array_map_by_key($floors, 'floor_hash_id');
 
@@ -56,6 +58,10 @@ class ArubaSyncCoordinates extends Command
                 sleep(round(60 / self::RUNS_PER_MINUTE));
             }
         }
+
+        $full_time_end = microtime(true);
+        $execution_time = $full_time_end - $full_time_start;
+        echo "Execution time for ALL: ", $execution_time, PHP_EOL;
     }
 
     /**
