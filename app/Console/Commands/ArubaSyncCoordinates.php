@@ -50,14 +50,15 @@ class ArubaSyncCoordinates extends Command
         $full_time_start = microtime(true);
         $floors = Floor::with('image')->get()->toArray();
         $floors = array_map_by_key($floors, 'floor_hash_id');
+        $this->runUpdate($floors);
 
-        for ($i = 0; $i < self::RUNS_PER_MINUTE; $i++) {
-            $this->runUpdate($floors);
+        /*for ($i = 0; $i < self::RUNS_PER_MINUTE; $i++) {
+
 
             if ($i !== self::RUNS_PER_MINUTE - 1) {
                 sleep(round(60 / self::RUNS_PER_MINUTE));
             }
-        }
+        }*/
 
         $full_time_end = microtime(true);
         $execution_time = $full_time_end - $full_time_start;

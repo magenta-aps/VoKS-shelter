@@ -157,6 +157,7 @@ class Location
 
                 $stations = [];
                 foreach ($data['Station_result'] as $station) {
+                    if(empty($station['msg']['username'])) continue;
                     $stations[] = format_mac_address($station['msg']['sta_eth_mac']['addr']);
                 }
 
