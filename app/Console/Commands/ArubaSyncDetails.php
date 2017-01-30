@@ -43,49 +43,48 @@ class ArubaSyncDetails extends Command
     public function handle()
     {
 
-        //Get from ALE
+        //ALE stations
         $full_time_start = $time_start = microtime(true);
         $macAddresses = Location::getStations();
         $time_end = microtime(true);
         $execution_time = $time_end - $time_start;
-        echo "Time for geting active devices from ALE: ", $execution_time, PHP_EOL;
         $count = count($macAddresses);
-        echo "Devices ALE (active): ", $count, PHP_EOL;
 
+        $macAddresses_other = Location::getStations(TRUE);
+        echo "Date/Time: ", date("Y-m-d H:i:s", strtotime("+1 hour")), " CET", PHP_EOL;
+        echo "Count (stations):", PHP_EOL;
+        echo "With username: ", $count, PHP_EOL;
+        echo "No username: ", count($macAddresses_other), PHP_EOL;
+        echo "Total: ", (count($macAddresses_other)+$count), PHP_EOL;
+        echo "Time for geting data from ALE API -> stations: ", $execution_time, PHP_EOL;
+        echo "************", PHP_EOL;
+        //ALE locations
+        $time_start = microtime(true);
+        $locations = Location::getAllCoordinates();
+        $time_end = microtime(true);
+        $execution_time = $time_end - $time_start;
+
+        $count = count($locations);
+        echo "Count (locations): ", $count, PHP_EOL;
+        echo "Time for geting data ALE API -> locations: ", $execution_time, PHP_EOL;
+        echo "************", PHP_EOL;
+
+        //BCS devices
         $devices = Device::get(['mac_address','floor_id','school_id','fullname']);
-        echo "Devices DB (all): ", count($devices), PHP_EOL;
+        echo "Count (BCS Database all): ", count($devices), PHP_EOL;
+        echo "************", PHP_EOL;
+
         if ($devices) {
           $devices_active = $devices->toArray();
           $mac = array_flip($macAddresses);
-/*
 
-
-          //
-          $i=1;
-          foreach($devices_active as $a) {
-            echo "Device DB (active): ", $a['fullname'] . ' ' . $a['mac_address'] . ' ' . $a['floor_id'] . ' ' . $a['school_id'], PHP_EOL;
-            $i++;
-            if($i>=10) break;
-          }
-*/
           foreach($devices_active as $a) {
             if(isset($mac[$a['mac_address']])) {
               unset($mac[$a['mac_address']]);
             }
           }
-
-          //
-          $i=1;
-          foreach($mac as $k => $m) {
-            echo "Device ALE (active): ", $k .' = '. $m, PHP_EOL;
-            $i++;
-            if($i>=20) break;
-          }
-
           echo "Devices ALE (active) - to be inserted: ", count($mac), PHP_EOL;
           echo "Devices ALE (active) - to be updated: ", ($count - count($mac)), PHP_EOL;
-
-
         }
 
         /*
@@ -97,6 +96,6 @@ class ArubaSyncDetails extends Command
         */
         $full_time_end = microtime(true);
         $execution_time = $full_time_end - $full_time_start;
-        echo "Execution time for ALL (quick): ", $execution_time, PHP_EOL;
+        echo "Execution time Total: ", $execution_time, PHP_EOL;
     }
 }

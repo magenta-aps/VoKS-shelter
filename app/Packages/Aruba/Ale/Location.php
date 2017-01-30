@@ -137,7 +137,7 @@ class Location
      * @return mixed
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
-    public static function getStations()
+    public static function getStations($other = FALSE)
     {
         $curl = new CurlRequest();
         $curl->setUrl(
@@ -155,10 +155,14 @@ class Location
                     return [];
                 }
 
-                $stations = [];
+                $stations = array('active' => [], 'other' => []);
                 foreach ($data['Station_result'] as $station) {
-                    if(empty($station['msg']['username'])) continue;
-                    $stations[] = format_mac_address($station['msg']['sta_eth_mac']['addr']);
+                    $mac = format_mac_address($station['msg']['sta_eth_mac']['addr']);
+                    if (!empty($station['msg']['username'])) {
+                      $stations['active'][] = $mac;
+                    } else {
+                      $stations['other'][] = $mac;
+                    }
                 }
 
                 return $stations;
@@ -166,8 +170,12 @@ class Location
         );
 
         $response = $curl->execute();
+        
+        if ($other) {
+          return $response['other'];
+        }
 
-        return $response;
+        return $response['active'];
     }
 
     /**
