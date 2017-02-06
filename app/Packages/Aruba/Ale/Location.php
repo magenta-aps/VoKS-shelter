@@ -157,11 +157,20 @@ class Location
 
                 $stations = array('active' => [], 'other' => []);
                 foreach ($data['Station_result'] as $station) {
-                    $mac = format_mac_address($station['msg']['sta_eth_mac']['addr']);
-                    if (!empty($station['msg']['username'])) {
-                      $stations['active'][] = $mac;
+                    $row = array(
+                      'mac_address' => !empty($station['msg']['sta_eth_mac']['addr']) ? format_mac_address($station['msg']['sta_eth_mac']['addr']) : '',
+                      'username' => !empty($station['msg']['username']) ? $station['msg']['username'] : '',
+                      'role' => !empty($station['msg']['role']) ? $station['msg']['role'] : '',
+                    );
+                    if (
+                      !empty($station['msg']['username'])
+                      && !empty($station['msg']['sta_eth_mac']['addr'])
+                      && isset($station['msg']['role'])
+                      && $station['msg']['role'] != 'AFK-gjest'
+                    ) {
+                      $stations['active'][] = $row;
                     } else {
-                      $stations['other'][] = $mac;
+                      $stations['other'][] = $row;
                     }
                 }
 
@@ -170,7 +179,7 @@ class Location
         );
 
         $response = $curl->execute();
-        
+
         if ($other) {
           return $response['other'];
         }

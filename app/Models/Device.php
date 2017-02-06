@@ -362,29 +362,33 @@ class Device extends BaseModel
     /**
      * @param $macAddresses
      */
-    public static function updateActiveClients($macAddresses)
+    public static function updateActiveClients($stations)
     {
-        $count = count($macAddresses);
+        $count = count($stations);
 
         if (0 === $count) {
             return;
         }
 
         $join = '';
+        $macAddresses = array();
 
         for ($i = 0; $i < $count; $i++) {
-            $join .= "('" . $macAddresses[$i] . "', 1, CURRENT_TIMESTAMP),";
+            $join .= "('" . $stations[$i]['mac_address'] . "', 1, CURRENT_TIMESTAMP, '" . $stations[$i]['username'] . "', '" . $stations[$i]['role'] . "'),";
+            $macAddresses[] = $stations[$i]['mac_address'];
         }
 
         $join = rtrim($join, ',');
 
         \DB::insert(
             "
-          INSERT INTO devices (`mac_address`, `active`, `updated_at`) VALUES $join
+          INSERT INTO devices (`mac_address`, `active`, `updated_at`, `username`, `role`) VALUES $join
           ON DUPLICATE KEY UPDATE
           `mac_address` = VALUES(`mac_address`),
           `active` = VALUES(active),
-          `updated_at` = CURRENT_TIMESTAMP;
+          `updated_at` = CURRENT_TIMESTAMP,
+          `username` = VALUES(`username`),
+          `role` = VALUES(`role`);
         "
         );
 
