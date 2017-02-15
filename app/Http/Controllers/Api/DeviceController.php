@@ -211,19 +211,23 @@ class DeviceController extends Controller
      */
     public function anyShelters(SheltersRequest $request)
     {
-        $shelter_list = array(
-          [
-            'shelter_id' => "33",
-            'shelter_name' => "Test",
-            'shelter_url' => "https://bcomesafe.magenta-aps.dk",
-          ],
-          [
-            'shelter_id' => "31",
-            'shelter_name' => "Test 2",
-            'shelter_url' => "https://bcomesafe.magenta-aps.dk",
-            ]
-        );
+        $ret_val = array();
+        $list = School::get()->toArray();
+        if (empty($list)) {
+          return response()->json($ret_val);
+        }
 
-        return response()->json($shelter_list);
+        foreach ($list as $s) {
+          $ret_val[] = array_map_keys(
+            $s,
+            [
+              'shelter_id'           => 'id',
+              'shelter_name'         => 'name',
+              'shelter_url'         => 'url',
+            ]
+          );
+        }
+
+        return response()->json($ret_val);
     }
 }
