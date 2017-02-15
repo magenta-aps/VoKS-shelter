@@ -16,6 +16,7 @@ use BComeSafe\Http\Requests\GotItRequest;
 use BComeSafe\Http\Requests\RegisterDeviceRequest;
 use BComeSafe\Http\Requests\TriggerAlarmRequest;
 use BComeSafe\Http\Requests\WatchdogRequest;
+use BComeSafe\Http\Requests\SheltersRequest;
 use BComeSafe\Models\Device;
 use BComeSafe\Models\History;
 use BComeSafe\Models\Log;
