@@ -400,50 +400,40 @@ class Device extends BaseModel
      */
     public static function updateClientCoordinates($locations)
     {
-        $count = count($locations);
-
-        if (0 === $count) {
-            return;
+      if (empty($locations)) {
+        return 0;
+      }
+      $i=0;
+      foreach ($locations as $l) {
+        if (env('SCHOOL_ID')) {
+          $l['school_id'] = env('SCHOOL_ID');
         }
-
-        $join = '';
-
-        for ($i = 0; $i < $count; $i++) {
-            if (env('SCHOOL_ID')) {
-                $locations[$i]['school_id'] = env('SCHOOL_ID');
-            }
-
-            $join .= "("
-                . build_sql_parameters(
-                    array_map_keys(
-                        $locations[$i],
-                        [
-                        'x' => 'x',
-                        'y' => 'y',
-                        'floor_id' => 'floor_id',
-                        'school_id' => 'school_id',
-                        'mac_address' => 'mac_address'
-                        ]
-                    )
-                )
-                . ", CURRENT_TIMESTAMP, 1),";
-        }
-
-        $join = rtrim($join, ',');
-
-        \DB::insert(
-            "
-          INSERT INTO devices (`x`, `y`, `floor_id`, `school_id`, `mac_address`, `updated_at`, `active`) VALUES $join
-          ON DUPLICATE KEY UPDATE
-          `x` = VALUES(`x`),
-          `y` = VALUES(`y`),
-          `floor_id` = VALUES(`floor_id`),
-          `school_id` = VALUES(`school_id`),
-          `mac_address` = VALUES(`mac_address`),
-          `updated_at` = CURRENT_TIMESTAMP,
-          `active` = 1;
-        "
+        $device = \DB::select(
+          "SELECT * FROM devices WHERE mac_address = :mac_address" , ['mac_address' => $l['mac_address']]
         );
+        if (!empty($device)) {
+          $device = current($device);
+          if(
+            $l['x'] != $device->x
+            || $l['y'] != $device->y
+            || $l['floor_id'] != $device->floor_id
+            || $l['school_id'] != $device->school_id
+          ) {
+            $l['id'] = $device->id;
+            unset($l['mac_address']);
+            \DB::update(
+              "
+                UPDATE devices
+                SET x = :x, y = :y, floor_id = :floor_id, school_id = :school_id, updated_at = CURRENT_TIMESTAMP, active = 1
+                WHERE id = :id
+              ",
+              $l
+            );
+            $i++;
+          }
+        }
+      }
+      return $i;
     }
 
     /**

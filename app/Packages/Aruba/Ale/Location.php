@@ -154,7 +154,8 @@ class Location
                 if (empty($data)) {
                     return [];
                 }
-
+                $remove_roles = env('ARUBA_ALE_REMOVE_ROLES');
+                $remove_roles_arr = !empty($remove_roles) ? explode(',', $remove_roles) : array();
                 $stations = array('active' => [], 'other' => []);
                 foreach ($data['Station_result'] as $station) {
                     $row = array(
@@ -166,7 +167,7 @@ class Location
                       !empty($station['msg']['username'])
                       && !empty($station['msg']['sta_eth_mac']['addr'])
                       && isset($station['msg']['role'])
-                      && $station['msg']['role'] != 'AFK-gjest'
+                      && !in_array($station['msg']['role'], $remove_roles_arr)
                     ) {
                       $stations['active'][] = $row;
                     } else {

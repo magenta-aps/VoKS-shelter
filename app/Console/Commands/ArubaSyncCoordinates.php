@@ -91,10 +91,11 @@ class ArubaSyncCoordinates extends Command
         }
 
         $time_start = microtime(true);
-        Device::updateClientCoordinates($clients);
+        $updated_c = Device::updateClientCoordinates($clients);
         $time_end = microtime(true);
         $execution_time = $time_end - $time_start;
         echo "Execution time for updating DB (location) : ", $execution_time, PHP_EOL;
+        echo "Updated (locations): ", $updated_c, PHP_EOL;
         echo "Count (Clients): ", count($clients), PHP_EOL;
         echo "*****************", PHP_EOL;
     }
