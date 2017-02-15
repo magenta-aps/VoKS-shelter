@@ -147,7 +147,7 @@ class Location
      * @return mixed
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
-    public static function getStations()
+    public static function getStations($other = FALSE)
     {
         if (config('aruba.ale.enabled') === false) {
             return [];
@@ -168,10 +168,25 @@ class Location
                 if (empty($data)) {
                     return [];
                 }
-
-                $stations = [];
+                $remove_roles = env('ARUBA_ALE_REMOVE_ROLES');
+                $remove_roles_arr = !empty($remove_roles) ? explode(',', $remove_roles) : array();
+                $stations = array('active' => [], 'other' => []);
                 foreach ($data['Station_result'] as $station) {
-                    $stations[] = format_mac_address($station['msg']['sta_eth_mac']['addr']);
+                    $row = array(
+                      'mac_address' => !empty($station['msg']['sta_eth_mac']['addr']) ? format_mac_address($station['msg']['sta_eth_mac']['addr']) : '',
+                      'username' => !empty($station['msg']['username']) ? $station['msg']['username'] : '',
+                      'role' => !empty($station['msg']['role']) ? $station['msg']['role'] : '',
+                    );
+                    if (
+                      !empty($station['msg']['username'])
+                      && !empty($station['msg']['sta_eth_mac']['addr'])
+                      && isset($station['msg']['role'])
+                      && !in_array($station['msg']['role'], $remove_roles_arr)
+                    ) {
+                      $stations['active'][] = $row;
+                    } else {
+                      $stations['other'][] = $row;
+                    }
                 }
 
                 return $stations;
@@ -180,7 +195,11 @@ class Location
 
         $response = $curl->execute();
 
-        return $response;
+        if ($other) {
+          return $response['other'];
+        }
+
+        return $response['active'];
     }
 
     /**

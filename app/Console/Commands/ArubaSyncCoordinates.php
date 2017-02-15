@@ -46,16 +46,23 @@ class ArubaSyncCoordinates extends Command
      */
     public function handle()
     {
+
+        $full_time_start = microtime(true);
         $floors = Floor::with('image')->get()->toArray();
         $floors = array_map_by_key($floors, 'floor_hash_id');
+        $this->runUpdate($floors);
 
-        for ($i = 0; $i < self::RUNS_PER_MINUTE; $i++) {
-            $this->runUpdate($floors);
+        /*for ($i = 0; $i < self::RUNS_PER_MINUTE; $i++) {
+
 
             if ($i !== self::RUNS_PER_MINUTE - 1) {
                 sleep(round(60 / self::RUNS_PER_MINUTE));
             }
-        }
+        }*/
+
+        $full_time_end = microtime(true);
+        $execution_time = $full_time_end - $full_time_start;
+        echo "Execution time for ALL: ", $execution_time, PHP_EOL;
     }
 
     /**
@@ -65,8 +72,13 @@ class ArubaSyncCoordinates extends Command
      */
     public function runUpdate($floors)
     {
+        $time_start = microtime(true);
         $locations = Location::getAllCoordinates();
+        $time_end = microtime(true);
+        $execution_time = $time_end - $time_start;
+        echo "Time for geting locations from ALE: ", $execution_time, PHP_EOL;
         $count = count($locations);
+        echo "Count (locations): ", $count, PHP_EOL;
 
         $clients = [];
 
@@ -77,8 +89,15 @@ class ArubaSyncCoordinates extends Command
 
             $clients[] = $this->mapClientModel($floors, $locations[$i]);
         }
-	echo "Total: ", $count, PHP_EOL, "Count: ", count($clients), PHP_EOL;
-        Device::updateClientCoordinates($clients);
+
+        $time_start = microtime(true);
+        $updated_c = Device::updateClientCoordinates($clients);
+        $time_end = microtime(true);
+        $execution_time = $time_end - $time_start;
+        echo "Execution time for updating DB (location) : ", $execution_time, PHP_EOL;
+        echo "Updated (locations): ", $updated_c, PHP_EOL;
+        echo "Count (Clients): ", count($clients), PHP_EOL;
+        echo "*****************", PHP_EOL;
     }
 
     /**

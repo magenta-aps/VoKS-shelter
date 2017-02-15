@@ -23,7 +23,9 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         'BComeSafe\Console\Commands\Inspire',
         'BComeSafe\Console\Commands\Sync',
+        'BComeSafe\Console\Commands\ArubaSyncCleanClients',
         'BComeSafe\Console\Commands\ArubaSyncActive',
+        'BComeSafe\Console\Commands\ArubaSyncDetails',
         'BComeSafe\Console\Commands\ArubaSyncCoordinates',
         'BComeSafe\Console\Commands\ArubaSyncMacs',
     ];
