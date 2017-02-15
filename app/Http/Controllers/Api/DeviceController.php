@@ -55,7 +55,7 @@ class DeviceController extends Controller
             $device->setAttribute('mac_address', $request->get('mac_address', config('alarm.default.mac')));
             $device->setAttribute('push_notification_id', $request->get('gcm_id'));
             $device->updateDeviceProfile();
-            
+
         } catch (\Exception $e) {
             $message = $e->getMessage();
 
@@ -112,7 +112,7 @@ class DeviceController extends Controller
         $device = $request->only(['device_id', 'call_police']);
         $device['trigger_status'] = $device['call_police'];
         unset($device['call_police']);
-        
+
         // Check if device has triggered the alarm
         $triggered = false;
         if ('0' === $device['trigger_status']) {
@@ -201,5 +201,28 @@ class DeviceController extends Controller
         Log::create($log_data);
 
         return ['success' => true];
+    }
+
+    /**
+     * @param \BComeSafe\Http\Requests\Request $request
+     *
+     * @return json
+     */
+    public function anyShelters(Request $request)
+    {
+        $shelter_list = array(
+          [
+            'shelter_id' => "33",
+            'shelter_name' => "Test",
+            'shelter_url' => "https://bcomesafe.magenta-aps.dk",
+          ],
+          [
+            'shelter_id' => "31",
+            'shelter_name' => "Test 2",
+            'shelter_url' => "https://bcomesafe.magenta-aps.dk",
+            ]
+        );
+
+        return response()->json($shelter_list);
     }
 }
