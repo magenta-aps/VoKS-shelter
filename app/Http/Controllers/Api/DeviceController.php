@@ -204,11 +204,11 @@ class DeviceController extends Controller
     }
 
     /**
-     * @param \BComeSafe\Http\Requests\Request $request
+     * @param \BComeSafe\Http\Requests\SheltersRequest $request
      *
      * @return json
      */
-    public function anyShelters(Request $request)
+    public function anyShelters(SheltersRequest $request)
     {
         $shelter_list = array(
           [
