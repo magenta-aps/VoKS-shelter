@@ -30,10 +30,12 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'BComeSafe\Events\AlarmWasTriggered' => [
             'BComeSafe\Handlers\Events\WakeUp',
+            'BComeSafe\Handlers\Events\SendInitialEmail',
             'BComeSafe\Handlers\Events\SendInitialSms',
             'BComeSafe\Handlers\Events\PlayInitialSound'
         ],
         'BComeSafe\Events\AskedToCallPolice' => [
+            'BComeSafe\Handlers\Events\SendSecondaryEmail',
             'BComeSafe\Handlers\Events\SendSecondarySms',
         ]
     ];

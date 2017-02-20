@@ -9,6 +9,10 @@ return [
         'title' => 'SMS',
         'result' => 'Sent to<br/><strong>:count/:total</strong>'
     ],
+    'email' => [
+        'title' => 'Email',
+        'result' => 'Sent to<br/><strong>:count/:total</strong>'
+    ],
     'audio' => [
         'trigger' => [
             'title' => 'Audio',
