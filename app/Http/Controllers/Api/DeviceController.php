@@ -223,7 +223,8 @@ class DeviceController extends Controller
             [
               'shelter_id'           => 'id',
               'shelter_name'         => 'name',
-              'shelter_url'         => 'url',
+              'shelter_url'          => 'url',
+              'police_number'        => 'police_number'
             ]
           );
         }
