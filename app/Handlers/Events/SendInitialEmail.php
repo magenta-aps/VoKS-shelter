@@ -28,12 +28,18 @@ class SendInitialEmail
     public function handle(AlarmWasTriggered $event)
     {
         try {
+            //
+            $mail_from = env('MAIL_FROM');
+            if (empty($mail_from)) return;
+
             // Get school settings
             $schoolId = $event->schoolId;
             $school = School::getSettings($schoolId);
+            if (empty($school)) return;
 
             // Get crisis team members and their count
             $members = CrisisTeamMember::where('school_id', '=', $schoolId)->get();
+            if (empty($members)) return;
             $memberCount = count($members);
 
             // Crisis message
@@ -58,7 +64,7 @@ class SendInitialEmail
 	                $result = Mail::raw( $message, function($message) use ($member)
 	                {
 		                $message
-			                ->from( env('MAIL_FROM'), env('MAIL_FROM_NAME') )
+			                ->from( $mail_from, env('MAIL_FROM_NAME') )
 		                    ->to( $member->email )
 		                    ->subject( trans('mail.alarm.initial.subject') );
 	                });
