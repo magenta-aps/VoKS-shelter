@@ -52,7 +52,8 @@ class Device extends BaseModel
         'y',
         'active',
         'floor_id',
-        'triggered_at'
+        'triggered_at',
+        'user_email'
     ];
 
     /**

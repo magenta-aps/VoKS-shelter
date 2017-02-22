@@ -55,6 +55,9 @@ class DeviceController extends Controller
             $device->setAttribute('device_id', $request->get('device_id'));
             $device->setAttribute('mac_address', $request->get('mac_address', config('alarm.default.mac')));
             $device->setAttribute('push_notification_id', $request->get('gcm_id'));
+            $device->setAttribute('school_id', $request->get('shelter_id'));
+            $device->setAttribute('fullname', $request->get('user_name'));
+            $device->setAttribute('user_email', $request->get('user_email'));
             $device->updateDeviceProfile();
 
         } catch (\Exception $e) {
