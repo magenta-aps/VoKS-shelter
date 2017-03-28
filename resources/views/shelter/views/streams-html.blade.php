@@ -22,8 +22,11 @@
     </div>
     <div class="streams__unit">
         <div class="streams__item">
-            <!-- cia -->
-            <map id="streams"></map>
+            @if ( config('aruba.ale.coordinatesEnabled') )
+		        <map id="streams"></map>
+			@else
+				<bc-map></bc-map>
+			@endif
         </div>
     </div>
 </div>

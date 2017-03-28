@@ -20,6 +20,7 @@
         'app.controllers',
         'app.services',
         'map',
+        'bc-map',
 
         'toasts',
         'ui.select',

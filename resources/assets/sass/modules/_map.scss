@@ -27,3 +27,9 @@
         }
     }
 }
+
+bc-map, [bc-map], .bc-map {
+    @extend .-full;
+    @extend .blockStyle;
+    display: block;
+}

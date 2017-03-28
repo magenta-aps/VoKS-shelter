@@ -583,9 +583,9 @@
         SocketService.onMessage('CLIENT_CONNECTED', wsClientConnect);
         SocketService.onMessage('CLIENT_DISCONNECTED', wsClientDisconnect);
 
-	    SocketService.onMessage('LOCATION', wsClientCoordinates);
+        SocketService.onMessage('LOCATION', wsClientCoordinates);
 
-	    SocketService.onMessage('OFFER ANSWER CANDIDATE', wsRtcMessages);
+        SocketService.onMessage('OFFER ANSWER CANDIDATE', wsRtcMessages);
         SocketService.onMessage('SHELTER_UPDATE', wsUpdateShelterStats);
         SocketService.onMessage('PEER_RECONNECT', wsPeerReconnect);
         SocketService.onMessage('MESSAGE', wsChatMessage);

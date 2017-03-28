@@ -48,5 +48,8 @@ return [
     ],
     'cookies'   => [
         'airwave' => storage_path('app/airwave-cookies')
+    ],
+    'google'    => [
+    	'maps_key'  => env( 'GOOGLE_MAPS_KEY' ),
     ]
 ];
