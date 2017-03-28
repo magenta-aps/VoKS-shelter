@@ -418,7 +418,23 @@
             client.destroy();
         }
 
-        /**
+	    /**
+	     * Process Client Location updatemessage
+	     * WS: LOCATION
+	     */
+	    function wsClientCoordinates(message)
+	    {
+		    var client = getClient( message.src );
+
+		    if (null !== client)
+		    {
+			    // client.position.floor = _client.position.floor_id;
+			    client.position.x = message.data['LAT'];
+			    client.position.y = message.data['LON'];
+		    }
+	    }
+
+	    /**
          * Process Offer, Answer & Candidate RTC messages
          * WS: OFFER, ANSWER, CANDIDATE
          *
@@ -567,7 +583,9 @@
         SocketService.onMessage('CLIENT_CONNECTED', wsClientConnect);
         SocketService.onMessage('CLIENT_DISCONNECTED', wsClientDisconnect);
 
-        SocketService.onMessage('OFFER ANSWER CANDIDATE', wsRtcMessages);
+	    SocketService.onMessage('LOCATION', wsClientCoordinates);
+
+	    SocketService.onMessage('OFFER ANSWER CANDIDATE', wsRtcMessages);
         SocketService.onMessage('SHELTER_UPDATE', wsUpdateShelterStats);
         SocketService.onMessage('PEER_RECONNECT', wsPeerReconnect);
         SocketService.onMessage('MESSAGE', wsChatMessage);

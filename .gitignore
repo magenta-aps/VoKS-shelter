@@ -11,3 +11,9 @@ resources/assets/vendor
 storage/airwave-cookies
 storage/framework/views
 vendor
+.phpstorm.meta.php
+_ide_helper.php
+.bash_history
+/**/node_modules/
+.idea
+npm-debug.log

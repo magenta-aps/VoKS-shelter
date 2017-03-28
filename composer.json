@@ -16,7 +16,8 @@
         "illuminate/workbench": "^5.0@dev",
         "guzzlehttp/guzzle": "~6.0",
         "soapbox/laravel-formatter": "2.*",
-        "adldap2/adldap2": "5.2.*"
+        "adldap2/adldap2": "5.2.*",
+        "rap2hpoutre/laravel-log-viewer": "dev-master"
     },
     "repositories": [
         {

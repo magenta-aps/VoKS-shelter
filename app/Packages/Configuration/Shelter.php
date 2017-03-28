@@ -61,6 +61,14 @@ class Shelter
         return get_shelter_urls(\Shelter::getID(), \Shelter::getID())['ws'];
     }
 
+	/**
+	 * @return boolean
+	 */
+	public function getArubaCoordinatesStatus()
+    {
+	    return config('aruba.ale.coordinatesEnabled');
+    }
+
     /**
      * Manually managed translations for the front-end
      *
@@ -296,6 +304,7 @@ class Shelter
         $config['stream-block-limit'] = $this->getStreamBlockLimit();
         $config['push-notification-limit'] = config('alarm.notification.limit');
         $config['locale'] = $school->locale;
+        $config['aruba-coords-enabled'] = $this->getArubaCoordinatesStatus();
 
         return $config;
     }

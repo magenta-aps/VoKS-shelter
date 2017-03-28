@@ -59,6 +59,7 @@ var jsSrcShelterVendor = assetsVendorDir,
         'angular-translate/angular-translate.js',
         'angular-ui-select/dist/select.js',
         'angular-websocket/angular-websocket.js',
+		'ngmap/build/scripts/ng-map.js',
 
         'leaflet/dist/leaflet.js',
         // leaflet-select

@@ -17,6 +17,7 @@ return [
         'username' => env('ARUBA_ALE_USERNAME'),
         'password' => env('ARUBA_ALE_PASSWORD'),
         'apiUrl'    => '/api/v1',
+        'coordinatesEnabled'        => env( 'ARUBA_COORDINATES_ENABLED', true ),
         'coordinatesExpirationTime' => env( 'COORDINATES_EXPIRATION_TIME', 5 ),
         'coordinatesTimeInterval' => env( 'COORDINATES_TIME_INTERVAL', 3600 * 8 )
     ],
