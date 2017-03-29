@@ -442,7 +442,7 @@
 	                    client.position.y = coordinates['LON'];
                     }
 
-	                console.log( 'LOCATION CALL', coordinates );
+	                console.log( 'LOCATION CALL', coordinates['LAT'], coordinates['LON'], client.position, client );
                 }
 		        catch ( e ) { /** silence is golden **/ };
 		    }
