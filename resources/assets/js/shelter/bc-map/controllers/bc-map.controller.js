@@ -63,7 +63,8 @@
 				        lng: position.coords.longitude
 			        };
 
-		        	_instance.setCenter(pos);
+		        	_instance.panTo(pos);
+			        _instance.setZoom( zoomLevel );
 		        } );
 	        }
 
@@ -96,6 +97,8 @@
 	     * Markers
 	     * ------------------------------------------------------------------
 	     */
+
+	    var map_centered = false;
 
 	    /**
 	     * Creates markers
@@ -147,6 +150,12 @@
 					    BcMap.destroyMarker(client);
 				    }
 			    }
+		    }
+
+		    if ( !map_centered )
+		    {
+		    	BcMap.centerBounds();
+			    map_centered = true;
 		    }
 	    };
 
