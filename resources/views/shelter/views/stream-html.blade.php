@@ -13,7 +13,7 @@
                                 </div>
                                 <div class="streams__video-box">
                                     <div class="streams__video-tag-block">
-                                        <video class="streams__video-element" active="client.position.inLargeView" src="<% client.stream.url | trusted %>" listen="client.state.muted" autoplay></video>
+                                        <video class="streams__video-element" active="client.position.inLargeView" ng-src="<% client.stream.url | trusted %>" listen="client.state.muted" autoplay></video>
                                     </div>
                                     <span class="-time" time-ago="client.timestamps.connected"></span>
 
