@@ -12,8 +12,11 @@ resources/assets/vendor
 storage/airwave-cookies
 storage/framework/views
 vendor
-.idea
+.phpstorm.meta.php
 _ide_helper.php
-node_modules
+.bash_history
+/**/node_modules/
+.idea
+npm-debug.log
 .vagrant
 cache

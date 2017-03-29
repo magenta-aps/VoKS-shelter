@@ -29,7 +29,12 @@
 
     @include('config')
 
+    @if ( !config('aruba.ale.coordinatesEnabled') )
+        <script src="http://maps.google.com/maps/api/js?key={{ config('aruba.google.maps_key') }}"></script>
+    @endif
+
     <script src="{{ elixir('js/shelter.js') }}"></script>
     <script src="{{ elixir('js/app.js') }}"></script>
+
 </body>
 </html>

@@ -12,6 +12,7 @@
     config['websocket-server'] = '{{ $config['websocket-server'] }}';
     config['police'] = {!! $config['police'] !!};
     config['push-notification-limit'] = {!! $config['push-notification-limit'] !!};
+    config['aruba-coords-enabled'] = {{ $config['aruba-coords-enabled'] ? 'true' : 'false' }};
 
     lang = function(key) {
         return config['lang'][key];
