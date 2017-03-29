@@ -440,9 +440,9 @@
 
 	                if ( angular.isDefined(coordinates['LAT']) && angular.isDefined(coordinates['LON']) )
                     {
-	                    client.position.lat = coordinates['LAT'];
-	                    client.position.lng = coordinates['LON'];
-	                    console.log( 'LOCATION UPDATE', coordinates['LAT'], coordinates['LON'], client.position.lat, client.position.lng );
+	                    client.position.x = coordinates['LAT'];
+	                    client.position.y = coordinates['LON'];
+	                    console.log( 'LOCATION UPDATE', coordinates['LAT'], coordinates['LON'], client.position.x, client.position.y );
                     }
                 }
 		        catch ( e ) { /** silence is golden **/ }
