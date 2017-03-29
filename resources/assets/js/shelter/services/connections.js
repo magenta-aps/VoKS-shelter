@@ -293,8 +293,11 @@
          * WS: RESET
          */
         function wsResetShelter() {
-            localStorage.clear();
-            window.location.reload();
+            window.localStorage.clear();
+            setTimeout(function() {
+                window.localStorage.clear();
+                window.location.reload();
+            }, 100)
         }
 
         /**

@@ -16,6 +16,7 @@ use BComeSafe\Http\Requests\GotItRequest;
 use BComeSafe\Http\Requests\RegisterDeviceRequest;
 use BComeSafe\Http\Requests\TriggerAlarmRequest;
 use BComeSafe\Http\Requests\WatchdogRequest;
+use BComeSafe\Http\Requests\SheltersRequest;
 use BComeSafe\Models\Device;
 use BComeSafe\Models\History;
 use BComeSafe\Models\Log;
@@ -54,8 +55,11 @@ class DeviceController extends Controller
             $device->setAttribute('device_id', $request->get('device_id'));
             $device->setAttribute('mac_address', $request->get('mac_address', config('alarm.default.mac')));
             $device->setAttribute('push_notification_id', $request->get('gcm_id'));
+            $device->setAttribute('school_id', $request->get('shelter_id'));
+            $device->setAttribute('fullname', $request->get('user_name'));
+            $device->setAttribute('user_email', $request->get('user_email'));
             $device->updateDeviceProfile();
-            
+
         } catch (\Exception $e) {
             $message = $e->getMessage();
 
@@ -112,7 +116,7 @@ class DeviceController extends Controller
         $device = $request->only(['device_id', 'call_police']);
         $device['trigger_status'] = $device['call_police'];
         unset($device['call_police']);
-        
+
         // Check if device has triggered the alarm
         $triggered = false;
         if ('0' === $device['trigger_status']) {
@@ -201,5 +205,33 @@ class DeviceController extends Controller
         Log::create($log_data);
 
         return ['success' => true];
+    }
+
+    /**
+     * @param \BComeSafe\Http\Requests\SheltersRequest $request
+     *
+     * @return json
+     */
+    public function anyShelters(SheltersRequest $request)
+    {
+        $ret_val = array();
+        $list = School::get()->toArray();
+        if (empty($list)) {
+          return response()->json($ret_val);
+        }
+
+        foreach ($list as $s) {
+          $ret_val[] = array_map_keys(
+            $s,
+            [
+              'shelter_id'           => 'id',
+              'shelter_name'         => 'name',
+              'shelter_url'          => 'url',
+              'police_number'        => 'police_number'
+            ]
+          );
+        }
+
+        return response()->json($ret_val);
     }
 }

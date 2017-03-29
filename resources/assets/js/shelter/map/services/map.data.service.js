@@ -40,14 +40,14 @@
                         statusText: 'No content'
                     };
 
-                    MapLog.error(payload.status, payload.statusText, payload.config.url);
+                    // MapLog.error(payload.status, payload.statusText, payload.config.url);
                     defer.reject(error);
                 }
             };
 
             // Request error
             var error = function(payload) {
-                MapLog.error(payload.status, payload.statusText, payload.config.url);
+                // MapLog.error(payload.status, payload.statusText, payload.config.url);
                 defer.reject();
             };
 

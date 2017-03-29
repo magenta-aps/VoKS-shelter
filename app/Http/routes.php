@@ -38,10 +38,10 @@ Route::group(
 );
 
 Route::controllers([
-    'auth' => 'Auth\AuthController',
+    'auth'     => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
     'download' => 'DownloadFileController',
-    'maps' => 'Maps\MainController'
+    'maps'     => 'Maps\MainController'
 ]);
 
 Route::get('log/websockets', 'Log\ViewerController@getWebsockets');
@@ -55,7 +55,7 @@ Route::group(
         Route::controller('system/ip-whitelist', 'System\Api\IpWhitelistController');
 
         Route::controller('device', 'Api\DeviceController');
-	        Route::controller('voks', 'Api\DeviceController');
+        Route::controller('voks', 'Api\DeviceController');
         Route::match(['get', 'post'], 'shelter/coordinates', ['uses' => 'Api\ShelterController@getCoordinates']);
         Route::controller('shelter', 'Api\ShelterController');
 

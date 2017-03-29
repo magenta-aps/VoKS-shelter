@@ -67,7 +67,7 @@ class MainController extends BaseController
             try {
                 $client = new ShelterClient(config('alarm.php_ws_url') . '/' . config('alarm.php_ws_client'));
                 $client->updateIpWhitelist($ipHandler->getMappedList());
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
 
             }
         }
@@ -83,7 +83,7 @@ class MainController extends BaseController
         // Get integration
         $default = SchoolDefault::getDefaults();
         $integration = \Component::get('PhoneSystem')
-            ->getIntegration($default->phone_system_provider);
+                                 ->getIntegration($default->phone_system_provider);
 
         return $integration->getNodes();
     }
@@ -96,6 +96,10 @@ class MainController extends BaseController
     {
         $nodeId = $request->get('nodeId');
         $nodes = $this->getPhoneSystemIdList();
+
+        if (empty($nodes)) {
+            return [true];
+        }
 
         foreach ($nodes as $node) {
             if ($nodeId === $node['id']) {
@@ -114,6 +118,7 @@ class MainController extends BaseController
     public function postValidateIp(Request $request)
     {
         $ip = new SchoolIpHandler();
+
         return $ip->validateUniqueness($request->get('ip'), $request->get('id'));
     }
 }

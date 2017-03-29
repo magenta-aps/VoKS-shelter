@@ -112,9 +112,9 @@
                 floor = MapData.getFloor(floorId);
 
             // Image data
-            var url = floor.image,
-                width = floor.width,
-                height = floor.height;
+            var url = floor.image || '',
+                width = floor.width || 0,
+                height = floor.height || 0;
 
             // Map zoom
             var zoom = Map.options.leaflet.zoom;

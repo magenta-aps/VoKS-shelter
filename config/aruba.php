@@ -7,21 +7,22 @@
  * Developed in co-op with Baltic Amadeus, http://baltic-amadeus.lt
  */
 
-
 $airwave = env('ARUBA_AIRWAVE_URL');
 $clearpass = env('ARUBA_CLEARPASS_URL');
 
 return [
     'ale'       => [
-        'baseUrl'   => env('ARUBA_ALE_URL'),
-        'username' => env('ARUBA_ALE_USERNAME'),
-        'password' => env('ARUBA_ALE_PASSWORD'),
-        'apiUrl'    => '/api/v1',
+        'enabled'                   => env('ARUBA_ALE_ENABLED', true),
+        'baseUrl'                   => env('ARUBA_ALE_URL'),
+        'username'                  => env('ARUBA_ALE_USERNAME'),
+        'password'                  => env('ARUBA_ALE_PASSWORD'),
+        'apiUrl'                    => '/api/v1',
         'coordinatesEnabled'        => env( 'ARUBA_COORDINATES_ENABLED', true ),
-        'coordinatesExpirationTime' => env( 'COORDINATES_EXPIRATION_TIME', 5 ),
-        'coordinatesTimeInterval' => env( 'COORDINATES_TIME_INTERVAL', 3600 * 8 )
+        'coordinatesExpirationTime' => env('COORDINATES_EXPIRATION_TIME', 5),
+        'coordinatesTimeInterval'   => env('COORDINATES_TIME_INTERVAL', 3600 * 8)
     ],
     'airwave'   => [
+        'enabled'  => env('ARUBA_AIRWAVE_ENABLED', true),
         'url'      => $airwave . '/',
         'login'    => [
             'url'      => $airwave . '/LOGIN',
@@ -36,12 +37,13 @@ return [
         ]
     ],
     'clearpass' => [
-        'login' => [
+        'enabled' => env('ARUBA_CLEARPASS_ENABLED', true),
+        'login'   => [
             'url'      => '',
             'username' => env('ARUBA_CLEARPASS_USERNAME'),
             'password' => env('ARUBA_CLEARPASS_PASSWORD')
         ],
-        'user'  => [
+        'user'    => [
             'profile' => $clearpass . '/tipsapi/config/read/Endpoint',
             'device'  => $clearpass . '/async_netd/deviceprofiler/endpoints/'
         ]
