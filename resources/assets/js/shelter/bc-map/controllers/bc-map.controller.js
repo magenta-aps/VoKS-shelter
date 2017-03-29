@@ -63,7 +63,7 @@
 				        lng: position.coords.longitude
 			        };
 
-		        	_instance.panTo(pos);
+		        	_instance.panTo( pos );
 			        _instance.setZoom( zoomLevel );
 		        } );
 	        }
@@ -98,15 +98,20 @@
 	     * ------------------------------------------------------------------
 	     */
 
-	    var map_centered = false;
-
 	    /**
 	     * Creates markers
 	     */
 	    BcMap.createMarkers = function()
 	    {
+	    	var centering_required = false;
+
 		    // Current markers
 		    var markers = BcMap.markers;
+
+		    if ( Object.keys(markers).length === 0 )
+		    {
+			    centering_required = true;
+		    }
 
 		    // Filtered clients
 		    var clients = BcMap.clients,
@@ -147,15 +152,14 @@
 
 				    if ( false === exists )
 				    {
-					    BcMap.destroyMarker(client);
+					    BcMap.destroyMarker(mac);
 				    }
 			    }
 		    }
 
-		    if ( !map_centered )
+		    if ( centering_required )
 		    {
 		    	BcMap.centerBounds();
-			    map_centered = true;
 		    }
 	    };
 
@@ -195,8 +199,6 @@
 		    } );
 
 		    BcMap.markers[mac] = marker;
-
-		    console.log( 'Create Marker', client.position, pos );
 	    };
 
 	    /**
@@ -223,22 +225,19 @@
 		    };
 
 		    BcMap.markers[mac]._instance.setPosition( pos );
-
-		    console.log( 'Update Marker', client.position, pos );
 	    };
 
 	    /**
 	     * Destroys markers
-	     * @param {Object} client
+	     * @param {String} mac
 	     */
-	    BcMap.destroyMarker = function( client )
+	    BcMap.destroyMarker = function( mac )
 	    {
-		    var mac = client.profile.mac_address;
-
 		    if ( angular.isDefined(BcMap.markers[mac]) )
 		    {
-			    BcMap.markers[mac]._instance.setMap( null );
-			    BcMap.markers[mac]._instance = null;
+		    	var marker = BcMap.markers[mac];
+			    marker._instance.setMap( null );
+			    marker._instance = null;
 			    delete BcMap.markers[mac];
 		    }
 	    };
@@ -251,7 +250,7 @@
 	    	var markers = BcMap.markers;
 	    	var map = BcMap.getMap();
 
-	    	if ( markers.length === 0 )
+	    	if ( Object.keys(markers).length === 0 )
 	    		return;
 
 		    var bounds = new google.maps.LatLngBounds();
@@ -262,6 +261,7 @@
 		    }
 
 		    map.fitBounds( bounds );
+
 	    };
     };
 

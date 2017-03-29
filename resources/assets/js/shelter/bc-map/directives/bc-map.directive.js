@@ -9,7 +9,7 @@
 (function() {
     'use strict';
 
-	var intervalCycle = 5000;
+	var intervalCycle = 3000;
 
     var bcMapDirective = function( $interval )
     {
@@ -20,7 +20,6 @@
 	        BcMap.createMap( element[0], function()
 	        {
 		        BcMap.createMarkers();
-		        BcMap.centerBounds();
 	        });
 
 	        // Watch clients, and create markers
