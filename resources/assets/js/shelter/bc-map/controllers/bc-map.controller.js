@@ -8,6 +8,8 @@
 (function() {
     'use strict';
 
+	var zoomLevel = 15;
+
     var bcMapController = function( $log, Connections )
     {
         var BcMap = this;
@@ -49,7 +51,7 @@
 	        }
 
 	        _instance = new google.maps.Map( element, {
-	            zoom: 11
+	            zoom: zoomLevel
             });
 
         	if ( BcMap.clients.length === 0 && navigator.geolocation)
