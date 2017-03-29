@@ -431,11 +431,20 @@
 
 		    if (null !== client)
 		    {
-			    // client.position.floor = _client.position.floor_id;
-			    client.position.x = message.data['LAT'];
-			    client.position.y = message.data['LON'];
+		        try
+                {
+	                var coordinates = JSON.parse( message.data );
+	                // client.position.floor = _client.position.floor_id;
 
-			    console.log( 'LOCATION CALL', client, message );
+                    if ( angular.isDefined(coordinates['LAN']) && angular.isDefined(coordinates['LON']) )
+                    {
+	                    client.position.x = coordinates['LAT'];
+	                    client.position.y = coordinates['LON'];
+                    }
+
+	                console.log( 'LOCATION CALL', coordinates );
+                }
+		        catch ( e ) { /** silence is golden **/ };
 		    }
 	    }
 
