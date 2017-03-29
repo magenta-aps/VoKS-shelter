@@ -104,7 +104,32 @@
             _clients.push(clientModel);
         }
 
-        /**
+	    /**
+	     * Remove client from _clients array
+	     *
+	     * @param {Object} clientModel Client model
+         * @param {String} [index_key]
+	     */
+	    function removeClient( clientModel, index_key )
+        {
+	        index_key = index_key || 'mac_address';
+
+	        for ( var i = 0; i < _clients.length; i++ )
+            {
+                if ( angular.isUndefined(_clients[i]) )
+                {
+                    continue;
+                }
+
+                if ( clientModel.profile[index_key] === _clients[i].profile[index_key] )
+                {
+	                _clients.splice( i, 1 );
+	                break;
+                }
+            }
+	    }
+
+	    /**
          * Set police called status
          *
          * @param {Array} callers List of callers
@@ -418,6 +443,11 @@
                 $location.path('/stream').replace();
             }
 
+	        if ( angular.isDefined( config['aruba-coords-enabled'] ) && config['aruba-coords-enabled'] === false )
+	        {
+		        removeClient(client);
+	        }
+
             client.destroy();
         }
 
@@ -434,15 +464,11 @@
 		        try
                 {
 	                var coordinates = JSON.parse( message.data );
-	                // client.position.floor = _client.position.floor_id;
-
-	                console.log( 'LOCATION CALL', coordinates, coordinates['LAT'], coordinates['LON'] );
 
 	                if ( angular.isDefined(coordinates['LAT']) && angular.isDefined(coordinates['LON']) )
                     {
-	                    client.position.x = coordinates['LAT'];
-	                    client.position.y = coordinates['LON'];
-	                    console.log( 'LOCATION UPDATE', coordinates['LAT'], coordinates['LON'], client.position.x, client.position.y );
+	                    client.position.lat = coordinates['LAT'];
+	                    client.position.lon = coordinates['LON'];
                     }
                 }
 		        catch ( e ) { /** silence is golden **/ }
