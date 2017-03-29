@@ -189,6 +189,8 @@
 			    map: map
 		    } );
 
+		    console.log( 'Update Marker', pos );
+
 		    BcMap.markers[mac] = marker;
 	    };
 
@@ -209,6 +211,8 @@
 			    lat: client.position.x,
 			    lng: client.position.y
 		    };
+
+		    console.log( 'Update Marker', pos );
 
 		    BcMap.markers[mac]._instance.setPosition( pos );
 	    };

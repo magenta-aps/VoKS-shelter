@@ -434,6 +434,8 @@
 			    // client.position.floor = _client.position.floor_id;
 			    client.position.x = message.data['LAT'];
 			    client.position.y = message.data['LON'];
+
+			    console.log( 'LOCATION CALL', client, message );
 		    }
 	    }
 
