@@ -172,7 +172,7 @@
 		    	return BcMap.updateMarker( client );
 		    }
 
-		    if ( angular.isUndefined(client.position.lat) || angular.isUndefined(client.position.lng) )
+		    if ( angular.isUndefined(client.position.x) || angular.isUndefined(client.position.y) )
 		    {
 		    	return;
 		    }
@@ -180,8 +180,8 @@
 		    var map = BcMap.getMap();
 
 		    var pos = {
-			    lat: client.position.lat,
-			    lng: client.position.lng
+			    lat: client.position.x,
+			    lng: client.position.y
 		    };
 
 		    var marker = {
@@ -212,14 +212,14 @@
 		    	return BcMap.createMarker( client );
 		    }
 
-		    if ( angular.isUndefined(client.position.lat) || angular.isUndefined(client.position.lng) )
+		    if ( angular.isUndefined(client.position.x) || angular.isUndefined(client.position.y) )
 		    {
 			    return;
 		    }
 
 		    var pos = {
-			    lat: client.position.lat,
-			    lng: client.position.lng
+			    lat: client.position.x,
+			    lng: client.position.y
 		    };
 
 		    BcMap.markers[mac]._instance.setPosition( pos );

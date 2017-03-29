@@ -437,15 +437,13 @@
 	                // client.position.floor = _client.position.floor_id;
 
 	                console.log( 'LOCATION CALL', coordinates, coordinates['LAT'], coordinates['LON'] );
-	                console.log( 'IS DEFINED?', angular.isDefined(coordinates['LAN']), angular.isDefined(coordinates['LON']) );
 
-	                if ( angular.isDefined(coordinates['LAN']) && angular.isDefined(coordinates['LON']) )
+	                if ( angular.isDefined(coordinates['LAT']) && angular.isDefined(coordinates['LON']) )
                     {
 	                    client.position.lat = coordinates['LAT'];
 	                    client.position.lng = coordinates['LON'];
-	                    console.log( '> LOCATION UPDATE', coordinates['LAT'], coordinates['LON'], client.position.lat, client.position.lng );
+	                    console.log( 'LOCATION UPDATE', coordinates['LAT'], coordinates['LON'], client.position.lat, client.position.lng );
                     }
-
                 }
 		        catch ( e ) { /** silence is golden **/ }
 		    }
