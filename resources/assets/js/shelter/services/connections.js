@@ -436,7 +436,8 @@
 	                var coordinates = JSON.parse( message.data );
 	                // client.position.floor = _client.position.floor_id;
 
-	                console.log( 'LOCATION CALL', coordinates['LAT'], coordinates['LON'] );
+	                console.log( 'LOCATION CALL', coordinates, coordinates['LAT'], coordinates['LON'] );
+	                console.log( 'IS DEFINED?', angular.isDefined(coordinates['LAN']), angular.isDefined(coordinates['LON']) );
 
 	                if ( angular.isDefined(coordinates['LAN']) && angular.isDefined(coordinates['LON']) )
                     {
@@ -446,7 +447,7 @@
                     }
 
                 }
-		        catch ( e ) { /** silence is golden **/ };
+		        catch ( e ) { /** silence is golden **/ }
 		    }
 	    }
 
