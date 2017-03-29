@@ -1,7 +1,11 @@
 <div id="school-view" class="streams -reset">
     <div class="streams__large">
         <div class="streams__main">
-            <map id="map"></map>
+            @if ( config('aruba.ale.coordinatesEnabled') )
+                <map id="stream"></map>
+            @else
+                <bc-map id="stream"></bc-map>
+            @endif
             <div class="block-style -send-messages-block tabs" ng-controller="SchoolPlanController">
                 <div class="container__header">
                     <span class="-title"> {{ Lang::get('school-plan.messages.label') }}</span>

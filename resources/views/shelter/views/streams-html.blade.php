@@ -25,7 +25,7 @@
             @if ( config('aruba.ale.coordinatesEnabled') )
 		        <map id="streams"></map>
 			@else
-				<bc-map></bc-map>
+				<bc-map id="streams"></bc-map>
 			@endif
         </div>
     </div>

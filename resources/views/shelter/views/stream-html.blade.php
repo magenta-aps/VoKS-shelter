@@ -91,7 +91,11 @@
                     <div class="-map-wrapper">
                         <div class="map">
                             <div class="map bullets">
-                                <map id="stream"></map>
+                                @if ( config('aruba.ale.coordinatesEnabled') )
+                                    <map id="stream"></map>
+                                @else
+                                    <bc-map id="stream"></bc-map>
+                                @endif
                             </div>
                         </div>
                     </div>
