@@ -436,13 +436,15 @@
 	                var coordinates = JSON.parse( message.data );
 	                // client.position.floor = _client.position.floor_id;
 
-                    if ( angular.isDefined(coordinates['LAN']) && angular.isDefined(coordinates['LON']) )
+	                console.log( 'LOCATION CALL', coordinates['LAT'], coordinates['LON'] );
+
+	                if ( angular.isDefined(coordinates['LAN']) && angular.isDefined(coordinates['LON']) )
                     {
-	                    client.position.x = coordinates['LAT'];
-	                    client.position.y = coordinates['LON'];
+	                    client.position.lat = coordinates['LAT'];
+	                    client.position.lng = coordinates['LON'];
+	                    console.log( '> LOCATION UPDATE', coordinates['LAT'], coordinates['LON'], client.position.lat, client.position.lng );
                     }
 
-	                console.log( 'LOCATION CALL', coordinates['LAT'], coordinates['LON'], client.position, client );
                 }
 		        catch ( e ) { /** silence is golden **/ };
 		    }
