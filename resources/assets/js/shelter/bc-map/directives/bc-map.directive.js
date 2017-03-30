@@ -16,7 +16,10 @@
 
         var bcMapDirectiveLink = function($scope, element, attributes, controllers)
         {
+        	var markers_interval;
+
             var BcMap = controllers[0];
+
 	        BcMap.createMap( element[0], function()
 	        {
 		        BcMap.createMarkers();
@@ -32,7 +35,13 @@
 		        }
 	        };
 
-	        $interval( createMarkers, intervalCycle, 0, false );
+	        markers_interval = $interval( createMarkers, intervalCycle, 0, false );
+
+	        element.on( '$destroy', function()
+	        {
+		        $interval.cancel( markers_interval );
+		        BcMap.destroyMap();
+	        } );
         };
 
         return {

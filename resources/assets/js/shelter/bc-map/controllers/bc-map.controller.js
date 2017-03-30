@@ -54,22 +54,21 @@
 	            zoom: zoomLevel
             });
 
-        	$log.info( 'New Google Maps instance', _instance );
-	        $log.info( 'Clients check', Object.keys(BcMap.clients).length, navigator.geolocation );
+        	$log.info( '[bc-map] New Google Maps instance', _instance );
 
-        	if ( Object.keys(BcMap.clients).length === 0 && navigator.geolocation)
+        	if ( Object.keys(BcMap.clients).length === 0 )
 	        {
-		        navigator.geolocation.getCurrentPosition( function(position)
+		        getCoordinates( function(position)
 		        {
 			        var pos = {
 				        lat: position.coords.latitude,
 				        lng: position.coords.longitude
 			        };
 
-		        	_instance.panTo( pos );
+			        _instance.panTo( pos );
 			        _instance.setZoom( zoomLevel );
-			        $log.info( 'Coordinates received', pos );
-			        google.maps.event.trigger(_instance, 'resize');
+			        google.maps.event.trigger( _instance, 'resize' );
+			        $log.info( '[bc-map] Map repositioned', pos );
 		        } );
 	        }
 
@@ -78,13 +77,12 @@
 
 	    /**
 	     * Destroys Google map instance
-	     *
-	     * @returns {Object}
 	     */
 	    BcMap.destroyMap = function()
 	    {
 		    _instance = null;
-		    return _instance;
+
+		    $log.info( '[bc-map] Map instance destroyed' );
 	    };
 
 	    /**
@@ -203,7 +201,7 @@
 			    map: map
 		    } );
 
-		    $log.info( 'Marker created', mac, pos );
+		    $log.info( '[bc-map] Marker created', mac, pos );
 
 		    BcMap.markers[mac] = marker;
 	    };
@@ -233,7 +231,7 @@
 
 		    BcMap.markers[mac]._instance.setPosition( pos );
 
-		    $log.info( 'Marker updated', mac, pos );
+		    $log.info( '[bc-map] Marker updated', mac, pos );
 	    };
 
 	    /**
@@ -249,7 +247,7 @@
 			    marker._instance = null;
 			    delete BcMap.markers[mac];
 
-			    $log.info( 'Marker destroyed', mac );
+			    $log.info( '[bc-map] Marker destroyed', mac );
 		    }
 	    };
 
@@ -276,8 +274,68 @@
 		    map.fitBounds( bounds );
 		    google.maps.event.trigger(_instance, 'resize');
 
-		    $log.info( 'Map centered', bounds );
+		    $log.info( '[bc-map] Map centered', bounds );
 	    };
+
+	    /**
+	     * Centers map to show all markers
+	     * @param {Function} [successFunc]
+	     * @param {Function} [errorFunc]
+	     * @private
+	     */
+	    function getCoordinates( successFunc, errorFunc )
+	    {
+		    successFunc = successFunc || function( position ) {};
+		    errorFunc = errorFunc || function( error ) {};
+
+		    function isChrome()
+		    {
+			    var isChromium = window.chrome,
+			        winNav = window.navigator,
+			        vendorName = winNav.vendor,
+			        isOpera = winNav.userAgent.indexOf("OPR") > -1,
+			        isIEedge = winNav.userAgent.indexOf("Edge") > -1,
+			        isIOSChrome = winNav.userAgent.match("CriOS");
+
+			    if( isIOSChrome)
+			    {
+				    return true;
+			    }
+			    else if(isChromium !== null && isChromium !== undefined && vendorName === "Google Inc." && isOpera == false && isIEedge == false)
+			    {
+				    return true;
+			    }
+			    else
+			    {
+				    return false;
+			    }
+		    }
+
+		    if ( navigator.geolocation )
+		    {
+			    var options = { maximumAge: Infinity, timeout: 0 };
+
+			    if ( isChrome() )
+			    {
+				    options = { enableHighAccuracy: false, maximumAge: 15000, timeout: 30000 };
+			    }
+
+			    // Dummy one, which will result in a working next statement.
+			    navigator.geolocation.getCurrentPosition(
+			    	function ( position )
+			        {
+			        	$log.info( '[bc-map] Received coordinates', position );
+				    	successFunc( position );
+				    },
+				    function( error )
+				    {
+					    $log.error( '[bc-map] Error retrieving coordinates', error );
+					    errorFunc( error );
+				    },
+				    options
+			    );
+		    }
+	    }
     };
 
 	bcMapController.$inject = [
