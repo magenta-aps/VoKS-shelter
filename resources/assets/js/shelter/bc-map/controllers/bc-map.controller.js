@@ -54,6 +54,8 @@
 	            zoom: zoomLevel
             });
 
+        	$log.info( 'New Google Maps instance', _instance );
+
         	if ( BcMap.clients.length === 0 && navigator.geolocation)
 	        {
 		        navigator.geolocation.getCurrentPosition( function(position)
@@ -65,6 +67,7 @@
 
 		        	_instance.panTo( pos );
 			        _instance.setZoom( zoomLevel );
+			        google.maps.event.trigger(_instance, 'resize');
 		        } );
 	        }
 
@@ -261,6 +264,7 @@
 		    }
 
 		    map.fitBounds( bounds );
+		    google.maps.event.trigger(_instance, 'resize');
 
 	    };
     };
