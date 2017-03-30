@@ -67,6 +67,7 @@
 
 		        	_instance.panTo( pos );
 			        _instance.setZoom( zoomLevel );
+			        $log.info( 'Coordinates received', pos );
 			        google.maps.event.trigger(_instance, 'resize');
 		        } );
 	        }
@@ -201,6 +202,8 @@
 			    map: map
 		    } );
 
+		    $log.info( 'Marker created', mac, pos );
+
 		    BcMap.markers[mac] = marker;
 	    };
 
@@ -228,6 +231,8 @@
 		    };
 
 		    BcMap.markers[mac]._instance.setPosition( pos );
+
+		    $log.info( 'Marker updated', mac, pos );
 	    };
 
 	    /**
@@ -242,6 +247,8 @@
 			    marker._instance.setMap( null );
 			    marker._instance = null;
 			    delete BcMap.markers[mac];
+
+			    $log.info( 'Marker destroyed', mac );
 		    }
 	    };
 
@@ -266,6 +273,7 @@
 		    map.fitBounds( bounds );
 		    google.maps.event.trigger(_instance, 'resize');
 
+		    $log.info( 'Map centered', bounds );
 	    };
     };
 
