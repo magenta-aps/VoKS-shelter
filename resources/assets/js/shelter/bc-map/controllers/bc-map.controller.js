@@ -65,9 +65,9 @@
 				        lng: position.coords.longitude
 			        };
 
-			        _instance.panTo( pos );
+			        _instance.setCenter( pos );
 			        _instance.setZoom( zoomLevel );
-			        google.maps.event.trigger( _instance, 'resize' );
+			        // google.maps.event.trigger( _instance, 'resize' );
 			        $log.info( '[bc-map] Map repositioned', pos );
 		        } );
 	        }
@@ -272,7 +272,7 @@
 		    }
 
 		    map.fitBounds( bounds );
-		    google.maps.event.trigger(_instance, 'resize');
+		    // google.maps.event.trigger(_instance, 'resize');
 
 		    $log.info( '[bc-map] Map centered', bounds );
 	    };
