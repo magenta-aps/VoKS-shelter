@@ -55,8 +55,9 @@
             });
 
         	$log.info( 'New Google Maps instance', _instance );
+	        $log.info( 'Clients check', Object.keys(BcMap.clients).length, navigator.geolocation );
 
-        	if ( BcMap.clients.length === 0 && navigator.geolocation)
+        	if ( Object.keys(BcMap.clients).length === 0 && navigator.geolocation)
 	        {
 		        navigator.geolocation.getCurrentPosition( function(position)
 		        {
@@ -119,7 +120,7 @@
 
 		    // Filtered clients
 		    var clients = BcMap.clients,
-		        clientsLength = clients.length;
+		        clientsLength = Object.keys(clients.length);
 
 		    // Create/update markers
 		    for ( var clientIndex = 0; clientIndex < clientsLength; clientIndex++ )
@@ -261,7 +262,9 @@
 	    	var map = BcMap.getMap();
 
 	    	if ( Object.keys(markers).length === 0 )
-	    		return;
+		    {
+			    return;
+		    }
 
 		    var bounds = new google.maps.LatLngBounds();
 
