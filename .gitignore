@@ -13,4 +13,5 @@ storage/airwave-cookies
 storage/framework/views
 storage/framework/logs
 vendor
+node_modules
 _ide_helper.php
