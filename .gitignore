@@ -4,13 +4,13 @@ log
 public/build
 public/css
 public/js
-#public/uploads
-#public/vendor
-#public/download
+public/uploads
+public/vendor
+public/download
 public/video
 resources/assets/vendor
 storage/airwave-cookies
 storage/framework/views
 storage/framework/logs
-#vendor
+vendor
 _ide_helper.php
