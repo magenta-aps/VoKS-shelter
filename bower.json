@@ -8,7 +8,7 @@
   "license": "",
   "dependencies": {
     "angular": "~1.4.5",
-    "angular-perfect-scrollbar": "~0.0.4",
+    "angular-perfect-scrollbar": "0.0.4",
     "angular-route": "~1.4.5",
     "angular-scroll-glue": "~2.0.6",
     "angular-translate": "~2.7.2",
