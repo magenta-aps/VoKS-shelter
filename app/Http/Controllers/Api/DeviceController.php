@@ -221,6 +221,7 @@ class DeviceController extends Controller
         }
 
         foreach ($list as $s) {
+          $s['use_gps'] = $s['use_gps'] == 1 ? TRUE : FALSE;
           $ret_val[] = array_map_keys(
             $s,
             [
