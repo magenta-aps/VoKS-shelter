@@ -55,7 +55,8 @@ Route::group(
         Route::controller('system/ip-whitelist', 'System\Api\IpWhitelistController');
 
         Route::controller('device', 'Api\DeviceController');
-        Route::controller('voks', 'Api\DeviceController');
+        Route::controller('voks', 'Api\DeviceController'); //Deprecated. Will be removed soon.
+        Route::controller('bcs', 'Api\BcsController');
         Route::match(['get', 'post'], 'shelter/coordinates', ['uses' => 'Api\ShelterController@getCoordinates']);
         Route::controller('shelter', 'Api\ShelterController');
 
