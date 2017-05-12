@@ -100,7 +100,9 @@ class DeviceController extends Controller
             'api_url' => $urls['api'],
             'message' => null,
             'success' => true,
-            'dev_mode' => false
+            'dev_mode' => false,
+            'use_gps'  => false, //@Todo - create administration for BCS list for controling this value.
+            'renew'    => false //@Todo - make possible to enable Temporary. Will be used to re-check BCS projects URL.
             ]
         );
     }
