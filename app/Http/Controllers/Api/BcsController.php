@@ -37,6 +37,7 @@ class BcsController extends Controller
           $ret_val[] = array_map_keys(
             $s,
             [
+              'bcs_id'               => 'id',
               'bcs_name'             => 'name',
               'bcs_url'              => 'url',
               'police_number'        => 'police_number'
