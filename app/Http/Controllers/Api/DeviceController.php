@@ -17,6 +17,7 @@ use BComeSafe\Http\Requests\RegisterDeviceRequest;
 use BComeSafe\Http\Requests\TriggerAlarmRequest;
 use BComeSafe\Http\Requests\WatchdogRequest;
 use BComeSafe\Http\Requests\SheltersRequest;
+use BComeSafe\Http\Requests\BcsRequest;
 use BComeSafe\Models\Device;
 use BComeSafe\Models\History;
 use BComeSafe\Models\Log;
@@ -232,6 +233,34 @@ class DeviceController extends Controller
               'shelter_url'          => 'url',
               'police_number'        => 'police_number',
               'use_gps'              => 'use_gps'
+            ]
+          );
+        }
+
+        return response()->json($ret_val);
+    }
+
+    /**
+     * @param \BComeSafe\Http\Requests\BcsRequest $request
+     *
+     * @return json
+     */
+    public function anyList(BcsRequest $request)
+    {
+        $ret_val = array();
+        $list = School::get()->toArray();
+        if (empty($list)) {
+          return response()->json($ret_val);
+        }
+
+        foreach ($list as $s) {
+          $ret_val[] = array_map_keys(
+            $s,
+            [
+              'bcs_id'               => 'id',
+              'bcs_name'             => 'name',
+              'bcs_url'              => 'url',
+              'police_number'        => 'police_number'
             ]
           );
         }
