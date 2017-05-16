@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    var connectionsService = function($q, $timeout, $route, $location,
+    var connectionsService = function($q, $timeout, $route, $location, $rootScope,
                                           ShelterAPI, SocketService, Messages,
                                           RTCConnection, State, MapState, Client) {
         /**
@@ -322,7 +322,8 @@
             setTimeout(function() {
                 window.localStorage.clear();
                 window.location.reload();
-            }, 100)
+            }, 100);
+            $rootScope.$emit('ConnectionService::ResetShelter');
         }
 
         /**
@@ -334,6 +335,7 @@
             SocketService.sendRaw({
                 type: 'PONG'
             });
+	        $rootScope.$emit('ConnectionService::Ping');
         }
 
         /**
@@ -371,6 +373,8 @@
                     client.init();
                 }
             }
+
+	        $rootScope.$emit('ConnectionService::ClientListUpdate');
         }
 
         /**
@@ -420,6 +424,8 @@
                 connection = client.getConnection();
                 recreateRTCConnection(connection, client);
             }
+
+	        $rootScope.$emit('ConnectionService::ClientConnect');
         }
 
         /**
@@ -449,6 +455,8 @@
 	        }
 
             client.destroy();
+
+	        $rootScope.$emit('ConnectionService::ClientDisconnect');
         }
 
 	    /**
@@ -473,6 +481,8 @@
                 }
 		        catch ( e ) { /** silence is golden **/ }
 		    }
+
+		    $rootScope.$emit('ConnectionService::ClientCoordinates');
 	    }
 
 	    /**
@@ -510,6 +520,8 @@
                     }
                 }
             }
+
+		    $rootScope.$emit('ConnectionService::RtcMessages');
         }
 
         /**
@@ -524,6 +536,7 @@
             var data = message.data;
             ShelterAPI.processStatus(data);
             setPoliceStatus(data.callers);
+	        $rootScope.$emit('ConnectionService::UpdateShelterStats');
         }
 
         /**
@@ -537,6 +550,7 @@
             if (null !== client) {
                 client.closeRtcConnection();
             }
+	        $rootScope.$emit('ConnectionService::PeerReconnect');
         }
 
         /**
@@ -572,6 +586,8 @@
             }
 
             Messages.pushMessage(angular.copy(_message));
+
+            $rootScope.$emit('ConnectionService::ChatMessage');
         }
 
         /**
@@ -596,6 +612,8 @@
 
                 client.save();
             }
+
+	        $rootScope.$emit('ConnectionService::CallRequest');
         }
 
         /**
@@ -609,10 +627,28 @@
                 client.timestamps.lastActive = Date.now();
                 client.save();
             }
+
+	        $rootScope.$emit('ConnectionService::BatteryLevel');
         }
 
-        /**
-         * -----------------------------------------------
+	    /**
+	     * Subscribe to ConnectionsService events
+	     */
+	    function subscribe( event, callback, scope )
+	    {
+	    	callback = callback || function() {};
+	    	event = 'ConnectionService::' + event;
+
+		    var handler = $rootScope.$on( event, callback );
+
+		    if ( angular.isDefined(scope) )
+		        scope.$on( '$destroy', handler );
+
+		    return handler;
+	    }
+
+	    /**
+	     * -----------------------------------------------
          * Setup SocketService
          * -----------------------------------------------
          */
@@ -662,7 +698,9 @@
 
             addClient: addClient,
 
-            createRTCConnection: createRTCConnection
+            createRTCConnection: createRTCConnection,
+
+	        subscribe: subscribe
         };
         return service;
     };
@@ -673,6 +711,7 @@
         '$timeout',
         '$route',
         '$location',
+        '$rootScope',
 
         // Services
         'ShelterAPI',

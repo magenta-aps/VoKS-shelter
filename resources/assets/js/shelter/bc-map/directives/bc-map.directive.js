@@ -23,7 +23,7 @@
 	        BcMap.createMap( element[0], function()
 	        {
 		        BcMap.createMarkers();
-	        });
+	        }, $scope );
 
 	        // Watch clients, and create markers
 	        var createMarkers = function()

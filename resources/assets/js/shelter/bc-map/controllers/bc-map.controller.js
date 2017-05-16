@@ -24,6 +24,14 @@
         var _instance = null;
 
 	    /**
+	     * Directive scope
+	     *
+	     * @type {Object}
+	     * @private
+	     */
+	    var _scope;
+
+	    /**
 	     * All available clients
 	     *
 	     * @type {Array}
@@ -40,10 +48,12 @@
 	     * Creates new Google Maps instance
 	     * @param {Object} element
 	     * @param {Function} callback
+	     * @param {Object} [scope]
 	     */
-	    BcMap.createMap = function( element, callback )
+	    BcMap.createMap = function( element, callback, scope )
         {
 	        callback = callback || function() {};
+	        _scope = scope || undefined;
 
         	if ( angular.isUndefined(google) || angular.isUndefined(google.maps) )
 	        {
