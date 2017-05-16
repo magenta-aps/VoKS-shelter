@@ -11,11 +11,12 @@ public/video
 resources/assets/vendor
 storage/airwave-cookies
 storage/framework/views
+storage/framework/logs
 vendor
-.phpstorm.meta.php
+node_modules
 _ide_helper.php
+.phpstorm.meta.php
 .bash_history
-/**/node_modules/
 .idea
 npm-debug.log
 .vagrant

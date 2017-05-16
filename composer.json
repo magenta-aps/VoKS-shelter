@@ -17,7 +17,7 @@
         "guzzlehttp/guzzle": "~6.0",
         "soapbox/laravel-formatter": "2.*",
         "adldap2/adldap2": "5.2.*",
-        "rap2hpoutre/laravel-log-viewer": "^0.8.0"
+		"rap2hpoutre/laravel-log-viewer": "^0.8.0"
     },
     "repositories": [
         {
