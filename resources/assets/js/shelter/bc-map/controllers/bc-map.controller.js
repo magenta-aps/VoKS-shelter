@@ -279,7 +279,7 @@
 	    };
 
 	    /**
-	     * Centers map to show all markers
+	     * Retrieves coordinates from browser (if possible)
 	     * @param {Function} [successFunc]
 	     * @param {Function} [errorFunc]
 	     * @private
