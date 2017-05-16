@@ -33,10 +33,10 @@ class SaveSchoolDefaultsRequest extends Request
             'timezone' => 'required',
             'locale' => 'required',
             'ordering' => 'required',
-            'sms_provider' => 'required',
-            'phone_system_provider' => 'required',
-        //            'user_data_source' => 'required',
-        //            'client_data_source' => 'required'
+            // 'sms_provider' => 'required',
+            // 'phone_system_provider' => 'required',
+            // 'user_data_source' => 'required',
+            // 'client_data_source' => 'required'
         ];
     }
 }

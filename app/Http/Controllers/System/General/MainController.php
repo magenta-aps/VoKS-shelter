@@ -47,10 +47,10 @@ class MainController extends BaseController
                 'timezones' => get_timezone_list(),
                 'languages' => get_available_languages(),
                 'orderingOptions' => get_sorting_options(),
-                'smsProviders' => \Component::get('Sms')->getIntegrations(),
-                'phoneSystemProviders' => \Component::get('PhoneSystem')->getIntegrations(),
-                'userDataSources' => ['ad' => 'Active Directory'],
-                'clientDataSources' => ['ale' => 'Analytics Location Engine'],
+                'smsProviders' => prepend_none_option( \Component::get('Sms')->getIntegrations() ),
+                'phoneSystemProviders' => prepend_none_option( \Component::get('PhoneSystem')->getIntegrations() ),
+                'userDataSources' => get_available_user_data_sources(),
+                'clientDataSources' => get_available_data_sources(),
             ]
         );
     }
@@ -61,7 +61,7 @@ class MainController extends BaseController
      */
     public function postSave(Requests\SaveSchoolDefaultsRequest $request)
     {
-        $data = $request->only(
+        $data = collect( $request->only(
             [
                 'timezone',
                 'locale',
@@ -71,14 +71,19 @@ class MainController extends BaseController
                 'user_data_source',
                 'client_data_source'
             ]
-        );
+        ) );
+
+	    $data->transform( function( $value )
+	    {
+	    	return !empty($value) ? $value : null;
+	    } );
 
         $school = SchoolDefault::first();
 
         if (!$school) {
-            $school = SchoolDefault::firstOrNew($data);
+            $school = SchoolDefault::firstOrNew($data->all());
         } else {
-            $school->update($data);
+            $school->update($data->all());
         }
 
         $school->save();

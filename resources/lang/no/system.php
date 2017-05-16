@@ -28,6 +28,12 @@ return [
             'user' => 'Kilde for brukere',
             'device' => 'Kilde for enheter'
         ],
+        'sources' => [
+	        'ad'		=> 'Active Directory',
+	        'ale'		=> 'Ale',
+	        'cisco'		=> 'Cisco',
+	        'google'	=> 'Google Maps',
+        ],
         'push' => [
             'title' => 'Push-meldinger',
             'description' => 'Her oppretter du eller endrer på de ferdiglagede push-meldingene (standard-meldingene)',
@@ -62,6 +68,9 @@ return [
             'title' => 'Kart/byggtegninger',
             'description' => 'Her legges kart/byggtegninger inn. En tegning pr bygning, pr. etasje. Er systemet integrert mot f.eks. Aruba Airwave, hentes kartene inn automatisk hver natt. Man kan når som helst manuelt synkronisere kartene ved å trykke på "Synkroniser manuelt"-knappen.',
             'sync' => 'Synkroniser manuelt'
+        ],
+        'defaults'  => [
+	        'none'      => '-',
         ]
     ]
 ];

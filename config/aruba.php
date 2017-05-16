@@ -52,6 +52,10 @@ return [
         'airwave' => storage_path('app/airwave-cookies')
     ],
     'google'    => [
+    	'enabled'   => env( 'GOOGLE_MAPS_ENABLED', true ),
     	'maps_key'  => env( 'GOOGLE_MAPS_KEY' ),
-    ]
+    ],
+    'cisco'    => [
+	    'enabled'   => env( 'CISCO_ENABLED', true ),
+    ],
 ];

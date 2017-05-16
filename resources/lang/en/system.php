@@ -28,6 +28,12 @@ return [
             'user' => 'User data source',
             'device' => 'Device data source'
         ],
+		'sources' => [
+			'ad'		=> 'Active Directory',
+			'ale'		=> 'Ale',
+			'cisco'		=> 'Cisco',
+			'google'	=> 'Google Maps',
+		],
         'push' => [
             'title' => 'Push notifications',
             'description' => 'Setup default push notification settings',
@@ -62,6 +68,9 @@ return [
             'title' => 'Maps',
             'description' => 'Sync and preview maps',
             'sync' => 'Sync Maps'
+        ],
+        'defaults'  => [
+        	'none'      => 'None',
         ]
     ]
 

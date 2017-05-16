@@ -30,6 +30,30 @@ function get_sorting_options()
     return $options;
 }
 
+function prepend_none_option( $options = [] )
+{
+	$options = collect($options);
+	return collect(['' => trans('system.contents.defaults.none')] + $options->all());
+}
+
+function get_available_user_data_sources()
+{
+	$sources = collect();
+	config('ad.enabled') ? $sources->put( 'ad', trans('system.contents.sources.ad') ) : null;
+
+	return prepend_none_option($sources);
+}
+
+function get_available_data_sources()
+{
+	$sources = collect();
+	config('aruba.ale.enabled') ? $sources->put( 'ale', trans('system.contents.sources.ale') ) : null;
+	config('aruba.cisco.enabled') ? $sources->put( 'cisco', trans('system.contents.sources.cisco') ) : null;
+	config('aruba.google.enabled') ? $sources->put( 'google', trans('system.contents.sources.google') ) : null;
+
+	return prepend_none_option($sources);
+}
+
 function format_mac_address($macAddress)
 {
     if (!str_contains($macAddress, [':'])) {
