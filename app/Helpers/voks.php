@@ -48,8 +48,8 @@ function get_available_data_sources()
 {
 	$sources = collect();
 	config('aruba.ale.enabled') ? $sources->put( 'ale', trans('system.contents.sources.ale') ) : null;
-	config('aruba.cisco.enabled') ? $sources->put( 'cisco', trans('system.contents.sources.cisco') ) : null;
-	config('aruba.google.enabled') ? $sources->put( 'google', trans('system.contents.sources.google') ) : null;
+	config('cisco.coors.enabled') ? $sources->put( 'cisco', trans('system.contents.sources.cisco') ) : null;
+	config('google.maps.enabled') ? $sources->put( 'google', trans('system.contents.sources.google') ) : null;
 
 	return prepend_none_option($sources);
 }

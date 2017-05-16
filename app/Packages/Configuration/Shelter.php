@@ -305,6 +305,9 @@ class Shelter
         $config['push-notification-limit'] = config('alarm.notification.limit');
         $config['locale'] = $school->locale;
         $config['aruba-coords-enabled'] = $this->getArubaCoordinatesStatus();
+        $config['google-maps-enabled'] = config('google.maps.enabled');
+        $config['google-zoom-level'] = config('google.maps.zoom_level');
+	    $config['cisco-enabled'] = config('cisco.coors.enabled');
 
         return $config;
     }

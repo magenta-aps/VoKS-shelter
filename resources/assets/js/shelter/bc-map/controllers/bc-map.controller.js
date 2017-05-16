@@ -8,7 +8,8 @@
 (function() {
     'use strict';
 
-	var zoomLevel = 15;
+    var DEFAULT_ZOOM_LEVEL = 15;
+	var zoomLevel = angular.isDefined( config['google-zoom-level'] ) ? config['google-zoom-level'] : DEFAULT_ZOOM_LEVEL;
 
     var bcMapController = function( $log, Connections )
     {
