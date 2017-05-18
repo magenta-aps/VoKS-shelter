@@ -386,13 +386,13 @@
 
 		    Connections.subscribe( 'ClientConnect', function( event, params )
 		    {
-			    $log.info( '[bc-map] Event:ClientConnect' );
+			    $log.info( '[bc-map] Event:ClientConnect', params );
 			    process_client_update( params.client );
 		    });
 
 		    Connections.subscribe( 'ClientDisconnect', function( event, params )
 		    {
-			    $log.info( '[bc-map] Event:ClientDisconnect' );
+			    $log.info( '[bc-map] Event:ClientDisconnect', params );
 			    var client = params.client,
 			        clientMac = client.profile.mac_address;
 
@@ -401,7 +401,7 @@
 
 		    Connections.subscribe( 'ClientCoordinates', function( event, params )
 		    {
-			    $log.info( '[bc-map] Event:ClientCoordinates' );
+			    $log.info( '[bc-map] Event:ClientCoordinates', params );
 			    process_client_update( params.client );
 		    });
 
