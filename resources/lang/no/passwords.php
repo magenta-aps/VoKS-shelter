@@ -20,7 +20,8 @@ return [
 	"reset" => "Passordet ditt har blitt resatt!",
 	"view" => [
 		"login" => "Log inn",
-		"username" => "Brukernavn",
+		// "username" => "Brukernavn",
+		"username" => "E-postadresse",
 		"password" => "Passord",
 		"remember_me" => "Husk meg",
 		"forgot_password" => "Glemt passordet?",

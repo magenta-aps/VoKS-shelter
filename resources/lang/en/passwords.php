@@ -20,7 +20,8 @@ return [
 	"reset" => "Your password has been reset!",
 	"view" => [
 		"login" => "Login",
-		"username" => "Username",
+		// "username" => "Username",
+		"username" => "E-Mail Address",
 		"password" => "Password",
 		"remember_me" => "Remember me",
 		"forgot_password" => "Forgot your password?",
