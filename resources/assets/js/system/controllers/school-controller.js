@@ -78,6 +78,8 @@
                     .then(function(response) {
                         var data = response.data;
                         $scope.model.phoneSystemIds = data;
+                    }, function(response) {
+                    	/* silence is golden */
                     });
             },
             validatePhoneSystemId: function(id, data) {
@@ -93,6 +95,9 @@
                         } else {
                             defer.resolve(data);
                         }
+                    }, function(response) {
+                    	/* silence is golden */
+	                    defer.resolve();
                     });
 
                 return defer.promise;
