@@ -192,7 +192,10 @@
 
 		    if ( angular.isUndefined(client.position.lat) || angular.isUndefined(client.position.lon) )
 		    {
-		    	return;
+		    	// return;
+			    // dumb test
+			    client.position.lat = 54.6784581;
+			    client.position.lon = 25.2570763;
 		    }
 
 		    var map = BcMap.getMap();
