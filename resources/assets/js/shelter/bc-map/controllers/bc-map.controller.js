@@ -347,6 +347,67 @@
 			    );
 		    }
 	    }
+
+	    function init()
+	    {
+		    Connections.subscribe( 'ResetShelter', function()
+		    {
+		    	$log.info( '[bc-map] Event:ResetShelter' );
+		    	BcMap.createMarkers();
+		    });
+
+		    Connections.subscribe( 'ClientListUpdate', function()
+		    {
+			    $log.info( '[bc-map] Event:ClientListUpdate' );
+			    BcMap.createMarkers();
+		    });
+
+		    var process_client_update = function( client )
+		    {
+			    var clientMac = client.profile.mac_address;
+
+			    // Current markers
+			    var markers = BcMap.markers;
+
+			    if ( angular.isDefined(markers[clientMac]) )
+			    {
+				    BcMap.updateMarker(client);
+			    }
+			    else
+			    {
+				    BcMap.createMarker(client);
+
+				    if ( Object.keys(markers).length === 1 )
+				    {
+					    BcMap.centerBounds();
+				    }
+			    }
+		    };
+
+		    Connections.subscribe( 'ClientConnect', function( event, params )
+		    {
+			    $log.info( '[bc-map] Event:ClientConnect' );
+			    process_client_update( params.client );
+		    });
+
+		    Connections.subscribe( 'ClientDisconnect', function( event, params )
+		    {
+			    $log.info( '[bc-map] Event:ClientDisconnect' );
+			    var client = params.client,
+			        clientMac = client.profile.mac_address;
+
+			    BcMap.destroyMarker( clientMac );
+		    });
+
+		    Connections.subscribe( 'ClientCoordinates', function( event, params )
+		    {
+			    $log.info( '[bc-map] Event:ClientCoordinates' );
+			    process_client_update( params.client );
+		    });
+
+	    }
+
+	    init();
     };
 
 	bcMapController.$inject = [

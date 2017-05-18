@@ -35,11 +35,13 @@
 		        }
 	        };
 
-	        markers_interval = $interval( createMarkers, intervalCycle, 0, false );
+	        createMarkers();
+
+	        // markers_interval = $interval( createMarkers, intervalCycle, 0, false );
 
 	        element.on( '$destroy', function()
 	        {
-		        $interval.cancel( markers_interval );
+		        // $interval.cancel( markers_interval );
 		        BcMap.destroyMap();
 	        } );
         };

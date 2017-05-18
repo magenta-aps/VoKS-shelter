@@ -33,13 +33,21 @@
         /**
          * Timeout for coordinate pulling
          *
-         * @type integer
+         * @type {Number}
          */
         var activeTimeout = 5000,
             inactiveTimeout = 10000;
 
-        /**
-         * -----------------------------------------------
+	    /**
+	     * Broadcast namespace
+	     *
+	     * @type {String}
+	     * @private
+	     */
+	    var BROADCAST_NAMESPACE = 'ConnectionsService:';
+
+	    /**
+	     * -----------------------------------------------
          * Microphone
          * -----------------------------------------------
          */
@@ -323,7 +331,8 @@
                 window.localStorage.clear();
                 window.location.reload();
             }, 100);
-            $rootScope.$emit('ConnectionService::ResetShelter');
+
+            broadcast( 'ResetShelter' );
         }
 
         /**
@@ -335,7 +344,8 @@
             SocketService.sendRaw({
                 type: 'PONG'
             });
-	        $rootScope.$emit('ConnectionService::Ping');
+
+	        broadcast( 'Ping' );
         }
 
         /**
@@ -374,7 +384,7 @@
                 }
             }
 
-	        $rootScope.$emit('ConnectionService::ClientListUpdate');
+	        broadcast( 'ClientListUpdate', { 'clients': clientList });
         }
 
         /**
@@ -425,7 +435,7 @@
                 recreateRTCConnection(connection, client);
             }
 
-	        $rootScope.$emit('ConnectionService::ClientConnect');
+	        broadcast( 'ClientConnect', { 'client': client } );
         }
 
         /**
@@ -456,7 +466,7 @@
 
             client.destroy();
 
-	        $rootScope.$emit('ConnectionService::ClientDisconnect');
+	        broadcast( 'ClientDisconnect', { 'client': client } );
         }
 
 	    /**
@@ -482,7 +492,7 @@
 		        catch ( e ) { /** silence is golden **/ }
 		    }
 
-		    $rootScope.$emit('ConnectionService::ClientCoordinates');
+		    broadcast( 'ClientCoordinates', { 'client': client } );
 	    }
 
 	    /**
@@ -521,7 +531,7 @@
                 }
             }
 
-		    $rootScope.$emit('ConnectionService::RtcMessages');
+		    broadcast( 'RtcMessages', { 'client': client } );
         }
 
         /**
@@ -536,7 +546,8 @@
             var data = message.data;
             ShelterAPI.processStatus(data);
             setPoliceStatus(data.callers);
-	        $rootScope.$emit('ConnectionService::UpdateShelterStats');
+
+	        broadcast( 'UpdateShelterStats' );
         }
 
         /**
@@ -550,7 +561,8 @@
             if (null !== client) {
                 client.closeRtcConnection();
             }
-	        $rootScope.$emit('ConnectionService::PeerReconnect');
+
+	        broadcast( 'PeerReconnect', { 'client': client } );
         }
 
         /**
@@ -585,9 +597,10 @@
                 client.save();
             }
 
-            Messages.pushMessage(angular.copy(_message));
+            var __message = angular.copy(_message);
+            Messages.pushMessage(__message);
 
-            $rootScope.$emit('ConnectionService::ChatMessage');
+	        broadcast( 'ChatMessage', { 'client': client, 'message': __message } );
         }
 
         /**
@@ -613,7 +626,7 @@
                 client.save();
             }
 
-	        $rootScope.$emit('ConnectionService::CallRequest');
+	        broadcast( 'CallRequest', { 'client': client } );
         }
 
         /**
@@ -628,16 +641,36 @@
                 client.save();
             }
 
-	        $rootScope.$emit('ConnectionService::BatteryLevel');
+	        broadcast( 'BatteryLevel', { 'client': client } );
+        }
+
+	    /**
+	     * Broadcast message to listeners
+	     *
+	     * @param {String} [event]
+	     * @param {Object} [params]
+	     */
+        function broadcast( event, params )
+        {
+	        event = event || '';
+	        params = params || {};
+	        $rootScope.$emit( BROADCAST_NAMESPACE + event, params );
         }
 
 	    /**
 	     * Subscribe to ConnectionsService events
+	     *
+	     * @param {String} [event]
+	     * @param {Function} [callback]
+	     * @param {Object} [scope]
+	     *
+	     * @returns {Function}
 	     */
 	    function subscribe( event, callback, scope )
 	    {
+	    	event = event || '';
 	    	callback = callback || function() {};
-	    	event = 'ConnectionService::' + event;
+	    	event = BROADCAST_NAMESPACE + event;
 
 		    var handler = $rootScope.$on( event, callback );
 
