@@ -29,7 +29,7 @@ return [
             'sms_provider' => 'SMS provider',
             'phone_system_provider' => 'Phone system provider',
             'user_data_source' => 'User data source',
-            'client_data_source' => 'Device data source'
+            'client_data_source' => 'Device location source'
         ]
     ],
     'buttons' => [

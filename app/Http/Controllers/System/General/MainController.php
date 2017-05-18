@@ -50,7 +50,7 @@ class MainController extends BaseController
                 'smsProviders' => prepend_none_option( \Component::get('Sms')->getIntegrations() ),
                 'phoneSystemProviders' => prepend_none_option( \Component::get('PhoneSystem')->getIntegrations() ),
                 'userDataSources' => get_available_user_data_sources(),
-                'clientDataSources' => get_available_data_sources(),
+                'clientDataSources' => get_available_location_sources(),
             ]
         );
     }

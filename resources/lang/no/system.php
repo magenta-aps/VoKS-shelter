@@ -55,6 +55,7 @@ return [
             'title' => 'Konfigurer lokasjoner',
             'description' => 'Her legges lokasjonene inn. Er integrasjon satt opp mot Active Directory, vil lokasjonene hentes derfra. ',
             'sync' => 'Synkroniser lokasjoner',
+            'add' => 'Legg til',
             'table' => [
                 'name' => 'Lokasjonens navn',
                 'mac' => 'KrisePC-ens MAC-adresse',

@@ -15,7 +15,12 @@
 
             <div class="help-block__container">
                 <div class="custom">
-                    <a class="button -submit icons -sync" ng-click="syncMaps()">{{ Lang::get('system.contents.school.sync') }}</a>
+
+                    @if ( !$no_sync )
+                        <a class="button -submit icons -sync" ng-click="syncMaps()">{{ Lang::get('system.contents.school.sync') }}</a>
+                    @else
+                        <a class="button -submit icons -add">{{ Lang::get('system.contents.school.add') }}</a>
+                    @endif
 
                     <table class="table-style table-style__settings textarea-block">
                         <thead>

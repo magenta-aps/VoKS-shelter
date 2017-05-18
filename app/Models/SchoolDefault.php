@@ -61,4 +61,23 @@ class SchoolDefault extends BaseModel
 
         return $defaults;
     }
+
+	/**
+	 * Checks if user data location sources are not the ones provided
+	 *
+	 * @param string|array $sources
+	 *
+	 * @return bool
+	 */
+	public function hasNotLocationSource( $sources )
+    {
+    	if ( !isset($this->client_data_source) || empty($this->client_data_source) )
+	    {
+	    	return true;
+	    }
+
+	    $sources = is_array($sources) ? $sources : func_get_args();
+
+	    return !in_array( $this->client_data_source, $sources );
+    }
 }

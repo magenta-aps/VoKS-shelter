@@ -4,7 +4,7 @@ return [
     'menu' => [
         'main' => [
             'general' => 'General Settings',
-            'school' => 'School Management',
+            'school' => 'Shelters management',
             'buttons' => 'IP Buttons',
             'map' => 'Map',
         ],
@@ -26,7 +26,7 @@ return [
             'sms' => 'SMS provider',
             'phone' => 'Phone system provider',
             'user' => 'User data source',
-            'device' => 'Device data source'
+            'device' => 'Device location source'
         ],
 		'sources' => [
 			'ad'		=> 'Active Directory',
@@ -55,6 +55,7 @@ return [
             'title' => 'Setup Schools',
             'description' => 'Manage school settings',
             'sync' => 'Sync schools',
+            'add' => 'Add new',
             'table' => [
                 'name' => 'School name',
                 'mac' => 'Shelter PC MAC',

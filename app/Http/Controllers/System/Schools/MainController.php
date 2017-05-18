@@ -15,6 +15,7 @@ use BComeSafe\Libraries\SchoolIpHandler;
 use BComeSafe\Models\CrisisTeamMember;
 use BComeSafe\Models\School;
 use BComeSafe\Models\SchoolDefault;
+use BComeSafe\Models\SchoolDefaultFields;
 use BComeSafe\Packages\Websocket\ShelterClient;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,10 @@ class MainController extends BaseController
      */
     public function getIndex()
     {
-        return view('system.schools.index', ['shelterId' => config('alarm.default_id')]);
+	    $default = SchoolDefault::getDefaults();
+	    $no_sync = $default->hasNotLocationSource( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ALE, SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO );
+
+        return view('system.schools.index', ['shelterId' => config('alarm.default_id'), 'no_sync' => $no_sync ]);
     }
 
     /**
