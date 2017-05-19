@@ -192,9 +192,7 @@
 
 		    if ( angular.isUndefined(client.position.lat) || angular.isUndefined(client.position.lon) )
 		    {
-			    // dumb test
-			    // client.position.lat = 54.6784581;
-			    // client.position.lon = 25.2570763;
+		    	$log.error('[bc-map] Coordinates not found!', client);
 			    return;
 		    }
 
@@ -235,6 +233,7 @@
 
 		    if ( angular.isUndefined(client.position.lat) || angular.isUndefined(client.position.lon) )
 		    {
+			    $log.error('[bc-map] Coordinates not found!', client);
 			    return;
 		    }
 
@@ -351,19 +350,19 @@
 		    }
 	    }
 
-	    function init()
+	    function init( scope )
 	    {
 		    Connections.subscribe( 'ResetShelter', function()
 		    {
 		    	$log.info( '[bc-map] Event:ResetShelter' );
 		    	BcMap.createMarkers();
-		    });
+		    }, scope);
 
 		    Connections.subscribe( 'ClientListUpdate', function()
 		    {
 			    $log.info( '[bc-map] Event:ClientListUpdate' );
 			    BcMap.createMarkers();
-		    });
+		    }, scope);
 
 		    var process_client_update = function( client )
 		    {
@@ -391,7 +390,7 @@
 		    {
 			    $log.info( '[bc-map] Event:ClientConnect', params );
 			    process_client_update( params.client );
-		    });
+		    }, scope);
 
 		    Connections.subscribe( 'ClientDisconnect', function( event, params )
 		    {
@@ -400,17 +399,17 @@
 			        clientMac = client.profile.mac_address;
 
 			    BcMap.destroyMarker( clientMac );
-		    });
+		    }, scope);
 
 		    Connections.subscribe( 'ClientCoordinates', function( event, params )
 		    {
 			    $log.info( '[bc-map] Event:ClientCoordinates', params );
 			    process_client_update( params.client );
-		    });
+		    }, scope);
 
 	    }
 
-	    init();
+	    init( _scope );
     };
 
 	bcMapController.$inject = [
