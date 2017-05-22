@@ -308,6 +308,7 @@ class Shelter
         $config['google-maps-enabled'] = config('google.maps.enabled');
         $config['google-zoom-level'] = config('google.maps.zoom_level');
 	    $config['cisco-enabled'] = config('cisco.coors.enabled');
+	    $config['use-gps'] = $school->is_gps_location_source;
 
         return $config;
     }

@@ -32,9 +32,8 @@ class MainController extends BaseController
     public function getIndex()
     {
 	    $default = SchoolDefault::getDefaults();
-	    $no_sync = $default->hasNotLocationSource( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ALE, SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO );
 
-        return view('system.schools.index', ['shelterId' => config('alarm.default_id'), 'no_sync' => $no_sync ]);
+        return view('system.schools.index', ['shelterId' => config('alarm.default_id'), 'no_sync' => $default->is_gps_location_source ]);
     }
 
     /**

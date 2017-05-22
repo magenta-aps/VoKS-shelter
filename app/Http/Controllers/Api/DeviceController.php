@@ -22,6 +22,7 @@ use BComeSafe\Models\Device;
 use BComeSafe\Models\History;
 use BComeSafe\Models\Log;
 use BComeSafe\Models\School;
+use BComeSafe\Models\SchoolDefault;
 use BComeSafe\Models\SchoolStatus;
 use BComeSafe\Models\Watchdog;
 use BComeSafe\Packages\Aruba\Ale\Location;
@@ -94,6 +95,8 @@ class DeviceController extends Controller
             );
         }
 
+        $default = SchoolDefault::getDefaults();
+
         return response()->json(
             [
             'shelter_id' => $device->school_id,
@@ -102,7 +105,7 @@ class DeviceController extends Controller
             'message' => null,
             'success' => true,
             'dev_mode' => false,
-            'use_gps'  => false, //@Todo - create administration for BCS list for controling this value.
+            'use_gps'  => $default->is_gps_location_source ? true : false,
             'renew'    => false //@Todo - make possible to enable Temporary. Will be used to re-check BCS projects URL.
             ]
         );
