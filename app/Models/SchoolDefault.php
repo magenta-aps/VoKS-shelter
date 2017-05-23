@@ -52,6 +52,7 @@ class SchoolDefault extends BaseModel
 	 */
     protected $appends = [
     	'is_gps_location_source',
+    	'is_non_gps_location_source',
     ];
 
     /**
@@ -103,6 +104,25 @@ class SchoolDefault extends BaseModel
     }
 
 	/**
+	 * Checks if user data location sources are the ones provided
+	 *
+	 * @param string|array $sources
+	 *
+	 * @return bool
+	 */
+	public function hasLocationSource( $sources )
+	{
+		if ( !isset($this->client_data_source) || empty($this->client_data_source) )
+		{
+			return true;
+		}
+
+		$sources = is_array($sources) ? $sources : func_get_args();
+
+		return in_array( $this->client_data_source, $sources );
+	}
+
+	/**
 	 * Checks if location source is provided by GPS
 	 * @return bool
 	 */
@@ -115,4 +135,18 @@ class SchoolDefault extends BaseModel
 
 	    return $this->hasNotLocationSource( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ALE, SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO );
     }
+
+	/**
+	 * Checks if location source is provided by GPS
+	 * @return bool
+	 */
+	public function getIsNonGpsLocationSourceAttribute()
+	{
+		if ( !isset($this->client_data_source) || empty($this->client_data_source) )
+		{
+			return false;
+		}
+
+		return $this->hasLocationSource( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_GOOGLE );
+	}
 }

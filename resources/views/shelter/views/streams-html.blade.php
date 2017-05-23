@@ -22,11 +22,8 @@
     </div>
     <div class="streams__unit">
         <div class="streams__item">
-            @if ( config('aruba.ale.coordinatesEnabled') )
-		        <map id="streams"></map>
-			@else
-				<bc-map id="streams"></bc-map>
-			@endif
+            <map id="streams" ng-if="useNonGps()"></map>
+            <bc-map id="streams" ng-if="useGps()"></bc-map>
         </div>
     </div>
 </div>

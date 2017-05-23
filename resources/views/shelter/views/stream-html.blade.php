@@ -91,11 +91,10 @@
                     <div class="-map-wrapper">
                         <div class="map">
                             <div class="map bullets">
-                                @if ( config('aruba.ale.coordinatesEnabled') )
-                                    <map id="stream"></map>
-                                @else
-                                    <bc-map id="stream"></bc-map>
-                                @endif
+
+                                <map id="stream" ng-if="useNonGps()"></map>
+                                <bc-map id="stream" ng-if="useGps()"></bc-map>
+
                             </div>
                         </div>
                     </div>
