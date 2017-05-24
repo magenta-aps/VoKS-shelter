@@ -85,7 +85,7 @@ class MainController extends BaseController
 
         // if active directory group id has changed
         // then update the crisis team
-        if ($adId !== $data['ad_id']) {
+        if (isset($data['ad_id']) && !empty($data['ad_id']) && $adId !== $data['ad_id']) {
             CrisisTeamMember::sync($data['id']);
         }
 
