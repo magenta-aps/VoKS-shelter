@@ -33,7 +33,7 @@ class PhoneSystemController extends Controller
      *
      * @var \BComeSafe\Packages\PhoneSystem\Contracts\IntegrationContract
      */
-    public $integration;
+    public $integration = null;
 
     /**
      * Constructor
@@ -41,8 +41,12 @@ class PhoneSystemController extends Controller
     public function __construct()
     {
         $this->defaults = SchoolDefault::getDefaults();
-        $this->integration = \Component::get('PhoneSystem')
-                                       ->getIntegration($this->defaults->phone_system_provider);
+
+        if ( $this->defaults->phone_system_provider )
+        {
+	        $this->integration = \Component::get('PhoneSystem')
+	                                       ->getIntegration($this->defaults->phone_system_provider);
+        }
     }
 
     /**
@@ -56,7 +60,12 @@ class PhoneSystemController extends Controller
      */
     public function nodes(Request $request)
     {
-        $list = $this->integration->getNodes();
+	    $list = [];
+
+    	if ( $this->integration )
+	    {
+		    $list = $this->integration->getNodes();
+	    }
 
         return response()->json($list);
     }

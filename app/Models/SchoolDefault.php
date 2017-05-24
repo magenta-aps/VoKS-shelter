@@ -114,7 +114,7 @@ class SchoolDefault extends BaseModel
 	{
 		if ( !isset($this->client_data_source) || empty($this->client_data_source) )
 		{
-			return true;
+			return false;
 		}
 
 		$sources = is_array($sources) ? $sources : func_get_args();
@@ -147,6 +147,6 @@ class SchoolDefault extends BaseModel
 			return false;
 		}
 
-		return $this->hasLocationSource( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_GOOGLE );
+		return $this->hasLocationSource( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ALE, SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO );
 	}
 }

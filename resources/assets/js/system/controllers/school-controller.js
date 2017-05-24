@@ -37,18 +37,26 @@
                     }, 3000);
                 });
             },
-            removeItem: function($id, $index) {
-                if (!$id) {
+            removeItem: function($id, $index)
+            {
+                if (!$id)
+                {
                     $scope.list.splice($index, 1);
                 }
 
                 if (confirm($translate.instant('toast.contents.system.school.remove_message'))) {
-                    SystemApi.removeSchool({id: $id}).success(function() {
-                        $scope.list.splice($index, 1);
-                        Toast.push('success', $translate.instant('toast.contents.system.school.remove_success'), '');
-                    });
+	                SystemApi.removeSchool({id: $id}).success(function() {
+		                $scope.list.splice($index, 1);
+		                Toast.push('success', $translate.instant('toast.contents.system.school.remove_success'), '');
+	                });
                 }
             },
+	        addItem: function() {
+		        $scope.inserted = {
+		        	// @todo: add default fields
+		        };
+		        $scope.list.push( $scope.inserted );
+	        },
             validateField: function(data) {
                 if (data) {
                     var nospace = data.replace(/\s/g, '');
@@ -101,7 +109,14 @@
                     });
 
                 return defer.promise;
-            }
+            },
+	        cancel: function($id, $index)
+	        {
+		        if (!$id)
+		        {
+			        $scope.list.splice($index, 1);
+		        }
+	        }
         });
 
         $scope.updatePhoneSystemIdList();
