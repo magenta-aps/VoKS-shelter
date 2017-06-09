@@ -57,7 +57,7 @@
 
         	if ( angular.isUndefined(google) || angular.isUndefined(google.maps) )
 	        {
-	        	$log.error( 'Google Maps not initialized!' );
+	        	// $log.error( 'Google Maps not initialized!' );
 	        	return;
 	        }
 
@@ -65,7 +65,7 @@
 	            zoom: zoomLevel
             });
 
-        	$log.info( '[bc-map] New Google Maps instance', _instance );
+        	// $log.info( '[bc-map] New Google Maps instance', _instance );
 
         	if ( Object.keys(BcMap.clients).length === 0 )
 	        {
@@ -79,7 +79,7 @@
 			        _instance.setCenter( pos );
 			        _instance.setZoom( zoomLevel );
 			        // google.maps.event.trigger( _instance, 'resize' );
-			        $log.info( '[bc-map] Map repositioned', pos );
+			        // $log.info( '[bc-map] Map repositioned', pos );
 		        } );
 	        }
 
@@ -93,7 +93,7 @@
 	    {
 		    _instance = null;
 
-		    $log.info( '[bc-map] Map instance destroyed' );
+		    // $log.info( '[bc-map] Map instance destroyed' );
 	    };
 
 	    /**
@@ -192,7 +192,7 @@
 
 		    if ( angular.isUndefined(client.position.lat) || angular.isUndefined(client.position.lon) )
 		    {
-		    	$log.error('[bc-map] Coordinates not found!', client);
+		    	// $log.error('[bc-map] Coordinates not found!', client);
 			    return;
 		    }
 
@@ -213,7 +213,7 @@
 			    map: map
 		    } );
 
-		    $log.info( '[bc-map] Marker created', mac, pos );
+		    // $log.info( '[bc-map] Marker created', mac, pos );
 
 		    BcMap.markers[mac] = marker;
 	    };
@@ -233,7 +233,7 @@
 
 		    if ( angular.isUndefined(client.position.lat) || angular.isUndefined(client.position.lon) )
 		    {
-			    $log.error('[bc-map] Coordinates not found!', client);
+			    // $log.error('[bc-map] Coordinates not found!', client);
 			    return;
 		    }
 
@@ -244,7 +244,7 @@
 
 		    BcMap.markers[mac]._instance.setPosition( pos );
 
-		    $log.info( '[bc-map] Marker updated', mac, pos );
+		    // $log.info( '[bc-map] Marker updated', mac, pos );
 	    };
 
 	    /**
@@ -260,7 +260,7 @@
 			    marker._instance = null;
 			    delete BcMap.markers[mac];
 
-			    $log.info( '[bc-map] Marker destroyed', mac );
+			    // $log.info( '[bc-map] Marker destroyed', mac );
 		    }
 	    };
 
@@ -287,7 +287,7 @@
 		    map.fitBounds( bounds );
 		    // google.maps.event.trigger(_instance, 'resize');
 
-		    $log.info( '[bc-map] Map centered', bounds );
+		    // $log.info( '[bc-map] Map centered', bounds );
 	    };
 
 	    /**
@@ -337,12 +337,12 @@
 			    navigator.geolocation.getCurrentPosition(
 			    	function ( position )
 			        {
-			        	$log.info( '[bc-map] Received coordinates', position );
+			        	// $log.info( '[bc-map] Received coordinates', position );
 				    	successFunc( position );
 				    },
 				    function( error )
 				    {
-					    $log.error( '[bc-map] Error retrieving coordinates', error );
+					    // $log.error( '[bc-map] Error retrieving coordinates', error );
 					    errorFunc( error );
 				    },
 				    options
@@ -354,13 +354,13 @@
 	    {
 		    Connections.subscribe( 'ResetShelter', function()
 		    {
-		    	$log.info( '[bc-map] Event:ResetShelter' );
+		    	// $log.info( '[bc-map] Event:ResetShelter' );
 		    	BcMap.createMarkers();
 		    }, scope);
 
 		    Connections.subscribe( 'ClientListUpdate', function()
 		    {
-			    $log.info( '[bc-map] Event:ClientListUpdate' );
+			    // $log.info( '[bc-map] Event:ClientListUpdate' );
 			    BcMap.createMarkers();
 		    }, scope);
 
@@ -388,13 +388,13 @@
 
 		    Connections.subscribe( 'ClientConnect', function( event, params )
 		    {
-			    $log.info( '[bc-map] Event:ClientConnect', params );
+			    // $log.info( '[bc-map] Event:ClientConnect', params );
 			    process_client_update( params.client );
 		    }, scope);
 
 		    Connections.subscribe( 'ClientDisconnect', function( event, params )
 		    {
-			    $log.info( '[bc-map] Event:ClientDisconnect', params );
+			    // $log.info( '[bc-map] Event:ClientDisconnect', params );
 			    var client = params.client,
 			        clientMac = client.profile.mac_address;
 
@@ -403,7 +403,7 @@
 
 		    Connections.subscribe( 'ClientCoordinates', function( event, params )
 		    {
-			    $log.info( '[bc-map] Event:ClientCoordinates', params );
+			    // $log.info( '[bc-map] Event:ClientCoordinates', params );
 			    process_client_update( params.client );
 		    }, scope);
 
