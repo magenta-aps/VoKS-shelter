@@ -35,8 +35,15 @@ class ViewProxyController extends Controller
         if ('map-html' === $name) {
             // Get integration
             $defaults = SchoolDefault::getDefaults();
-            $integration = \Component::get('PhoneSystem')
-                ->getIntegration($defaults->phone_system_provider);
+
+	        $integration = null;
+
+            if ( $defaults->phone_system_provider )
+            {
+	            $integration = \Component::get('PhoneSystem')
+	                                     ->getIntegration($defaults->phone_system_provider);
+            }
+
 
             // Get node identifier
             $schoolId = \Shelter::getID();
@@ -45,8 +52,8 @@ class ViewProxyController extends Controller
 
             $data = [
                 'audio' => [
-                    'voices' => $integration->getVoices($nodeId),
-                    'groups' => $integration->getGroups($nodeId),
+                    'voices' => $integration ? $integration->getVoices($nodeId) : null,
+                    'groups' => $integration ? $integration->getGroups($nodeId) : null,
                     'number' => $school->phone_system_number
                 ]
             ];
