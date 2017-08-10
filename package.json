@@ -6,9 +6,9 @@
   "license":        "MPL-2.0",
   "private":        true,
   "devDependencies": {
-    "gulp": "^3.8.8"
-  },
-  "dependencies": {
-    "laravel-elixir": "^3.0.0"
+    "bower": "^1.7.6",
+    "gulp": "^3.9.1",
+
+    "laravel-elixir": "^4.0.0"
   }
 }

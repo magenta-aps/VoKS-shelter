@@ -114,7 +114,14 @@ class ArubaSyncDetails extends Command
         echo "*****************************", PHP_EOL;
         echo "*   Special devices info    *:", PHP_EOL;
         echo "*****************************", PHP_EOL;
-        $spec_devices = \DB::select("select mac_address, fullname, device_type, username, role, x, y, school_id from devices where mac_address in ('88:53:2E:E9:C7:35', '64:BC:0C:83:E3:40', 'E8:B4:C8:A7:5E:E7');");
+        $spec_devices = \DB::select("select mac_address, fullname, device_type, username, role, x, y, school_id from devices where mac_address in (
+			'88:53:2E:E9:C7:35',
+			'64:BC:0C:83:E3:40',
+			'E8:B4:C8:A7:5E:E7',
+			'D4:67:C8:D8:E0:56',
+			'00:34:2F:3F:39:26'
+		);
+		");
         foreach($spec_devices as $t) {
           echo $t->school_id, " | ", $t->mac_address, " | ", $t->fullname, ' | ', $t->device_type, ' | ', $t->username, ' | ', $t->role, ' | x=', $t->x, ';y=', $t->y, PHP_EOL;
         }

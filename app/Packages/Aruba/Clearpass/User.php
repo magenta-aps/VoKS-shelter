@@ -76,7 +76,6 @@ class User
                     } catch (\ErrorException $e) {
                         $data = [];
                     }
-
                     $tags = array_get($data, 'Endpoints.Endpoint.EndpointTags');
                     if (empty($tags)) {
                         return [

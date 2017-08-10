@@ -142,6 +142,11 @@ var jsSrcPreviewApp = assetsJsDir,
 var copySrcTinyMCE = assetsVendorDir + 'tinymce/',
     copyDstTinyMCE = publicVendorDir + 'tinymce/';
 
+
+// TinyMCE
+var copySrcBootstrap = assetsVendorDir + 'bootstrap/dist/css/bootstrap.min.css',
+    copyDstBootstrap = publicVendorDir + 'bootstrap/css/bootstrap.min.css';
+
 // Initialize
 elixir(function(mix) {
     mix
@@ -154,6 +159,9 @@ elixir(function(mix) {
         .copy(copySrcTinyMCE + 'tinymce.min.js', copyDstTinyMCE)
         .copy(copySrcTinyMCE + 'themes/**/*.min.js', copyDstTinyMCE + 'themes')
         .copy(copySrcTinyMCE + 'skins/**/*', copyDstTinyMCE + 'skins')
+
+        // Copy Bootstrap
+        .copy(copySrcBootstrap, copyDstBootstrap)
 
         // CSS
         .sass('app.scss')

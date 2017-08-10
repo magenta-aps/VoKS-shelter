@@ -55,8 +55,9 @@ class DeviceController extends Controller
             $device->setAttribute('mac_address', $request->get('mac_address', config('alarm.default.mac')));
             $device->setAttribute('push_notification_id', $request->get('gcm_id'));
             $device->updateDeviceProfile();
-            
+
         } catch (\Exception $e) {
+            //@Todo - remove this.
             $message = $e->getMessage();
 
             switch ($e->getCode()) {
@@ -112,7 +113,7 @@ class DeviceController extends Controller
         $device = $request->only(['device_id', 'call_police']);
         $device['trigger_status'] = $device['call_police'];
         unset($device['call_police']);
-        
+
         // Check if device has triggered the alarm
         $triggered = false;
         if ('0' === $device['trigger_status']) {
