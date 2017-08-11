@@ -98,35 +98,46 @@ class ArubaSyncDetails extends Command
           echo "...", PHP_EOL;
         }
         echo "*****************************", PHP_EOL;
-        echo "*       Roles               *:", PHP_EOL;
+        echo "*       Roles               *", PHP_EOL;
         echo "*****************************", PHP_EOL;
         $roles = \DB::select("SELECT COUNT(*) AS `count`, `role`, username FROM devices GROUP BY `role` ORDER BY `count` DESC;");
         foreach($roles as $r) {
           echo $r->role, " | " . $r->count, PHP_EOL;
         }
         echo "*****************************", PHP_EOL;
-        echo "*       Trigger Alarm       *:", PHP_EOL;
+        echo "*       Trigger Alarm       *", PHP_EOL;
         echo "*****************************", PHP_EOL;
         $trigger_status = \DB::select("select mac_address, fullname, device_type, username, role, x,y, school_id from devices where trigger_status = 1;");
         foreach($trigger_status as $t) {
           echo $t->school_id, " | ", $t->mac_address, " | ", $t->fullname, ' | ', $t->device_type, ' | ', $t->username, ' | ', $t->role, ' | x=', $t->x, ';y=', $t->y, PHP_EOL;
         }
         echo "*****************************", PHP_EOL;
-        echo "*   Special devices info    *:", PHP_EOL;
+        echo "*   Special devices info BCS *", PHP_EOL;
         echo "*****************************", PHP_EOL;
+        $spec_devices_mac = array(
+          '88:53:2E:E9:C7:35',
+          '64:BC:0C:83:E3:40',
+          'E8:B4:C8:A7:5E:E7',
+          '64:BC:0C:83:E3:40',
+          'D4:67:C8:D8:E0:56',
+          '00:34:2F:3F:39:26',
+          'D8:9A:34:1E:7D:3F'
+        );
         $spec_devices = \DB::select("select mac_address, fullname, device_type, username, role, x, y, school_id from devices where mac_address in (
-			'88:53:2E:E9:C7:35',
-			'64:BC:0C:83:E3:40',
-			'E8:B4:C8:A7:5E:E7',
-			'D4:67:C8:D8:E0:56',
-			'00:34:2F:3F:39:26'
-		);
+			'".implode("','",$spec_devices_mac)."' );
 		");
         foreach($spec_devices as $t) {
           echo $t->school_id, " | ", $t->mac_address, " | ", $t->fullname, ' | ', $t->device_type, ' | ', $t->username, ' | ', $t->role, ' | x=', $t->x, ';y=', $t->y, PHP_EOL;
         }
 
-
+        echo "*****************************", PHP_EOL;
+        echo "* Special devices info ALE  *", PHP_EOL;
+        echo "*****************************", PHP_EOL;
+        foreach($spec_devices_mac as $m) {
+          $loc = Location::getCoordinates($m);
+          $floor = !empty($loc['floor_id']) ? 'yes' : 'no';
+          echo $m, " | floor=", $floor, " | x=", $loc['x'], ";y=", $loc['y'], PHP_EOL;
+        }
         /*
         $time_start = microtime(true);
         //Device::updateActiveClientsQuick($macAddresses);
