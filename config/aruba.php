@@ -13,12 +13,27 @@ $clearpass = env('ARUBA_CLEARPASS_URL');
 
 return [
     'ale'       => [
-        'baseUrl'   => env('ARUBA_ALE_URL'),
-        'username' => env('ARUBA_ALE_USERNAME'),
-        'password' => env('ARUBA_ALE_PASSWORD'),
-        'apiUrl'    => '/api/v1',
+        'aleServersCount' => env('ARUBA_ALE_SERVERS_COUNT', 1),
         'coordinatesExpirationTime' => env( 'COORDINATES_EXPIRATION_TIME', 5 ),
-        'coordinatesTimeInterval' => env( 'COORDINATES_TIME_INTERVAL', 3600 * 8 )
+        'coordinatesTimeInterval' => env( 'COORDINATES_TIME_INTERVAL', 3600 * 8 ),
+        'aleServer1'       => [
+            'baseUrl'   => env('ARUBA_ALE_URL1'),
+            'username' => env('ARUBA_ALE_USERNAME1'),
+            'password' => env('ARUBA_ALE_PASSWORD1'),
+            'apiUrl'    => '/api/v1',
+        ],
+        'aleServer2'      => [
+            'baseUrl'   => env('ARUBA_ALE_URL2'),
+            'username' => env('ARUBA_ALE_USERNAME2'),
+            'password' => env('ARUBA_ALE_PASSWORD2'),
+            'apiUrl'    => '/api/v1'
+        ],
+        'aleServer3'      => [
+            'baseUrl'   => env('ARUBA_ALE_URL3'),
+            'username' => env('ARUBA_ALE_USERNAME3'),
+            'password' => env('ARUBA_ALE_PASSWORD3'),
+            'apiUrl'    => '/api/v1'
+        ],
     ],
     'airwave'   => [
         'url'      => $airwave . '/',

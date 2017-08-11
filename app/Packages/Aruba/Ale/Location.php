@@ -95,18 +95,7 @@ class Location
             $parameters['sta_eth_mac'] = $macAddress;
         }
 
-        $curl = new CurlRequest();
-        $curl->setUrl(
-            'https://' .
-            config('aruba.ale.baseUrl') .
-            config('aruba.ale.apiUrl') . '/location',
-            $parameters
-        );
-
-        $curl->setAuthentication(config('aruba.ale.username'), config('aruba.ale.password'));
-        $curl->expect(CurlRequest::JSON_RESPONSE, $callback);
-
-        $response = $curl->execute();
+        $response = static::getAllData('location', $parameters, $callback);
 
         return $response;
     }
@@ -139,17 +128,10 @@ class Location
      */
     public static function getStations($other = FALSE)
     {
-        $curl = new CurlRequest();
-        $curl->setUrl(
-            'https://' .
-            config('aruba.ale.baseUrl') .
-            config('aruba.ale.apiUrl') . '/station'
-        );
 
-        $curl->setAuthentication(config('aruba.ale.username'), config('aruba.ale.password'));
+        $parameters = [];
 
-        $curl->expect(
-            CurlRequest::JSON_RESPONSE,
+        $response = static::getAllData('station', $parameters,
             function ($data) {
                 if (empty($data)) {
                     return [];
@@ -179,8 +161,6 @@ class Location
             }
         );
 
-        $response = $curl->execute();
-
         if ($other) {
           return $response['other'];
         }
@@ -197,17 +177,10 @@ class Location
      */
     public static function getFloors()
     {
-        $curl = new CurlRequest();
-        $curl->setUrl(
-            'https://' .
-            config('aruba.ale.baseUrl') .
-            config('aruba.ale.apiUrl') . '/floor'
-        );
 
-        $curl->setAuthentication(config('aruba.ale.username'), config('aruba.ale.password'));
+        $parameters = [];
 
-        $curl->expect(
-            CurlRequest::JSON_RESPONSE,
+        return static::getAllData('floor', $parameters,
             function ($data) {
                 if (empty($data)) {
                     return [];
@@ -229,9 +202,44 @@ class Location
                 return $floors;
             }
         );
+    }
 
-        $response = $curl->execute();
+    /**
+     * Collect all data from ALE servers
+     *
+     * @param $method
+     * @param $macAddress
+     * @param \Closure   $callback
+     *
+     * @return array
+     * @throws \BComeSafe\Libraries\CurlRequestException
+     */
+    public static function getAllData($method = null, $parameters = [], \Closure $callback = null)
+    {
+        $ret_val = [];
+        $ale_servers = config('aruba.ale.aleServersCount');
 
-        return $response;
+        for ($i = 1; $i<=$ale_servers; $i++) {
+          $curl = new CurlRequest();
+          $curl->setUrl(
+              'https://' .
+              config('aruba.ale.aleServer'.$i.'.baseUrl') .
+              config('aruba.ale.aleServer'.$i.'.apiUrl') . '/' . $method,
+              $parameters
+          );
+
+          $curl->setAuthentication(config('aruba.ale.aleServer'.$i.'.username'), config('aruba.ale.aleServer'.$i.'.password'));
+          $curl->expect(CurlRequest::JSON_RESPONSE, $callback);
+
+          $response = $curl->execute();
+          if (!empty($response)) {
+            $ret_val = array_merge_recursive($ret_val, $response);
+            if (!empty($parameters['sta_eth_mac']) && !empty($ret_val)) {
+              break;
+            }
+          }
+        }
+
+        return $ret_val;
     }
 }
