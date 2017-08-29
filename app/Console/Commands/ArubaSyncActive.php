@@ -13,6 +13,7 @@ use BComeSafe\Models\Device;
 use BComeSafe\Packages\Aruba\Ale\Location;
 use GuzzleHttp\Promise;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Class ArubaSyncActive
@@ -36,18 +37,39 @@ class ArubaSyncActive extends Command
     protected $description = 'Update active Aruba clients';
 
     /**
+      * Get the console command arguments.
+      *
+      * @return array
+      */
+    protected function getArguments()
+    {
+      return [
+        ['ale', InputArgument::OPTIONAL, 'Which ALE server'],
+      ];
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
      */
     public function handle()
     {
+
+        //ALE server
+        $serverNumber = NULL;
+        $ale = $this->argument('ale');
+        if(!empty($ale) && in_array($ale, array(1, 2, 3))) {
+          $serverNumber = $ale;
+        }
+
         $full_time_start = $time_start = microtime(true);
-        $stations = Location::getStations();
+        $stations = Location::getStations(FALSE, $serverNumber);
         $time_end = microtime(true);
         $execution_time = $time_end - $time_start;
         echo "Time for geting active devices from ALE: ", $execution_time, PHP_EOL;
-        echo "Count (active): ", count($stations), PHP_EOL;
+        echo "ALE server: " , $serverNumber, PHP_EOL;
+        echo "Count (only active): ", count($stations), PHP_EOL;
         //
         $time_start = microtime(true);
         Device::updateActiveClients($stations);

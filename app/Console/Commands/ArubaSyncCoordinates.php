@@ -15,6 +15,7 @@ use BComeSafe\Packages\Aruba\Ale\Coordinates;
 use BComeSafe\Packages\Aruba\Ale\Location;
 use GuzzleHttp\Promise;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Class ArubaSyncCoordinates
@@ -40,6 +41,18 @@ class ArubaSyncCoordinates extends Command
     protected $description = 'Update client coordinates';
 
     /**
+      * Get the console command arguments.
+      *
+      * @return array
+      */
+    protected function getArguments()
+    {
+      return [
+        ['ale', InputArgument::OPTIONAL, 'Which ALE server'],
+      ];
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
@@ -47,10 +60,19 @@ class ArubaSyncCoordinates extends Command
     public function handle()
     {
 
+        //ALE server
+        $serverNumber = NULL;
+        $ale = $this->argument('ale');
+        if(!empty($ale) && in_array($ale, array(1, 2, 3))) {
+          $serverNumber = $ale;
+        }
+
+        echo "ALE server: " , $serverNumber, PHP_EOL;
+
         $full_time_start = microtime(true);
         $floors = Floor::with('image')->get()->toArray();
         $floors = array_map_by_key($floors, 'floor_hash_id');
-        $this->runUpdate($floors);
+        $this->runUpdate($floors, $serverNumber);
 
         /*for ($i = 0; $i < self::RUNS_PER_MINUTE; $i++) {
 
@@ -70,10 +92,10 @@ class ArubaSyncCoordinates extends Command
      *
      * @param $floors
      */
-    public function runUpdate($floors)
+    public function runUpdate($floors, $serverNumber)
     {
         $time_start = microtime(true);
-        $locations = Location::getAllCoordinates();
+        $locations = Location::getAllCoordinates($serverNumber);
         $time_end = microtime(true);
         $execution_time = $time_end - $time_start;
         echo "Time for geting locations from ALE: ", $execution_time, PHP_EOL;

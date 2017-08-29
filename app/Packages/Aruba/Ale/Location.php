@@ -23,10 +23,11 @@ class Location
      * @return mixed
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
-    public static function getCoordinates($macAddress)
+    public static function getCoordinates($macAddress, $serverNumber = NULL)
     {
         return static::pullLocations(
             $macAddress,
+            $serverNumber,
             function ($data) use ($macAddress) {
                 $position = array_get($data, 'Location_result.0.msg');
                 if (empty($position)) {
@@ -53,10 +54,11 @@ class Location
      * @return mixed
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
-    public static function getAllCoordinates()
+    public static function getAllCoordinates($serverNumber = NULL)
     {
         return static::pullLocations(
             null,
+            $serverNumber,
             function ($data) {
                 $positions = array_get($data, 'Location_result');
                 if (empty($positions)) {
@@ -87,7 +89,7 @@ class Location
      * @return array
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
-    public static function pullLocations($macAddress = null, \Closure $callback = null)
+    public static function pullLocations($macAddress = null, $serverNumber = NULL, \Closure $callback = null)
     {
         $parameters = [];
 
@@ -95,7 +97,7 @@ class Location
             $parameters['sta_eth_mac'] = $macAddress;
         }
 
-        $response = static::getAllData('location', $parameters, $callback);
+        $response = static::getAllData('location', $serverNumber, $parameters, $callback);
 
         return $response;
     }
@@ -126,12 +128,12 @@ class Location
      * @return mixed
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
-    public static function getStations($other = FALSE)
+    public static function getStations($other = FALSE, $serverNumber = NULL)
     {
 
         $parameters = [];
 
-        $response = static::getAllData('station', $parameters,
+        $response = static::getAllData('station', $serverNumber, $parameters,
             function ($data) {
                 if (empty($data)) {
                     return [];
@@ -175,12 +177,12 @@ class Location
      * @return mixed
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
-    public static function getFloors()
+    public static function getFloors($serverNumber = NULL)
     {
 
         $parameters = [];
 
-        return static::getAllData('floor', $parameters,
+        return static::getAllData('floor', $serverNumber, $parameters,
             function ($data) {
                 if (empty($data)) {
                     return [];
@@ -214,10 +216,20 @@ class Location
      * @return array
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
-    public static function getAllData($method = null, $parameters = [], \Closure $callback = null)
+    public static function getAllData($method = null, $serverNumber = NULL, $parameters = [], \Closure $callback = null)
     {
         $ret_val = [];
+        if ($method == 'station') {
+          $ret_val = array('active' => [], 'other' => []);
+        }
         $ale_servers = config('aruba.ale.aleServersCount');
+
+        if (is_null($serverNumber)) {
+          $i = 1;
+        }
+        else {
+          $i = $ale_servers = $serverNumber;
+        }
 
         for ($i = 1; $i<=$ale_servers; $i++) {
           $curl = new CurlRequest();
@@ -233,8 +245,19 @@ class Location
 
           $response = $curl->execute();
           if (!empty($response)) {
-            $ret_val = array_merge_recursive($ret_val, $response);
-            if (!empty($parameters['sta_eth_mac']) && !empty($ret_val)) {
+            if (is_null($serverNumber)) {
+              if ($method == 'station') {
+                $ret_val['active'] = array_merge($ret_val['active'], $response['active']);
+                $ret_val['other'] = array_merge($ret_val['other'], $response['other']);
+              }
+              else {
+                $ret_val = array_merge($ret_val, $response);
+              }
+            }
+            else {
+              $ret_val = $response;
+            }
+            if (!empty($parameters['sta_eth_mac']) && !empty($ret_val['floor_id'])) {
               break;
             }
           }

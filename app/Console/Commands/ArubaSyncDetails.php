@@ -13,6 +13,7 @@ use BComeSafe\Models\Device;
 use BComeSafe\Packages\Aruba\Ale\Location;
 use GuzzleHttp\Promise;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Class ArubaSyncActive
@@ -36,6 +37,18 @@ class ArubaSyncDetails extends Command
     protected $description = 'Check active Aruba clients';
 
     /**
+      * Get the console command arguments.
+      *
+      * @return array
+      */
+    protected function getArguments()
+    {
+      return [
+        ['ale', InputArgument::OPTIONAL, 'Which ALE server'],
+      ];
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
@@ -43,15 +56,23 @@ class ArubaSyncDetails extends Command
     public function handle()
     {
 
+        //ALE server
+        $serverNumber = NULL;
+        $ale = $this->argument('ale');
+        if(!empty($ale) && in_array($ale, array(1, 2, 3))) {
+          $serverNumber = $ale;
+        }
+
         //ALE stations
         $full_time_start = $time_start = microtime(true);
-        $stations = Location::getStations();
+        $stations = Location::getStations(FALSE, $serverNumber);
         $time_end = microtime(true);
         $execution_time = $time_end - $time_start;
         $count = count($stations);
 
-        $macAddresses_other = Location::getStations(TRUE);
+        $macAddresses_other = Location::getStations(TRUE, $serverNumber);
         echo "Date/Time: ", date("Y-m-d H:i:s", strtotime("+1 hour")), " CET", PHP_EOL;
+        echo "ALE server: " , $serverNumber, PHP_EOL;
         echo "Count (stations):", PHP_EOL;
         echo "With username: ", $count, PHP_EOL;
         echo "No username: ", count($macAddresses_other), PHP_EOL;
@@ -60,7 +81,7 @@ class ArubaSyncDetails extends Command
         echo "************", PHP_EOL;
         //ALE locations
         $time_start = microtime(true);
-        $locations = Location::getAllCoordinates();
+        $locations = Location::getAllCoordinates($serverNumber);
         $time_end = microtime(true);
         $execution_time = $time_end - $time_start;
 
@@ -112,15 +133,16 @@ class ArubaSyncDetails extends Command
           echo $t->school_id, " | ", $t->mac_address, " | ", $t->fullname, ' | ', $t->device_type, ' | ', $t->username, ' | ', $t->role, ' | x=', $t->x, ';y=', $t->y, PHP_EOL;
         }
         echo "*****************************", PHP_EOL;
-        echo "*   Special devices info BCS *", PHP_EOL;
+        echo "*  Special devices info BCS *", PHP_EOL;
         echo "*****************************", PHP_EOL;
         $spec_devices_mac = array(
           '88:53:2E:E9:C7:35',
           '64:BC:0C:83:E3:40',
           'E8:B4:C8:A7:5E:E7',
-          '64:BC:0C:83:E3:40',
           'D4:67:C8:D8:E0:56',
           '00:34:2F:3F:39:26',
+          'B4:B6:76:9C:9D:B1',
+          '30:75:12:A4:18:47',
           'D8:9A:34:1E:7D:3F'
         );
         $spec_devices = \DB::select("select mac_address, fullname, device_type, username, role, x, y, school_id from devices where mac_address in (
@@ -134,7 +156,7 @@ class ArubaSyncDetails extends Command
         echo "* Special devices info ALE  *", PHP_EOL;
         echo "*****************************", PHP_EOL;
         foreach($spec_devices_mac as $m) {
-          $loc = Location::getCoordinates($m);
+          $loc = Location::getCoordinates($m, $serverNumber);
           $floor = !empty($loc['floor_id']) ? 'yes' : 'no';
           echo $m, " | floor=", $floor, " | x=", $loc['x'], ";y=", $loc['y'], PHP_EOL;
         }
