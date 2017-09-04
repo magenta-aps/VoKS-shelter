@@ -221,7 +221,7 @@ class DeviceController extends Controller
     public function anyShelters(SheltersRequest $request)
     {
         $ret_val = array();
-        $list = School::where('display', '=', '1')->toArray();
+        $list = School::get()->toArray();
         if (empty($list)) {
           return response()->json($ret_val);
         }
@@ -251,7 +251,7 @@ class DeviceController extends Controller
     public function anyList(BcsRequest $request)
     {
         $ret_val = array();
-        $list = School::get()->toArray();
+        $list = School::where('display', '=', '1')->toArray();
         if (empty($list)) {
           return response()->json($ret_val);
         }
