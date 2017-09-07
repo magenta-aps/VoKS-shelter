@@ -10,13 +10,28 @@
 return [
     'android' => [
         'endpoint_url' => 'https://android.googleapis.com/gcm/send',
-        'api_key'      => '',
+        'api_key'      => env('ANDROID_API_KEY', ''),
     ],
     'ios'     => [
         'endpoint_url'     => 'ssl://gateway.push.apple.com:2195',
-        'password'         => '',
-        'certificate_path' => app_path() . '/Path/to/certificate.pem',
+        'password'         => env('IOS_PUSH_PASSWORD', ''),
+        'certificate_path' => app_path() . '/../certificates/apns.pem',
         'action_loc_key'   => '',
-        'expiry'           => env('IOS_PUSH_EXPIRY', 3600),    
+        'expiry'           => env('IOS_PUSH_EXPIRY', 3600),
+
+        'production'       => [
+            'endpoint_url'     => 'ssl://gateway.push.apple.com:2195',
+            'password'         => env('IOS_PUSH_PASSWORD', ''),
+            'certificate_path' => app_path() . '/../certificates/apns.pem',
+            'action_loc_key'   => '',
+            'expiry'           => env('IOS_PUSH_EXPIRY', 3600)
+        ],
+        'dev'              => [
+            'endpoint_url'     => 'ssl://gateway.sandbox.push.apple.com:2195',
+            'password'         => env('IOS_PUSH_PASSWORD', ''),
+            'certificate_path' => app_path() . '/../certificates/apns.pem',
+            'action_loc_key'   => '',
+            'expiry'           => env('IOS_PUSH_EXPIRY', 3600)
+        ]
     ]
 ];
