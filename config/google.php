@@ -9,8 +9,8 @@
 
 return [
     'maps'    => [
-    	'enabled'   	=> env( 'GOOGLE_MAPS_ENABLED', true ),
-    	'key'  	        => env( 'GOOGLE_MAPS_KEY' ),
-		'zoom_level'	=> env( 'GOOGLE_MAPS_DEFAULT_ZOOM', 15 ),
+    	'enabled'   	=> env('GOOGLE_MAPS_ENABLED', false),
+    	'key'  	        => env('GOOGLE_MAPS_KEY', ''),
+		'zoom_level'	=> env('GOOGLE_MAPS_DEFAULT_ZOOM', 15),
     ],
 ];
