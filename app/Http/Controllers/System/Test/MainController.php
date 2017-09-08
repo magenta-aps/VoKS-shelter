@@ -67,10 +67,13 @@ class MainController extends BaseController
     //        ['id' => 'd906cddee85040b13689756f75126b00dfba5ea54f1222f902dad4310324af97', 'type' => 'ios'],
     //        ['id' => '9a9395681fe67f7aacbf3133055fc8c91dbd3e478888265a77fa2df9955f83f6', 'type' => 'ios'],
         //                ['id' => '23d276d3a6fa4ef1f973a6d482057ee8abb3cfec6d16b4bcfe450031d0c116ee', 'type' => 'ios'],
+          //Bjorn
           ['id' => 'APA91bHLkz1iBV27ZO9jl6x03ZCv8bn79wan2VNT1GN8b3CK5HCpxvVbewCKCPDh0YYBkNtZb4rHagsDvQOTrCrz5j1GekycGHHeWCqJdtAty1YuRch9txWM2P8R37kRLRIlFoQ81Ony', 'type' => 'android'],
           ['id' => 'APA91bGGGBeBt89LzKwSIphja0gnzKjDhE8-OCXW4wqswakp85I16bvntetKqECcpWIpiu2FSu2FnUWsg2p3eDJ6BJ1uveCV8xQfsoJMUGmpAgFp2vUPwKEIB2CEBdpPzLYsVc1g1IvK', 'type' => 'android'],
           ['id' => 'APA91bFAB32IUq610wKJcIg7oAlAFz0auaeEUWBagaZhbiZv75GyNF42fV9CGejGiAUzbX7pUw-zHt5NHToAYSew0xSlh56GfoEQbUyLgJMHJsMXNvupnWvbgqedDH19TuhLzaOrBgnP', 'type' => 'android'],
-          ];
+          //Tadas Samsung S7
+          ['id' => 'APA91bEoT8YhJnxdia-GlDM1DvqnvxyYjcg4tKqlue9ghsTX_TvGOvNZOzgaJv6xHADJEBxG25BkSWjJ774L6J3T7OdXfeNnjILt87ur-zzXnitZqGsj3Z6NYFPZmMQ2Ga3xbZwFO1zE', 'type' => 'android'],
+        ];
 
         print_r(config('push.android'));
         $response = $server->send($devices);
