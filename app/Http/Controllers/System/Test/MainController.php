@@ -7,7 +7,7 @@
  * Developed in co-op with Baltic Amadeus, http://baltic-amadeus.lt
  */
 
-namespace BComeSafe\Http\Controllers\test\TestController;
+namespace BComeSafe\Http\Controllers\test\MainController;
 
 use BComeSafe\Http\Controllers\System\BaseController;
 use BComeSafe\Libraries\CurlRequest;
