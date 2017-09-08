@@ -21,7 +21,7 @@ Route::group(
         Route::controller('schools', 'System\Schools\MainController');
         Route::controller('buttons', 'System\Buttons\MainController');
         Route::controller('maps',    'System\Maps\MainController');
-        Route::controller('test',    'System\Test\TestController');
+        Route::controller('test',    'System\Test\MainController');
     }
 );
 
