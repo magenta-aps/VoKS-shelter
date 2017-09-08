@@ -7,8 +7,9 @@
  * Developed in co-op with Baltic Amadeus, http://baltic-amadeus.lt
  */
 
-namespace BComeSafe\Http\Controllers;
+namespace BComeSafe\Http\Controllers\test\TestController;
 
+use BComeSafe\Http\Controllers\System\BaseController;
 use BComeSafe\Libraries\CurlRequest;
 use BComeSafe\Libraries\WakeOnLan;
 use BComeSafe\Models\School;
@@ -23,34 +24,18 @@ use Devristo\Phpws\Client;
 use React\EventLoop;
 use Zend\Log;
 
-class TestController extends Controller
+/**
+ * Class MainController
+ *
+ * @package  BComeSafe\Http\Controllers\System\Test
+ */
+class MainController extends BaseController
 {
-
-    /*
-    |--------------------------------------------------------------------------
-    | Home Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller renders your application's "dashboard" for users that
-    | are authenticated. Of course, you are free to change or remove the
-    | controller as you wish. It is just here to get your app started!
-    |
-    */
-
-    /**
-     * Create a new controller instance.
-     *
-     * ignasb
-     * yH8e@sR1
-     *
-     * rasas
-     * K4g!Nw3f
-     */
 
     public function getSettings()
     {
-    	phpinfo();
-    	return [];
+	phpinfo();
+	return [];
     }
 
     public function getCoords()
@@ -61,26 +46,36 @@ class TestController extends Controller
     public function getUser()
     {
         $user = new User();
-        return $user->getByIp('192.168.1.1');
+        return $user->getByIp('192.168.21.54');
     }
 
     public function getPush()
     {
-        $item = new Notifications\Item('test push', isset($_GET['id']) ? $_GET['id'] : 1);
+        $item = new Notifications\Item('Got push?', isset($_GET['id']) ? $_GET['id'] : 1);
         $server = new Notifications\Server\Server($item);
 
-        //            $server->registerDevicePusher(new Notifications\Pusher\Android(config('push.android')));
-        $ios = new Notifications\Pusher\iOS(config('push.ios'));
-        $server->registerDevicePusher($ios);
+        $server->registerDevicePusher(new Notifications\Pusher\Android(config('push.android')));
+        //$ios = new Notifications\Pusher\iOS(config('push.ios'));
+        //$server->registerDevicePusher($ios);
         //            $server->registerDevicePusher(new Notifications\Pusher\Desktop());
 
         $devices = [
-            ['id' => 'deviceID', 'type' => 'ios'],
-        ];
+        //    ['id' => '23d276d3a6fa4ef1f973a6d482057ee8abb3cfec6d16b4bcfe450031d0c116ee', 'type' => 'ios'],
+    //        ['id' => '2bcaf885c662b7156e59bfd397cdf3587ef71f484e9ab5d292246347a56c2b68', 'type' => 'ios'],
+    //        ['id' => '9a9395681fe67f7aacbf3133055fc8c91dbd3e478888265a77fa2df9955f83f6', 'type' => 'ios'],
+        //                ['id' => '23d276d3a6fa4ef1f973a6d482057ee8abb3cfec6d16b4bcfe450031d0c116ee', 'type' => 'ios'],
+    //        ['id' => 'd906cddee85040b13689756f75126b00dfba5ea54f1222f902dad4310324af97', 'type' => 'ios'],
+    //        ['id' => '9a9395681fe67f7aacbf3133055fc8c91dbd3e478888265a77fa2df9955f83f6', 'type' => 'ios'],
+        //                ['id' => '23d276d3a6fa4ef1f973a6d482057ee8abb3cfec6d16b4bcfe450031d0c116ee', 'type' => 'ios'],
+          ['id' => 'APA91bHLkz1iBV27ZO9jl6x03ZCv8bn79wan2VNT1GN8b3CK5HCpxvVbewCKCPDh0YYBkNtZb4rHagsDvQOTrCrz5j1GekycGHHeWCqJdtAty1YuRch9txWM2P8R37kRLRIlFoQ81Ony', 'type' => 'android'],
+          ['id' => 'APA91bGGGBeBt89LzKwSIphja0gnzKjDhE8-OCXW4wqswakp85I16bvntetKqECcpWIpiu2FSu2FnUWsg2p3eDJ6BJ1uveCV8xQfsoJMUGmpAgFp2vUPwKEIB2CEBdpPzLYsVc1g1IvK', 'type' => 'android'],
+          ['id' => 'APA91bFAB32IUq610wKJcIg7oAlAFz0auaeEUWBagaZhbiZv75GyNF42fV9CGejGiAUzbX7pUw-zHt5NHToAYSew0xSlh56GfoEQbUyLgJMHJsMXNvupnWvbgqedDH19TuhLzaOrBgnP', 'type' => 'android'],
+          ];
 
+        print_r(config('push.android'));
         $response = $server->send($devices);
 
-        //            dd($ios->getFeedback());
+                   // dd($ios->getFeedback());
 
         return $response;
     }
@@ -117,7 +112,7 @@ class TestController extends Controller
     public function getSms()
     {
         $curl = new CurlRequest();
-        $phone_number = 'some wild phone number';
+        $phone_number = '+4795835235';
         $curl->setUrl(
             config('sms.talariax.url'),
             [
@@ -153,6 +148,7 @@ class TestController extends Controller
             echo $e;
         }
     }
+
 
     /**
      * Test UCP methods
