@@ -251,7 +251,7 @@ class DeviceController extends Controller
     public function anyList(BcsRequest $request)
     {
         $ret_val = array();
-        $list = School::where('public', '=', '1')->where('ip_address', '=', \Request::ip())->toArray();
+        $list = School::where('public', '=', '1')->where('ip_address', '=', \Request::ip())->get()->toArray();
         if (empty($list)) {
           $list = School::where('display', '=', '1')->toArray();
           if (empty($list)) {
