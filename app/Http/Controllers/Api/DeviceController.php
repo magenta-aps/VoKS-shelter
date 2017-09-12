@@ -263,7 +263,8 @@ class DeviceController extends Controller
               'bcs_id'               => 'id',
               'bcs_name'             => 'name',
               'bcs_url'              => 'url',
-              'police_number'        => 'police_number'
+              'police_number'        => 'police_number',
+              'public'               => 'public'
             ]
           );
         }
