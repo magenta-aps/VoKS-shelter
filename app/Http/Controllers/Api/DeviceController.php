@@ -253,7 +253,7 @@ class DeviceController extends Controller
         $ret_val = array();
         $list = School::where('public', '=', '1')->where('ip_address', '=', \Request::ip())->get()->toArray();
         if (empty($list)) {
-          $list = School::where('display', '=', '1')->toArray();
+          $list = School::where('display', '=', '1')->get()->toArray();
           if (empty($list)) {
             return response()->json($ret_val);
           }
