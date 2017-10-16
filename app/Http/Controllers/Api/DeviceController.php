@@ -52,7 +52,12 @@ class DeviceController extends Controller
             $device = Device::findOrNew($request->get('device_id'));
             $device->setAttribute('device_type', $request->get('device_type'));
             $device->setAttribute('device_id', $request->get('device_id'));
-            $device->setAttribute('mac_address', $request->get('mac_address', config('alarm.default.mac')));
+            $mac_address = $request->get('mac_address', config('alarm.default.mac'));
+            //Iphone exceptions
+            if ($mac_address == '00:00:00:00:00') {
+              $mac_address = NULL;
+            }
+            $device->setAttribute('mac_address', $mac_address);
             $device->setAttribute('push_notification_id', $request->get('gcm_id'));
             $device->updateDeviceProfile();
 
