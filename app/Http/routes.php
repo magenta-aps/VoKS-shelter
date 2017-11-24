@@ -57,7 +57,7 @@ Route::group(
 
         Route::controller('device', 'Api\DeviceController');
         Route::controller('voks', 'Api\DeviceController'); //Deprecated. Will be removed soon.
-        Route::controller('bcs', 'Api\DeviceController'); // Temporary. Should be: BcsController.
+        Route::controller('bcs', 'Api\BcsController'); // Temporary. Should be: BcsController.
         Route::match(['get', 'post'], 'shelter/coordinates', ['uses' => 'Api\ShelterController@getCoordinates']);
         Route::controller('shelter', 'Api\ShelterController');
 
