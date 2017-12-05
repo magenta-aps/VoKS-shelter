@@ -14,11 +14,11 @@ class AddFieldsSchoolsTable extends Migration {
 	{
 		Schema::table('schools', function(Blueprint $table)
 		{
-          $table->string('url', 255);
-          $table->string('police_number', 255);
-          $table->tinyInteger('use_gps', false);
-          $table->tinyInteger('display', false);
-          $table->tinyInteger('public', false);
+          $table->string('url', 255)->nullable();
+          $table->string('police_number', 255)->nullable();
+          $table->tinyInteger('use_gps', false)->nullable();
+          $table->tinyInteger('display', false)->nullable();
+          $table->tinyInteger('public', false)->nullable();
 		});
 	}
 

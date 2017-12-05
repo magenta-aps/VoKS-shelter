@@ -14,9 +14,9 @@ class AddFieldsToDevicesTable extends Migration {
 	{
 		Schema::table('devices', function(Blueprint $table)
 		{
-			$table->string('user_email', 255);
-			$table->string('username', 255);
-			$table->string('role', 255);
+			$table->string('user_email', 255)->nullable();
+			$table->string('username', 255)->nullable();
+			$table->string('role', 255)->nullable();
 		});
 	}
 
