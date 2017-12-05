@@ -50,11 +50,12 @@ class DeviceController extends Controller
              * @var $device \BcomeSafe\Models\Device
              */
             $device = Device::findOrNew($request->get('device_id'));
-            $device->setAttribute('device_type', $request->get('device_type'));
+            $device_type = $request->get('device_type');
+            $device->setAttribute('device_type', $device_type);
             $device->setAttribute('device_id', $request->get('device_id'));
             $mac_address = $request->get('mac_address', config('alarm.default.mac'));
             //Iphone exceptions
-            if ($mac_address == '00:00:00:00:00') {
+            if ($mac_address == '00:00:00:00:00' || $device_type == 'desktop') {
               $mac_address = NULL;
             }
             $device->setAttribute('mac_address', $mac_address);
