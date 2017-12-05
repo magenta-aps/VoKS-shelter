@@ -16,9 +16,9 @@ class AddFieldsSchoolsTable extends Migration {
 		{
           $table->string('url', 255);
           $table->string('police_number', 255);
-          $table->tinyInteger('use_gps', 1);
-          $table->tinyInteger('display', 4);
-          $table->tinyInteger('public', 1);
+          $table->tinyInteger('use_gps', false);
+          $table->tinyInteger('display', false);
+          $table->tinyInteger('public', false);
 		});
 	}
 
