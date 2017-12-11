@@ -33,7 +33,7 @@ class PhoneSystemController extends Controller
      *
      * @var \BComeSafe\Packages\PhoneSystem\Contracts\IntegrationContract
      */
-    public $integration;
+    public $integration = null;
 
     /**
      * Constructor
@@ -41,8 +41,10 @@ class PhoneSystemController extends Controller
     public function __construct()
     {
         $this->defaults = SchoolDefault::getDefaults();
-        $this->integration = \Component::get('PhoneSystem')
-            ->getIntegration($this->defaults->phone_system_provider);
+
+        if ($this->defaults->phone_system_provider) {
+          $this->integration = \Component::get('PhoneSystem')->getIntegration($this->defaults->phone_system_provider);
+        }
     }
 
     /**
@@ -56,7 +58,13 @@ class PhoneSystemController extends Controller
      */
     public function nodes(Request $request)
     {
-        $list = $this->integration->getNodes();
+	    $list = [];
+
+    	if ( $this->integration )
+	    {
+		    $list = $this->integration->getNodes();
+	    }
+
         return response()->json($list);
     }
 
@@ -80,8 +88,8 @@ class PhoneSystemController extends Controller
         $nodeId = $settings->phone_system_id;
 
         // Get voices and groups
-        $voices = $this->integration->getVoices($nodeId);
-        $groups = $this->integration->getGroups($nodeId);
+        $voices = $this->integration ? $this->integration->getVoices($nodeId) : null;
+        $groups = $this->integration ? $this->integration->getGroups($nodeId) : null;
 
         // POST
         if (true === $request->isMethod('post')) {
@@ -97,19 +105,19 @@ class PhoneSystemController extends Controller
             // Validate inputs
             $validator = \Validator::make($input, $rules);
             if ($validator->passes()) {
-                $success = $this->integration->play($nodeId, $input['voiceId'], $input['groupId'], 0, 0, 0);
+                $success = $this->integration ? $this->integration->play($nodeId, $input['voiceId'], $input['groupId'], 0, 0, 0) : true;
 
                 // History message
                 History::create(
                     [
-                    'type' => 'play',
-                    'message' => 'shelter/history.audio.play.message',
-                    'result' => [
-                        'voice' => $voices[$input['voiceId']],
-                        'group' => $groups[$input['groupId']],
-                        'interrupt' => null,
-                        'status' => $success
-                    ]
+                        'type'    => 'play',
+                        'message' => 'shelter/history.audio.play.message',
+                        'result'  => [
+                            'voice'     => $voices ? $voices[$input['voiceId']] : null,
+                            'group'     => $groups ? $groups[$input['groupId']] : null,
+                            'interrupt' => null,
+                            'status'    => $success
+                        ]
                     ]
                 );
             }
@@ -117,24 +125,25 @@ class PhoneSystemController extends Controller
             return response()->json(['success' => $success]);
         }
 
+        $voicesJson = [];
+        $groupsJson = [];
+
         // Prepare voices and groups arrays for JSON
         // This is needed as our version of ui-select does not support
         // iterating over objects.
-        if (!empty($voices)) {
-            $voicesJson = [];
+        if ( isset($voices) && !empty($voices)) {
             foreach ($voices as $id => $name) {
                 $voicesJson[] = [
-                    'id' => $id,
+                    'id'   => $id,
                     'name' => $name
                 ];
             }
         }
 
-        if (!empty($groups)) {
-            $groupsJson = [];
+        if ( isset($groups) && !empty($groups)) {
             foreach ($groups as $id => $name) {
                 $groupsJson[] = [
-                    'id' => $id,
+                    'id'   => $id,
                     'name' => $name
                 ];
             }
@@ -143,8 +152,8 @@ class PhoneSystemController extends Controller
         // GET
         return response()->json(
             [
-            'voices' => $voicesJson,
-            'groups' => $groupsJson
+                'voices' => $voicesJson,
+                'groups' => $groupsJson
             ]
         );
     }
@@ -170,7 +179,7 @@ class PhoneSystemController extends Controller
         $nodeId = $settings->phone_system_id;
 
         // Get groups
-        $groups = $this->integration->getGroups($nodeId);
+        $groups = $this->integration ? $this->integration->getGroups($nodeId) : null;
 
         // POST
         if (true === $request->isMethod('post')) {
@@ -179,25 +188,25 @@ class PhoneSystemController extends Controller
             // Setup validation
             $input = $request->only(['number', 'groupId']);
             $rules = [
-                'number' => 'required|string',
+                'number'  => 'required|string',
                 'groupId' => 'required|integer|in:' . implode(',', array_keys($groups))
             ];
 
             // Validate inputs
             $validator = \Validator::make($input, $rules);
             if ($validator->passes()) {
-                $success = $this->integration->broadcast($nodeId, $input['number'], $input['groupId'], 0, 0, true);
+                $success = $this->integration ? $this->integration->broadcast($nodeId, $input['number'], $input['groupId'], 0, 0, true) : true;
 
                 // History message
                 History::create(
                     [
-                    'type' => 'live',
-                    'message' => 'shelter/history.audio.live.message',
-                    'result' => [
-                        'number' => $input['number'],
-                        'group' => $groups[$input['groupId']],
-                        'status' => $success
-                    ]
+                        'type'    => 'live',
+                        'message' => 'shelter/history.audio.live.message',
+                        'result'  => [
+                            'number' => $input['number'],
+                            'group'  => $groups ? $groups[$input['groupId']] : null,
+                            'status' => $success
+                        ]
                     ]
                 );
             }
@@ -205,14 +214,15 @@ class PhoneSystemController extends Controller
             return response()->json(['success' => $success]);
         }
 
+        $groupsJson = [];
+
         // Prepare groups array for JSON
         // This is needed as our version of ui-select does not support
         // iterating over objects.
-        if (!empty($groups)) {
-            $groupsJson = [];
+        if ( isset($groups) && !empty($groups)) {
             foreach ($groups as $id => $name) {
                 $groupsJson[] = [
-                    'id' => $id,
+                    'id'   => $id,
                     'name' => $name
                 ];
             }
@@ -220,10 +230,11 @@ class PhoneSystemController extends Controller
 
         // GET
         $number = $settings->phone_system_number;
+
         return response()->json(
             [
-            'number' => $number,
-            'groups' => $groupsJson
+                'number' => $number,
+                'groups' => $groupsJson
             ]
         );
     }

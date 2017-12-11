@@ -80,23 +80,29 @@ class PhoneSystemController extends BaseController
 
         // Get integration
         $this->defaults = SchoolDefault::getDefaults();
-        $this->system = \Component::get('PhoneSystem')
-            ->getIntegration($this->defaults->phone_system_provider);
+        if ($this->defaults->phone_system_provider) {
+          $this->system = \Component::get('PhoneSystem')->getIntegration($this->defaults->phone_system_provider);
+        }
 
         // Get school settings and assigned phone system
         $this->shelterId = \Shelter::getID();
         $this->school = School::getSettings($this->shelterId);
-        $this->nodeId = $this->school->phone_system_id;
-
-        // Get available groups and media, used for displaying and validation
-        $this->groups = $this->system->getGroups($this->nodeId);
-        if (!is_array($this->groups)) {
-            $this->groups = [];
+        if ($this->school->phone_system_id) {
+          $this->nodeId = $this->school->phone_system_id;
         }
 
-        $this->media = $this->system->getVoices($this->nodeId);
-        if (!is_array($this->media)) {
-            $this->media = [];
+        $this->groups = [];
+        $this->media = [];
+        if ($this->nodeId && $this->system) {
+          // Get available groups and media, used for displaying and validation
+          $this->groups = $this->system->getGroups($this->nodeId);
+          if (!is_array($this->groups)) {
+              $this->groups = [];
+          }
+          $this->media = $this->system->getVoices($this->nodeId);
+          if (!is_array($this->media)) {
+              $this->media = [];
+          }
         }
     }
 
@@ -220,7 +226,7 @@ class PhoneSystemController extends BaseController
         $data = [
             'phone_system_number' => $request->get('phone_system_number')
         ];
-        
+
         // Validation rules
         $rules = [
             'phone_system_number' => [
