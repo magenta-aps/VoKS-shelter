@@ -80,8 +80,9 @@ class PhoneSystemController extends BaseController
 
         // Get integration
         $this->defaults = SchoolDefault::getDefaults();
-        $this->system = \Component::get('PhoneSystem')
-            ->getIntegration($this->defaults->phone_system_provider);
+        if ($this->defaults->phone_system_provider) {
+          $this->system = \Component::get('PhoneSystem')->getIntegration($this->defaults->phone_system_provider);
+        }
 
         // Get school settings and assigned phone system
         $this->shelterId = \Shelter::getID();
@@ -220,7 +221,7 @@ class PhoneSystemController extends BaseController
         $data = [
             'phone_system_number' => $request->get('phone_system_number')
         ];
-        
+
         // Validation rules
         $rules = [
             'phone_system_number' => [

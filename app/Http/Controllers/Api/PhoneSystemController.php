@@ -42,10 +42,8 @@ class PhoneSystemController extends Controller
     {
         $this->defaults = SchoolDefault::getDefaults();
 
-        if ( $this->defaults->phone_system_provider )
-        {
-	        $this->integration = \Component::get('PhoneSystem')
-	                                       ->getIntegration($this->defaults->phone_system_provider);
+        if ($this->defaults->phone_system_provider) {
+          $this->integration = \Component::get('PhoneSystem')->getIntegration($this->defaults->phone_system_provider);
         }
     }
 
