@@ -389,7 +389,7 @@ class ShelterController extends Controller
                 $list['mac:' . $i] = $mac;
             }
 
-            \Artisan::call('aruba:sync:macs', $list);
+            //\Artisan::call('aruba:sync:macs', $list);
 
             $devices = Device::whereIn('mac_address', $macs)->get();
         } else {

@@ -23,6 +23,7 @@ use BComeSafe\Packages\Notifications;
 use Devristo\Phpws\Client;
 use React\EventLoop;
 use Zend\Log;
+use BComeSafe\Models\Device;
 
 /**
  * Class MainController
@@ -47,6 +48,53 @@ class MainController extends BaseController
     {
         $user = new User();
         return $user->getByIp('192.168.21.54');
+    }
+
+    public function getRegister() {
+      try {
+        $device = Device::where('device_id','=',@$_GET['device_id'])->get()->first();
+
+        echo '<pre>';
+        print_r($device->id);
+        echo '<br/>';
+        print_r($device->school_id);
+        echo '<br/>';
+        print_r($device->device_type);
+        echo '<br/>';
+        print_r($device->device_id);
+        echo '<br/>';
+        print_r($device->fullname);
+        echo '<br/>';
+        print_r($device->mac_address);
+        echo '<br/>';
+        print_r($device->floor_id);
+        echo '<br/>';
+        print_r($device->x);
+        echo '<br/>';
+        print_r($device->y);
+        echo '<br/>';
+        print_r($device->ap_name);
+        echo '<br/>';
+        echo '</pre>';
+
+        $device->updateDeviceProfile();
+
+      } catch (\Exception $e) {
+        echo 'ERROR';
+        echo '<pre>';
+        print_r($e->getCode());
+        echo '</pre>';
+        echo '<pre>';
+        print_r($e->getMessage());
+        echo '</pre>';
+        die(__FILE__);
+
+
+      }
+      echo '<pre>';
+      print_r($device);
+      echo '</pre>';
+      die(__FILE__);
     }
 
     public function getPush()
@@ -172,4 +220,5 @@ class MainController extends BaseController
 
         echo 'If you see this, UCP authentication has worked out perfectly.';
     }
+
 }

@@ -52,7 +52,8 @@ class Device extends BaseModel
         'y',
         'active',
         'floor_id',
-        'triggered_at'
+        'triggered_at',
+        'ap_name'
     ];
 
     /**
@@ -179,7 +180,7 @@ class Device extends BaseModel
      */
     protected function getLocationData()
     {
-        $location = Location::getCoordinates($this->getAttribute('mac_address'));
+
         $device = [];
 
         if (env('SCHOOL_ID')) {
@@ -203,31 +204,46 @@ class Device extends BaseModel
                 $device['y'] = 0;
             }
         } else {
-            if (!empty($location['campus_id'])) {
-                $floor = Floor::where('floor_hash_id', '=', $location['floor_id'])->first();
 
-                if (isset($floor->building->campus->school_id)) {
-                    $device['school_id'] = $floor->building->campus->school_id;
-                    $device['floor_id'] = $floor->id;
-                } else {
-                    static::deactivate($this->getAttribute('device_id'));
-
-                    throw new \Exception(
-                        'There are no coordinates or campuses not synchronized. Please wait.',
-                        Location::COORDINATES_NOT_MAPPED
-                    );
-                }
-            } else {
-                static::deactivate($this->getAttribute('device_id'));
-
-                throw new \Exception(
-                    'We could not locate you via ALE. Please wait.',
-                    Location::COORDINATES_UNAVAILABLE
-                );
+            //Found in Clearpass
+            $ap_name = $this->getAttribute('ap_name');
+            if (empty($ap_name)) {
+              $ap = Aps::where('ap_name', '=', $ap_name)->get()->first();
+              $device['school_id'] = $ap->school_id;
+              $device['floor_id'] = $ap->floor_id;
+              $device['x'] = $ap->x;
+              $device['y'] = $ap->y;
+              $device['active'] = 1;
             }
-            $device['x'] = $location['x'];
-            $device['y'] = $location['y'];
-            $device['active'] = 1;
+            //Found in ALE
+            else {
+              $location = Location::getCoordinates($this->getAttribute('mac_address'));
+              if (!empty($location['campus_id'])) {
+                  $floor = Floor::where('floor_hash_id', '=', $location['floor_id'])->first();
+
+                  if (isset($floor->building->campus->school_id)) {
+                      $device['school_id'] = $floor->building->campus->school_id;
+                      $device['floor_id'] = $floor->id;
+                  } else {
+                      static::deactivate($this->getAttribute('device_id'));
+
+                      throw new \Exception(
+                          'There are no coordinates or campuses not synchronized. Please wait.',
+                          Location::COORDINATES_NOT_MAPPED
+                      );
+                  }
+              } else {
+                  static::deactivate($this->getAttribute('device_id'));
+
+                  throw new \Exception(
+                      'We could not locate you via ALE. Please wait.',
+                      Location::COORDINATES_UNAVAILABLE
+                  );
+              }
+              $device['x'] = $location['x'];
+              $device['y'] = $location['y'];
+              $device['active'] = 1;
+            }
         }
 
         return $device;

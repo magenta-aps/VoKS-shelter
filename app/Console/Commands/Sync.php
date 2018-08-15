@@ -21,14 +21,14 @@ class Sync extends Command
      *
      * @var string
      */
-    protected $name = 'sync';
+    protected $name = 'aruba:sync';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Sync aruba campuses and maps';
+    protected $description = 'Sync aruba campuses, maps and aps';
 
     /**
      * Execute the console command.

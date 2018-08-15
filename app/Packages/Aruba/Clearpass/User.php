@@ -83,7 +83,6 @@ class User
                         'name' => null
                         ];
                     }
-
                     foreach ($tags as $tag) {
                         $value = $tag['@attributes']['tagValue'];
 
@@ -91,6 +90,8 @@ class User
                             case 'Display Name':
                                 $profile['fullname'] = $value;
                                 break;
+                            case 'Source':
+                                $profile['ap_name'] = $value;
                         }
                     }
 
@@ -113,7 +114,6 @@ class User
         $response = $curl->setUrl($this->options['endpoints']['device'] . $ipAddress)
             ->setAuthentication($this->options['username'], $this->options['password'])
             ->expect(CurlRequest::JSON_RESPONSE)->execute();
-
         if (isset($response['mac'])) {
             return $response['mac'];
         }
@@ -144,6 +144,8 @@ class User
          */
     public function getByIp($ipAddress)
     {
+
+      $ipAddress = '192.168.160.58';
         $profile = [];
         $mac = $this->fetchMacAddress($ipAddress);
         if (!empty($mac)) {

@@ -15,8 +15,10 @@ use BComeSafe\Models\Campus;
 use BComeSafe\Models\Floor;
 use BComeSafe\Models\FloorImage;
 use BComeSafe\Models\School;
+use BComeSafe\Models\Aps;
 use BComeSafe\Packages\Aruba\Ale\Location;
 use SoapBox\Formatter\Formatter;
+use BComeSafe\Packages\Aruba\Ale\Coordinates;
 
 /**
  * Class Import
@@ -38,7 +40,8 @@ class Import
         'campuses' => 'campus_ale_id',
         'buildings' => 'building_ale_id',
         'floors' => 'floor_ale_id',
-        'floor_images' => 'file_name'
+        'floor_images' => 'file_name',
+        'aps' => 'ap_ale_id'
     ];
 
     /**
@@ -222,6 +225,34 @@ class Import
                             break;
                         }
                     }
+
+                    // import all aps
+                    if (isset($floor['ap'])) {
+                      foreach ($floor['ap'] as $ap) {
+                        $structure = isset($ap['@attributes']) ? $ap['@attributes'] : $ap;
+                        if (!isset($structure['id'])) {
+                          continue;
+                        }
+
+                        $coords = Coordinates::convert(
+                          $mapped['image']['pixel_width'],
+                          $mapped['image']['real_width'],
+                          $mapped['image']['pixel_height'],
+                          $mapped['image']['real_height'],
+                          $structure['x'],
+                          $structure['y']
+                        );
+
+                        $structure['x'] = $coords['x'];
+                        $structure['y'] = $coords['y'];
+
+                        $ap['model'] = Aps::import($this->mapper->mapAps($school->id, $floor['model']->id, $structure));
+                        $ap['id'] = $ap['model']->id;
+                        $this->addImported('aps', $ap['model']->ap_ale_id);
+                      }
+                    }
+
+
                 }
             }
         }
@@ -265,7 +296,7 @@ echo `curl -k -c /tmp/cjar -d "credential_0={$post['credential_0']}" -d "credent
 echo `curl -k -b /tmp/cjar --output {$dest} {$file}`;
 
 
-    
+
 //        \File::put($this->options['uploadDir'] . $name, $image);
     }
 }

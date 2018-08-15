@@ -74,6 +74,27 @@ class DataMapper
     }
 
     /**
+     * @param $schoolId
+     * @param $floorId
+     * @param $structure
+     * @return array
+     */
+    public function mapAps($schoolId, $floorId, $structure)
+    {
+        $ap = [
+            'school_id' => $schoolId,
+            'floor_id' => $floorId,
+            'ap_ale_id' => $structure['id'],
+            'ap_name' => $structure['name'],
+            'mac_address' => $structure['mac'],
+            'x' => $structure['x'],
+            'y' => $structure['y']
+        ];
+
+        return $ap;
+    }
+
+    /**
      * @param $baseUrl
      * @param $floor
      * @param $structure
