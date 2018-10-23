@@ -242,5 +242,37 @@ class DeviceController extends Controller
 
         return response()->json($ret_val);
     }
+	
+	    /**
+     * @param \BComeSafe\Http\Requests\BcsRequest $request
+     *
+     * @return json
+     */
+    public function anyList(BcsRequest $request)
+    {
+        $ret_val = array();
+        $list = School::where('display', '=', '1')->where('public', '=', '1')->where('ip_address', '=', \Request::ip())->get()->toArray();
+        if (empty($list)) {
+          $list = School::where('display', '=', '1')->where('public', '=', '0')->get()->toArray();
+          if (empty($list)) {
+            return response()->json($ret_val);
+          }
+        }
+
+        foreach ($list as $s) {
+          $ret_val[] = array_map_keys(
+            $s,
+            [
+              'bcs_id'               => 'id',
+              'bcs_name'             => 'name',
+              'bcs_url'              => 'url',
+              'police_number'        => 'police_number',
+              'public'               => 'public'
+            ]
+          );
+        }
+
+        return response()->json($ret_val);
+    }
 
 }
