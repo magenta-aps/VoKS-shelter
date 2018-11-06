@@ -145,7 +145,6 @@ class User
     public function getByIp($ipAddress)
     {
 
-      $ipAddress = '192.168.160.58';
         $profile = [];
         $mac = $this->fetchMacAddress($ipAddress);
         if (!empty($mac)) {
