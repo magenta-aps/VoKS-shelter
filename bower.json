@@ -28,6 +28,7 @@
     "sprintf": "~1.0.3",
     "tinymce": "~4.5.1",
     "bootstrap-tour": "~0.10.2",
-    "underscore": "~1.5"
+    "underscore": "~1.5",
+    "perfect-scrollbar": "~0.5.9"
   }
 }
