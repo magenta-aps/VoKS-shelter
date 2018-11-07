@@ -1,5 +1,5 @@
 {
-  "name": "Alarm",
+  "name": "alarm",
   "version": "1.0.0",
   "authors": [
     "BComeSafe (www.bcomesafe.com)"
@@ -29,5 +29,8 @@
     "tinymce": "~4.5.1",
     "bootstrap-tour": "~0.10.2",
     "underscore": "~1.5"
+  },
+  "resolutions": {
+    "angular": "1.7.5"
   }
 }
