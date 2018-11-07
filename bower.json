@@ -30,5 +30,9 @@
     "bootstrap-tour": "~0.10.2",
     "underscore": "~1.5",
     "perfect-scrollbar": "~0.5.9"
+  },
+  "resolutions": {
+    "angular": "~1.7.5",
+    "perfect-scrollbar": "~0.5.9"
   }
 }
