@@ -207,7 +207,7 @@ class Device extends BaseModel
 
             //Found in Clearpass
             $ap_name = $this->getAttribute('ap_name');
-            if (empty($ap_name)) {
+            if (!empty($ap_name)) {
               $ap = Aps::where('ap_name', '=', $ap_name)->get()->first();
               $device['school_id'] = $ap->school_id;
               $device['floor_id'] = $ap->floor_id;

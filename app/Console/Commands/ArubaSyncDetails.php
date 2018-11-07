@@ -144,7 +144,10 @@ class ArubaSyncDetails extends Command
           'B4:B6:76:9C:9D:B1',
           '30:75:12:A4:18:47',
           'D8:9A:34:1E:7D:3F',
-          '80:58:f8:91:d6:76'
+          '80:58:f8:91:d6:76',
+          'A0:D7:95:B5:E7:E8',
+          '78:88:6D:21:65:DF',
+          '24:F0:94:66:5B:1C'            
         );
         $spec_devices = \DB::select("select mac_address, fullname, device_type, username, role, x, y, school_id from devices where mac_address in (
 			'".implode("','",$spec_devices_mac)."' );
