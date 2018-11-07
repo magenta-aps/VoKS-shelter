@@ -1,6 +1,6 @@
 .env
 composer.lock
-#log
+log
 public/build
 public/css
 public/js
@@ -12,7 +12,7 @@ resources/assets/vendor
 storage/airwave-cookies
 storage/framework/views
 storage/framework/logs
-#vendor
+vendor
 node_modules
 _ide_helper.php
 nbproject
