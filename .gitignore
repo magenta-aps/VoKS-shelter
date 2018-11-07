@@ -8,6 +8,8 @@ public/uploads
 public/vendor
 public/download
 public/video
+public/pcapp
+public/get_info
 resources/assets/vendor
 storage/airwave-cookies
 storage/framework/views
