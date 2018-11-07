@@ -29,5 +29,5 @@
     "tinymce": "~4.5.1",
     "bootstrap-tour": "~0.10.2",
     "underscore": "~1.5"
-  },
+  }
 }
