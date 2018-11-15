@@ -15,21 +15,21 @@ return [
     'ios'     => [
         'endpoint_url'     => 'ssl://gateway.push.apple.com:2195',
         'password'         => env('IOS_PUSH_PASSWORD', ''),
-        'certificate_path' => app_path() . '/../certificates/apns.pem',
+        'certificate_path' => app_path() . '/../certificates/apns@181115.pem',
         'action_loc_key'   => '',
         'expiry'           => env('IOS_PUSH_EXPIRY', 3600),
 
         'production'       => [
             'endpoint_url'     => 'ssl://gateway.push.apple.com:2195',
             'password'         => env('IOS_PUSH_PASSWORD', ''),
-            'certificate_path' => app_path() . '/../certificates/apns.pem',
+            'certificate_path' => app_path() . '/../certificates/apns@181115.pem',
             'action_loc_key'   => '',
             'expiry'           => env('IOS_PUSH_EXPIRY', 3600)
         ],
         'dev'              => [
             'endpoint_url'     => 'ssl://gateway.sandbox.push.apple.com:2195',
             'password'         => env('IOS_PUSH_PASSWORD', ''),
-            'certificate_path' => app_path() . '/../certificates/apns.pem',
+            'certificate_path' => app_path() . '/../certificates/apns@181115.pem',
             'action_loc_key'   => '',
             'expiry'           => env('IOS_PUSH_EXPIRY', 3600)
         ]
