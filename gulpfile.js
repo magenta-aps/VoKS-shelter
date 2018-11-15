@@ -142,6 +142,11 @@ var jsSrcPreviewApp = assetsJsDir,
 var copySrcTinyMCE = assetsVendorDir + 'tinymce/',
   copyDstTinyMCE = publicVendorDir + 'tinymce/';
 
+
+// TinyMCE
+var copySrcBootstrap = assetsVendorDir + 'bootstrap/dist/css/bootstrap.min.css',
+    copyDstBootstrap = publicVendorDir + 'bootstrap/css/bootstrap.min.css';
+
 // Initialize
 elixir(function (mix) {
   mix
@@ -155,10 +160,12 @@ elixir(function (mix) {
     .copy(copySrcTinyMCE + 'themes/**/*.min.js', copyDstTinyMCE + 'themes')
     .copy(copySrcTinyMCE + 'skins/**/*', copyDstTinyMCE + 'skins')
 
-    // CSS
-    .sass('app.scss')
-    .copy(assetsCssDir + 'override.css', publicCssDir + 'override.css')
-    .copy(assetsVendorDir + 'bootstrap/dist/css/bootstrap.min.css', publicVendorDir + 'bootstrap/css/bootstrap.min.css')
+        // Copy Bootstrap
+        .copy(copySrcBootstrap, copyDstBootstrap)
+
+        // CSS
+        .sass('app.scss')
+        .copy(assetsCssDir + 'override.css', publicCssDir + 'override.css')
 
     // Shelter
     .styles(cssListShelterVendor, cssDstShelterVendor, cssSrcShelterVendor)
