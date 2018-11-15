@@ -7,7 +7,7 @@
   "description": "Alarm System",
   "license": "",
   "dependencies": {
-    "angular": "~1.7.5",
+    "angular": "~1.4.7",
     "angular-perfect-scrollbar": "~0.0.6",
     "angular-route": "~1.4.5",
     "angular-scroll-glue": "~2.0.6",
@@ -32,7 +32,7 @@
     "perfect-scrollbar": "~0.5.9"
   },
   "resolutions": {
-    "angular": "~1.7.5",
+    "angular": "~1.4.14",
     "perfect-scrollbar": "~0.5.9"
   }
 }
