@@ -198,8 +198,8 @@ class School extends BaseModel
       $school = School::where('display', '=', '1')->where('public', '=', '1')->where('ip_address', '=', \Request::ip())->get()->first()->toArray();
       if (!empty($school['id'])) {
         $school_id = $school['id'];
-      }
-      if (env('SCHOOL_ID')) {
+      } 
+      elseif (env('SCHOOL_ID')) {
         $school_id = env('SCHOOL_ID');
       }
       

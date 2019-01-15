@@ -467,6 +467,4 @@ class Device extends BaseModel
 
         return parent::update($device);
     }
-    
-    public 
 }
