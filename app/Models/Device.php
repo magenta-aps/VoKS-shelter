@@ -186,17 +186,17 @@ class Device extends BaseModel
     {
         $location = Location::getCoordinates($this->getAttribute('mac_address'));
         $device = [];
-
-        if (env('SCHOOL_ID')) {
-            $floor = Floor::where('school_id', '=', env('SCHOOL_ID'))->orderBy('id', 'desc')->get()->first();
+        $school_id = School::getDefaultSchoolID();
+        if ($school_id) {
+            $floor = Floor::where('school_id', '=', $school_id)->orderBy('id', 'desc')->get()->first();
 
             if (empty($floor) && config('aruba.airwave.enabled') === true) {
                 throw new \Exception(
-                    'Structure not synchronized on campus #' . env('SCHOOL_ID') . '. Please wait.'
+                    'Structure not synchronized on campus #' . $school_id . '. Please wait.'
                 );
             }
 
-            $device['school_id'] = env('SCHOOL_ID');
+            $device['school_id'] = $school_id;
             $device['active'] = 1;
             $device['floor_id'] = isset($floor->id) ? $floor->id : 0;
 
@@ -411,9 +411,10 @@ class Device extends BaseModel
         return 0;
       }
       $i=0;
+      $school_id = School::getDefaultSchoolID();
       foreach ($locations as $l) {
-        if (env('SCHOOL_ID')) {
-          $l['school_id'] = env('SCHOOL_ID');
+        if ($school_id) {
+          $l['school_id'] = $school_id;
         }
         $device = \DB::select(
           "SELECT * FROM devices WHERE mac_address = :mac_address" , ['mac_address' => $l['mac_address']]
@@ -459,10 +460,13 @@ class Device extends BaseModel
     {
         // if multi-shelter is disabled, set the
         // shelter ID to the configured one
-        if (isset($device['school_id']) && env('SCHOOL_ID')) {
-            $device['school_id'] = env('SCHOOL_ID');
+        $school_id = School::getDefaultSchoolID();
+        if (isset($device['school_id']) && $school_id) {
+            $device['school_id'] = $school_id;
         }
 
         return parent::update($device);
     }
+    
+    public 
 }
