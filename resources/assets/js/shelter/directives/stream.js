@@ -90,7 +90,7 @@
             if (client === null) {
                 return;
             }
-            console.log(client.stream.object.active);
+            
             if (client.stream.object.active !== true) {
                 return;
             }
@@ -117,7 +117,10 @@
 
                 $scope.$watch($attrs.active, function() {
                     scale($element);
-                    
+                    if (null !== $scope.client) {
+                        console.log('active');
+                        setVideoStream($element, $scope.client); 
+                    }
                 });
 
                 $rootScope.$watch('tab', function() {
@@ -136,15 +139,19 @@
                 
                 $scope.$watch('client.position.inView', function() {
                     $timeout(function() {
-                        console.log('client.position.inView');
-                        setVideoStream($element, $scope.client);
+                        if (null !== $scope.client) {
+                            console.log('client.position.inView');
+                            setVideoStream($element, $scope.client);
+                        }
                     }, 200);
                 });
                 
                 $scope.$watch('client.position.inLargeView', function() {
                     $timeout(function() {
-                        console.log('client.position.inLargeView');
-                        setVideoStream($element, $scope.client);
+                        if (null !== $scope.client) {
+                            console.log('client.position.inLargeView');
+                            setVideoStream($element, $scope.client);
+                        }
                     }, 200);
                 });
 
