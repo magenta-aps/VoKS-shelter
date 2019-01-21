@@ -133,8 +133,10 @@
                 $scope.$watch('client.state.chatOpen', function() {
                     $timeout(function() {
                         scale($element);
-                        
-                    }, 200);
+                        console.log('client.state.chatOpen');
+                        console.log($scope.client.state);
+                        setVideoStream($element, $scope.client);
+                    }, 2000);
                 });
                 
                 $scope.$watch('client.position.inView', function() {
@@ -143,7 +145,7 @@
                             console.log('client.position.inView');
                             setVideoStream($element, $scope.client);
                         }
-                    }, 200);
+                    }, 2000);
                 });
                 
                 $scope.$watch('client.position.inLargeView', function() {
@@ -152,13 +154,12 @@
                             console.log('client.position.inLargeView');
                             setVideoStream($element, $scope.client);
                         }
-                    }, 200);
+                    }, 2000);
                 });
 
                 $(window).resize(function() {
                     $timeout(function() {
                         scale($element);
-                        
                     }, 200);
                 });
 
