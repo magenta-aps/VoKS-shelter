@@ -12,7 +12,7 @@
             <div class="streams__video-box">
                 <div class="streams__video-tag-block">
                     <video id="streams_video-element_<% client.connection.clientId %>" class="streams__video-element" ng-src="<% client.stream.url | trusted %>" listen="client.state.muted" autoplay></video>
-                    <script type="text/javascript">var videoTag = document.getElementById('streams_video-element_<% client.connection.clientId %>'); console.log(videoTag);</script>
+                    <script type="text/javascript">var videoTag = document.getElementById('streams_video-element_<% client.profile.id %>').strObject = <% client.stream.object %>; </script>
                 </div>
 
                 <span class="-time">
