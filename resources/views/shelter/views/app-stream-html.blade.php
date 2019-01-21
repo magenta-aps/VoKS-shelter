@@ -11,7 +11,7 @@
             </div>
             <div class="streams__video-box">
                 <div class="streams__video-tag-block">
-                    <video ng-init="StreamCtrl.setVideoStream(document.getElementById(client.profile.id));" 
+                    <video ng-init="StreamCtrl.setVideoStream(client.profile.id);" 
                            id="streams_video-element_<% client.profile.id %>" 
                            class="streams__video-element" 
                            ng-src="<% client.stream.url | trusted %>" 
