@@ -97,14 +97,16 @@
             console.log('set src object');
             
             var clientIdArr = video.id.split('-');
-                clientId = clientIdArr[1];
-                client = Connections.getClient(clientId);
+            var clientId = clientIdArr[1];
+            var client = Connections.getClient(clientId);
             
             
+            console.log(video.id);
+            console.log(clientIdArr);
             console.log(clientId);
             
-            if (videoTag) {
-                videoTag.srcObject = client.stream.object;
+            if (video) {
+                video.srcObject = client.stream.object;
             }
         }
 
