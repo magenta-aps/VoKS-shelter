@@ -97,7 +97,6 @@
             
             var video = $video[0];
             if (video.srcObject) {
-                console.log(video.srcObject);
                 if (video.srcObject.active === true) {
                     return;
                 }
