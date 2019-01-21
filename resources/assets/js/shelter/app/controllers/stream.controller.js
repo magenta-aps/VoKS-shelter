@@ -56,11 +56,11 @@
         
         vm.setVideoStream = function(clientId) {
             var client = Connections.getClient(clientId);
-            var videoTag = document.getElementById('streams_video-element_' + client.profile.id);
+            var videoTag = document.getElementById('streams_video-element_' + clientId);
             console.log(typeof(videoTag));
             console.log(videoTag);
             console.log(client);
-            if (typeof(videoTag) != 'undefined') {
+            if (videoTag) {
                 videoTag.srcObject = client.stream.object;
             }
         }
