@@ -96,10 +96,10 @@
             console.log('set src object');
             //var client = $scope.client;
             console.log(video.id);
-            console.log(client);
+            console.log(client.stream);
             
             if (video) {
-                video.srcObject = client.stream.object;
+                document.getElementById(video.id).srcObject = client.stream.object;
             }
         };
 
