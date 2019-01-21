@@ -89,21 +89,16 @@
         var setVideoStream = function($video, client) {
             var video = $video[0];
             console.log(video);
-            console.log(video.srcObject);
+            console.log(video.strObject);
             console.log(client.stream.object);
             if (video.srcObject) {
-                if (video.srcObject.active === false) {
-                    video.srcObject = {};
-                }
-                else {
-                    return;
-                }
+                return;
             }
             if (client === null) {
                 return;
             }
             
-            if (client.stream.object.active && video) {
+            if (client.stream.object && video) {
                 video.srcObject = client.stream.object;
             }
         };
@@ -112,17 +107,20 @@
             link: function($scope, $element, $attrs) {
                 $timeout(function() {
                     scale($element);
+                    console.log('timeout');
                     setVideoStream($element, $scope.client);
                 }, 200);
 
                 $scope.$watch($attrs.active, function() {
                     scale($element);
+                    console.log('active');
                     setVideoStream($element, $scope.client);
                 });
 
                 $rootScope.$watch('tab', function() {
                     $timeout(function() {
                         scale($element);
+                        console.log('tab');
                         setVideoStream($element, $scope.client);
                     }, 200);
                 });
@@ -130,18 +128,21 @@
                 $scope.$watch('client.state.chatOpen', function() {
                     $timeout(function() {
                         scale($element);
+                        console.log('client.state.chatOpen');
                         setVideoStream($element, $scope.client);
                     }, 200);
                 });
                 
                 $scope.$watch('client.position.inView', function() {
                     $timeout(function() {
+                        console.log('client.position.inView');
                         setVideoStream($element, $scope.client);
                     }, 200);
                 });
                 
                 $scope.$watch('client.position.inLargeView', function() {
                     $timeout(function() {
+                        console.log('client.position.inLargeView');
                         setVideoStream($element, $scope.client);
                     }, 200);
                 });
@@ -149,6 +150,8 @@
                 $(window).resize(function() {
                     $timeout(function() {
                         scale($element);
+                        console.log('resize');
+                        setVideoStream($element, $scope.client);
                     }, 200);
                 });
 
@@ -157,7 +160,7 @@
                     if (null === State.selected.marker && null !== $scope.client) {
                         var client = $scope.client,
                             clientId = client.profile.id;
-                        
+                        console.log('loadedmetadata');
                         setVideoStream($(this), $scope.client);
                         if (client.position.floor && client.profile.mac_address) {
                             // Get active route and map state group
