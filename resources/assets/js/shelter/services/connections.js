@@ -421,6 +421,7 @@
                 if (client.position.inView) {
                     client.sendMessage('LISTENING', client.state.talking ? 1 : 0);
                 }
+                console.log(client);
             };
 
             if (connection) {
@@ -434,7 +435,7 @@
                 connection = client.getConnection();
                 recreateRTCConnection(connection, client);
             }
-
+                
 	        broadcast( 'ClientConnect', { 'client': client } );
         }
 
