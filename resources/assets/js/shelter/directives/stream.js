@@ -87,15 +87,18 @@
         };
         
         var setVideoStream = function($video, client) {
-            var video = $video[0];
-            console.log(video);
-            console.log(video.strObject);
-            console.log(client.stream.object);
-            if (video.srcObject) {
-                return;
-            }
             if (client === null) {
                 return;
+            }
+            if (client.stream.object.active !== true) {
+                return;
+            }
+            
+            var video = $video[0];
+            if (video.srcObject) {
+                if (video.srcObject.active === true) {
+                    return;
+                }
             }
             
             if (client.stream.object && video) {
@@ -107,29 +110,25 @@
             link: function($scope, $element, $attrs) {
                 $timeout(function() {
                     scale($element);
-                    console.log('timeout');
-                    setVideoStream($element, $scope.client);
+                    
                 }, 200);
 
                 $scope.$watch($attrs.active, function() {
                     scale($element);
-                    console.log('active');
-                    setVideoStream($element, $scope.client);
+                    
                 });
 
                 $rootScope.$watch('tab', function() {
                     $timeout(function() {
                         scale($element);
-                        console.log('tab');
-                        setVideoStream($element, $scope.client);
+                        
                     }, 200);
                 });
 
                 $scope.$watch('client.state.chatOpen', function() {
                     $timeout(function() {
                         scale($element);
-                        console.log('client.state.chatOpen');
-                        setVideoStream($element, $scope.client);
+                        
                     }, 200);
                 });
                 
@@ -150,8 +149,7 @@
                 $(window).resize(function() {
                     $timeout(function() {
                         scale($element);
-                        console.log('resize');
-                        setVideoStream($element, $scope.client);
+                        
                     }, 200);
                 });
 
