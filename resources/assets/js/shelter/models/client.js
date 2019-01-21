@@ -159,7 +159,6 @@
          */
         Client.prototype.setStream = function(stream) {
             this.stream.object = stream;
-            console.log(this.stream);
             //Deprecated
             //this.stream.url = URL.createObjectURL(stream);
 
