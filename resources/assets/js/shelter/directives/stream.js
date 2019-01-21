@@ -86,7 +86,7 @@
             video.style.top = Math.floor((parentHeight - Math.floor(scaleY2)) / 2) + 'px';            
         };
         
-        var setVideoStream = function($video) {
+        var setVideoStream = function($video, client) {
             var video = $video[0];
             if (video.srcObject) {
                 console.log('return');
@@ -94,55 +94,54 @@
             }
             
             console.log('set src object');
-            var client = $scope.client;
+            //var client = $scope.client;
             console.log(video.id);
             console.log(client);
             
             if (video) {
                 video.srcObject = client.stream.object;
             }
-        }
+        };
 
         return {
             link: function($scope, $element, $attrs) {
                 $timeout(function() {
                     scale($element);
-                    setVideoStream($element);
+                    setVideoStream($element, $scope.client);
                 }, 200);
 
                 $scope.$watch($attrs.active, function() {
                     scale($element);
-                    setVideoStream($element);
+                    setVideoStream($element, $scope.client);
                 });
 
                 $rootScope.$watch('tab', function() {
                     $timeout(function() {
                         scale($element);
-                        setVideoStream($element);
+                        setVideoStream($element, $scope.client);
                     }, 200);
                 });
 
                 $scope.$watch('client.state.chatOpen', function() {
                     $timeout(function() {
                         scale($element);
-                        setVideoStream($element);
+                        setVideoStream($element, $scope.client);
                     }, 200);
                 });
 
                 $(window).resize(function() {
                     $timeout(function() {
                         scale($element);
-                        setVideoStream($element);
                     }, 200);
                 });
 
                 $element.on('loadedmetadata', function() {
                     scale($(this));
-                    setVideoStream($(this));
                     if (null === State.selected.marker && null !== $scope.client) {
                         var client = $scope.client,
                             clientId = client.profile.id;
-
+                        
+                        setVideoStream($(this), $scope.client);
                         if (client.position.floor && client.profile.mac_address) {
                             // Get active route and map state group
                             var route = $route.current.active,
