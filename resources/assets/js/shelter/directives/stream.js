@@ -83,7 +83,28 @@
             video.setAttribute('width', Math.floor(scaleX2));
             video.setAttribute('height', Math.floor(scaleY2));
             video.style.left = Math.floor((parentWidth - Math.floor(scaleX2)) / 2) + 'px';
-            video.style.top = Math.floor((parentHeight - Math.floor(scaleY2)) / 2) + 'px';
+            video.style.top = Math.floor((parentHeight - Math.floor(scaleY2)) / 2) + 'px';            
+        };
+        
+        var setVideoStream = function($video, client) {
+            if (client === null) {
+                return;
+            }
+            
+            if (client.stream.object.active !== true) {
+                return;
+            }
+            
+            var video = $video[0];
+            if (video.srcObject) {
+                if (video.srcObject.active === true) {
+                    return;
+                }
+            }
+            
+            if (client.stream.object && video) {
+                video.srcObject = client.stream.object;
+            }
         };
 
         return {
@@ -94,6 +115,11 @@
 
                 $scope.$watch($attrs.active, function() {
                     scale($element);
+                    $timeout(function() {
+                        if (null !== $scope.client) {
+                            setVideoStream($element, $scope.client); 
+                        }
+                    }, 1000);
                 });
 
                 $rootScope.$watch('tab', function() {
@@ -107,7 +133,7 @@
                         scale($element);
                     }, 200);
                 });
-
+                
                 $(window).resize(function() {
                     $timeout(function() {
                         scale($element);
@@ -119,7 +145,7 @@
                     if (null === State.selected.marker && null !== $scope.client) {
                         var client = $scope.client,
                             clientId = client.profile.id;
-
+                        setVideoStream($(this), $scope.client);
                         if (client.position.floor && client.profile.mac_address) {
                             // Get active route and map state group
                             var route = $route.current.active,
