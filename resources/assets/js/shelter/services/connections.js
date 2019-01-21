@@ -421,7 +421,8 @@
                 if (client.position.inView) {
                     client.sendMessage('LISTENING', client.state.talking ? 1 : 0);
                 }
-                console.log(client);
+                var clientVideoObject = document.getElementById('streams_video-element_' + client.connection.clientId);
+                clientVideoObject.srcObject = client.stream.object;
             };
 
             if (connection) {
