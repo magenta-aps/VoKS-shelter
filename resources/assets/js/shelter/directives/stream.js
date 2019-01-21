@@ -131,6 +131,12 @@
                         setVideoStream($element, $scope.client);
                     }, 200);
                 });
+                
+                $scope.$watch('client.position.inLargeView', function() {
+                    $timeout(function() {
+                        setVideoStream($element, $scope.client);
+                    }, 200);
+                });
 
                 $(window).resize(function() {
                     $timeout(function() {
