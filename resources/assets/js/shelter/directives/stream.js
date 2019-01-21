@@ -88,8 +88,14 @@
         
         var setVideoStream = function($video, client) {
             var video = $video[0];
-            if (video.srcObject.active) {
-                return;
+            console.log(video);
+            if (video.srcObject) {
+                if (video.srcObject.active === false) {
+                    video.srcObject = {};
+                }
+                else {
+                    return;
+                }
             }
             if (client === null) {
                 return;
