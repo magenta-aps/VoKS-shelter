@@ -90,12 +90,14 @@
             if (client === null) {
                 return;
             }
+            console.log(client.stream.object.active);
             if (client.stream.object.active !== true) {
                 return;
             }
             
             var video = $video[0];
             if (video.srcObject) {
+                console.log(video.srcObject);
                 if (video.srcObject.active === true) {
                     return;
                 }
