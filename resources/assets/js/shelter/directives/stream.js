@@ -88,20 +88,15 @@
         
         var setVideoStream = function($video, client) {
             var video = $video[0];
-            console.log(typeof(video.srcObject));
             if (video.srcObject) {
-                console.log('return');
+                return;
+            }
+            if (client === null) {
                 return;
             }
             
-            console.log('set src object');
-            //var client = $scope.client;
-            console.log(video);
-            console.log(document.getElementById(video.id));
-            console.log(client.stream.object);
-            
-            if (video) {
-                document.getElementById(video.id).srcObject = client.stream.object;
+            if (client.stream.object.id && video) {
+                video.srcObject = client.stream.object;
             }
         };
 

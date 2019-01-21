@@ -11,11 +11,7 @@
             </div>
             <div class="streams__video-box">
                 <div class="streams__video-tag-block">
-                    <video id="streams_video_element-<% client.profile.id %>"
-                           class="streams__video-element" 
-                           ng-src="<% client.stream.url | trusted %>" 
-                           listen="client.state.muted" 
-                           autoplay></video>
+                    <video class="streams__video-element" listen="client.state.muted" autoplay></video>
                 </div>
 
                 <span class="-time">
