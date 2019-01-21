@@ -11,12 +11,12 @@
             </div>
             <div class="streams__video-box">
                 <div class="streams__video-tag-block">
-                    <video id="streams_video-element_<% client.profile.id %>" class="streams__video-element" ng-src="<% client.stream.url | trusted %>" listen="client.state.muted" autoplay></video>
-                    <script type="text/javascript">
-                      var videoTag = document.getElementById('streams_video-element_' + <% client.profile.id %>);
-                      console.log(<% client.stream %>);
-                      console.log(videoTag);
-                    </script>
+                    <video ng-init="StreamCtrl.setVideoStream(document.getElementById(client.profile.id));" 
+                           id="streams_video-element_<% client.profile.id %>" 
+                           class="streams__video-element" 
+                           ng-src="<% client.stream.url | trusted %>" 
+                           listen="client.state.muted" 
+                           autoplay></video>
                 </div>
 
                 <span class="-time">

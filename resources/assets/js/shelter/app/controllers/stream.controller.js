@@ -53,6 +53,17 @@
                 State.selected.marker = client.profile.id;
             }
         };
+        
+        vm.setVideoStream = function(clientId) {
+            var client = Connections.getClient(clientId);
+            var videoTag = document.getElementById('streams_video-element_' + client.profile.id);
+            console.log(typeof(videoTag));
+            console.log(videoTag);
+            console.log(client);
+            if (typeof(videoTag) != 'undefined') {
+                videoTag.srcObject = client.stream.object;
+            }
+        }
     };
 
     streamController.$inject = ['$location', '$route', 'State', 'Connections', 'MapState'];
