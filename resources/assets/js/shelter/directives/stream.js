@@ -87,6 +87,7 @@
         };
         
         var setVideoStream = function($video, client) {
+            console.log($video);
             var video = $video[0];
             if (video.srcObject) {
                 return;
