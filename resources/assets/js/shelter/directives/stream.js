@@ -83,39 +83,67 @@
             video.setAttribute('width', Math.floor(scaleX2));
             video.setAttribute('height', Math.floor(scaleY2));
             video.style.left = Math.floor((parentWidth - Math.floor(scaleX2)) / 2) + 'px';
-            video.style.top = Math.floor((parentHeight - Math.floor(scaleY2)) / 2) + 'px';
+            video.style.top = Math.floor((parentHeight - Math.floor(scaleY2)) / 2) + 'px';            
         };
+        
+        var setVideoStream = function($video) {
+            var video = $video[0];
+            console.log(video);
+            if (video.srcObject) {
+                console.log('return');
+                return;
+            }
+            
+            console.log('set src object');
+            
+            var clientIdArr = video.id.split('-');
+                clientId = clientIdArr[1];
+                client = Connections.getClient(clientId);
+            
+            
+            console.log(clientId);
+            
+            if (videoTag) {
+                videoTag.srcObject = client.stream.object;
+            }
+        }
 
         return {
             link: function($scope, $element, $attrs) {
                 $timeout(function() {
                     scale($element);
+                    setVideoStream($element);
                 }, 200);
 
                 $scope.$watch($attrs.active, function() {
                     scale($element);
+                    setVideoStream($element);
                 });
 
                 $rootScope.$watch('tab', function() {
                     $timeout(function() {
                         scale($element);
+                        setVideoStream($element);
                     }, 200);
                 });
 
                 $scope.$watch('client.state.chatOpen', function() {
                     $timeout(function() {
                         scale($element);
+                        setVideoStream($element);
                     }, 200);
                 });
 
                 $(window).resize(function() {
                     $timeout(function() {
                         scale($element);
+                        setVideoStream($element);
                     }, 200);
                 });
 
                 $element.on('loadedmetadata', function() {
                     scale($(this));
+                    setVideoStream($(this));
                     if (null === State.selected.marker && null !== $scope.client) {
                         var client = $scope.client,
                             clientId = client.profile.id;

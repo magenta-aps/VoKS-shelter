@@ -7,11 +7,11 @@
             <div class="chat__with">{{ Lang::get('app.stream.chat_with') }}</div>
             <div class="name-block">
                 <span class="name-block__called" ng-show="client.state.calledPolice"><span class="-nr">{{ Lang::get('app.stream.police_called') }}</span></span>
-                <span class="name-block__title" ng-click="StreamCtrl.setVideoStream(client.profile.id);"><% client.profile.name %></span>
+                <span class="name-block__title"><% client.profile.name %></span>
             </div>
             <div class="streams__video-box">
                 <div class="streams__video-tag-block">
-                    <video id="streams_video-element_<% client.profile.id %>" 
+                    <video id="streams_video_element-<% client.profile.id %>"
                            class="streams__video-element" 
                            ng-src="<% client.stream.url | trusted %>" 
                            listen="client.state.muted" 
