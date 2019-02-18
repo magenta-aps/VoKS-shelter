@@ -35,16 +35,12 @@ class ViewProxyController extends Controller
         if ('map-html' === $name) {
             // Get integration
             $defaults = SchoolDefault::getDefaults();
-
-	        $integration = null;
-
-            if ( $defaults->phone_system_provider )
-            {
+            $integration = null;
+            if ($defaults->phone_system_provider) {
 	            $integration = \Component::get('PhoneSystem')
-	                                     ->getIntegration($defaults->phone_system_provider);
+                                ->getIntegration($defaults->phone_system_provider);
             }
-
-
+			
             // Get node identifier
             $schoolId = \Shelter::getID();
             $school = School::getSettings($schoolId);
