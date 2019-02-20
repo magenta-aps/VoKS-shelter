@@ -14,7 +14,7 @@ class AddForeignKeysToFaqsTable extends Migration {
 	{
 		Schema::table('faqs', function(Blueprint $table)
 		{
-			$table->foreign('school_id', 'faqs_school_id_foreign')->references('id')->on('schools')->onUpdate('NO ACTION')->onDelete('CASCADE');
+			$table->foreign('school_id')->references('id')->on('schools')->onUpdate('NO ACTION')->onDelete('CASCADE');
 		});
 	}
 

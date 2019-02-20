@@ -307,9 +307,9 @@ class Shelter
         $config['aruba-coords-enabled'] = $this->getArubaCoordinatesStatus();
         $config['google-maps-enabled'] = config('google.maps.enabled');
         $config['google-zoom-level'] = config('google.maps.zoom_level');
-	    $config['cisco-enabled'] = config('cisco.coors.enabled');
-	    $config['use-gps'] = $school->is_gps_location_source ? true : false;
-	    $config['use-non-gps'] = $school->is_non_gps_location_source ? true : false;
+        $config['cisco-enabled'] = config('cisco.coors.enabled');
+        $config['use-gps'] = $school->is_gps_location_source ? true : false;
+        $config['use-non-gps'] = $school->is_non_gps_location_source ? true : false;
 
         return $config;
     }
