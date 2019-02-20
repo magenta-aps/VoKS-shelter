@@ -15,7 +15,6 @@ class AddFieldsToDevicesTable extends Migration {
 		Schema::table('devices', function(Blueprint $table)
 		{
 			$table->string('user_email', 255)->nullable();
-			$table->string('username', 255)->nullable();
 			$table->string('role', 255)->nullable();
 		});
 	}
@@ -29,7 +28,7 @@ class AddFieldsToDevicesTable extends Migration {
 	{
 		Schema::table('devices', function(Blueprint $table)
 		{
-			$table->dropColumn(['user_email', 'username', 'role']);
+			$table->dropColumn(['user_email', 'role']);
 		});
 	}
 
