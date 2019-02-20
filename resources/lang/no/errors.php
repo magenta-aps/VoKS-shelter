@@ -10,5 +10,7 @@
 return [
     'websockets' => [
         'down' => 'Serveren er utilgjengelig. Vennligst vent.'
-    ]
+    ],
+    'generic' => 'Fejl',
+    'ip_not_found' => 'Din IP-adresse (:ip) er ikke tildelt til noen skole.'
 ];
