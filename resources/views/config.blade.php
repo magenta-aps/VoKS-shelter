@@ -12,6 +12,11 @@
     config['websocket-server'] = '{{ $config['websocket-server'] }}';
     config['police'] = {!! $config['police'] !!};
     config['push-notification-limit'] = {!! $config['push-notification-limit'] !!};
+    config['aruba-coords-enabled'] = {{ $config['aruba-coords-enabled'] ? 'true' : 'false' }};
+    config['google-maps-enabled'] = {{ $config['google-maps-enabled'] ? 'true' : 'false' }};
+    config['google-zoom-level'] = {!! $config['google-zoom-level'] !!};
+    config['cisco-enabled'] = {{ $config['cisco-enabled'] ? 'true' : 'false' }};
+    config['use-gps'] = {{ $config['use-gps'] ? 'true' : 'false' }};
 
     lang = function(key) {
         return config['lang'][key];

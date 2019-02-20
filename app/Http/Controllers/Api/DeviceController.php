@@ -16,10 +16,13 @@ use BComeSafe\Http\Requests\GotItRequest;
 use BComeSafe\Http\Requests\RegisterDeviceRequest;
 use BComeSafe\Http\Requests\TriggerAlarmRequest;
 use BComeSafe\Http\Requests\WatchdogRequest;
+use BComeSafe\Http\Requests\SheltersRequest;
+use BComeSafe\Http\Requests\BcsRequest;
 use BComeSafe\Models\Device;
 use BComeSafe\Models\History;
 use BComeSafe\Models\Log;
 use BComeSafe\Models\School;
+use BComeSafe\Models\SchoolDefault;
 use BComeSafe\Models\SchoolStatus;
 use BComeSafe\Models\Watchdog;
 use BComeSafe\Packages\Aruba\Ale\Location;
@@ -60,6 +63,8 @@ class DeviceController extends Controller
             }
             $device->setAttribute('mac_address', $mac_address);
             $device->setAttribute('push_notification_id', $request->get('gcm_id'));
+            $device->setAttribute('fullname', $request->get('user_name'));
+            $device->setAttribute('user_email', $request->get('user_email'));
             $device->updateDeviceProfile();
 
         } catch (\Exception $e) {
@@ -96,6 +101,8 @@ class DeviceController extends Controller
             );
         }
 
+        $default = SchoolDefault::getDefaults();
+
         return response()->json(
             [
             'shelter_id' => $device->school_id,
@@ -103,7 +110,9 @@ class DeviceController extends Controller
             'api_url' => $urls['api'],
             'message' => null,
             'success' => true,
-            'dev_mode' => false
+            'dev_mode' => false,
+            'use_gps'  => $default->is_gps_location_source ? true : false,
+            'renew'    => false //@Todo - make possible to enable Temporary. Will be used to re-check BCS projects URL.
             ]
         );
     }
@@ -209,4 +218,67 @@ class DeviceController extends Controller
 
         return ['success' => true];
     }
+
+    /**
+     * @param \BComeSafe\Http\Requests\SheltersRequest $request
+     *
+     * @return json
+     */
+    public function anyShelters(SheltersRequest $request)
+    {
+        $ret_val = array();
+        $list = School::get()->toArray();
+        if (empty($list)) {
+          return response()->json($ret_val);
+        }
+
+        foreach ($list as $s) {
+          $s['use_gps'] = $s['use_gps'] == 1 ? TRUE : FALSE;
+          $ret_val[] = array_map_keys(
+            $s,
+            [
+              'shelter_id'           => 'id',
+              'shelter_name'         => 'name',
+              'shelter_url'          => 'url',
+              'police_number'        => 'police_number',
+              'use_gps'              => 'use_gps'
+            ]
+          );
+        }
+
+        return response()->json($ret_val);
+    }
+	
+	    /**
+     * @param \BComeSafe\Http\Requests\BcsRequest $request
+     *
+     * @return json
+     */
+    public function anyList(BcsRequest $request)
+    {
+        $ret_val = array();
+        $list = School::where('display', '=', '1')->where('public', '=', '1')->where('ip_address', '=', \Request::ip())->get()->toArray();
+        if (empty($list)) {
+          $list = School::where('display', '=', '1')->where('public', '=', '0')->get()->toArray();
+          if (empty($list)) {
+            return response()->json($ret_val);
+          }
+        }
+
+        foreach ($list as $s) {
+          $ret_val[] = array_map_keys(
+            $s,
+            [
+              'bcs_id'               => 'id',
+              'bcs_name'             => 'name',
+              'bcs_url'              => 'url',
+              'police_number'        => 'police_number',
+              'public'               => 'public'
+            ]
+          );
+        }
+
+        return response()->json($ret_val);
+    }
+
 }

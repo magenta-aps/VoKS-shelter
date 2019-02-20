@@ -159,7 +159,8 @@
          */
         Client.prototype.setStream = function(stream) {
             this.stream.object = stream;
-            this.stream.url = URL.createObjectURL(stream);
+            //Deprecated
+            //this.stream.url = URL.createObjectURL(stream);
 
             //initially pause outgoing stream
             if (this.state.microphoneEnabled) {

@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    var connectionsService = function($q, $timeout, $route, $location,
+    var connectionsService = function($q, $timeout, $route, $location, $rootScope,
                                           ShelterAPI, SocketService, Messages,
                                           RTCConnection, State, MapState, Client) {
         /**
@@ -33,13 +33,21 @@
         /**
          * Timeout for coordinate pulling
          *
-         * @type integer
+         * @type {Number}
          */
         var activeTimeout = 5000,
             inactiveTimeout = 10000;
 
-        /**
-         * -----------------------------------------------
+	    /**
+	     * Broadcast namespace
+	     *
+	     * @type {String}
+	     * @private
+	     */
+	    var BROADCAST_NAMESPACE = 'ConnectionsService:';
+
+	    /**
+	     * -----------------------------------------------
          * Microphone
          * -----------------------------------------------
          */
@@ -104,7 +112,32 @@
             _clients.push(clientModel);
         }
 
-        /**
+	    /**
+	     * Remove client from _clients array
+	     *
+	     * @param {Object} clientModel Client model
+         * @param {String} [index_key]
+	     */
+	    function removeClient( clientModel, index_key )
+        {
+	        index_key = index_key || 'mac_address';
+
+	        for ( var i = 0; i < _clients.length; i++ )
+            {
+                if ( angular.isUndefined(_clients[i]) )
+                {
+                    continue;
+                }
+
+                if ( clientModel.profile[index_key] === _clients[i].profile[index_key] )
+                {
+	                _clients.splice( i, 1 );
+	                break;
+                }
+            }
+	    }
+
+	    /**
          * Set police called status
          *
          * @param {Array} callers List of callers
@@ -293,8 +326,13 @@
          * WS: RESET
          */
         function wsResetShelter() {
-            localStorage.clear();
-            window.location.reload();
+            window.localStorage.clear();
+            setTimeout(function() {
+                window.localStorage.clear();
+                window.location.reload();
+            }, 100);
+
+            broadcast( 'ResetShelter' );
         }
 
         /**
@@ -306,6 +344,8 @@
             SocketService.sendRaw({
                 type: 'PONG'
             });
+
+	        broadcast( 'Ping' );
         }
 
         /**
@@ -343,6 +383,8 @@
                     client.init();
                 }
             }
+
+	        broadcast( 'ClientListUpdate', { 'clients': clientList });
         }
 
         /**
@@ -392,6 +434,8 @@
                 connection = client.getConnection();
                 recreateRTCConnection(connection, client);
             }
+
+	        broadcast( 'ClientConnect', { 'client': client } );
         }
 
         /**
@@ -415,10 +459,43 @@
                 $location.path('/stream').replace();
             }
 
+	        if ( angular.isDefined( config['aruba-coords-enabled'] ) && config['aruba-coords-enabled'] === false )
+	        {
+		        removeClient(client);
+	        }
+
             client.destroy();
+
+	        broadcast( 'ClientDisconnect', { 'client': client } );
         }
 
-        /**
+	    /**
+	     * Process Client Location updatemessage
+	     * WS: LOCATION
+	     */
+	    function wsClientCoordinates(message)
+	    {
+		    var client = getClient( message.src );
+
+		    if (null !== client)
+		    {
+		        try
+                {
+	                var coordinates = JSON.parse( message.data );
+
+	                if ( angular.isDefined(coordinates['LAT']) && angular.isDefined(coordinates['LON']) )
+                    {
+	                    client.position.lat = coordinates['LAT'];
+	                    client.position.lon = coordinates['LON'];
+                    }
+                }
+		        catch ( e ) { /** silence is golden **/ }
+		    }
+
+		    broadcast( 'ClientCoordinates', { 'client': client } );
+	    }
+
+	    /**
          * Process Offer, Answer & Candidate RTC messages
          * WS: OFFER, ANSWER, CANDIDATE
          *
@@ -453,6 +530,8 @@
                     }
                 }
             }
+
+		    broadcast( 'RtcMessages', { 'client': client } );
         }
 
         /**
@@ -467,6 +546,8 @@
             var data = message.data;
             ShelterAPI.processStatus(data);
             setPoliceStatus(data.callers);
+
+	        broadcast( 'UpdateShelterStats' );
         }
 
         /**
@@ -480,6 +561,8 @@
             if (null !== client) {
                 client.closeRtcConnection();
             }
+
+	        broadcast( 'PeerReconnect', { 'client': client } );
         }
 
         /**
@@ -514,7 +597,10 @@
                 client.save();
             }
 
-            Messages.pushMessage(angular.copy(_message));
+            var __message = angular.copy(_message);
+            Messages.pushMessage(__message);
+
+	        broadcast( 'ChatMessage', { 'client': client, 'message': __message } );
         }
 
         /**
@@ -539,6 +625,8 @@
 
                 client.save();
             }
+
+	        broadcast( 'CallRequest', { 'client': client } );
         }
 
         /**
@@ -552,10 +640,48 @@
                 client.timestamps.lastActive = Date.now();
                 client.save();
             }
+
+	        broadcast( 'BatteryLevel', { 'client': client } );
         }
 
-        /**
-         * -----------------------------------------------
+	    /**
+	     * Broadcast message to listeners
+	     *
+	     * @param {String} [event]
+	     * @param {Object} [params]
+	     */
+        function broadcast( event, params )
+        {
+	        event = event || '';
+	        params = params || {};
+	        $rootScope.$emit( BROADCAST_NAMESPACE + event, params );
+        }
+
+	    /**
+	     * Subscribe to ConnectionsService events
+	     *
+	     * @param {String} [event]
+	     * @param {Function} [callback]
+	     * @param {Object} [scope]
+	     *
+	     * @returns {Function}
+	     */
+	    function subscribe( event, callback, scope )
+	    {
+	    	event = event || '';
+	    	callback = callback || function() {};
+	    	event = BROADCAST_NAMESPACE + event;
+
+		    var handler = $rootScope.$on( event, callback );
+
+		    if ( angular.isDefined(scope) )
+		        scope.$on( '$destroy', handler );
+
+		    return handler;
+	    }
+
+	    /**
+	     * -----------------------------------------------
          * Setup SocketService
          * -----------------------------------------------
          */
@@ -566,6 +692,8 @@
         SocketService.onMessage('CLIENT_LIST_UPDATE', wsClientListUpdate);
         SocketService.onMessage('CLIENT_CONNECTED', wsClientConnect);
         SocketService.onMessage('CLIENT_DISCONNECTED', wsClientDisconnect);
+
+        SocketService.onMessage('LOCATION', wsClientCoordinates);
 
         SocketService.onMessage('OFFER ANSWER CANDIDATE', wsRtcMessages);
         SocketService.onMessage('SHELTER_UPDATE', wsUpdateShelterStats);
@@ -603,7 +731,9 @@
 
             addClient: addClient,
 
-            createRTCConnection: createRTCConnection
+            createRTCConnection: createRTCConnection,
+
+	        subscribe: subscribe
         };
         return service;
     };
@@ -614,6 +744,7 @@
         '$timeout',
         '$route',
         '$location',
+        '$rootScope',
 
         // Services
         'ShelterAPI',

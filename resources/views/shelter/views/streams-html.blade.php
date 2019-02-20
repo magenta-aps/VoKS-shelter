@@ -22,7 +22,8 @@
     </div>
     <div class="streams__unit">
         <div class="streams__item">
-            <map id="streams"></map>
+            <map id="streams" ng-if="useNonGps()"></map>
+            <bc-map id="streams" ng-if="useGps()"></bc-map>
         </div>
     </div>
 </div>

@@ -37,18 +37,26 @@
                     }, 3000);
                 });
             },
-            removeItem: function($id, $index) {
-                if (!$id) {
+            removeItem: function($id, $index)
+            {
+                if (!$id)
+                {
                     $scope.list.splice($index, 1);
                 }
 
                 if (confirm($translate.instant('toast.contents.system.school.remove_message'))) {
-                    SystemApi.removeSchool({id: $id}).success(function() {
-                        $scope.list.splice($index, 1);
-                        Toast.push('success', $translate.instant('toast.contents.system.school.remove_success'), '');
-                    });
+	                SystemApi.removeSchool({id: $id}).success(function() {
+		                $scope.list.splice($index, 1);
+		                Toast.push('success', $translate.instant('toast.contents.system.school.remove_success'), '');
+	                });
                 }
             },
+	        addItem: function() {
+		        $scope.inserted = {
+		        	// @todo: add default fields
+		        };
+		        $scope.list.push( $scope.inserted );
+	        },
             validateField: function(data) {
                 if (data) {
                     var nospace = data.replace(/\s/g, '');
@@ -78,6 +86,8 @@
                     .then(function(response) {
                         var data = response.data;
                         $scope.model.phoneSystemIds = data;
+                    }, function(response) {
+                    	/* silence is golden */
                     });
             },
             validatePhoneSystemId: function(id, data) {
@@ -93,10 +103,20 @@
                         } else {
                             defer.resolve(data);
                         }
+                    }, function(response) {
+                    	/* silence is golden */
+	                    defer.resolve();
                     });
 
                 return defer.promise;
-            }
+            },
+	        cancel: function($id, $index)
+	        {
+		        if (!$id)
+		        {
+			        $scope.list.splice($index, 1);
+		        }
+	        }
         });
 
         $scope.updatePhoneSystemIdList();

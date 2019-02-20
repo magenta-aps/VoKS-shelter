@@ -7,6 +7,8 @@
  * Developed in co-op with Baltic Amadeus, http://baltic-amadeus.lt
  */
 
+use BComeSafe\Models\SchoolDefaultFields;
+
 function get_available_languages()
 {
         $directories = \File::directories(base_path('resources/lang'));
@@ -28,6 +30,30 @@ function get_sorting_options()
     }
 
     return $options;
+}
+
+function prepend_none_option( $options = [] )
+{
+	$options = collect($options);
+	return collect(['' => trans('system.contents.defaults.none')] + $options->all());
+}
+
+function get_available_user_data_sources()
+{
+	$sources = collect();
+	config('ad.enabled') ? $sources->put( SchoolDefaultFields::USER_DATA_SOURCE_AD, trans('system.contents.sources.ad') ) : null;
+
+	return prepend_none_option($sources);
+}
+
+function get_available_location_sources()
+{
+	$sources = collect();
+	config('aruba.ale.enabled') ? $sources->put( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ALE, trans('system.contents.sources.ale') ) : null;
+	config('cisco.coors.enabled') ? $sources->put( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO, trans('system.contents.sources.cisco') ) : null;
+	config('google.maps.enabled') ? $sources->put( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_GOOGLE, trans('system.contents.sources.google') ) : null;
+
+	return prepend_none_option($sources);
 }
 
 function format_mac_address($macAddress)

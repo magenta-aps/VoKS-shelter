@@ -14,7 +14,7 @@ use BComeSafe\Libraries\CurlRequest;
 class Location
 {
     const COORDINATES_UNAVAILABLE = 1;
-    const COORDINATES_NOT_MAPPED = 2;
+    const COORDINATES_NOT_MAPPED  = 2;
 
     /**
      * Fetches coordinates for a MAC address from ALE
@@ -32,10 +32,10 @@ class Location
                 $position = array_get($data, 'Location_result.0.msg');
                 if (empty($position)) {
                     return [
-                    'x' => 0,
-                    'y' => 0,
-                    'floor_id' => '',
-                    'campus_id' => ''
+                        'x'         => 0,
+                        'y'         => 0,
+                        'floor_id'  => '',
+                        'campus_id' => ''
                     ];
                 }
 
@@ -74,6 +74,7 @@ class Location
 
                     $locations[] = $location;
                 }
+
                 return $locations;
             }
         );
@@ -83,14 +84,23 @@ class Location
      * Fetches coordinates for either one or all clients
      * with a response formatter callback
      *
-     * @param $macAddress
-     * @param \Closure   $callback
+     * @param          $macAddress
+     * @param \Closure $callback
      *
      * @return array
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
     public static function pullLocations($macAddress = null, $serverNumber = NULL, \Closure $callback = null)
     {
+        if (config('aruba.ale.enabled') === false) {
+            return [
+                'x'         => 0,
+                'y'         => 0,
+                'floor_id'  => '',
+                'campus_id' => ''
+            ];
+        }
+
         $parameters = [];
 
         if (null !== $macAddress) {
@@ -113,10 +123,10 @@ class Location
         return array_map_keys(
             $position,
             [
-            'x' => 'sta_location_x',
-            'y' => 'sta_location_y',
-            'floor_id' => 'floor_id',
-            'campus_id' => 'campus_id'
+                'x'         => 'sta_location_x',
+                'y'         => 'sta_location_y',
+                'floor_id'  => 'floor_id',
+                'campus_id' => 'campus_id'
             ]
         );
     }

@@ -4,7 +4,7 @@ return [
     'menu' => [
         'main' => [
             'general' => 'General Settings',
-            'school' => 'School Management',
+            'school' => 'Shelters management',
             'buttons' => 'IP Buttons',
             'map' => 'Map',
         ],
@@ -26,8 +26,14 @@ return [
             'sms' => 'SMS provider',
             'phone' => 'Phone system provider',
             'user' => 'User data source',
-            'device' => 'Device data source'
+            'device' => 'Device location source'
         ],
+		'sources' => [
+			'ad'		=> 'Active Directory',
+			'ale'		=> 'Aruba Ale',
+			'cisco'		=> 'Cisco CMX',
+			'google'	=> 'Google Maps',
+		],
         'push' => [
             'title' => 'Push notifications',
             'description' => 'Setup default push notification settings',
@@ -49,6 +55,7 @@ return [
             'title' => 'Setup Schools',
             'description' => 'Manage school settings',
             'sync' => 'Sync schools',
+            'add' => 'Add new',
             'table' => [
                 'name' => 'School name',
                 'mac' => 'Shelter PC MAC',
@@ -62,6 +69,9 @@ return [
             'title' => 'Maps',
             'description' => 'Sync and preview maps',
             'sync' => 'Sync Maps'
+        ],
+        'defaults'  => [
+        	'none'      => 'None',
         ]
     ]
 

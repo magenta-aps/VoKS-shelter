@@ -30,7 +30,17 @@ class MainController extends BaseController
      */
     public function getIndex()
     {
-        return view('system.schools.index', ['shelterId' => config('alarm.default_id')]);
+	    $default = SchoolDefault::getDefaults();
+
+	    $data = [
+	    	'shelterId'         => config('alarm.default_id'),
+	    	'use_gps'           => $default->is_gps_location_source,
+	        'use_non_gps'       => $default->is_non_gps_location_source,
+	        'phone_provider'    => $default->phone_system_provider ? true : false,
+	        'ad_enabled'        => config('ad.enabled'),
+	    ];
+
+        return view('system.schools.index', $data);
     }
 
     /**
@@ -49,16 +59,33 @@ class MainController extends BaseController
     {
         $data = $request->only(['id', 'ip_address', 'mac_address', 'ad_id', 'phone_system_id', 'campus_id', 'name']);
 
-        $item = School::find($data['id']);
+	    if ( isset($data['id']) )
+        {
+	        $item = School::find($data['id']);
 
-        $adId = $item->ad_id;
-        $ipAddress = $item->ip_address;
+	        $adId = $item->ad_id;
+	        $ipAddress = $item->ip_address;
 
-        $item->update($data);
+	        $item->update($data);
+        }
+        else
+        {
+        	$defaults = SchoolDefault::getDefaults();
+
+        	$data['ordering'] = isset($data['ordering']) ? $data['ordering'] : $defaults->ordering;
+        	$data['locale'] = isset($data['locale']) ? $data['locale'] : $defaults->locale;
+        	$data['timezone'] = isset($data['timezone']) ? $data['timezone'] : $defaults->timezone;
+        	$data['campus_id'] = isset($data['campus_id']) ? $data['campus_id'] : 0;
+
+        	$item = School::create($data);
+
+	        $adId = isset($data['ad_id']) ? $data['ad_id'] : null;
+	        $ipAddress = isset($data['ip_address']) ? $data['ip_address'] : null;
+        }
 
         // if active directory group id has changed
         // then update the crisis team
-        if ($adId !== $data['ad_id']) {
+        if (isset($data['ad_id']) && !empty($data['ad_id']) && $adId !== $data['ad_id']) {
             CrisisTeamMember::sync($data['id']);
         }
 
@@ -67,7 +94,7 @@ class MainController extends BaseController
             try {
                 $client = new ShelterClient(config('alarm.php_ws_url') . '/' . config('alarm.php_ws_client'));
                 $client->updateIpWhitelist($ipHandler->getMappedList());
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
 
             }
         }
@@ -75,15 +102,39 @@ class MainController extends BaseController
         return $item;
     }
 
-    /**
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Support\Collection|null|static
+	 */
+	public function postRemoveSchool(Request $request)
+	{
+		$id = $request->get('id');
+
+		if ( $school = School::find($id) )
+		{
+			$school->delete();
+
+			return response()->json(true);
+		}
+
+		return response()->json(false);
+	}
+
+	/**
      * @return mixed
      */
     private function getPhoneSystemIdList()
     {
         // Get integration
         $default = SchoolDefault::getDefaults();
+
+        if ( !$default->phone_system_provider )
+        {
+        	return [];
+        }
+
         $integration = \Component::get('PhoneSystem')
-            ->getIntegration($default->phone_system_provider);
+                                 ->getIntegration($default->phone_system_provider);
 
         return $integration->getNodes();
     }
@@ -96,6 +147,10 @@ class MainController extends BaseController
     {
         $nodeId = $request->get('nodeId');
         $nodes = $this->getPhoneSystemIdList();
+
+        if (empty($nodes)) {
+	        return response()->json('true');
+        }
 
         foreach ($nodes as $node) {
             if ($nodeId === $node['id']) {
@@ -114,6 +169,7 @@ class MainController extends BaseController
     public function postValidateIp(Request $request)
     {
         $ip = new SchoolIpHandler();
+
         return $ip->validateUniqueness($request->get('ip'), $request->get('id'));
     }
 }

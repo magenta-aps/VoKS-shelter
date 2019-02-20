@@ -29,6 +29,10 @@
 
     @include('config')
 
+    @if ( config('google.maps.enabled') )
+        <script src="https://maps.google.com/maps/api/js?key={{ config('google.maps.key') }}"></script>
+    @endif
+
     <script src="{{ elixir('js/shelter.js') }}"></script>
     <script src="{{ elixir('js/app.js') }}"></script>
 </body>

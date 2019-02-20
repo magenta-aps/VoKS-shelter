@@ -13,6 +13,8 @@ $clearpass = env('ARUBA_CLEARPASS_URL');
 
 return [
     'ale'       => [
+        'enabled'  => env('ARUBA_ALE_ENABLED', false),
+        'coordinatesEnabled' => env('ARUBA_ALE_COORDINATES_ENABLED', true),
         'aleServersCount' => env('ARUBA_ALE_SERVERS_COUNT', 1),
         'coordinatesExpirationTime' => env( 'COORDINATES_EXPIRATION_TIME', 5 ),
         'coordinatesTimeInterval' => env( 'COORDINATES_TIME_INTERVAL', 3600 * 8 ),
@@ -36,6 +38,7 @@ return [
         ],
     ],
     'airwave'   => [
+        'enabled'  => env('ARUBA_AIRWAVE_ENABLED', true),
         'url'      => $airwave . '/',
         'login'    => [
             'url'      => $airwave . '/LOGIN',
@@ -50,12 +53,13 @@ return [
         ]
     ],
     'clearpass' => [
-        'login' => [
+        'enabled' => env('ARUBA_CLEARPASS_ENABLED', true),
+        'login'   => [
             'url'      => '',
             'username' => env('ARUBA_CLEARPASS_USERNAME'),
             'password' => env('ARUBA_CLEARPASS_PASSWORD')
         ],
-        'user'  => [
+        'user'    => [
             'profile' => $clearpass . '/tipsapi/config/read/Endpoint',
             'device'  => $clearpass . '/async_netd/deviceprofiler/endpoints/'
         ]

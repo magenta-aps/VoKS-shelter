@@ -96,11 +96,12 @@ class ComponentExtractor implements Contracts\ExtractorContract
 
         foreach ($files as $file) {
             $class = $file->getBasename('.php');
+	        $component_key = str_replace('Integration', '', $class);
+	        if ( $component_key === 'Example') continue;
 
             $reflector = new \ReflectionClass($this->getNamespace() . $class);
             $component = $reflector->getDefaultProperties();
-            ;
-            $components[str_replace('Integration', '', $class)] = $component['label'];
+            $components[$component_key] = $component['label'];
         }
         return $components;
     }

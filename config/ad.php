@@ -8,6 +8,7 @@
  */
 
 return [
+	'enabled'		=> env('AD_ENABLED', true),
     'connection'    => [
         //'user_id_key' => 'samaccountname',
         //'person_filter' => array('category' => 'objectCategory', 'person' => 'person'),

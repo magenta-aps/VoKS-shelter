@@ -186,4 +186,27 @@ class School extends BaseModel
 
         return $buildings;
     }
+    
+    /**
+     * @param
+     *
+     * @return int
+     */
+    public static function getDefaultSchoolID() {
+      $school_id = 0;
+      
+      $school = School::where('display', '=', '1')->where('public', '=', '1')->where('ip_address', '=', \Request::ip())->get()->first();
+      if ($school) {
+        $school = $school->toArray();
+      }
+      
+      if (!empty($school['id'])) {
+        $school_id = $school['id'];
+      } 
+      elseif (env('SCHOOL_ID')) {
+        $school_id = env('SCHOOL_ID');
+      }
+      
+      return $school_id;
+    }
 }

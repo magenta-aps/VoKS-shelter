@@ -191,7 +191,7 @@ class ShelterController extends Controller
                 // Updated params
                 $params = [
                     'number' => $result['number'],
-                    'group' => $result['group']
+                    'group'  => $result['group']
                 ];
                 break;
         }
@@ -398,13 +398,13 @@ class ShelterController extends Controller
             $floors = Floor::where('school_id', '=', \Shelter::getID())->get();
             $floorIds = [];
 
-            foreach( $floors as $floor ) {
+            foreach ($floors as $floor) {
                 $floorIds[] = $floor->id;
             }
 
             $devices =
                 Device::where('active', '=', 1)
-                    ->whereIn('floor_id', $floorIds)->get();
+                      ->whereIn('floor_id', $floorIds)->get();
         }
 
         $response = [];
@@ -413,6 +413,7 @@ class ShelterController extends Controller
         }
 
         SchoolStatus::updateActivity();
+
         return response()->json($response);
     }
 
@@ -426,14 +427,14 @@ class ShelterController extends Controller
         $faq = Faq::where(
             [
                 'school_id' => $id,
-                'visible' => '1'
+                'visible'   => '1'
             ]
         )->orderBy('order', 'ASC')->get();
 
         $files = HelpFile::getFile();
 
         return [
-            'faq' => $faq,
+            'faq'   => $faq,
             'files' => $files
         ];
     }
@@ -456,7 +457,7 @@ class ShelterController extends Controller
         $notification = SentPushNotification::create(
             [
                 'school_id' => Shelter::getID(),
-                'message' => $message
+                'message'   => $message
             ]
         );
 
