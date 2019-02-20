@@ -42,6 +42,11 @@ class ArubaSyncMacs extends Command
      */
     public function handle()
     {
+      
+        if (config('aruba.ale.enabled') === false) {
+          return;
+        }
+        
         $macs = $this->argument();
         array_shift($macs);
 
