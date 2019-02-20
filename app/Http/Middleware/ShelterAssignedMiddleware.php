@@ -23,7 +23,7 @@ class ShelterAssignedMiddleware
     public function handle($request, Closure $next)
     {
         if (\Shelter::getID() === 0) {
-            return ['Your IP address ('.$request->ip().') is not assigned to any school.'];
+            return view('errors.generic', ['msg' => trans('errors.ip_not_found', ['ip' => $request->ip()])]);
         }
         return $next($request);
     }
