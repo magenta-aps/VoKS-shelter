@@ -10,5 +10,7 @@
 return [
     'websockets' => [
         'down' => 'Server is unreachable. Please wait.'
-    ]
+    ],
+    'generic' => 'Error',
+    'ip_not_found' => 'Your IP address (:ip) is not assigned to any school.'
 ];
