@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Error</title>
+    <title>{{ Lang::get('errors.generic') }}</title>
 
     <link href='//fonts.googleapis.com/css?family=Open+Sans:700,400&subset=latin,latin-ext' rel='stylesheet'
           type='text/css'/>
