@@ -47,8 +47,8 @@ class MainController extends BaseController
                 'timezones' => get_timezone_list(),
                 'languages' => get_available_languages(),
                 'orderingOptions' => get_sorting_options(),
-                'smsProviders' => prepend_none_option( \Component::get('Sms')->getIntegrations() ),
-                'phoneSystemProviders' => prepend_none_option( \Component::get('PhoneSystem')->getIntegrations() ),
+                'smsProviders' => get_available_sms_providers(),
+                'phoneSystemProviders' => get_available_phone_system_providers(),
                 'userDataSources' => get_available_user_data_sources(),
                 'clientDataSources' => get_available_location_sources(),
             ]

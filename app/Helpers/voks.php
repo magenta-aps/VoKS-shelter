@@ -38,6 +38,24 @@ function prepend_none_option( $options = [] )
 	return collect(['' => trans('system.contents.defaults.none')] + $options->all());
 }
 
+function get_available_sms_providers()
+{
+	$sources = collect();
+  if (config('sms.enabled')) {
+    $sources = \Component::get('Sms')->getIntegrations();
+  }
+  return prepend_none_option($sources);
+}
+
+function get_available_phone_system_providers()
+{
+	$sources = collect();
+  if (config('ucp.enabled')) {
+    $sources = \Component::get('PhoneSystem')->getIntegrations();
+  }
+  return prepend_none_option($sources);
+}
+
 function get_available_user_data_sources()
 {
 	$sources = collect();

@@ -8,6 +8,7 @@
  */
 
 return [
+    'enabled' => env('UCP_ENABLED', false),
     /**
      * Client debugging
      */

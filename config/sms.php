@@ -56,14 +56,16 @@
 */
 
 return [
-    'driers' => [
-        'talariax' => '',
+    'enabled' => env('SMS_ENABLED', false),
+    'from' => env('SMS_FROM', ''),
+    'vianett' => [
+      'url' => env('SMS_VIANETT_URL', ''),
+      'username' => env('SMS_VIANETT_USERNAME', ''),
+      'password' => env('SMS_VIANETT_PASSWORD', '')
     ],
-    'driver' => 'talariax',
-    'from' => '',
     'talariax' => [
-        'url' => '',
-        'mode' => 'utf'
+        'url' => env('SMS_TARALIAX_URL', ''),
+        'mode' => env('SMS_TARALIAX_MODE', 'utf'),
     ],
     'twilio' => [
         'account_sid' => 'Your SID',
