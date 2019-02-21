@@ -60,6 +60,7 @@ Route::group(
         Route::controller('bcs', 'Api\DeviceController');
         Route::match(['get', 'post'], 'shelter/coordinates', ['uses' => 'Api\ShelterController@getCoordinates']);
         Route::controller('shelter', 'Api\ShelterController');
+        Route::controller('demo', 'Api\DemoController');
 
         Route::group(
             ['prefix' => 'ps'],
