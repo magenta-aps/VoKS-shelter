@@ -195,7 +195,7 @@ class School extends BaseModel
     public static function getDefaultSchoolID() {
       $school_id = 0;
       
-      $school = School::where('display', '=', '1')->where('public', '=', '1')->where('ip_address', '=', \Request::ip())->get()->first();
+      $school = School::where('ip_address', '=', \Request::ip())->get()->first();
       if ($school) {
         $school = $school->toArray();
       }

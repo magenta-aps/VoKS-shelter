@@ -68,6 +68,7 @@ return [
         'airwave' => storage_path('app/airwave-cookies')
     ],
     'controllers' => [
+        'enabled' => env('ARUBA_CONTROLLERS_ENABLED', true),
         'urls' => env('ARUBA_CONTROLLERS_URLS'),
         'username' => env('ARUBA_CONTROLLERS_USERNAME'),
         'password' => env('ARUBA_CONTROLLERS_PASSWORD')
