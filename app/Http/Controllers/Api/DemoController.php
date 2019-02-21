@@ -37,7 +37,7 @@ class DemoController extends Controller
     /**
      * @return array
      */
-    public function getCiscoCoordinates()
+    public function getCiscoCMX()
     {
         return [];
     }
