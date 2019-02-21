@@ -19,10 +19,25 @@ use BComeSafe\Http\Controllers\Controller;
 class DemoController extends Controller
 {
     /**
-     *
      * @return array
      */
-    public function getArubaAirwave()
+    public function getArubaStructure()
+    {
+        return [];
+    }
+    
+    /**
+     * @return array
+     */
+    public function getArubaCoordinates()
+    {
+        return [];
+    }
+    
+    /**
+     * @return array
+     */
+    public function getCiscoCoordinates()
     {
         return [];
     }
