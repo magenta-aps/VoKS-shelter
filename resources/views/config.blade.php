@@ -17,6 +17,7 @@
     config['google-zoom-level'] = {!! $config['google-zoom-level'] !!};
     config['cisco-enabled'] = {{ $config['cisco-enabled'] ? 'true' : 'false' }};
     config['use-gps'] = {{ $config['use-gps'] ? 'true' : 'false' }};
+    config['use-non-gps'] = {{ $config['use-non-gps'] ? 'true' : 'false' }};
 
     lang = function(key) {
         return config['lang'][key];

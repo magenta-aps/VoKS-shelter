@@ -24,12 +24,12 @@
             return angular.isDefined(config['use-gps']) && config['use-gps'];
         };
 
-	    $scope.useNonGps = function()
-	    {
-		    return angular.isDefined(config['use-non-gps']) && config['use-non-gps'];
-	    };
+        $scope.useNonGps = function()
+        {
+            return angular.isDefined(config['use-non-gps']) && config['use-non-gps'];
+        };
 
-	    function getFirstClientIndex() {
+        function getFirstClientIndex() {
             for (var i = 0; i < $scope.clients.length; i++) {
                 if ($scope.clients[i].profile.type === 'client' && !$scope.clients[i].position.inQueue) {
                     return i;
