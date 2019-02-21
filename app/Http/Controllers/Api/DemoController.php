@@ -9,6 +9,8 @@
 
 namespace BComeSafe\Http\Controllers\Api;
 
+use BComeSafe\Http\Controllers\Controller;
+
 /**
  * Class DemoController
  *
