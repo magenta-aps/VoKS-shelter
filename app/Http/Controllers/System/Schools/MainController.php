@@ -35,10 +35,10 @@ class MainController extends BaseController
 	    $data = [
 	    	'shelterId'         => config('alarm.default_id'),
 	    	'use_gps'           => $default->is_gps_location_source,
-	        'use_non_gps'       => $default->is_non_gps_location_source,
-	        'phone_provider'    => $default->phone_system_provider ? true : false,
-	        'ad_enabled'        => config('ad.enabled'),
-	    ];
+        'use_non_gps'       => $default->is_non_gps_location_source,
+        'phone_provider'    => $default->phone_system_provider ? true : false,
+        'ad_enabled'        => config('ad.enabled'),
+      ];
 
         return view('system.schools.index', $data);
     }
