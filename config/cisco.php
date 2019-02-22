@@ -8,7 +8,15 @@
  */
 
 return [
-    'coors' => [
-	    'enabled'   => env( 'CISCO_ENABLED', true ),
-    ],
+  'enabled'       => env('CISCO_ENABLED', true),
+  'baseUrl'       => env('CISCO_URL', ''),
+  'username'      => env('CISCO_USERNAME', ''),
+  'password'      => env('CISCO_PASSWORD', ''),
+  'api' => [
+    'campuses'    => '/api/config/v1/maps',
+    'images'      => '/common/data/floormaps',
+    'clients'     => '/api/location/v2/clients'
+  ],
+  'campusesList'  => env('CISCO_CAMPUSES_LIST', ''),
+  'clientsDebug'  => env('CISCO_CLIENTS_DEBUG', '')
 ];

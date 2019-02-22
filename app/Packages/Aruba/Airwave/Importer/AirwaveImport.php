@@ -16,16 +16,16 @@ use BComeSafe\Models\Floor;
 use BComeSafe\Models\FloorImage;
 use BComeSafe\Models\School;
 use BComeSafe\Models\Aps;
-use BComeSafe\Packages\Aruba\Ale\Location;
+use BComeSafe\Packages\Aruba\Ale\AleLocation;
 use SoapBox\Formatter\Formatter;
-use BComeSafe\Packages\Aruba\Ale\Coordinates;
+use BComeSafe\Packages\Coordinates\Coordinates;
 
 /**
- * Class Import
+ * Class AirwaveImport
  *
  * @package BComeSafe\Packages\Aruba\Airwave\Importer
  */
-class Import
+class AirwaveImport
 {
     /**
      * @var DataMapper
@@ -161,7 +161,7 @@ class Import
     {
         $data = $this->pullData();
 
-        $floors = Location::getFloors();
+        $floors = AleLocation::getFloors();
 
         $data['campus'] = array_convert_to_numeric($data['campus']);
 

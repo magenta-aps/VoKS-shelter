@@ -25,7 +25,6 @@ use BComeSafe\Models\School;
 use BComeSafe\Models\SchoolDefault;
 use BComeSafe\Models\SchoolStatus;
 use BComeSafe\Models\Watchdog;
-use BComeSafe\Packages\Aruba\Ale\Location;
 use BComeSafe\Packages\Websocket\ShelterClient;
 
 /**
@@ -35,6 +34,10 @@ use BComeSafe\Packages\Websocket\ShelterClient;
  */
 class DeviceController extends Controller
 {
+  
+    const COORDINATES_UNAVAILABLE = 1;
+    const COORDINATES_NOT_MAPPED  = 2;
+    
     public function __construct()
     {
         $this->middleware('device.api');
@@ -52,12 +55,18 @@ class DeviceController extends Controller
             /**
              * @var $device \BcomeSafe\Models\Device
              */
-            $device = Device::findOrNew($request->get('device_id'));
             $device_type = $request->get('device_type');
+            $device_id = $request->get('device_id') . "_" . $device_type;
+            //Search in Database
+            $device_data = Device::getByDeviceId($device_id);
+            $id = !empty($device_data['id']) ? $device_data['id'] : null;
+            //Find or Create model
+            $device = Device::findOrNew($id);
+            //Set Attributes
             $device->setAttribute('device_type', $device_type);
             $device->setAttribute('device_id', $request->get('device_id'));
             $mac_address = $request->get('mac_address', config('alarm.default.mac'));
-            //Iphone exceptions
+            //Iphone and Pcapp exceptions
             if ($mac_address == '00:00:00:00:00' || $device_type == 'desktop') {
               $mac_address = NULL;
             }
@@ -72,10 +81,10 @@ class DeviceController extends Controller
             $message = $e->getMessage();
 
             switch ($e->getCode()) {
-                case Location::COORDINATES_UNAVAILABLE:
+                case self::COORDINATES_UNAVAILABLE:
                     $message = \Lang::get('aruba.ale.errors.unavailable', [], $request->get('lang', 'en'));
                     break;
-                case Location::COORDINATES_NOT_MAPPED:
+                case self::COORDINATES_NOT_MAPPED:
                     $message = \Lang::get('aruba.ale.errors.unsynchronized', [], $request->get('lang', 'en'));
                     break;
             }

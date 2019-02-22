@@ -11,11 +11,8 @@ namespace BComeSafe\Packages\Aruba\Ale;
 
 use BComeSafe\Libraries\CurlRequest;
 
-class Location
+class AleLocation
 {
-    const COORDINATES_UNAVAILABLE = 1;
-    const COORDINATES_NOT_MAPPED  = 2;
-
     /**
      * Fetches coordinates for a MAC address from ALE
      *
@@ -140,6 +137,9 @@ class Location
      */
     public static function getStations($other = FALSE, $serverNumber = NULL)
     {
+        if (config('aruba.ale.enabled') === false) {
+            return [];
+        }
 
         $parameters = [];
 
@@ -189,6 +189,9 @@ class Location
      */
     public static function getFloors($serverNumber = NULL)
     {
+        if (config('aruba.ale.enabled') === false) {
+            return [];
+        }
 
         $parameters = [];
 

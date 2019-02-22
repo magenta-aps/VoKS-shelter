@@ -19,7 +19,7 @@ class SchoolDefaultFields
 {
 	const USER_DATA_SOURCE_AD = 'ad';
 
-	const DEVICE_LOCATION_SOURCE_ALE = 'ale';
+	const DEVICE_LOCATION_SOURCE_ARUBA = 'aruba';
 	const DEVICE_LOCATION_SOURCE_CISCO = 'cisco';
 	const DEVICE_LOCATION_SOURCE_GOOGLE = 'google';
 }

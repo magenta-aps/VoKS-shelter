@@ -133,7 +133,7 @@ class SchoolDefault extends BaseModel
 		    return false;
 	    }
 
-	    return $this->hasNotLocationSource( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ALE, SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO );
+	    return $this->hasNotLocationSource( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA, SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO );
     }
 
 	/**
@@ -147,6 +147,6 @@ class SchoolDefault extends BaseModel
 			return false;
 		}
 
-		return $this->hasLocationSource( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ALE, SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO );
+		return $this->hasLocationSource( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA, SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO );
 	}
 }

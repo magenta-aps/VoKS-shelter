@@ -459,7 +459,7 @@
                 $location.path('/stream').replace();
             }
 
-	        if ( angular.isDefined( config['aruba-coords-enabled'] ) && config['aruba-coords-enabled'] === false )
+	        if ( angular.isDefined( config['coords-enabled'] ) && config['coords-enabled'] === false )
 	        {
 		        removeClient(client);
 	        }

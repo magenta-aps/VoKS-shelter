@@ -12,7 +12,7 @@ namespace BComeSafe\Http\Controllers\Maps;
 use BComeSafe\Http\Controllers\Controller;
 use BComeSafe\Models\Button;
 use BComeSafe\Models\Floor;
-use BComeSafe\Packages\Aruba\Ale\Coordinates;
+use BComeSafe\Packages\Coordinates\Coordinates;
 
 class MainController extends Controller
 {
@@ -57,7 +57,7 @@ class MainController extends Controller
                 $data['buttons'][$i]['y']
             );
         }
-        
+
         \View::share('config', \Shelter::getConfig());
         return view('maps.preview', json_encode_values($data));
     }

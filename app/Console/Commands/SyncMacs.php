@@ -11,14 +11,17 @@ namespace BComeSafe\Console\Commands;
 
 use BComeSafe\Models\Device;
 use BComeSafe\Models\Floor;
-use BComeSafe\Packages\Aruba\Ale\Coordinates;
-use BComeSafe\Packages\Aruba\Ale\Location;
+use BComeSafe\Models\SchoolDefault;
+use BComeSafe\Models\SchoolDefaultFields;
+use BComeSafe\Packages\Coordinates\Coordinates;
+use BComeSafe\Packages\Cisco\Cmx\Location\CmxLocation;
+use BComeSafe\Packages\Aruba\Ale\AleLocation;
 use GuzzleHttp\Promise;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class ArubaSyncMacs extends Command
+class CiscoSyncMacs extends Command
 {
 
     /**
@@ -26,7 +29,7 @@ class ArubaSyncMacs extends Command
      *
      * @var string
      */
-    protected $name = 'aruba:sync:macs';
+    protected $name = 'sync:macs';
 
     /**
      * The console command description.
@@ -43,7 +46,21 @@ class ArubaSyncMacs extends Command
     public function handle()
     {
       
-        if (config('aruba.ale.enabled') === false) {
+        $default = SchoolDefault::getDefaults();
+        if (!empty($default->client_data_source)) {
+          //Aruba Airwave
+          if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.ale.enabled') === false) {
+            return;
+          }
+          //Cisco CMX
+          if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled') === false) {
+            return;
+          }
+        } else {
+          return;
+        }
+      
+        if (config('cisco.enabled') === false) {
           return;
         }
         
@@ -68,7 +85,16 @@ class ArubaSyncMacs extends Command
         $updates = [];
 
         for ($i = 0; $i < $count; $i++) {
-            $location = Location::getCoordinates($devices[$i]->mac_address);
+            if (!empty($default->client_data_source)) {
+              //Aruba Airwave
+              if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.airwave.enabled')) {
+                $location = AleLocation::getCoordinates($devices[$i]->mac_address);
+              }
+              //Cisco CMX
+              if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled')) {
+                $location = CmxLocation::getCoordinates($devices[$i]->mac_address);
+              }
+            }
 
             if (!isset($floors[$location['floor_id']])) {
                 continue;
@@ -81,6 +107,8 @@ class ArubaSyncMacs extends Command
             $client['floor_id'] = $floors[$location['floor_id']]['id'];
             $client['school_id'] = $floors[$location['floor_id']]['school_id'];
             $client['mac_address'] = $location['mac_address'];
+            $client['username'] = $location['username'];
+            $client['fullname'] = $location['username'];
 
             $client = array_merge_filled(
                 $client,

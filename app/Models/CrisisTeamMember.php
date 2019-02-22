@@ -49,7 +49,10 @@ class CrisisTeamMember extends BaseModel
             $schools = School::where('id', '=', $schoolId)->get();
         }
 
-
+        if (empty($schools)) {
+          return array();
+        }
+        
         foreach ($schools as $school) {
             $members = ActiveDirectory::getGroupMembers($school->ad_id);
 

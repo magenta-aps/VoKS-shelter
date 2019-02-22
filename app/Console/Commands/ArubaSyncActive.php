@@ -10,7 +10,7 @@
 namespace BComeSafe\Console\Commands;
 
 use BComeSafe\Models\Device;
-use BComeSafe\Packages\Aruba\Ale\Location;
+use BComeSafe\Packages\Aruba\Ale\AleLocation;
 use GuzzleHttp\Promise;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -64,7 +64,7 @@ class ArubaSyncActive extends Command
         }
 
         $full_time_start = $time_start = microtime(true);
-        $stations = Location::getStations(FALSE, $serverNumber);
+        $stations = AleLocation::getStations(FALSE, $serverNumber);
         $time_end = microtime(true);
         $execution_time = $time_end - $time_start;
         echo "Time for geting active devices from ALE: ", $execution_time, PHP_EOL;

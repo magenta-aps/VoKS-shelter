@@ -67,8 +67,8 @@ function get_available_user_data_sources()
 function get_available_location_sources()
 {
 	$sources = collect();
-	config('aruba.ale.enabled') ? $sources->put( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ALE, trans('system.contents.sources.ale') ) : null;
-	config('cisco.coors.enabled') ? $sources->put( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO, trans('system.contents.sources.cisco') ) : null;
+	config('aruba.ale.enabled') ? $sources->put( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA, trans('system.contents.sources.aruba') ) : null;
+	config('cisco.enabled') ? $sources->put( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO, trans('system.contents.sources.cisco') ) : null;
 	config('google.maps.enabled') ? $sources->put( SchoolDefaultFields::DEVICE_LOCATION_SOURCE_GOOGLE, trans('system.contents.sources.google') ) : null;
 
 	return prepend_none_option($sources);

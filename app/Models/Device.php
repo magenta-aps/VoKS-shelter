@@ -9,8 +9,12 @@
 
 namespace BComeSafe\Models;
 
-use BComeSafe\Packages\Aruba\Ale\Location;
-use BComeSafe\Packages\Aruba\ArubaIntegrationException;
+use BComeSafe\Models\SchoolDefault;
+use BComeSafe\Models\SchoolDefaultFields;
+use BComeSafe\Packages\Aruba\Ale\AleLocation;
+use BComeSafe\Packages\Cisco\Cmx\Location\CmxLocation;
+use BComeSafe\Packages\Coordinates\Coordinates;
+use BComeSafe\Packages\Coordinates\IntegrationException;
 use BComeSafe\Packages\Aruba\Clearpass\User;
 
 /**
@@ -115,6 +119,26 @@ class Device extends BaseModel
      *
      * @return array
      */
+    public static function getByDeviceId($deviceId)
+    {
+        $device = static::where('device_id', '=', $deviceId)->first(
+            [
+                'id', 'mac_address', 'device_id', 'fullname', 'push_notification_id', 'device_type', 'x', 'y', 'username'
+            ]
+        );
+
+        if ($device) {
+            return $device->toArray();
+        }
+
+        return [];
+    }
+    
+    /**
+     * @param $mac
+     *
+     * @return array
+     */
     public static function getByMac($mac)
     {
         $device = static::where('mac_address', '=', $mac)->first(
@@ -148,32 +172,50 @@ class Device extends BaseModel
     public function setFullnameAttribute($fullname)
     {
         if (!empty($fullname)) {
-            $this->attributes['fullname'] = $fullname;
-        } elseif (empty($this->getAttribute('fullname'))) {
+          $this->attributes['fullname'] = $fullname;
+        } elseif (empty($this->getAttribute('fullname') )) {
+          if (!empty($this->getAttribute('username'))) {
+            $this->attributes['fullname'] = $this->getAttribute('username');
+          } else if (!empty($this->getAttribute('mac_address'))) {
+            $this->attributes['fullname'] = $this->getAttribute('mac_address') . '(' . ucfirst(strtolower($this->getAttribute('device_type'))) . ')';
+          } else {
             $this->attributes['fullname'] = ucfirst(strtolower($this->getAttribute('device_type')));
+          }
         }
     }
 
     /**
      * @return array|mixed
-     * @throws ArubaIntegrationException
+     * @throws IntegrationException
      */
-    protected function getProfileData()
+    protected function getProfileData()   //@Todo - make general function which will take Package by administrated parameter.
     {
-        if (config('aruba.clearpass.enabled') === false) {
-            return [];
+      $device = [];
+      $default = SchoolDefault::getDefaults();
+      //
+      if (!empty($default->client_data_source)) {
+        //Aruba Clearpass
+        if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.clearpass.enabled')) {
+          $clearpass = new User();
+          if (!$this->getAttribute('mac_address')) {
+              $device = $clearpass->getByIp(\Request::ip());
+          } else {
+              $device = $clearpass->getByMac($this->getAttribute('mac_address'));
+          }
         }
-
-        $clearpass = new User();
-
-        if (!$this->getAttribute('mac_address')) {
-            $device = $clearpass->getByIp(\Request::ip());
-        } else {
-            $device = $clearpass->getByMac($this->getAttribute('mac_address'));
+        //Cisco CMX
+        if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled')) {
+          if (!empty($this->getAttribute('mac_address')) && $this->getAttribute('mac_address') != '00:00:00:00:00') {
+            $device['mac_address'] = $this->getAttribute('mac_address');
+          }
+          else {
+            $device['mac_address'] = CmxLocation::getMacAddressByIP(\Request::ip());
+          }
         }
-
+      }
+      
         if (!isset($device['mac_address'])) {
-            throw new ArubaIntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Aruba wifi?');
+            throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
         }
 
         return $device;
@@ -188,13 +230,22 @@ class Device extends BaseModel
 
         $device = [];
         $school_id = School::getDefaultSchoolID();
+        $default = SchoolDefault::getDefaults();
+        //Single Shelter
         if ($school_id) {
             $floor = Floor::where('school_id', '=', $school_id)->orderBy('id', 'desc')->get()->first();
-
-            if (empty($floor) && config('aruba.airwave.enabled') === true) {
-                throw new \Exception(
-                    'Structure not synchronized on campus #' . $school_id . '. Please wait.'
-                );
+            
+            //Aruba Airwave
+            if (empty($floor) && $default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.airwave.enabled')) {
+              throw new \Exception(
+                  'Structure not synchronized on campus #' . $school_id . '. Please wait.'
+              );
+            }
+            //Cisco CMX
+            if (empty($floor) && $default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled')) {
+              throw new \Exception(
+                  'Structure not synchronized on campus #' . $school_id . '. Please wait.'
+              );
             }
 
             $device['school_id'] = $school_id;
@@ -208,21 +259,27 @@ class Device extends BaseModel
                 $device['x'] = 0;
                 $device['y'] = 0;
             }
+            return $device;
+            
+        //Multi Shelter
         } else {
-
-            //Found in Clearpass
-            $ap_name = $this->getAttribute('ap_name');
-            if (!empty($ap_name)) {
-              $ap = Aps::where('ap_name', '=', $ap_name)->get()->first();
-              $device['school_id'] = $ap->school_id;
-              $device['floor_id'] = $ap->floor_id;
-              $device['x'] = $ap->x;
-              $device['y'] = $ap->y;
-              $device['active'] = 1;
+            if (config('aruba.clearpass.enabled')) {
+              //Found in Clearpass
+              $ap_name = $this->getAttribute('ap_name');
+              if (!empty($ap_name)) {
+                $ap = Aps::where('ap_name', '=', $ap_name)->get()->first();
+                $device['school_id'] = $ap->school_id;
+                $device['floor_id'] = $ap->floor_id;
+                $device['x'] = $ap->x;
+                $device['y'] = $ap->y;
+                $device['active'] = 1;
+              }
+              return $device;
             }
-            //Found in ALE
-            else {
-              $location = Location::getCoordinates($this->getAttribute('mac_address'));
+            
+            //Aruba ALE
+            if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.ale.enabled')) {
+              $location = AleLocation::getCoordinates($this->getAttribute('mac_address'));
               if (!empty($location['campus_id'])) {
                   $floor = Floor::where('floor_hash_id', '=', $location['floor_id'])->first();
 
@@ -248,14 +305,56 @@ class Device extends BaseModel
               $device['x'] = $location['x'];
               $device['y'] = $location['y'];
               $device['active'] = 1;
+              return $device;
+            }
+            //Cisco CMX
+            if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled')) {
+              $location = CmxLocation::getCoordinates($this->getAttribute('mac_address'));
+              if (!empty($location['floor_id'])) {
+                  $floor = Floor::where('floor_hash_id', '=', $location['floor_id'])->first();
+
+                  if (isset($floor->building->campus->school_id)) {
+                      $device['school_id'] = $floor->building->campus->school_id;
+                      $device['floor_id'] = $floor->id;
+                  } else {
+                      static::deactivate($this->getAttribute('device_id'));
+
+                      throw new \Exception(
+                          'There are no coordinates or campuses not synchronized. Please wait.',
+                          Location::COORDINATES_NOT_MAPPED
+                      );
+                  }
+              } else {
+                  static::deactivate($this->getAttribute('device_id'));
+
+                  throw new \Exception(
+                      'We could not locate you via ALE. Please wait.',
+                      Location::COORDINATES_UNAVAILABLE
+                  );
+              }
+              $device['x'] = $location['x'];
+              $device['y'] = $location['y'];
+              $device['username'] = $location['username'];
+              $device['fullname'] = $location['username'];
+              $device = array_merge_filled(
+                  $device,
+                  Coordinates::convert(
+                      $floor['image']['pixel_width'],
+                      $floor['image']['real_width'],
+                      $floor['image']['pixel_height'],
+                      $floor['image']['real_height'],
+                      $device['x'],
+                      $device['y']
+                  )
+              );
+              $device['active'] = 1;
             }
         }
-
         return $device;
     }
 
     /**
-     * @throws ArubaIntegrationException
+     * @throws IntegrationException
      * @throws \Exception
      */
     public function updateDeviceProfile()
@@ -366,9 +465,18 @@ class Device extends BaseModel
      */
     public static function mapDeviceCoordinates($device)
     {
+        $name = '';
+        if (!empty($device->fullname)) {
+          $name = $device->fullname;
+        } elseif (!empty($device->username)) {
+          $name = $device->username;
+        } else {
+          $name = $device->mac_address . ' (' . ucfirst(strtolower($device->device_type)) . ')';
+        }
+
         return [
             'profile'  => [
-                'name'        => empty($device->fullname) ? $device->mac_address : $device->fullname,
+                'name'        => $name,
                 'mac_address' => $device->mac_address,
                 'device'      => $device->device_type,
                 'device_id'   => $device->device_id,
@@ -442,13 +550,15 @@ class Device extends BaseModel
             || $l['y'] != $device->y
             || $l['floor_id'] != $device->floor_id
             || $l['school_id'] != $device->school_id
+            || $l['username'] != $device->username
+            || $l['fullname'] != $device->fullname
           ) {
             $l['id'] = $device->id;
             unset($l['mac_address']);
             \DB::update(
               "
                 UPDATE devices
-                SET x = :x, y = :y, floor_id = :floor_id, school_id = :school_id, updated_at = CURRENT_TIMESTAMP, active = 1
+                SET x = :x, y = :y, floor_id = :floor_id, school_id = :school_id, username = :username, fullname = :fullname, updated_at = CURRENT_TIMESTAMP, active = 1
                 WHERE id = :id
               ",
               $l
@@ -466,6 +576,88 @@ class Device extends BaseModel
     public static function deleteAllClients()
     {
       Device::truncate();
+    }
+    
+    /**
+     * @param $clients
+     */
+    public static function updateClients($clients)
+    {
+        if (empty($clients)) {
+          return false;
+        }
+        //Deactivate all devices
+        \DB::update("UPDATE devices SET active = 0 WHERE active = 1");
+        //Activate only active devices
+        foreach ($clients as $client) {
+          if (env('SCHOOL_ID')) {
+            $client['school_id'] = env('SCHOOL_ID');
+          }
+          //Search for the client
+          $device = \DB::select(
+            "SELECT id, x, y, floor_id, school_id FROM devices WHERE mac_address = :mac_address" , ['mac_address' => $client['mac_address']]
+          );
+          //Found - update
+          if (!empty($device)) {
+            $device = current($device);
+            if(
+              $client['x'] != $device->x
+              || $client['y'] != $device->y
+              || $client['floor_id'] != $device->floor_id
+              || $client['school_id'] != $device->school_id
+            ) {
+              //
+              $client['id'] = $device->id;
+              //$client['fullname'] = $client['username'];
+              \DB::update(
+                "
+                  UPDATE devices
+                  SET
+                    x = :x,
+                    y = :y,
+                    floor_id = :floor_id,
+                    school_id = :school_id,
+                    mac_address = :mac_address,
+                    username = :username,
+                    fullname = :fullname,
+                    updated_at = CURRENT_TIMESTAMP,
+                    active = 1
+                  WHERE id = :id
+                ", $client
+              );
+            }
+          }
+          //Not found - insert
+          else {
+            $join = "(";
+            $join .= "'" . $client['mac_address'] . "'";
+            $join .= ", '" . $client['floor_id'] . "'";
+            $join .= ", '" . $client['school_id'] . "'";
+            $join .= ", '" . $client['username'] . "'";
+            $join .= ", '" . $client['username'] . "'";
+            $join .= ", '" . $client['x'] . "'";
+            $join .= ", '" . $client['y'] . "'";
+            $join .= ', 1';
+            $join .= ', CURRENT_TIMESTAMP';
+            $join .= ")";
+
+            \DB::insert("
+              INSERT INTO devices (
+                `mac_address`,
+                `floor_id`,
+                `school_id`,
+                `username`,
+                `fullname`,
+                `x`,
+                `y`,
+                `active`,
+                `updated_at`
+              )
+              VALUES $join
+            ");
+          }
+        }
+        return true;
     }
 
     /**

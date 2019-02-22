@@ -388,9 +388,9 @@ class ShelterController extends Controller
             foreach ($macs as $mac) {
                 $list['mac:' . $i] = $mac;
             }
-
-            \Artisan::call('aruba:sync:macs', $list);
-
+            
+            \Artisan::call('sync:macs', $list);
+            
             $devices = Device::whereIn('mac_address', $macs)->get();
         } else {
             // fetch all clients that are active and belong to this school

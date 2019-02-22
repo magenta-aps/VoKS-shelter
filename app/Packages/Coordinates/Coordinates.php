@@ -7,12 +7,12 @@
  * Developed in co-op with Baltic Amadeus, http://baltic-amadeus.lt
  */
 
-namespace BComeSafe\Packages\Aruba\Ale;
+namespace BComeSafe\Packages\Coordinates;
 
 /**
  * Class Coordinates
  *
- * @package BComeSafe\Packages\Aruba\Ale
+ * @package BComeSafe\Packages\Coordinates
  */
 class Coordinates
 {

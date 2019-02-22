@@ -20,6 +20,7 @@ use BComeSafe\Packages\Aruba\Ale;
 use BComeSafe\Packages\Aruba\Clearpass\Authentication;
 use BComeSafe\Packages\Aruba\Clearpass\User;
 use BComeSafe\Packages\Notifications;
+use BComeSafe\Models\SchoolDefault;
 use Devristo\Phpws\Client;
 use React\EventLoop;
 use Zend\Log;
@@ -99,25 +100,60 @@ class MainController extends BaseController
 
     public function getPush()
     {
-        $item = new Notifications\Item('Got push?', isset($_GET['id']) ? $_GET['id'] : 1);
+
+        if (empty($_GET['gcm_id'])) {
+          echo 'Erro: Missing "gcm_id" parameter.';
+          die();
+        }
+        $gcm_id = $_GET['gcm_id'];
+
+        if (empty($_GET['type'])) {
+          echo 'Erro: Missing "type" parameter.';
+          die();
+        }
+        $type = $_GET['type']; //ios OR android OR desktop
+
+        $devices = array(
+          ['id' => $gcm_id, 'type' => $type]
+        );
+        $message = 'Hi!. This is a test push message sent from BCS. Did you received?';
+
+        echo 'Android config:';
+        echo '<pre>';
+        print_r(config('push.android'));
+        echo '</pre>';
+        echo '<br />';
+
+        echo 'Ios config:';
+        echo '<pre>';
+        print_r(config('push.ios'));
+        echo '</pre>';
+        echo '<br />';
+        echo '<br />';
+        echo 'GCM_ID: ', $gcm_id, '<br />';
+        echo 'TYPE: ', $type, '<br />';
+        echo 'MESSAGE: ', $message, '<br />';
+        echo '<br />';
+        echo 'Sending Push Notification. <br /><br />';
+
+        $item = new Notifications\Item($message, isset($_GET['notification_id']) ? $_GET['notification_id'] : 1);
         $server = new Notifications\Server\Server($item);
 
-        $server->registerDevicePusher(new Notifications\Pusher\Android(config('push.android')));
-        //$ios = new Notifications\Pusher\iOS(config('push.ios'));
-        //$server->registerDevicePusher($ios);
-        //            $server->registerDevicePusher(new Notifications\Pusher\Desktop());
-
-        $devices = [
-        //  ['id' => '<add gcm_id here>', 'type' => 'ios'],
-        //  ['id' => '<add gcm_id here>', 'type' => 'android'],
-        ];
-
-        print_r(config('push.android'));
-        $response = $server->send($devices);
-
-        // dd($ios->getFeedback());
-
-        return $response;
+        if ($type == 'android') {
+          $server->registerDevicePusher(new Notifications\Pusher\Android(config('push.android')));
+        }
+        else if ($type == 'ios') {
+          $server->registerDevicePusher(new Notifications\Pusher\iOS(config('push.ios')));
+        }
+        else {
+          $server->registerDevicePusher(new Notifications\Pusher\Desktop());
+        }
+        $result = $server->send($devices);
+        echo 'Result:';
+        echo '<pre>';
+        print_r($result);
+        echo '</pre>';
+        return;
     }
 
     public function getCoordinateStats($full = 0)
@@ -149,29 +185,44 @@ class MainController extends BaseController
         }
     }
 
-    public function getSms()
-    {
-        $curl = new CurlRequest();
-        $phone_number = '<add phone number here>';
-        $curl->setUrl(
-            config('sms.talariax.url'),
-            [
-            'tar_num' => $phone_number,
-            'tar_msg' => 'Hi! Did you got test SMS message?',
-            'tar_mode' => config('sms.talariax.mode'),
-            ]
-        );
-        print_r('URL: ' . config('sms.talariax.url'));
+    public function getSms() {
+
+        if (!config('sms.enabled')) echo 'SMS is disabled.<br />';
+        $sms_providers = \Component::get('Sms')->getIntegrations();
+        echo 'SMS Providers: <pre>';
+        print_r($sms_providers);
+        echo '</pre>';
         echo '<br />';
-        print_r('Phone number: ' . $phone_number);
+
+        //
+        $defaults = SchoolDefault::getDefaults();
+        echo 'Default provider: ' . $defaults->sms_provider;
         echo '<br />';
-        echo 'Response: ';
-        return $curl->execute();
+
+        //
+        $provider = $_GET['provider'];
+        if (empty($provider)) {
+          echo 'Erro: Missing provider parameter.';
+          die();
+        }
+
+        //
+        $phone_number = $_GET['phone_number'];
+        if (empty($phone_number)) {
+          echo 'Erro: Missing phone_number parameter.';
+          die();
+        }
+
+        echo 'Sending SMS. <br /><br />';
+        $integration = \Component::get('Sms')->getIntegration($provider);
+        $message = 'Hi!. This is a test message sent from BCS. Did you received?';
+        $result = $integration->sendMessage($phone_number, $message, TRUE);
+        echo 'Result:' . $result;
     }
 
     public function getAle()
     {
-        return Ale\Location::getCoordinates(@$_GET['mac']);
+        return Ale\AleLocation::getCoordinates(@$_GET['mac']);
     }
 
     public function getWol()
@@ -220,5 +271,4 @@ class MainController extends BaseController
 
         echo 'If you see this, UCP authentication has worked out perfectly.';
     }
-
 }

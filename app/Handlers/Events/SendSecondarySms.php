@@ -36,9 +36,6 @@ class SendSecondarySms
             $schoolId = $event->schoolId;
             $school = School::getSettings($schoolId);
 
-            // Get node identifier
-            $nodeId = $school->phone_system_id;
-
             // Get crisis team members and their count
             $members = CrisisTeamMember::where('school_id', '=', $schoolId)->get();
             $memberCount = count($members);
@@ -60,7 +57,7 @@ class SendSecondarySms
             // Send out text messages
             if (0 < $memberCount) {
                 foreach ($members as $member) {
-                    $result = $integration->sendMessage($nodeId, $member->phone, $message);
+                    $result = $integration->sendMessage($member->phone, $message);
                     if (true === $result) {
                         $history['result']['count']++;
                     }

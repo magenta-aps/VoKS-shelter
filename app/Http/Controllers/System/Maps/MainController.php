@@ -11,8 +11,10 @@ namespace BComeSafe\Http\Controllers\System\Maps;
 
 use BComeSafe\Http\Controllers\System\BaseController;
 use BComeSafe\Models\Campus;
-use BComeSafe\Packages\Aruba\Airwave\Importer\Import;
-use BComeSafe\Packages\Aruba\Airwave\Structure;
+use BComeSafe\Models\SchoolDefault;
+use BComeSafe\Models\SchoolDefaultFields;
+use BComeSafe\Packages\Aruba\Airwave\Importer\AirwaveImport;
+use BComeSafe\Packages\Cisco\Cmx\Importer\CmxImport;
 
 class MainController extends BaseController
 {
@@ -23,7 +25,18 @@ class MainController extends BaseController
 
     public function getSync()
     {
-        (new Import())->structure();
+      $default = SchoolDefault::getDefaults();
+      //Sync infrastructure
+      if (!empty($default->client_data_source)) {
+        //Aruba Airwave
+        if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.airwave.enabled')) {
+          (new AirwaveImport())->structure();
+        }
+        //Cisco CMX
+        if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled')) {
+          (new CmxImport())->structure();
+        }
+      }
     }
 
     public function getList()

@@ -10,7 +10,7 @@
 namespace BComeSafe\Console\Commands;
 
 use BComeSafe\Models\Device;
-use BComeSafe\Packages\Aruba\Ale\Location;
+use BComeSafe\Packages\Aruba\Ale\AleLocation;
 use GuzzleHttp\Promise;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -65,12 +65,12 @@ class ArubaSyncDetails extends Command
 
         //ALE stations
         $full_time_start = $time_start = microtime(true);
-        $stations = Location::getStations(FALSE, $serverNumber);
+        $stations = AleLocation::getStations(FALSE, $serverNumber);
         $time_end = microtime(true);
         $execution_time = $time_end - $time_start;
         $count = count($stations);
 
-        $macAddresses_other = Location::getStations(TRUE, $serverNumber);
+        $macAddresses_other = AleLocation::getStations(TRUE, $serverNumber);
         echo "Date/Time: ", date("Y-m-d H:i:s", strtotime("+1 hour")), " CET", PHP_EOL;
         echo "ALE server: " , $serverNumber, PHP_EOL;
         echo "Count (stations):", PHP_EOL;
@@ -81,7 +81,7 @@ class ArubaSyncDetails extends Command
         echo "************", PHP_EOL;
         //ALE locations
         $time_start = microtime(true);
-        $locations = Location::getAllCoordinates($serverNumber);
+        $locations = AleLocation::getAllCoordinates($serverNumber);
         $time_end = microtime(true);
         $execution_time = $time_end - $time_start;
 
@@ -160,7 +160,7 @@ class ArubaSyncDetails extends Command
         echo "* Special devices info ALE  *", PHP_EOL;
         echo "*****************************", PHP_EOL;
         foreach($spec_devices_mac as $m) {
-          $loc = Location::getCoordinates($m, $serverNumber);
+          $loc = AleLocation::getCoordinates($m, $serverNumber);
           $floor = !empty($loc['floor_id']) ? 'yes' : 'no';
           echo $m, " | floor=", $floor, " | x=", $loc['x'], ";y=", $loc['y'], PHP_EOL;
         }

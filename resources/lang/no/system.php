@@ -31,6 +31,7 @@ return [
         'sources' => [
 	        'ad'		=> 'Active Directory',
 	        'ale'		=> 'Aruba Ale',
+          	'aruba'   => 'Aruba',
 	        'cisco'		=> 'Cisco CMX',
 	        'google'	=> 'Google Maps',
         ],

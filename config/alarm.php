@@ -18,10 +18,20 @@ return [
     ],
     'secure' => env('SSL_ON', false),
     'default_id' => env('SCHOOL_ID', 1),
+    'default_bcs' => array(
+      'bcs_id' => env('BCS_ID', null),
+      'bcs_name' => env('BCS_NAME', null),
+      'bcs_url' => env('BCS_URL', null),
+      'police_number' => env('BCS_POLICE_NUMBER', null),
+      'public' => 0
+    ),
     'activity_timeout' => env('ACTIVITY_TIMEOUT', 10),
     'url' => env('SHELTER_URL'),
     'php_ws_url' => !env('SSL_ON', false)
         ? 'ws://' . env('PHP_WS_URL', '127.0.0.1') . ':9000'
         : 'wss://' . env('PHP_WS_URL', '127.0.0.1') . ':9001',
-    'php_ws_client' => 'php-client'
+    'php_ws_client' => 'php-client',
+    'coordinatesEnabled'        => env('COORDINATES_ENABLED', true),
+    'coordinatesExpirationTime' => env('COORDINATES_EXPIRATION_TIME', 5),
+    'coordinatesTimeInterval'   => env('COORDINATES_TIME_INTERVAL', 3600 * 8)
 ];

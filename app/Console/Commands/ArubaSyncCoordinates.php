@@ -11,8 +11,8 @@ namespace BComeSafe\Console\Commands;
 
 use BComeSafe\Models\Device;
 use BComeSafe\Models\Floor;
-use BComeSafe\Packages\Aruba\Ale\Coordinates;
-use BComeSafe\Packages\Aruba\Ale\Location;
+use BComeSafe\Packages\Coordinates\Coordinates;
+use BComeSafe\Packages\Aruba\Ale\AleLocation;
 use GuzzleHttp\Promise;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -95,7 +95,7 @@ class ArubaSyncCoordinates extends Command
     public function runUpdate($floors, $serverNumber)
     {
         $time_start = microtime(true);
-        $locations = Location::getAllCoordinates($serverNumber);
+        $locations = AleLocation::getAllCoordinates($serverNumber);
         $time_end = microtime(true);
         $execution_time = $time_end - $time_start;
         echo "Time for geting locations from ALE: ", $execution_time, PHP_EOL;

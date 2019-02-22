@@ -64,9 +64,9 @@ class Shelter
 	/**
 	 * @return boolean
 	 */
-	public function getArubaCoordinatesStatus()
+	public function getCoordinatesStatus()
     {
-	    return config('aruba.ale.coordinatesEnabled');
+	    return config('alarm.coordinatesEnabled');
     }
 
     /**
@@ -304,12 +304,12 @@ class Shelter
         $config['stream-block-limit'] = $this->getStreamBlockLimit();
         $config['push-notification-limit'] = config('alarm.notification.limit');
         $config['locale'] = $school->locale;
-        $config['aruba-coords-enabled'] = $this->getArubaCoordinatesStatus();
+        $config['coords-enabled'] = $this->getCoordinatesStatus();
         $config['google-maps-enabled'] = config('google.maps.enabled');
         $config['google-zoom-level'] = config('google.maps.zoom_level');
-        $config['cisco-enabled'] = config('cisco.coors.enabled');
-        $config['use-gps'] = $school->is_gps_location_source ? true : false;
-        $config['use-non-gps'] = $school->is_non_gps_location_source ? true : false;
+	    $config['cisco-enabled'] = config('cisco.enabled');
+	    $config['use-gps'] = $school->is_gps_location_source ? true : false;
+	    $config['use-non-gps'] = $school->is_non_gps_location_source ? true : false;
 
         return $config;
     }
