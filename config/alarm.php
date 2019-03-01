@@ -32,6 +32,6 @@ return [
         : 'wss://' . env('PHP_WS_URL', '127.0.0.1') . ':9001',
     'php_ws_client' => 'php-client',
     'coordinatesEnabled'        => env('COORDINATES_ENABLED', true),
-    'coordinatesExpirationTime' => env('COORDINATES_EXPIRATION_TIME', 5),
-    'coordinatesTimeInterval'   => env('COORDINATES_TIME_INTERVAL', 3600 * 8)
+    'coordinatesExpirationTime' => env('COORDINATES_EXPIRATION_TIME', 5), //@Todo - check where it is used and remove if not needed.
+    'coordinatesTimeInterval'   => env('COORDINATES_TIME_INTERVAL', 3600 * 8) //@Todo - check where it is used and remove if not needed.
 ];

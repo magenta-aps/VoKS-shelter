@@ -49,7 +49,7 @@ class CrisisTeamMember extends BaseModel
             $schools = School::where('id', '=', $schoolId)->get();
         }
 
-        if (empty($schools)) {
+        if (empty($schools->toArray())) {
           return array();
         }
         
