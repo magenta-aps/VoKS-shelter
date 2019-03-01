@@ -263,6 +263,7 @@ class Device extends BaseModel
             
         //Multi Shelter
         } else {
+            //Aruba Clearpass
             if (config('aruba.clearpass.enabled')) {
               //Found in Clearpass
               $ap_name = $this->getAttribute('ap_name');
@@ -276,7 +277,6 @@ class Device extends BaseModel
               }
               return $device;
             }
-            
             //Aruba ALE
             if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.ale.enabled')) {
               $location = AleLocation::getCoordinates($this->getAttribute('mac_address'));
