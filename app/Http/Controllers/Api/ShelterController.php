@@ -319,7 +319,7 @@ class ShelterController extends Controller
         if (0 === $schoolStatus->status_alarm) {
             SchoolStatus::statusAlarm($shelterId, 1);
 
-            \Event::fire(new AlarmWasTriggered($shelterId));
+            \Event::fire(new AlarmWasTriggered($shelterId, null));
         }
 
         SchoolStatus::statusPolice($shelterId, 1);
