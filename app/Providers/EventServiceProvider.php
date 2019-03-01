@@ -32,7 +32,8 @@ class EventServiceProvider extends ServiceProvider
             'BComeSafe\Handlers\Events\WakeUp',
             'BComeSafe\Handlers\Events\SendInitialEmail',
             'BComeSafe\Handlers\Events\SendInitialSms',
-            'BComeSafe\Handlers\Events\PlayInitialSound'
+            'BComeSafe\Handlers\Events\PlayInitialSound',
+            'BComeSafe\Handlers\Events\LogAlarmTrigger'
         ],
         'BComeSafe\Events\AskedToCallPolice' => [
             'BComeSafe\Handlers\Events\SendSecondaryEmail',

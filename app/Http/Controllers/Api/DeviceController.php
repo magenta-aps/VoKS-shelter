@@ -168,7 +168,7 @@ class DeviceController extends Controller
             case Device::TRIGGERED:
                 // if it's the first trigger, fire up the events
                 if (!$device['already_triggered'] && $status === Device::TRIGGERED) {
-                    \Event::fire(new AlarmWasTriggered($device['school_id']));
+                    \Event::fire(new AlarmWasTriggered($device['school_id'], $device['device_id']));
                 }
 
                 // the desktop app may reconnect on return from hibernation, pc restart etc
