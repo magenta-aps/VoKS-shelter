@@ -35,9 +35,9 @@ class MainController extends BaseController
 	    $data = [
 	    	'shelterId'         => config('alarm.default_id'),
 	    	'use_gps'           => $default->is_gps_location_source,
-	        'use_non_gps'       => $default->is_non_gps_location_source,
-	        'phone_provider'    => $default->phone_system_provider ? true : false,
-	        'ad_enabled'        => config('ad.enabled'),
+        'use_non_gps'       => $default->is_non_gps_location_source,
+        'phone_provider'    => $default->phone_system_provider ? true : false,
+        'ad_enabled'        => config('ad.enabled'),
 	    ];
 
         return view('system.schools.index', $data);
@@ -57,7 +57,20 @@ class MainController extends BaseController
      */
     public function postSaveSchool(Request $request)
     {
-        $data = $request->only(['id', 'ip_address', 'mac_address', 'ad_id', 'phone_system_id', 'campus_id', 'name']);
+        $data = $request->only([
+          'id', 
+          'ip_address', 
+          'mac_address', 
+          'ad_id', 
+          'phone_system_id', 
+          'campus_id', 
+          'name',
+          'url',
+          'police_number',
+          'use_gps',
+          'display',
+          'public'
+        ]);
 
 	    if ( isset($data['id']) )
         {
@@ -76,6 +89,11 @@ class MainController extends BaseController
         	$data['locale'] = isset($data['locale']) ? $data['locale'] : $defaults->locale;
         	$data['timezone'] = isset($data['timezone']) ? $data['timezone'] : $defaults->timezone;
         	$data['campus_id'] = isset($data['campus_id']) ? $data['campus_id'] : 0;
+        	$data['url'] = isset($data['url']) ? $data['url'] : '';
+        	$data['police_number'] = isset($data['police_number']) ? $data['police_number'] : '';
+        	$data['use_gps'] = isset($data['use_gps']) ? $data['use_gps'] : 0;
+        	$data['display'] = isset($data['display']) ? $data['display'] : 0;
+        	$data['public'] = isset($data['public']) ? $data['public'] : 1;
 
         	$item = School::create($data);
 

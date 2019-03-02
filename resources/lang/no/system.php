@@ -1,6 +1,9 @@
 <?php
 return [
     'save' => 'Lagre',
+    'cancel'    => 'Cancel',
+    'remove'    => 'Remove',
+    'edit'      => 'Edit',
     'menu' => [
         'main' => [
             'general' => 'Generelle innstillinger',
@@ -31,7 +34,7 @@ return [
         'sources' => [
 	        'ad'		=> 'Active Directory',
 	        'ale'		=> 'Aruba Ale',
-          	'aruba'   => 'Aruba',
+          'aruba'   => 'Aruba',
 	        'cisco'		=> 'Cisco CMX',
 	        'google'	=> 'Google Maps',
         ],
@@ -63,7 +66,12 @@ return [
                 'ip' => 'KrisePC-ens IP-adresse',
                 'ad' => 'Active Directory ID',
                 'phone' => 'Telefonsystem ID',
-                'options' => 'Opsjoner'
+                'options' => 'Opsjoner',
+                'url' => 'Url',
+                'police_number' => 'Police number',
+                'use_gps' => 'Use GPS',
+                'display' => 'Display',
+                'public' => 'Public'
             ]
         ],
         'maps' => [
@@ -72,7 +80,7 @@ return [
             'sync' => 'Synkroniser manuelt'
         ],
         'defaults'  => [
-	        'none'      => '-',
+	        'none'      => '-'
         ]
     ]
 ];
