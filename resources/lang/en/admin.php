@@ -8,6 +8,7 @@ return [
         'phone' => 'Phone System',
         'push' => 'Push notification management',
         'buttons' => 'IP buttons',
+        'reports' => 'Reports',
         'team' => 'Crisis center list',
         'reset' => 'Reset Shelter'
     ],
@@ -48,6 +49,23 @@ return [
         ],
         'placeholder' => 'Please select'
 
+    ],
+    'reports' => [
+        'title' => 'Log',
+        'description' => 'Log of events in BCS',
+        'table' => [
+            'created_at' => 'Time',
+            'log_type' => 'Log type',
+            'device_type' => 'Device type',
+            'device_id' => 'Device ID',
+            'fullname' => 'Full name',
+            'mac_address' => 'MAC address',
+            'floor_id' => 'Floor ID',
+            'log_types' => [
+                'alarm_triggered' => 'Alarm triggered',
+                'unknown_type' => 'Unknown log type'
+            ]
+        ]
     ],
     'maps' => [
         'title' => 'Maps',

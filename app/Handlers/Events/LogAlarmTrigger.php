@@ -21,8 +21,9 @@ class LogAlarmTrigger
 
     public function handle(AlarmWasTriggered $event)
     {
+        \Log::debug("HANDLING EVENT ###############################");
         $this->school = School::getSettings($event->schoolId);
-        if ($event->deviceId) {
+        if (isset($event->deviceId)) {
             $this->device = Device::getByDeviceId($event->deviceId);
         }
 

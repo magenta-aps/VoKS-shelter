@@ -12,7 +12,7 @@ class CreateEventLogTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('event_log', function(Blueprint $table)
+		Schema::create('event_logs', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('log_type')->default('Unspecified')->index('event_log_type');
