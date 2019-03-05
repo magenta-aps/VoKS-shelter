@@ -21,4 +21,8 @@ class EventLog extends BaseModel
         'floor_id',
         'data'
     ];
+
+    public $timestamps = true;
+
+    protected $guarded = [];
 }

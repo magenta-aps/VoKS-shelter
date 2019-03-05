@@ -179,6 +179,14 @@
                 return $http.post('/admin/buttons/save-button', data);
             };
 
+            this.getReports = function() {
+                return $http.get('/admin/reports/list');
+            };
+
+            this.removeEventLog = function(data) {
+                return $http.post('/admin/reports/remove', data);
+            };
+
             this.previewMap = function (floorId, buttonId) {
                 window.open('/maps/preview/' + floorId + '/' + (buttonId ? buttonId : ''));
             };

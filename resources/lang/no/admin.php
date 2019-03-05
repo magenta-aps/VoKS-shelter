@@ -8,6 +8,7 @@ return [
         'phone' => 'Telefonisystem',
         'push' => 'Push-meldinger',
         'buttons' => 'Fysiske alarmgivere',
+        'reports' => 'Rapporter',
         'team' => 'Kriseledelsen',
         'reset' => 'Resett krisesenteret'
     ],
@@ -48,6 +49,23 @@ return [
         ],
         'placeholder' => 'Vennligst velg'
 
+    ],
+    'reports' => [
+        'title' => 'Log',
+        'description' => 'Beskrivelse',
+        'table' => [
+            'created_at' => 'Tidspunkt',
+            'log_type' => 'Logtype',
+            'device_type' => 'Enhedstype',
+            'device_id' => 'EnhedsID',
+            'fullname' => 'Fuldt navn',
+            'mac_address' => 'MAC-adresse',
+            'floor_id' => 'BygningsID',
+            'log_types' => [
+                'alarm_triggered' => 'Alarm utløst',
+                'unknown_type' => 'Ukendt type'
+            ]
+        ]
     ],
     'maps' => [
         'title' => 'Kart/byggtegninger',
