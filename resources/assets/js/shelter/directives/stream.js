@@ -106,18 +106,25 @@
                 video.srcObject = client.stream.object;
             }
         };
+        
+        var setMarkerAndFloor = function(client) {
+            // Get active route and map state group
+            var route = $route.current.active,
+                state = ('plan' === route) ? 'map' : 'stream';
+            
+            if(MapState.state[state].floor !== client.position.floor && client.position.floor && client.profile.mac_address) {
+                MapState.state[state].floor = client.position.floor;
+                MapState.state[state].pan = client.profile.mac_address;
+                State.selected.marker = client.profile.id;
+                console.log('Set Marker');
+            }
+        };
 
         return {
             link: function($scope, $element, $attrs) {
                 $timeout(function() {
                     scale($element);
                 }, 200);
-                
-                $timeout(function() {
-                    console.log('Video Directive: 1 (NO)');
-                    console.log($scope.client);
-                    console.log($element[0].srcObject);
-                }, 1000);
                     
                 $scope.$watch($attrs.active, function() {
                     scale($element);
@@ -135,54 +142,37 @@
                     $timeout(function() {
                         scale($element);
                     }, 200);
-                    $timeout(function() {
-                        console.log('Video Directive: 3 (NO)');
-                        console.log($scope.client);
-                        console.log($element[0].srcObject);
-                    }, 1000);
                 });
 
                 $scope.$watch('client.state.chatOpen', function() {
                     $timeout(function() {
                         scale($element);
                     }, 200);
-                    $timeout(function() {
-                        scale($element);
-                        console.log('Video Directive: 4 (NO)');
-                        console.log($scope.client);
-                        console.log($element[0].srcObject);
-                    }, 1000);
                 });
                 
                 $(window).resize(function() {
                     $timeout(function() {
                         scale($element);
                     }, 200);
-                    $timeout(function() {
-                        scale($element);
-                        console.log('Video Directive: 5 (NO)');
-                        console.log($scope.client);
-                        console.log($element[0].srcObject);
-                    }, 1000);
                 });
 
                 $element.on('loadedmetadata', function() {
                     scale($(this));
-                    console.log('Video Directive: 6 (OK)');
-                    console.log($scope.client);
-                    console.log($element[0].srcObject);
-                    if (null === State.selected.marker && null !== $scope.client) {
-                        var client = $scope.client,
-                            clientId = client.profile.id;
+                    if (null !== $scope.client) {
+                        //Set Video Stream
                         setVideoStream($(this), $scope.client);
-                        if (client.position.floor && client.profile.mac_address) {
-                            // Get active route and map state group
-                            var route = $route.current.active,
-                                state = ('plan' === route) ? 'map' : 'stream';
-                            console.log(state);
-                            MapState.state[state].floor = client.position.floor;
-                            MapState.state[state].pan = client.profile.mac_address;
-                            State.selected.marker = clientId;
+                        
+                        console.log('Video Directive: 6 (OK)');
+                        console.log($scope.client.position.floor);
+                        console.log(MapState);
+                        console.log($route.current.active);
+                    
+                        console.log("Marker:");
+                        console.log(State.selected.marker);
+                        
+                        //Select marker
+                        if (null === State.selected.marker) {
+                            setMarkerAndFloor($scope.client);
                         }
                     }
                 });
