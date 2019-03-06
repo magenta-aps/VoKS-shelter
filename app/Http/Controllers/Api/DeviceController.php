@@ -56,7 +56,12 @@ class DeviceController extends Controller
              * @var $device \BcomeSafe\Models\Device
              */
             $device_type = $request->get('device_type');
-            $device_id = $request->get('device_id') . "_" . $device_type;
+            if ($device_type == 'ios') {
+              $device_id = $request->get('device_id') . "_" . $device_type;
+            }
+            else {
+              $device_id = $request->get('device_id');
+            }
             //Search in Database
             $device_data = Device::getByDeviceId($device_id);
             $id = !empty($device_data['id']) ? $device_data['id'] : null;
