@@ -216,7 +216,7 @@ class Device extends BaseModel
         }
         //Cisco CMX
         if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled')) {
-          if (!empty($this->getAttribute('mac_address')) && $this->getAttribute('mac_address') != '00:00:00:00:00') {
+          if (!empty($this->getAttribute('mac_address'))) {
             $device['mac_address'] = $this->getAttribute('mac_address');
           }
           else {
