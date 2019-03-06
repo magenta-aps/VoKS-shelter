@@ -150,8 +150,6 @@
          */
         Map.setBuildingByFloorId = function(floorId) {
             var floor = MapData.getFloor(floorId);
-            console.log(floor);
-            console.log(Map.state);
             if (Map.state.building != floor.bid) {
                 Map.state.building = floor.bid;
             }

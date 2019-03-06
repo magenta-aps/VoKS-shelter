@@ -112,6 +112,7 @@
                 $timeout(function() {
                     console.log('Video Directive: 1 (NO)');
                     console.log($scope.client);
+                    console.log($element[0].srcObject);
                     scale($element);
                 }, 200);
 
@@ -123,6 +124,7 @@
                         }
                         console.log('Video Directive: 2 (OK)');
                         console.log($scope.client);
+                        console.log($element[0].srcObject);
                     }, 500);
                 });
 
@@ -131,6 +133,7 @@
                         scale($element);
                         console.log('Video Directive: 3 (NO)');
                         console.log($scope.client);
+                        console.log($element[0].srcObject);
                     }, 200);
                 });
 
@@ -139,6 +142,7 @@
                         scale($element);
                         console.log('Video Directive: 4 (NO)');
                         console.log($scope.client);
+                        console.log($element[0].srcObject);
                     }, 200);
                 });
                 
@@ -147,6 +151,7 @@
                         scale($element);
                         console.log('Video Directive: 5 (NO)');
                         console.log($scope.client);
+                        console.log($element[0].srcObject);
                     }, 200);
                 });
 
@@ -154,6 +159,7 @@
                     scale($(this));
                     console.log('Video Directive: 6 (OK)');
                     console.log($scope.client);
+                    console.log($element[0].srcObject);
                     if (null === State.selected.marker && null !== $scope.client) {
                         var client = $scope.client,
                             clientId = client.profile.id;
