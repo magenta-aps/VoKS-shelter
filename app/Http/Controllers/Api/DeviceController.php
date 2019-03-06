@@ -35,9 +35,6 @@ use BComeSafe\Packages\Websocket\ShelterClient;
 class DeviceController extends Controller
 {
   
-    const COORDINATES_UNAVAILABLE = 1;
-    const COORDINATES_NOT_MAPPED  = 2;
-    
     public function __construct()
     {
         $this->middleware('device.api');
@@ -86,10 +83,10 @@ class DeviceController extends Controller
             $message = $e->getMessage();
 
             switch ($e->getCode()) {
-                case self::COORDINATES_UNAVAILABLE:
+                case Device::COORDINATES_UNAVAILABLE:
                     $message = \Lang::get('aruba.ale.errors.unavailable', [], $request->get('lang', 'en'));
                     break;
-                case self::COORDINATES_NOT_MAPPED:
+                case Device::COORDINATES_NOT_MAPPED:
                     $message = \Lang::get('aruba.ale.errors.unsynchronized', [], $request->get('lang', 'en'));
                     break;
             }

@@ -195,6 +195,10 @@ class School extends BaseModel
     public static function getDefaultSchoolID() {
       $school_id = 0;
       
+      if (!config('alarm.default_id')) {
+        return $school_id;
+      }
+      
       $school = School::where('ip_address', '=', \Request::ip())->get()->first();
       if ($school) {
         $school = $school->toArray();
@@ -203,8 +207,8 @@ class School extends BaseModel
       if (!empty($school['id'])) {
         $school_id = $school['id'];
       } 
-      elseif (env('SCHOOL_ID')) {
-        $school_id = env('SCHOOL_ID');
+      elseif (config('alarm.default_id')) {
+        $school_id = config('alarm.default_id');
       }
       
       return $school_id;

@@ -17,7 +17,7 @@ return [
         'mac' => env('MAC_ADDRESS', null)
     ],
     'secure' => env('SSL_ON', false),
-    'default_id' => env('SCHOOL_ID', 1),
+    'default_id' => env('SCHOOL_ID', null),
     'default_bcs' => array(
       'bcs_id' => env('BCS_ID', null),
       'bcs_name' => env('BCS_NAME', null),
