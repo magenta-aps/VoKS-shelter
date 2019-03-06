@@ -154,12 +154,8 @@
                                 
                             if (null === State.selected.marker) {
                                 State.selected.marker = client.profile.id;
-                                if (null === MapState.state['map'].floor) {
-                                    MapState.state['map'].floor = client.position.floor;
-                                    MapState.state['map'].pan = client.profile.mac_address;
-                                }
-                                MapState.state['stream'].floor = client.position.floor;
-                                MapState.state['stream'].pan = client.profile.mac_address;
+                                MapState.state[state].floor = client.position.floor;
+                                MapState.state[state].pan = client.profile.mac_address;
                             }
                             else {
                                 if (client.profile.id == State.selected.marker) {
