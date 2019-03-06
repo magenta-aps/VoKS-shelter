@@ -107,17 +107,6 @@
             }
         };
         
-        var setMarkerAndFloor = function(client) {
-            // Get active route and map state group
-            var route = $route.current.active,
-                state = ('plan' === route) ? 'map' : 'stream';
-            
-            if(MapState.state[state].floor !== client.position.floor && client.position.floor && client.profile.mac_address) {
-                MapState.state[state].floor = client.position.floor;
-                MapState.state[state].pan = client.profile.mac_address;
-            }
-        };
-
         return {
             link: function($scope, $element, $attrs) {
                 $timeout(function() {
@@ -154,17 +143,22 @@
                 $element.on('loadedmetadata', function() {
                     scale($(this));
                     if (null !== $scope.client) {
+                        var client = $scope.client;
                         //Set Video Stream
-                        setVideoStream($(this), $scope.client);
-                        
-                        console.log("Marker:");
-                        console.log(State.selected.marker);
-                        
+                        setVideoStream($(this), client);
                         //Select marker
                         if (null === State.selected.marker) {
-                            State.selected.marker = $scope.client.profile.id;
+                            // Get active route and map state group
+                            if (client.position.floor && client.profile.mac_address) {
+                                if (null === MapState.state['map'].floor) {
+                                    MapState.state['map'].floor = client.position.floor;
+                                    MapState.state['map'].pan = client.profile.mac_address;
+                                }
+                                MapState.state['stream'].floor = client.position.floor;
+                                MapState.state['stream'].pan = client.profile.mac_address;
+                                State.selected.marker = $scope.client.profile.id;
+                            }
                         }
-                        setFloor($scope.client);
                     }
                 });
             }
