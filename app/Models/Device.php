@@ -222,11 +222,11 @@ class Device extends BaseModel
         }
       }
       
-        if (!isset($device['mac_address'])) {
-            throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
-        }
+      if (!isset($device['mac_address'])) {
+          throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
+      }
 
-        return $device;
+      return $device;
     }
 
     /**

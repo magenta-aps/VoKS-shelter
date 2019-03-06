@@ -68,8 +68,12 @@ class DeviceController extends Controller
             $device->setAttribute('device_type', $device_type);
             $device->setAttribute('device_id', $request->get('device_id'));
             $mac_address = $request->get('mac_address', config('alarm.default.mac'));
-            //Iphone and Pcapp exceptions
-            if ($mac_address == '00:00:00:00:00' || $device_type == 'desktop') {
+            //Iphone exceptions
+            if ($mac_address == '00:00:00:00:00') {
+              $mac_address = NULL;
+            }
+            //Pcapp exceptions
+            if (!config('alarm.use_mac_address_for_pcapp') && $device_type == 'desktop') {
               $mac_address = NULL;
             }
             $device->setAttribute('mac_address', $mac_address);
