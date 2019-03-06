@@ -125,7 +125,7 @@
                         console.log('Video Directive: 2 (OK)');
                         console.log($scope.client);
                         console.log($element[0].srcObject);
-                    }, 500);
+                    }, 1000);
                 });
 
                 $rootScope.$watch('tab', function() {
