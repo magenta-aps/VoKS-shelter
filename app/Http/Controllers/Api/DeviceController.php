@@ -103,8 +103,9 @@ class DeviceController extends Controller
         $log_data = array(
           'device_id' => $device_id,
           'device_type' => $device_type,
-          'data' => Device::mapDeviceCoordinates($device)
+          'data' => json_encode(Device::mapDeviceCoordinates($device))
         );
+        
         Log::create($log_data);
             
         try {
