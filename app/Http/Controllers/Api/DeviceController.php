@@ -100,13 +100,14 @@ class DeviceController extends Controller
         $urls = get_shelter_urls($device->school_id, $device->device_id);
 
         //Log
-        $log_data = array(
-          'device_id' => $device_id,
-          'device_type' => $device_type,
-          'data' => json_encode(Device::mapDeviceCoordinates($device))
-        );
-        
-        Log::create($log_data);
+        if (config('app.debug')) {
+          $log_data = array(
+            'device_id' => $device_id,
+            'device_type' => $device_type,
+            'data' => json_encode(Device::mapDeviceCoordinates($device))
+          );
+          Log::create($log_data);
+        }
             
         try {
             $this->websockets->profile(Device::mapDeviceCoordinates($device));
