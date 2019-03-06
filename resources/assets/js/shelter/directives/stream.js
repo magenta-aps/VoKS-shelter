@@ -162,8 +162,10 @@
                                 MapState.state['stream'].pan = client.profile.mac_address;
                             }
                             else {
-                                console.log(client);
-                                console.log(MapState);
+                                if (client.profile.id == State.selected.marker) {
+                                    MapState.state[state].floor = client.position.floor;
+                                    MapState.state[state].pan = client.profile.mac_address;
+                                }
                             }
                         }
                     }
