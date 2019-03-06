@@ -147,16 +147,23 @@
                         //Set Video Stream
                         setVideoStream($(this), client);
                         //Select marker
-                        if (null === State.selected.marker) {
+                        if (client.position.floor && client.profile.mac_address) {
                             // Get active route and map state group
-                            if (client.position.floor && client.profile.mac_address) {
+                            var route = $route.current.active,
+                                state = ('plan' === route) ? 'map' : 'stream';
+                                
+                            if (null === State.selected.marker) {
+                                State.selected.marker = client.profile.id;
                                 if (null === MapState.state['map'].floor) {
                                     MapState.state['map'].floor = client.position.floor;
                                     MapState.state['map'].pan = client.profile.mac_address;
                                 }
                                 MapState.state['stream'].floor = client.position.floor;
                                 MapState.state['stream'].pan = client.profile.mac_address;
-                                State.selected.marker = $scope.client.profile.id;
+                            }
+                            else {
+                                console.log(client);
+                                console.log(MapState);
                             }
                         }
                     }
