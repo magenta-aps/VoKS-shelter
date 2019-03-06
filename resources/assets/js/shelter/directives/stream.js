@@ -115,8 +115,6 @@
             if(MapState.state[state].floor !== client.position.floor && client.position.floor && client.profile.mac_address) {
                 MapState.state[state].floor = client.position.floor;
                 MapState.state[state].pan = client.profile.mac_address;
-                State.selected.marker = client.profile.id;
-                console.log('Set Marker');
             }
         };
 
@@ -132,9 +130,6 @@
                         if (null !== $scope.client) {
                             setVideoStream($element, $scope.client); 
                         }
-                        console.log('Video Directive: 2 (OK)');
-                        console.log($scope.client);
-                        console.log($element[0].srcObject);
                     }, 1500);
                 });
 
@@ -162,18 +157,14 @@
                         //Set Video Stream
                         setVideoStream($(this), $scope.client);
                         
-                        console.log('Video Directive: 6 (OK)');
-                        console.log($scope.client.position.floor);
-                        console.log(MapState);
-                        console.log($route.current.active);
-                    
                         console.log("Marker:");
                         console.log(State.selected.marker);
                         
                         //Select marker
                         if (null === State.selected.marker) {
-                            setMarkerAndFloor($scope.client);
+                            State.selected.marker = $scope.client.profile.id;
                         }
+                        setFloor($scope.client);
                     }
                 });
             }
