@@ -110,12 +110,15 @@
         return {
             link: function($scope, $element, $attrs) {
                 $timeout(function() {
+                    scale($element);
+                }, 200);
+                
+                $timeout(function() {
                     console.log('Video Directive: 1 (NO)');
                     console.log($scope.client);
                     console.log($element[0].srcObject);
-                    scale($element);
-                }, 200);
-
+                }, 1000);
+                    
                 $scope.$watch($attrs.active, function() {
                     scale($element);
                     $timeout(function() {
@@ -125,34 +128,42 @@
                         console.log('Video Directive: 2 (OK)');
                         console.log($scope.client);
                         console.log($element[0].srcObject);
-                    }, 1000);
+                    }, 1500);
                 });
 
                 $rootScope.$watch('tab', function() {
                     $timeout(function() {
                         scale($element);
+                    }, 200);
+                    $timeout(function() {
                         console.log('Video Directive: 3 (NO)');
                         console.log($scope.client);
                         console.log($element[0].srcObject);
-                    }, 200);
+                    }, 1000);
                 });
 
                 $scope.$watch('client.state.chatOpen', function() {
                     $timeout(function() {
                         scale($element);
+                    }, 200);
+                    $timeout(function() {
+                        scale($element);
                         console.log('Video Directive: 4 (NO)');
                         console.log($scope.client);
                         console.log($element[0].srcObject);
-                    }, 200);
+                    }, 1000);
                 });
                 
                 $(window).resize(function() {
                     $timeout(function() {
                         scale($element);
+                    }, 200);
+                    $timeout(function() {
+                        scale($element);
                         console.log('Video Directive: 5 (NO)');
                         console.log($scope.client);
                         console.log($element[0].srcObject);
-                    }, 200);
+                    }, 1000);
                 });
 
                 $element.on('loadedmetadata', function() {
@@ -168,7 +179,7 @@
                             // Get active route and map state group
                             var route = $route.current.active,
                                 state = ('plan' === route) ? 'map' : 'stream';
-
+                            console.log(state);
                             MapState.state[state].floor = client.position.floor;
                             MapState.state[state].pan = client.profile.mac_address;
                             State.selected.marker = clientId;
