@@ -110,6 +110,8 @@
         return {
             link: function($scope, $element, $attrs) {
                 $timeout(function() {
+                    console.log('Video Directive: 1 (NO)');
+                    console.log($scope.client);
                     scale($element);
                 }, 200);
 
@@ -119,29 +121,39 @@
                         if (null !== $scope.client) {
                             setVideoStream($element, $scope.client); 
                         }
-                    }, 1000);
+                        console.log('Video Directive: 2 (OK)');
+                        console.log($scope.client);
+                    }, 200);
                 });
 
                 $rootScope.$watch('tab', function() {
                     $timeout(function() {
                         scale($element);
+                        console.log('Video Directive: 3 (NO)');
+                        console.log($scope.client);
                     }, 200);
                 });
 
                 $scope.$watch('client.state.chatOpen', function() {
                     $timeout(function() {
                         scale($element);
+                        console.log('Video Directive: 4 (NO)');
+                        console.log($scope.client);
                     }, 200);
                 });
                 
                 $(window).resize(function() {
                     $timeout(function() {
                         scale($element);
+                        console.log('Video Directive: 5 (NO)');
+                        console.log($scope.client);
                     }, 200);
                 });
 
                 $element.on('loadedmetadata', function() {
                     scale($(this));
+                    console.log('Video Directive: 6 (OK)');
+                    console.log($scope.client);
                     if (null === State.selected.marker && null !== $scope.client) {
                         var client = $scope.client,
                             clientId = client.profile.id;
