@@ -206,9 +206,12 @@ class Device extends BaseModel
         if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.clearpass.enabled')) {
           $clearpass = new User();
           if (!$this->getAttribute('mac_address')) {
-              $device = $clearpass->getByIp(\Request::ip());
+            $device = $clearpass->getByIp(\Request::ip());
           } else {
-              $device = $clearpass->getByMac($this->getAttribute('mac_address'));
+            $device = $clearpass->getByMac($this->getAttribute('mac_address'));
+          }
+          if (!isset($device['mac_address'])) {
+            throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
           }
         }
         //Cisco CMX
@@ -219,13 +222,12 @@ class Device extends BaseModel
           else {
             $device['mac_address'] = CmxLocation::getMacAddressByIP(\Request::ip());
           }
+          if (!isset($device['mac_address'])) {
+            throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
+          }
         }
       }
       
-      if (!isset($device['mac_address'])) {
-          throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
-      }
-
       return $device;
     }
 
