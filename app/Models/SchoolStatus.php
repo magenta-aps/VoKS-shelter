@@ -47,7 +47,7 @@ class SchoolStatus extends BaseModel
      */
     public function getDates()
     {
-        return ['last_active'];
+        return ['last_active', 'triggered_at'];
     }
 
     /**
