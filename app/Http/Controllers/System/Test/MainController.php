@@ -233,7 +233,7 @@ class MainController extends BaseController
             $message
               ->from(config('mail.from.address'), config('mail.from.name'))
               ->to($email)
-              ->subject($mail_subject);
+              ->subject(trans('mail.alarm.test.subject'));
           });
         }
         echo 'Result:' . $result . '<br /><br />';

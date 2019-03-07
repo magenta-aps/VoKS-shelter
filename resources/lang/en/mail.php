@@ -7,5 +7,8 @@ return [
 		'secondary'	=> [
 			'subject'	=> 'BCS Alarm (secondary)!',
 		],
+    'test'	=> [
+			'subject'	=> 'BCS Alarm (test)!',
+		],
 	],
 ];
