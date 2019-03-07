@@ -340,7 +340,7 @@ class MainController extends BaseController
       
       echo 'Welcome to Airwav sync test. <br />';
       echo 'For Sync campuses - no need any GET parameter. <br />';      
-      echo 'For Sync aps - use GET parameter: <i>sync_aps=1</i>. <br />';
+      echo 'For Sync aps - use GET parameter: <i>sync_aps=1</i> and <i>site_id=<floor_ale_id></i>. <br />';
       echo 'For Sync floors - use GET parameter: <i>sync_floors=1</i>. <br />';
       
       echo "Options:<br /><pre>";
@@ -387,6 +387,32 @@ class MainController extends BaseController
         echo "<pre>";
         print_r($data);
         echo "</pre>";
+        
+        //Test AP structure
+        if (!empty($_GET['sync_aps']) && !empty($data['ap'])) {
+          foreach ($data['ap'] as $ap) {
+            $structure = isset($ap['@attributes']) ? $ap['@attributes'] : $ap;
+            if (!isset($structure['id'])) {
+              continue;
+            }
+
+            $coords = Coordinates::convert(
+              $mapped['image']['pixel_width'],
+              $mapped['image']['real_width'],
+              $mapped['image']['pixel_height'],
+              $mapped['image']['real_height'],
+              $structure['x'],
+              $structure['y']
+            );
+
+            $structure['x'] = $coords['x'];
+            $structure['y'] = $coords['y'];
+            
+            echo "<pre>";
+            print_r($structure);
+            echo "</pre>";
+          }
+        }
       }
       //
       echo '<br />';
