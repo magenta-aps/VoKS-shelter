@@ -199,7 +199,7 @@ class MainController extends BaseController
         }
         
         $test_send = config('mail.test_send');
-        if (empty($test_send)) echo 'Test send is enabled.<br />';
+        echo 'Test send is: '.(!empty($test_send) ? 'Enabled' : 'Disabled').'.<br />';
         
         $test_email = config('mail.test_email');
         if (empty($test_email)) echo 'Test email is: '.(!empty($test_email) ? $test_email : 'Empty').'.<br />';
@@ -209,7 +209,7 @@ class MainController extends BaseController
         
         //
         $emails = array();
-        if (!empty($test_email)) $emails[] = $test_email;
+        if (!empty($test_email) && !empty($test_send)) $emails[] = $test_email;
         
         $email_to = !empty($_GET['email']) ? $_GET['email'] : '';
         if (empty($email_to)) {
