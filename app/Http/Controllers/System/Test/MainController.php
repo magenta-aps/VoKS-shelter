@@ -203,7 +203,7 @@ class MainController extends BaseController
         $emails = array();
         if (!empty($test_email)) $emails[] = $test_email;
         
-        $email_to = $_GET['email'];
+        $email_to = !empty($_GET['email']) ? $_GET['email'] : '';
         if (empty($email_to)) {
           echo 'Info: Missing <i>email<i> parameter.';
         } 
