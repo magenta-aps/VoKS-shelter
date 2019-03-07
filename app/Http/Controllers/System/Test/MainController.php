@@ -190,11 +190,11 @@ class MainController extends BaseController
         echo 'Test send is: '.(!empty($test_send) ? 'Enabled' : 'Disabled').'<br />';
         $test_email = config('mail.test_email');
         echo 'Test email is: '.(!empty($test_email) ? $test_email : 'Empty').'<br />';
-        echo 'Mail driver:'.(config('mail.driver')?  config('mail.driver'):'Empty').'.<br />';
-        echo 'Mail host: '.(config('mail.host')?  config('mail.host'):'Empty').'.<br />';
-        echo 'Mail port: '.(config('mail.port')?  config('mail.port'):'Empty').'.<br />';
-        echo 'Mail username: '.(config('mail.username')?  config('mail.username'):'Empty').'.<br />';
-        echo 'Mail password: '.(config('mail.password')?  config('mail.password'):'Empty').'.<br />';
+        echo 'Mail driver:'.(config('mail.driver')?  config('mail.driver'):'Empty').'<br />';
+        echo 'Mail host: '.(config('mail.host')?  config('mail.host'):'Empty').'<br />';
+        echo 'Mail port: '.(config('mail.port')?  config('mail.port'):'Empty').'<br />';
+        echo 'Mail username: '.(config('mail.username')?  config('mail.username'):'Empty').'<br />';
+        echo 'Mail password: '.(config('mail.password')?  config('mail.password'):'Empty').'<br />';
         
         //
         $emails = array();
