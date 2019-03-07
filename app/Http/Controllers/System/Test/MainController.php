@@ -22,12 +22,14 @@ use BComeSafe\Packages\Aruba\Ale;
 use BComeSafe\Packages\Aruba\Clearpass\Authentication;
 use BComeSafe\Packages\Aruba\Clearpass\User;
 use BComeSafe\Packages\Notifications;
+use BComeSafe\Packages\Coordinates\Coordinates;
 use BComeSafe\Models\SchoolDefault;
 use Devristo\Phpws\Client;
 use React\EventLoop;
 use Zend\Log;
 use BComeSafe\Models\Device;
 use Mail;
+
 
 /**
  * Class MainController
