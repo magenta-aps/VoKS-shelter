@@ -282,11 +282,10 @@ class MainController extends BaseController
         }
     }
 
-
     /**
      * Test UCP methods
      *
-     * URL: /test/ucp-test-methods
+     * URL: /system/test/ucp-test-methods
      */
     public function getUcpTestMethods() {
         $options = config('ucp');
@@ -311,5 +310,42 @@ class MainController extends BaseController
         dd($response);
 
         echo 'If you see this, UCP authentication has worked out perfectly.';
+    }
+    
+    /**
+     * Test Airwave structure
+     *
+     * URL: /system/test/airwave-structure
+     */
+    public function getAirwaveStructure() {
+      
+      $AirwaveImport = new AirwaveImport();
+      echo "<pre>";
+      print_r($AirwaveImport->options);
+      echo "</pre>";
+      echo '<br />';
+      
+      if (!empty($_GET['sync'])) {
+        $data = (new CurlRequest())
+          ->setUrl($AirwaveImport->options['loginUrl'])
+          ->setCookieJar($AirwaveImport->options['cookiePath'])
+          ->setPostRequest($AirwaveImport->options['loginData'])
+          ->expect(
+              CurlRequest::CUSTOM_RESPONSE,
+              function ($response) {
+                echo "<pre>";
+                print_r($response);
+                echo "</pre>";
+                return Formatter::make($response, Formatter::XML)->toArray();
+              }
+          )->execute();
+          
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+      }
+      echo '<br />';
+      echo 'Finished.';
+      return;
     }
 }
