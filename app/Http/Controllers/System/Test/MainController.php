@@ -15,6 +15,7 @@ use BComeSafe\Libraries\WakeOnLan;
 use BComeSafe\Models\School;
 use BComeSafe\Packages\Aruba\Airwave\Base;
 use BComeSafe\Packages\Aruba\Airwave\Importer;
+use BComeSafe\Packages\Aruba\Airwave\Importer\AirwaveImport;
 use BComeSafe\Packages\Aruba\Airwave\Structure;
 use BComeSafe\Packages\Aruba\Ale;
 use BComeSafe\Packages\Aruba\Clearpass\Authentication;
@@ -213,19 +214,25 @@ class MainController extends BaseController
           die('Stopped.');
         }
 
-        echo 'Sending Email. <br /><br />';
-        
-        $message = 'Hi!. This is a TEST email sent from BCS. Did you received?';
-        
-        foreach($emails as $email) {
-          $result = Mail::raw($message, function($message) use ($email) {
-            $message
-              ->from(config('mail.from.address'), config('mail.from.name'))
-              ->to($email)
-              ->subject(trans('mail.alarm.test.subject'));
-          });
+        if (empty($_GET['send_email'])) {
+          echo 'To send Email - add GET parameter <i>send_mail=1</i>.';
         }
-        echo 'Result:' . $result . '<br /><br />';
+        else {
+          echo 'Sending Email. <br /><br />';
+
+          $message = 'Hi!. This is a TEST email sent from BCS. Did you received?';
+
+          foreach($emails as $email) {
+            $result = Mail::raw($message, function($message) use ($email) {
+              $message
+                ->from(config('mail.from.address'), config('mail.from.name'))
+                ->to($email)
+                ->subject(trans('mail.alarm.test.subject'));
+            });
+          }
+          echo 'Result:' . $result . '<br /><br />';
+        }
+        
         echo 'Finished.';
         return;
     }
@@ -256,12 +263,20 @@ class MainController extends BaseController
           echo 'Erro: Missing phone_number parameter.';
           die();
         }
-
-        echo 'Sending SMS. <br /><br />';
-        $integration = \Component::get('Sms')->getIntegration($provider);
-        $message = 'Hi!. This is a test message sent from BCS. Did you received?';
-        $result = $integration->sendMessage($phone_number, $message, TRUE);
-        echo 'Result:' . $result;
+        
+        if (empty($_GET['send_sms'])) {
+          echo 'To send Email - add GET parameter <i>send_mail=1</i>.';
+        }
+        else {
+          echo 'Sending SMS. <br /><br />';
+          $integration = \Component::get('Sms')->getIntegration($provider);
+          $message = 'Hi!. This is a test message sent from BCS. Did you received?';
+          $result = $integration->sendMessage($phone_number, $message, TRUE);
+          echo 'Result:' . $result;
+        }
+        
+        echo 'Finished.';
+        return;
     }
 
     public function getAle() {

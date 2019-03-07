@@ -60,6 +60,11 @@ class AirwaveImport
     {
         $options = [
             'baseUrl' => config('aruba.airwave.url'),
+            'api_url' => [
+              'campuses' => config('aruba.airwave.campuses.url'),
+              'sites' => config('aruba.airwave.sites.url'),
+              'aps' => config('aruba.airwave.aps.url')
+            ],
             'loginUrl' => config('aruba.airwave.login.url'),
             'loginData' => [
                 'credential_0' => config('aruba.airwave.login.username'),
