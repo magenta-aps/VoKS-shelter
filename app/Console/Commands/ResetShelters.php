@@ -46,7 +46,8 @@ class ResetShelters extends Command
       
       foreach($schools as $school) {
         //Config for activity by minutes - default 60min Shelters was not active.
-        if (time() - (config('alarm.reset_timeout') * 60) <= strtotime($school['last_active'])) {
+        if (time() - (config('alarm.reset_timeout') * 60) > strtotime($school['last_active'])) {
+          echo 'Reseting shelter: ' . $school['school_id'] . ' | Last activity: ' . $school['last_active'];
           //send out shelter reset message to all clients
           $websockets = new ShelterClient(config('alarm.php_ws_url') . '/' . config('alarm.php_ws_client'));
           $websockets->reset($school['school_id']);
