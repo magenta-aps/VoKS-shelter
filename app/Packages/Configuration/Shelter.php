@@ -205,7 +205,7 @@ class Shelter
         // Check Shelter alarm status
         $shelterStatus = SchoolStatus::where('school_id', '=', $id)->get()->first();
         if ($shelterStatus->status_alarm) {
-            $response['time'] = date('H:i', strtotime($shelterStatus->last_active->timezone($timezone)));
+            $response['time'] = date('H:i', strtotime($shelterStatus->triggered_at->timezone($timezone)));
             $response['status'] = Device::TRIGGERED;
         }
 
