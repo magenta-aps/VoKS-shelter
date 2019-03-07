@@ -86,6 +86,10 @@ class AirwaveImport
 
         $this->options = $options;
     }
+    
+    public function getOptions() {
+      return $this->options;
+    }
 
     /**
      * @param $type

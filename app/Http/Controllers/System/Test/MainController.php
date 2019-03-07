@@ -335,16 +335,18 @@ class MainController extends BaseController
     public function getAirwaveStructure() {
       
       $AirwaveImport = new AirwaveImport();
+      $options = $AirwaveImport->getOptions();
+      
       echo "<pre>";
-      print_r($AirwaveImport->options);
+      print_r($options);
       echo "</pre>";
       echo '<br />';
       
       if (!empty($_GET['sync'])) {
         $data = (new CurlRequest())
-          ->setUrl($AirwaveImport->options['loginUrl'])
-          ->setCookieJar($AirwaveImport->options['cookiePath'])
-          ->setPostRequest($AirwaveImport->options['loginData'])
+          ->setUrl($options['loginUrl'])
+          ->setCookieJar($options['cookiePath'])
+          ->setPostRequest($options['loginData'])
           ->expect(
               CurlRequest::CUSTOM_RESPONSE,
               function ($response) {
