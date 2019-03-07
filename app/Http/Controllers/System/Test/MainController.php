@@ -16,6 +16,7 @@ use BComeSafe\Models\School;
 use BComeSafe\Packages\Aruba\Airwave\Base;
 use BComeSafe\Packages\Aruba\Airwave\Importer;
 use BComeSafe\Packages\Aruba\Airwave\Importer\AirwaveImport;
+use SoapBox\Formatter\Formatter;
 use BComeSafe\Packages\Aruba\Airwave\Structure;
 use BComeSafe\Packages\Aruba\Ale;
 use BComeSafe\Packages\Aruba\Clearpass\Authentication;
@@ -215,7 +216,7 @@ class MainController extends BaseController
         }
 
         if (empty($_GET['send_email'])) {
-          echo 'To send Email - add GET parameter <i>send_mail=1</i>.';
+          echo 'To send Email - add GET parameter <i>send_mail=1</i>. <br />';
         }
         else {
           echo 'Sending Email. <br /><br />';
@@ -265,7 +266,7 @@ class MainController extends BaseController
         }
         
         if (empty($_GET['send_sms'])) {
-          echo 'To send Email - add GET parameter <i>send_mail=1</i>.';
+          echo 'To send Email - add GET parameter <i>send_sms=1</i>. <br />';
         }
         else {
           echo 'Sending SMS. <br /><br />';
@@ -342,7 +343,11 @@ class MainController extends BaseController
       echo "</pre>";
       echo '<br />';
       
-      if (!empty($_GET['sync'])) {
+      if (empty($_GET['start_sync'])) {
+        echo 'To start Sync - add GET parameter <i>start_sync=1</i>. <br />';
+      }
+      else {
+        //
         $data = (new CurlRequest())
           ->setUrl($options['loginUrl'])
           ->setCookieJar($options['cookiePath'])
@@ -356,11 +361,12 @@ class MainController extends BaseController
                 return Formatter::make($response, Formatter::XML)->toArray();
               }
           )->execute();
-          
+        //
         echo "<pre>";
         print_r($data);
         echo "</pre>";
       }
+      //
       echo '<br />';
       echo 'Finished.';
       return;
