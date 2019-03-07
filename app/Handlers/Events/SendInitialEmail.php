@@ -28,9 +28,13 @@ class SendInitialEmail
     public function handle(AlarmWasTriggered $event)
     {
         try {
-            //
+            if (!config('mail.enabled')) return;
+            
             $mail_from = env('MAIL_FROM');
             if (empty($mail_from)) return;
+            
+            $mail_from_name = env('MAIL_FROM_NAME');
+            $mail_subject = trans('mail.alarm.initial.subject');
 
             // Get school settings
             $schoolId = $event->schoolId;
@@ -57,22 +61,18 @@ class SendInitialEmail
             ];
 
             // Send out email messages
-            if (0 < $memberCount)
-            {
-                foreach ($members as $member)
-                {
-	                $result = Mail::raw( $message, function($message) use ($member)
-	                {
-		                $message
-			                ->from( $mail_from, env('MAIL_FROM_NAME') )
-		                    ->to( $member->email )
-		                    ->subject( trans('mail.alarm.initial.subject') );
-	                });
-
-                    if ($result) {
-                        $history['result']['count']++;
-                    }
+            if (!empty($memberCount)) {
+              foreach ($members as $member) {
+                $result = Mail::raw( $message, function($message) use ($member) {
+                  $message
+                    ->from($mail_from, $mail_from_name)
+                    ->to($member->email)
+                    ->subject($mail_subject);
+                });
+                if ($result) {
+                  $history['result']['count']++;
                 }
+              }
             }
 
             // History message
