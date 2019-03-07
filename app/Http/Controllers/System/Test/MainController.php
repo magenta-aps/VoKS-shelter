@@ -397,19 +397,6 @@ class MainController extends BaseController
             if (!isset($structure['id'])) {
               continue;
             }
-
-            $coords = Coordinates::convert(
-              $mapped['image']['pixel_width'],
-              $mapped['image']['real_width'],
-              $mapped['image']['pixel_height'],
-              $mapped['image']['real_height'],
-              $structure['x'],
-              $structure['y']
-            );
-
-            $structure['x'] = $coords['x'];
-            $structure['y'] = $coords['y'];
-            
             echo "<pre>";
             print_r($structure);
             echo "</pre>";
