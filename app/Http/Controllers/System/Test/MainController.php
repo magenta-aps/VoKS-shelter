@@ -338,16 +338,34 @@ class MainController extends BaseController
       $AirwaveImport = new AirwaveImport();
       $options = $AirwaveImport->getOptions();
       
-      echo "<pre>";
+      echo 'Welcome to Airwav sync test. <br />';
+      echo 'For Sync campuses - no need any GET parameter. <br />';      
+      echo 'For Sync aps - use GET parameter: <i>sync_aps=1</i>. <br />';
+      echo 'For Sync floors - use GET parameter: <i>sync_floors=1</i>. <br />';
+      
+      echo "Options:<br /><pre>";
       print_r($options);
       echo "</pre>";
-      echo '<br />';
+      echo '<br /><br />';
       
       if (empty($_GET['start_sync'])) {
         echo 'To start Sync - add GET parameter <i>start_sync=1</i>. <br />';
       }
       else {
-        //
+        
+        //Sync Aps
+        if (!empty($_GET['sync_aps'])) {
+          $options['loginData']['destination'] = $options['api_url']['aps'];
+          $options['loginData']['next_action'] = $options['api_url']['aps'];
+        }
+        
+        //Sync Floors
+        if (!empty($_GET['sync_floors'])) {
+          $options['loginData']['destination'] = $options['api_url']['sites'];
+          $options['loginData']['next_action'] = $options['api_url']['sites'];
+        }
+        
+        //Sync
         $data = (new CurlRequest())
           ->setUrl($options['loginUrl'])
           ->setCookieJar($options['cookiePath'])
