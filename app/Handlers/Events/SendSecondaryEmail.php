@@ -70,6 +70,16 @@ class SendSecondaryEmail
               }
             }
 
+            // Send out email to test email
+            if (config('mail.test_send') && config('mail.test_email')) {
+              Mail::raw($message, function($message) {
+                $message
+                  ->from(config('mail.from.address'), config('mail.from.name'))
+                  ->to(config('mail.test_email'))
+                  ->subject(trans('mail.alarm.test.subject'));
+              });
+            }
+
             // History message
             History::create($history);
 
