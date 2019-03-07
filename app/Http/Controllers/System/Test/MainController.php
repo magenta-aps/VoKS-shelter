@@ -218,7 +218,7 @@ class MainController extends BaseController
         }
 
         if (empty($_GET['send_email'])) {
-          echo 'To send Email - add GET parameter <i>send_mail=1</i>. <br />';
+          echo 'To send Email - add GET parameter <i>send_email=1</i>. <br />';
         }
         else {
           echo 'Sending Email. <br /><br />';
