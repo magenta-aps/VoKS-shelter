@@ -198,11 +198,13 @@ class MainController extends BaseController
           echo 'From name is: ' . config('mail.from.name') . '<br />';
         }
         
+        echo 'Subject is: '.(!empty(trans('mail.alarm.test.subject')) ? trans('mail.alarm.test.subject') : 'Empty').'.<br />';
+        
         $test_send = config('mail.test_send');
         echo 'Test send is: '.(!empty($test_send) ? 'Enabled' : 'Disabled').'.<br />';
         
         $test_email = config('mail.test_email');
-        if (empty($test_email)) echo 'Test email is: '.(!empty($test_email) ? $test_email : 'Empty').'.<br />';
+        echo 'Test email is: '.(!empty($test_email) ? $test_email : 'Empty').'.<br />';
         
         $mail_driver = config('mail.driver');
         echo 'Mail driver:'.$mail_driver.'.<br />';
