@@ -184,11 +184,19 @@ class MainController extends BaseController
     public function getEmail() { 
         if (!config('mail.enabled')) echo 'Mail is disabled.<br />';
         
-        $mail_from = config('mail.from.address');
-        if (empty($mail_from)) echo 'From email address is empty.<br />';
+        if (!config('mail.from.address')) {
+          echo 'From email address is empty.<br />';
+        }
+        else {
+          echo 'From email address is: ' . config('mail.from.address') . '<br />';
+        }
         
-        $mail_from_name = config('mail.from.name');
-        if (empty($mail_from_name)) echo 'From name is empty.<br />';
+        if (!config('mail.from.name')) {
+          echo 'From name is empty.<br />';
+        }
+        else {
+          echo 'From name is: ' . config('mail.from.name') . '<br />';
+        }
         
         $test_send = config('mail.test_send');
         if (empty($test_send)) echo 'Test send is enabled.<br />';
@@ -205,14 +213,14 @@ class MainController extends BaseController
         
         $email_to = !empty($_GET['email']) ? $_GET['email'] : '';
         if (empty($email_to)) {
-          echo 'Info: Missing <i>email<i> parameter.';
+          echo 'Info: Missing <i>email<i> parameter.<br />';
         } 
         else {
           $emails[] = $email_to;
         }
         
         if (empty($emails)) {
-          echo 'Error: Missing emails to send to.';
+          echo 'Error: Missing emails to send to.<br />';
           die('Stopped.');
         }
 
@@ -223,7 +231,7 @@ class MainController extends BaseController
         foreach($emails as $email) {
           $result = Mail::raw($message, function($message) use ($email) {
             $message
-              ->from($mail_from, $mail_from_name)
+              ->from(config('mail.from.address'), config('mail.from.name'))
               ->to($email)
               ->subject($mail_subject);
           });

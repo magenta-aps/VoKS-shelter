@@ -29,12 +29,7 @@ class SendSecondaryEmail
     {
         try {
             if (!config('mail.enabled')) return;
-            
-            $mail_from = config('mail.from.address');
-            if (empty($mail_from)) return;
-            
-            $mail_from_name = config('mail.from.name');
-            $mail_subject = trans('mail.alarm.secondary.subject');
+            if (empty(config('mail.from.address'))) return;
 
             // Get school settings
             $schoolId = $event->schoolId;
@@ -65,9 +60,9 @@ class SendSecondaryEmail
               foreach ($members as $member) {
                 $result = Mail::raw($message, function($message) use ($member) {
                   $message
-                    ->from($mail_from, $mail_from_name)
+                    ->from(config('mail.from.address'), config('mail.from.name'))
                     ->to($member->email)
-                    ->subject($mail_subject);
+                    ->subject(trans('mail.alarm.secondary.subject'));
                 });
                 if ($result) {
                   $history['result']['count']++;
