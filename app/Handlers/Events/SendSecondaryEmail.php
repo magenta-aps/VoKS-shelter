@@ -13,7 +13,6 @@ use BComeSafe\Events\AskedToCallPolice;
 use BComeSafe\Models\CrisisTeamMember;
 use BComeSafe\Models\History;
 use BComeSafe\Models\School;
-
 use Mail;
 
 class SendSecondaryEmail
