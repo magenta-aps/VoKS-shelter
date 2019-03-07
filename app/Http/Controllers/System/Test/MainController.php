@@ -183,29 +183,13 @@ class MainController extends BaseController
     
     public function getEmail() { 
         if (!config('mail.enabled')) echo 'Mail is disabled.<br />';
-        
-        if (!config('mail.from.address')) {
-          echo 'From email address is empty.<br />';
-        }
-        else {
-          echo 'From email address is: ' . config('mail.from.address') . '<br />';
-        }
-        
-        if (!config('mail.from.name')) {
-          echo 'From name is empty.<br />';
-        }
-        else {
-          echo 'From name is: ' . config('mail.from.name') . '<br />';
-        }
-        
-        echo 'Subject is: '.(!empty(trans('mail.alarm.test.subject')) ? trans('mail.alarm.test.subject') : 'Empty').'.<br />';
-        
+        echo 'From email address is: '.(!empty(config('mail.from.address')) ? config('mail.from.address') : 'Empty').'<br />';
+        echo 'From name is: '.(!empty(config('mail.from.name')) ? config('mail.from.name') : 'Empty').'<br />';
+        echo 'Subject is: '.(!empty(trans('mail.alarm.test.subject')) ? trans('mail.alarm.test.subject') : 'Empty').'<br />';
         $test_send = config('mail.test_send');
-        echo 'Test send is: '.(!empty($test_send) ? 'Enabled' : 'Disabled').'.<br />';
-        
+        echo 'Test send is: '.(!empty($test_send) ? 'Enabled' : 'Disabled').'<br />';
         $test_email = config('mail.test_email');
-        echo 'Test email is: '.(!empty($test_email) ? $test_email : 'Empty').'.<br />';
-        
+        echo 'Test email is: '.(!empty($test_email) ? $test_email : 'Empty').'<br />';
         $mail_driver = config('mail.driver');
         echo 'Mail driver:'.$mail_driver.'.<br />';
         
@@ -215,7 +199,7 @@ class MainController extends BaseController
         
         $email_to = !empty($_GET['email']) ? $_GET['email'] : '';
         if (empty($email_to)) {
-          echo 'Info: Missing <i>email<i> parameter.<br />';
+          echo 'Info: Missing GET <i>email</i> parameter.<br />';
         } 
         else {
           $emails[] = $email_to;
