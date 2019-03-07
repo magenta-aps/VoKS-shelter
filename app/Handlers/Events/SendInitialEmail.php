@@ -30,10 +30,10 @@ class SendInitialEmail
         try {
             if (!config('mail.enabled')) return;
             
-            $mail_from = env('MAIL_FROM');
+            $mail_from = config('mail.from.address');
             if (empty($mail_from)) return;
             
-            $mail_from_name = env('MAIL_FROM_NAME');
+            $mail_from_name = config('mail.from.name');
             $mail_subject = trans('mail.alarm.initial.subject');
 
             // Get school settings
@@ -63,7 +63,7 @@ class SendInitialEmail
             // Send out email messages
             if (!empty($memberCount)) {
               foreach ($members as $member) {
-                $result = Mail::raw( $message, function($message) use ($member) {
+                $result = Mail::raw($message, function($message) use ($member) {
                   $message
                     ->from($mail_from, $mail_from_name)
                     ->to($member->email)

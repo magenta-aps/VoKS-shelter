@@ -25,6 +25,7 @@ use Devristo\Phpws\Client;
 use React\EventLoop;
 use Zend\Log;
 use BComeSafe\Models\Device;
+use Mail;
 
 /**
  * Class MainController
@@ -34,24 +35,21 @@ use BComeSafe\Models\Device;
 class MainController extends BaseController
 {
 
-    public function getSettings()
-    {
-	phpinfo();
-	return [];
+    public function getSettings() {
+      phpinfo();
+      return [];
     }
 
-    public function getCoords()
-    {
+    public function getCoords() {
         \Artisan::call('aruba:sync:macs', ['mac:1' => '<add mac address here>', 'mac:2' => '<add mac address here>']);
     }
 
-    public function getUser()
-    {
+    public function getUser() {
         $user = new User();
         return $user->getByIp('192.168.21.54');
     }
 
-    public function getRegister() {
+    public function getRegister() { 
       try {
         $device = Device::where('device_id','=',@$_GET['device_id'])->get()->first();
 
@@ -98,8 +96,7 @@ class MainController extends BaseController
       die(__FILE__);
     }
 
-    public function getPush()
-    {
+    public function getPush() {
 
         if (empty($_GET['gcm_id'])) {
           echo 'Erro: Missing "gcm_id" parameter.';
@@ -156,8 +153,7 @@ class MainController extends BaseController
         return;
     }
 
-    public function getCoordinateStats($full = 0)
-    {
+    public function getCoordinateStats($full = 0) {
         $school = \DB::select(
             "
             SELECT count(d.id) AS coordinates, s.name as school_name
@@ -184,10 +180,61 @@ class MainController extends BaseController
             );
         }
     }
+    
+    public function getEmail() { 
+        if (!config('mail.enabled')) echo 'Mail is disabled.<br />';
+        
+        $mail_from = config('mail.from.address');
+        if (empty($mail_from)) echo 'From email address is empty.<br />';
+        
+        $mail_from_name = config('mail.from.name');
+        if (empty($mail_from_name)) echo 'From name is empty.<br />';
+        
+        $test_send = config('mail.test_send');
+        if (empty($test_send)) echo 'Test send is enabled.<br />';
+        
+        $test_email = config('mail.test_email');
+        if (empty($test_email)) echo 'Test email is: '.(!empty($test_email) ? $test_email : 'Empty').'.<br />';
+        
+        $mail_driver = config('mail.driver');
+        echo 'Mail driver:'.$mail_driver.'.<br />';
+        
+        //
+        $emails = array();
+        if (!empty($test_email)) $emails[] = $test_email;
+        
+        $email_to = $_GET['email'];
+        if (empty($email_to)) {
+          echo 'Info: Missing <i>email<i> parameter.';
+        } 
+        else {
+          $emails[] = $email_to;
+        }
+        
+        if (empty($emails)) {
+          echo 'Error: Missing emails to send to.';
+          die('Stopped.');
+        }
 
-    public function getSms() {
-
-        if (!config('sms.enabled')) echo 'SMS is disabled.<br />';
+        echo 'Sending Email. <br /><br />';
+        
+        $message = 'Hi!. This is a TEST email sent from BCS. Did you received?';
+        
+        foreach($emails as $email) {
+          $result = Mail::raw($message, function($message) use ($email) {
+            $message
+              ->from($mail_from, $mail_from_name)
+              ->to($email)
+              ->subject($mail_subject);
+          });
+        }
+        echo 'Result:' . $result . '<br /><br />';
+        echo 'Finished.';
+        return;
+    }
+    
+    public function getSms() { 
+      if (!config('sms.enabled')) echo 'SMS is disabled.<br />';
         $sms_providers = \Component::get('Sms')->getIntegrations();
         echo 'SMS Providers: <pre>';
         print_r($sms_providers);
@@ -220,13 +267,11 @@ class MainController extends BaseController
         echo 'Result:' . $result;
     }
 
-    public function getAle()
-    {
+    public function getAle() {
         return Ale\AleLocation::getCoordinates(@$_GET['mac']);
     }
 
-    public function getWol()
-    {
+    public function getWol() {
         try {
             $ip = isset($_GET['ip']) ? $_GET['ip'] : '';
             $mac = isset($_GET['mac']) ? $_GET['mac'] : '';
@@ -246,8 +291,7 @@ class MainController extends BaseController
      *
      * URL: /test/ucp-test-methods
      */
-    public function getUcpTestMethods()
-    {
+    public function getUcpTestMethods() {
         $options = config('ucp');
         $ucp = new \UCP\Client($options);
 
