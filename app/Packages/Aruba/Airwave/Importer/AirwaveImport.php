@@ -108,8 +108,17 @@ class AirwaveImport
      * @return mixed
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
-    protected function pullData()
-    {
+    protected function pullData($api_url = 'campuses', $api_url_param = null)
+    { 
+        //Set API url
+        $this->options['loginData']['destination'] = $this->options['api_url'][$api_url];
+        $this->options['loginData']['next_action'] = $this->options['api_url'][$api_url];
+        //Set params
+        if (!empty($api_url_param)) {
+          $this->options['loginData']['destination'] . $api_url_param;
+          $this->options['loginData']['next_action'] . $api_url_param;
+        }
+        
         $data = (new CurlRequest())
             ->setUrl($this->options['loginUrl'])
             ->setCookieJar($this->options['cookiePath'])
@@ -234,38 +243,42 @@ class AirwaveImport
                             break;
                         }
                     }
-
-                    // import all aps
-                    if (isset($floor['ap'])) {
-                      foreach ($floor['ap'] as $ap) {
-                        $structure = isset($ap['@attributes']) ? $ap['@attributes'] : $ap;
-                        if (!isset($structure['id'])) {
-                          continue;
-                        }
-
-                        $coords = Coordinates::convert(
-                          $mapped['image']['pixel_width'],
-                          $mapped['image']['real_width'],
-                          $mapped['image']['pixel_height'],
-                          $mapped['image']['real_height'],
-                          $structure['x'],
-                          $structure['y']
-                        );
-
-                        $structure['x'] = $coords['x'];
-                        $structure['y'] = $coords['y'];
-
-                        $ap['model'] = Aps::import($this->mapper->mapAps($school->id, $floor['model']->id, $structure));
-                        $ap['id'] = $ap['model']->id;
-                        $this->addImported('aps', $ap['model']->ap_ale_id);
-                      }
-                    }
-
-
                 }
             }
         }
+        
+        if (!empty($this->$importedMap['floors'])) {
+          foreach($this->$importedMap['floors'] as $floor_ale_id) {
+            $aps_data = $this->pullData('aps', '?site_id=' . $floor_ale_id);
+            $aps_data['access_point'] = array_convert_to_numeric($aps_data['access_point']);
+            // import all aps
+            if (!empty($aps_data['access_point'])) {
+              foreach ($aps_data['access_point'] as $ap) {
+                $structure = isset($ap['@attributes']) ? $ap['@attributes'] : $ap;
+                if (!isset($structure['id'])) {
+                  continue;
+                }
 
+                $coords = Coordinates::convert(
+                  $mapped['image']['pixel_width'],
+                  $mapped['image']['real_width'],
+                  $mapped['image']['pixel_height'],
+                  $mapped['image']['real_height'],
+                  $structure['x'],
+                  $structure['y']
+                );
+
+                $structure['x'] = $coords['x'];
+                $structure['y'] = $coords['y'];
+
+                $ap['model'] = Aps::import($this->mapper->mapAps($school->id, $floor['model']->id, $structure));
+                $ap['id'] = $ap['model']->id;
+                $this->addImported('aps', $ap['model']->ap_ale_id);
+              }
+            }
+          }
+        }
+        
         //clean up old records
         $this->cleanUp();
 

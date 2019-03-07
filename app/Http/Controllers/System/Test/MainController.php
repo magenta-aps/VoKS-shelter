@@ -357,6 +357,10 @@ class MainController extends BaseController
         if (!empty($_GET['sync_aps'])) {
           $options['loginData']['destination'] = $options['api_url']['aps'];
           $options['loginData']['next_action'] = $options['api_url']['aps'];
+          if (!empty($_GET['site_id'])) {
+            $options['loginData']['destination'] = $options['api_url']['aps'] . '?site_id=' . $_GET['site_id'];
+            $options['loginData']['next_action'] = $options['api_url']['aps'] . '?site_id=' . $_GET['site_id'];
+          }
         }
         
         //Sync Floors
