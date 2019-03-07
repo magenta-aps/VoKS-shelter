@@ -41,26 +41,29 @@ class ResetShelters extends Command
     public function handle()
     {
       
-      $schools = School::where('status_alarm', '=', '1')->get()->toArray();
+      $schools = SchoolStatus::where('status_alarm', '=', '1')->get()->toArray();
       if (empty($schools)) return;
       
-      foreach($schools as $school_id) {
-        //send out shelter reset message to all clients
-        $websockets = new ShelterClient(config('alarm.php_ws_url') . '/' . config('alarm.php_ws_client'));
-        $websockets->reset($school_id);
+      foreach($schools as $school) {
+        //Config for activity by minutes - default 60min Shelters was not active.
+        if (time() - (config('alarm.reset_timeout') * 60) <= strtotime($school['last_active'])) {
+          //send out shelter reset message to all clients
+          $websockets = new ShelterClient(config('alarm.php_ws_url') . '/' . config('alarm.php_ws_client'));
+          $websockets->reset($school['school_id']);
 
-        // School status
-        SchoolStatus::statusAlarm($school_id, 0);
-        SchoolStatus::statusPolice($school_id, 0);
+          // School status
+          SchoolStatus::statusAlarm($school['school_id'], 0);
+          SchoolStatus::statusPolice($school['school_id'], 0);
 
-        // reset device statuses
-        Device::updateAllToInactive($school_id);
+          // reset device statuses
+          Device::updateAllToInactive($school['school_id']);
 
-        // clear history for the last alarm
-        History::truncateForShelter($school_id);
+          // clear history for the last alarm
+          History::truncateForShelter($school['school_id']);
 
-        // clear got it history for the last alarm
-        GotItHistory::truncateForShelter($school_id);
+          // clear got it history for the last alarm
+          GotItHistory::truncateForShelter($school['school_id']);
+        }
       }
 
       return;

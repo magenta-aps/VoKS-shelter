@@ -27,7 +27,8 @@ return [
       'police_number' => env('BCS_POLICE_NUMBER', null),
       'public' => 0
     ),
-    'activity_timeout' => env('ACTIVITY_TIMEOUT', 10),
+    'activity_timeout' => env('ACTIVITY_TIMEOUT', 10), //10 minutes
+    'reset_timeout' => env('RESET_TIMEOUT', 60), //60 minutes
     'url' => env('SHELTER_URL'),
     'php_ws_url' => !env('SSL_ON', false)
         ? 'ws://' . env('PHP_WS_URL', '127.0.0.1') . ':9000'
