@@ -51,6 +51,7 @@ return [
         ],
         'aps' => [
             'url' => $airwave . '/visualrf/access_point.xml',
+        ]
     ],
     'clearpass' => [
         'enabled' => env('ARUBA_CLEARPASS_ENABLED', true),
