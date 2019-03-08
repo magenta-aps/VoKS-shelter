@@ -22,6 +22,8 @@ class CreateEventLogTable extends Migration {
             $table->string('fullname')->nullable();
             $table->string('mac_address')->nullable()->default('');
             $table->string('floor_id')->nullable()->index('device_floor_id');
+            $table->float('x', 10, 3)->nullable();
+            $table->float('y', 10, 3)->nullable();
             $table->text('data')->nullable()->default('');
 			$table->timestamps();
 		});

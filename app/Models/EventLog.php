@@ -19,6 +19,8 @@ class EventLog extends BaseModel
         'fullname',
         'mac_address',
         'floor_id',
+        'x',
+        'y',
         'data'
     ];
 

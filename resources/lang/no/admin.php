@@ -50,10 +50,12 @@ return [
             'device_id' => 'EnhedsID',
             'fullname' => 'Fuldt navn',
             'mac_address' => 'MAC-adresse',
-            'floor_id' => 'BygningsID',
+            'floor_id' => 'EtasjeID',
+            'x' => 'X',
+            'y' => 'Y',
             'log_types' => [
                 'alarm_triggered' => 'Alarm utløst',
-                'unknown_type' => 'Ukendt type'
+                'unknown_type' => 'Ukjent type'
             ]
         ]
     ],

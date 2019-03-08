@@ -25,6 +25,8 @@
                         <th>{{ Lang::get('admin.reports.table.fullname') }}</th>
                         <th>{{ Lang::get('admin.reports.table.mac_address') }}</th>
                         <th>{{ Lang::get('admin.reports.table.floor_id') }}</th>
+                        <th>{{ Lang::get('admin.reports.table.x') }}</th>
+                        <th>{{ Lang::get('admin.reports.table.y') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -36,6 +38,8 @@
                         <td><% log_item.fullname %></td>
                         <td><% log_item.mac_address %></td>
                         <td><% log_item.floor_id %></td>
+                        <td><% log_item.x %></td>
+                        <td><% log_item.y %></td>
                     </tr>
                     </tbody>
                 </table>
