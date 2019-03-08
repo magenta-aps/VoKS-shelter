@@ -37,6 +37,8 @@ class LogAlarmTrigger
             $data['fullname'] = $this->device['fullname'];
             $data['mac_address'] = $this->device['mac_address'];
             $data['floor_id'] = $this->device['floor_id'];
+            $data['x'] = $this->device['x'];
+            $data['y'] = $this->device['y'];
         } else {
             $data['device_type'] = 'shelter';
         }

@@ -61,6 +61,8 @@ return [
             'fullname' => 'Full name',
             'mac_address' => 'MAC address',
             'floor_id' => 'Floor ID',
+            'x' => 'X',
+            'y' => 'Y',
             'log_types' => [
                 'alarm_triggered' => 'Alarm triggered',
                 'unknown_type' => 'Unknown log type'
