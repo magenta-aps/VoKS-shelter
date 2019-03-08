@@ -59,6 +59,9 @@
 
                     // Create floor
                     Map.createFloor(floorId);
+                    
+                    // Create floor
+                    Map.setBuildingByFloorId(floorId);
 
                     // Create markers
                     Map.createMarkers();

@@ -60,6 +60,11 @@ class AirwaveImport
     {
         $options = [
             'baseUrl' => config('aruba.airwave.url'),
+            'api_url' => [
+              'campuses' => config('aruba.airwave.campuses.url'),
+              'sites' => config('aruba.airwave.sites.url'),
+              'aps' => config('aruba.airwave.aps.url')
+            ],
             'loginUrl' => config('aruba.airwave.login.url'),
             'loginData' => [
                 'credential_0' => config('aruba.airwave.login.username'),
@@ -81,6 +86,10 @@ class AirwaveImport
 
         $this->options = $options;
     }
+    
+    public function getOptions() {
+      return $this->options;
+    }
 
     /**
      * @param $type
@@ -99,8 +108,17 @@ class AirwaveImport
      * @return mixed
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
-    protected function pullData()
-    {
+    protected function pullData($api_url = 'campuses', $api_url_param = null)
+    { 
+        //Set API url
+        $this->options['loginData']['destination'] = $this->options['api_url'][$api_url];
+        $this->options['loginData']['next_action'] = $this->options['api_url'][$api_url];
+        //Set params
+        if (!empty($api_url_param)) {
+          $this->options['loginData']['destination'] . $api_url_param;
+          $this->options['loginData']['next_action'] . $api_url_param;
+        }
+        
         $data = (new CurlRequest())
             ->setUrl($this->options['loginUrl'])
             ->setCookieJar($this->options['cookiePath'])
@@ -225,10 +243,10 @@ class AirwaveImport
                             break;
                         }
                     }
-
                     // import all aps
-                    if (isset($floor['ap'])) {
-                      foreach ($floor['ap'] as $ap) {
+                    $aps_data = $this->pullData('aps', '?site_id=' . $floor['model']->floor_ale_id);
+                    if (!empty($aps_data['ap'])) {
+                      foreach ($aps_data['ap'] as $ap) {
                         $structure = isset($ap['@attributes']) ? $ap['@attributes'] : $ap;
                         if (!isset($structure['id'])) {
                           continue;
@@ -251,12 +269,10 @@ class AirwaveImport
                         $this->addImported('aps', $ap['model']->ap_ale_id);
                       }
                     }
-
-
                 }
             }
         }
-
+        
         //clean up old records
         $this->cleanUp();
 
@@ -266,7 +282,8 @@ class AirwaveImport
     protected function cleanUp()
     {
         foreach ($this->importedMap as $table => $column) {
-            \DB::table($table)->whereNotIn($column, $this->imported[$table])->delete();
+          echo 'Imported ' . $table . ': ' . count($column);
+          \DB::table($table)->whereNotIn($column, $this->imported[$table])->delete();
         }
     }
 

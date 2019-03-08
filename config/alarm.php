@@ -16,8 +16,10 @@ return [
     'default' => [
         'mac' => env('MAC_ADDRESS', null)
     ],
+    'use_mac_address_for_pcapp' => env('USE_MAC_ADDRESS_FOR_PCAPP', false),
+    'use_mac_address_for_ios' =>  env('USE_MAC_ADDRESS_FOR_IOS', false),
     'secure' => env('SSL_ON', false),
-    'default_id' => env('SCHOOL_ID', 1),
+    'default_id' => env('SCHOOL_ID', null),
     'default_bcs' => array(
       'bcs_id' => env('BCS_ID', null),
       'bcs_name' => env('BCS_NAME', null),
@@ -25,7 +27,8 @@ return [
       'police_number' => env('BCS_POLICE_NUMBER', null),
       'public' => 0
     ),
-    'activity_timeout' => env('ACTIVITY_TIMEOUT', 10),
+    'activity_timeout' => env('ACTIVITY_TIMEOUT', 10), //10 minutes
+    'reset_timeout' => env('RESET_TIMEOUT', 60), //60 minutes
     'url' => env('SHELTER_URL'),
     'php_ws_url' => !env('SSL_ON', false)
         ? 'ws://' . env('PHP_WS_URL', '127.0.0.1') . ':9000'

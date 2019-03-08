@@ -24,7 +24,13 @@ class SchoolStatus extends BaseModel
     /**
      * @var array
      */
-    protected $fillable = ['school_id', 'status_alarm', 'status_police', 'last_active'];
+    protected $fillable = [
+      'school_id', 
+      'status_alarm', 
+      'status_police', 
+      'last_active',
+      'triggered_at'
+    ];
 
     /**
      * @var array
@@ -41,7 +47,7 @@ class SchoolStatus extends BaseModel
      */
     public function getDates()
     {
-        return ['last_active'];
+        return ['last_active', 'triggered_at'];
     }
 
     /**
@@ -73,14 +79,20 @@ class SchoolStatus extends BaseModel
         if (null === $schoolId) {
             $schoolId = \Shelter::getID();
         }
-
+        
+        $data = [
+          'school_id' => $schoolId,
+          'last_active' => date('Y-m-d H:i:s'),
+          'status_alarm' => $status
+        ];
+        
+        if ($status == 1) {
+          $data['triggered_at'] = $data['last_active'];
+        }
+        
         static::findAndUpdate(
             ['school_id' => $schoolId],
-            [
-            'school_id' => $schoolId,
-            'last_active' => date('Y-m-d H:i:s'),
-            'status_alarm' => $status
-            ]
+            $data
         );
     }
 

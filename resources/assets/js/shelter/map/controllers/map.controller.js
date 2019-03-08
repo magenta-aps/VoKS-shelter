@@ -144,6 +144,18 @@
         };
 
         /**
+         * Set building by floorId
+         *
+         * @param {Object} floorId Floor identifier
+         */
+        Map.setBuildingByFloorId = function(floorId) {
+            var floor = MapData.getFloor(floorId);
+            if (Map.state.building != floor.bid) {
+                Map.state.building = floor.bid;
+            }
+        };
+        
+        /**
          * ------------------------------------------------------------------
          * Markers
          * ------------------------------------------------------------------

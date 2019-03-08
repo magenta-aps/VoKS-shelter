@@ -15,16 +15,21 @@ use BComeSafe\Libraries\WakeOnLan;
 use BComeSafe\Models\School;
 use BComeSafe\Packages\Aruba\Airwave\Base;
 use BComeSafe\Packages\Aruba\Airwave\Importer;
+use BComeSafe\Packages\Aruba\Airwave\Importer\AirwaveImport;
+use SoapBox\Formatter\Formatter;
 use BComeSafe\Packages\Aruba\Airwave\Structure;
 use BComeSafe\Packages\Aruba\Ale;
 use BComeSafe\Packages\Aruba\Clearpass\Authentication;
 use BComeSafe\Packages\Aruba\Clearpass\User;
 use BComeSafe\Packages\Notifications;
+use BComeSafe\Packages\Coordinates\Coordinates;
 use BComeSafe\Models\SchoolDefault;
 use Devristo\Phpws\Client;
 use React\EventLoop;
 use Zend\Log;
 use BComeSafe\Models\Device;
+use Mail;
+
 
 /**
  * Class MainController
@@ -34,24 +39,21 @@ use BComeSafe\Models\Device;
 class MainController extends BaseController
 {
 
-    public function getSettings()
-    {
-	phpinfo();
-	return [];
+    public function getSettings() {
+      phpinfo();
+      return [];
     }
 
-    public function getCoords()
-    {
+    public function getCoords() {
         \Artisan::call('aruba:sync:macs', ['mac:1' => '<add mac address here>', 'mac:2' => '<add mac address here>']);
     }
 
-    public function getUser()
-    {
+    public function getUser() {
         $user = new User();
         return $user->getByIp('192.168.21.54');
     }
 
-    public function getRegister() {
+    public function getRegister() { 
       try {
         $device = Device::where('device_id','=',@$_GET['device_id'])->get()->first();
 
@@ -98,8 +100,7 @@ class MainController extends BaseController
       die(__FILE__);
     }
 
-    public function getPush()
-    {
+    public function getPush() {
 
         if (empty($_GET['gcm_id'])) {
           echo 'Erro: Missing "gcm_id" parameter.';
@@ -156,8 +157,7 @@ class MainController extends BaseController
         return;
     }
 
-    public function getCoordinateStats($full = 0)
-    {
+    public function getCoordinateStats($full = 0) {
         $school = \DB::select(
             "
             SELECT count(d.id) AS coordinates, s.name as school_name
@@ -184,10 +184,64 @@ class MainController extends BaseController
             );
         }
     }
+    
+    public function getEmail() { 
+        if (!config('mail.enabled')) echo 'Mail is disabled.<br />';
+        echo 'From email address is: '.(!empty(config('mail.from.address')) ? config('mail.from.address') : 'Empty').'<br />';
+        echo 'From name is: '.(!empty(config('mail.from.name')) ? config('mail.from.name') : 'Empty').'<br />';
+        echo 'Subject is: '.(!empty(trans('mail.alarm.test.subject')) ? trans('mail.alarm.test.subject') : 'Empty').'<br />';
+        $test_send = config('mail.test_send');
+        echo 'Test send is: '.(!empty($test_send) ? 'Enabled' : 'Disabled').'<br />';
+        $test_email = config('mail.test_email');
+        echo 'Test email is: '.(!empty($test_email) ? $test_email : 'Empty').'<br />';
+        echo 'Mail driver:'.(config('mail.driver')?  config('mail.driver'):'Empty').'<br />';
+        echo 'Mail host: '.(config('mail.host')?  config('mail.host'):'Empty').'<br />';
+        echo 'Mail port: '.(config('mail.port')?  config('mail.port'):'Empty').'<br />';
+        echo 'Mail username: '.(config('mail.username')?  config('mail.username'):'Empty').'<br />';
+        echo 'Mail password: '.(config('mail.password')?  config('mail.password'):'Empty').'<br />';
+        
+        //
+        $emails = array();
+        if (!empty($test_email) && !empty($test_send)) $emails[] = $test_email;
+        
+        $email_to = !empty($_GET['email']) ? $_GET['email'] : '';
+        if (empty($email_to)) {
+          echo 'Info: Missing GET <i>email</i> parameter.<br />';
+        } 
+        else {
+          $emails[] = $email_to;
+        }
+        
+        if (empty($emails)) {
+          echo 'Error: Missing emails to send to.<br />';
+          die('Stopped.');
+        }
 
-    public function getSms() {
+        if (empty($_GET['send_email'])) {
+          echo 'To send Email - add GET parameter <i>send_email=1</i>. <br />';
+        }
+        else {
+          echo 'Sending Email. <br /><br />';
 
-        if (!config('sms.enabled')) echo 'SMS is disabled.<br />';
+          $message = 'Hi!. This is a TEST email sent from BCS. Did you received?';
+
+          foreach($emails as $email) {
+            $result = Mail::raw($message, function($message) use ($email) {
+              $message
+                ->from(config('mail.from.address'), config('mail.from.name'))
+                ->to($email)
+                ->subject(trans('mail.alarm.test.subject'));
+            });
+          }
+          echo 'Result:' . $result . '<br /><br />';
+        }
+        
+        echo 'Finished.';
+        return;
+    }
+    
+    public function getSms() { 
+      if (!config('sms.enabled')) echo 'SMS is disabled.<br />';
         $sms_providers = \Component::get('Sms')->getIntegrations();
         echo 'SMS Providers: <pre>';
         print_r($sms_providers);
@@ -212,21 +266,27 @@ class MainController extends BaseController
           echo 'Erro: Missing phone_number parameter.';
           die();
         }
-
-        echo 'Sending SMS. <br /><br />';
-        $integration = \Component::get('Sms')->getIntegration($provider);
-        $message = 'Hi!. This is a test message sent from BCS. Did you received?';
-        $result = $integration->sendMessage($phone_number, $message, TRUE);
-        echo 'Result:' . $result;
+        
+        if (empty($_GET['send_sms'])) {
+          echo 'To send Email - add GET parameter <i>send_sms=1</i>. <br />';
+        }
+        else {
+          echo 'Sending SMS. <br /><br />';
+          $integration = \Component::get('Sms')->getIntegration($provider);
+          $message = 'Hi!. This is a test message sent from BCS. Did you received?';
+          $result = $integration->sendMessage($phone_number, $message, TRUE);
+          echo 'Result:' . $result;
+        }
+        
+        echo 'Finished.';
+        return;
     }
 
-    public function getAle()
-    {
+    public function getAle() {
         return Ale\AleLocation::getCoordinates(@$_GET['mac']);
     }
 
-    public function getWol()
-    {
+    public function getWol() {
         try {
             $ip = isset($_GET['ip']) ? $_GET['ip'] : '';
             $mac = isset($_GET['mac']) ? $_GET['mac'] : '';
@@ -240,14 +300,12 @@ class MainController extends BaseController
         }
     }
 
-
     /**
      * Test UCP methods
      *
-     * URL: /test/ucp-test-methods
+     * URL: /system/test/ucp-test-methods
      */
-    public function getUcpTestMethods()
-    {
+    public function getUcpTestMethods() {
         $options = config('ucp');
         $ucp = new \UCP\Client($options);
 
@@ -270,5 +328,84 @@ class MainController extends BaseController
         dd($response);
 
         echo 'If you see this, UCP authentication has worked out perfectly.';
+    }
+    
+    /**
+     * Test Airwave structure
+     *
+     * URL: /system/test/airwave-structure
+     */
+    public function getAirwaveStructure() {
+      
+      $AirwaveImport = new AirwaveImport();
+      $options = $AirwaveImport->getOptions();
+      
+      echo 'Welcome to Airwav sync test. <br />';
+      echo 'For Sync campuses - no need any GET parameter. <br />';      
+      echo 'For Sync aps - use GET parameter: <i>sync_aps=1</i> and <i>site_id=<floor_ale_id></i>. <br />';
+      echo 'For Sync floors - use GET parameter: <i>sync_floors=1</i>. <br />';
+      
+      echo "Options:<br /><pre>";
+      print_r($options);
+      echo "</pre>";
+      echo '<br /><br />';
+      
+      if (empty($_GET['start_sync'])) {
+        echo 'To start Sync - add GET parameter <i>start_sync=1</i>. <br />';
+      }
+      else {
+        
+        //Sync Aps
+        if (!empty($_GET['sync_aps'])) {
+          $options['loginData']['destination'] = $options['api_url']['aps'];
+          $options['loginData']['next_action'] = $options['api_url']['aps'];
+          if (!empty($_GET['site_id'])) {
+            $options['loginData']['destination'] = $options['api_url']['aps'] . '?site_id=' . $_GET['site_id'];
+            $options['loginData']['next_action'] = $options['api_url']['aps'] . '?site_id=' . $_GET['site_id'];
+          }
+        }
+        
+        //Sync Floors
+        if (!empty($_GET['sync_floors'])) {
+          $options['loginData']['destination'] = $options['api_url']['sites'];
+          $options['loginData']['next_action'] = $options['api_url']['sites'];
+        }
+        
+        //Sync
+        $data = (new CurlRequest())
+          ->setUrl($options['loginUrl'])
+          ->setCookieJar($options['cookiePath'])
+          ->setPostRequest($options['loginData'])
+          ->expect(
+              CurlRequest::CUSTOM_RESPONSE,
+              function ($response) {
+                echo "<pre>";
+                print_r($response);
+                echo "</pre>";
+                return Formatter::make($response, Formatter::XML)->toArray();
+              }
+          )->execute();
+        //
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+        
+        //Test AP structure
+        if (!empty($_GET['sync_aps']) && !empty($data['ap'])) {
+          foreach ($data['ap'] as $ap) {
+            $structure = isset($ap['@attributes']) ? $ap['@attributes'] : $ap;
+            if (!isset($structure['id'])) {
+              continue;
+            }
+            echo "<pre>";
+            print_r($structure);
+            echo "</pre>";
+          }
+        }
+      }
+      //
+      echo '<br />';
+      echo 'Finished.';
+      return;
     }
 }

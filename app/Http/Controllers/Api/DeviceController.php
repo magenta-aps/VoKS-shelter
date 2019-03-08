@@ -35,9 +35,6 @@ use BComeSafe\Packages\Websocket\ShelterClient;
 class DeviceController extends Controller
 {
   
-    const COORDINATES_UNAVAILABLE = 1;
-    const COORDINATES_NOT_MAPPED  = 2;
-    
     public function __construct()
     {
         $this->middleware('device.api');
@@ -56,7 +53,12 @@ class DeviceController extends Controller
              * @var $device \BcomeSafe\Models\Device
              */
             $device_type = $request->get('device_type');
-            $device_id = $request->get('device_id') . "_" . $device_type;
+            if ($device_type == 'ios') {
+              $device_id = $request->get('device_id') . "_" . $device_type;
+            }
+            else {
+              $device_id = $request->get('device_id');
+            }
             //Search in Database
             $device_data = Device::getByDeviceId($device_id);
             $id = !empty($device_data['id']) ? $device_data['id'] : null;
@@ -66,8 +68,12 @@ class DeviceController extends Controller
             $device->setAttribute('device_type', $device_type);
             $device->setAttribute('device_id', $request->get('device_id'));
             $mac_address = $request->get('mac_address', config('alarm.default.mac'));
-            //Iphone and Pcapp exceptions
-            if ($mac_address == '00:00:00:00:00' || $device_type == 'desktop') {
+            //Iphone exceptions
+            if (!config('alarm.use_mac_address_for_ios') && $mac_address == '00:00:00:00:00') {
+              $mac_address = NULL;
+            }
+            //Pcapp exceptions
+            if (!config('alarm.use_mac_address_for_pcapp') && $device_type == 'desktop') {
               $mac_address = NULL;
             }
             $device->setAttribute('mac_address', $mac_address);
@@ -81,10 +87,10 @@ class DeviceController extends Controller
             $message = $e->getMessage();
 
             switch ($e->getCode()) {
-                case self::COORDINATES_UNAVAILABLE:
+                case Device::COORDINATES_UNAVAILABLE:
                     $message = \Lang::get('aruba.ale.errors.unavailable', [], $request->get('lang', 'en'));
                     break;
-                case self::COORDINATES_NOT_MAPPED:
+                case Device::COORDINATES_NOT_MAPPED:
                     $message = \Lang::get('aruba.ale.errors.unsynchronized', [], $request->get('lang', 'en'));
                     break;
             }
@@ -99,6 +105,16 @@ class DeviceController extends Controller
 
         $urls = get_shelter_urls($device->school_id, $device->device_id);
 
+        //Log
+        if (config('app.debug')) {
+          $log_data = array(
+            'device_id' => $device_id,
+            'device_type' => $device_type,
+            'data' => json_encode(Device::mapDeviceCoordinates($device))
+          );
+          Log::create($log_data);
+        }
+            
         try {
             $this->websockets->profile(Device::mapDeviceCoordinates($device));
         } catch (\Exception $e) {
@@ -169,6 +185,8 @@ class DeviceController extends Controller
                 // if it's the first trigger, fire up the events
                 if (!$device['already_triggered'] && $status === Device::TRIGGERED) {
                     \Event::fire(new AlarmWasTriggered($device['school_id'], $device['device_id']));
+                    //Set School status
+                    SchoolStatus::statusAlarm($device['school_id'], 1);
                 }
 
                 // the desktop app may reconnect on return from hibernation, pc restart etc

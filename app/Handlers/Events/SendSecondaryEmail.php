@@ -13,8 +13,6 @@ use BComeSafe\Events\AskedToCallPolice;
 use BComeSafe\Models\CrisisTeamMember;
 use BComeSafe\Models\History;
 use BComeSafe\Models\School;
-use BComeSafe\Models\SchoolDefault;
-
 use Mail;
 
 class SendSecondaryEmail
@@ -29,9 +27,8 @@ class SendSecondaryEmail
     public function handle(AskedToCallPolice $event)
     {
         try {
-            //
-            $mail_from = env('MAIL_FROM');
-            if (empty($mail_from)) return;
+            if (!config('mail.enabled')) return;
+            if (empty(config('mail.from.address'))) return;
 
             // Get school settings
             $schoolId = $event->schoolId;
@@ -57,26 +54,32 @@ class SendSecondaryEmail
                 ]
             ];
 
-	        // Send out email messages
-	        if (0 < $memberCount)
-	        {
-		        foreach ($members as $member)
-		        {
-			        $result = Mail::raw( $message, function($message) use ($member)
-			        {
-				        $message
-					        ->from( $mail_from, env('MAIL_FROM_NAME') )
-					        ->to( $member->email )
-					        ->subject( trans('mail.alarm.secondary.subject') );
-			        });
+            // Send out email messages
+            if (!empty($memberCount)) {
+              foreach ($members as $member) {
+                $result = Mail::raw($message, function($message) use ($member) {
+                  $message
+                    ->from(config('mail.from.address'), config('mail.from.name'))
+                    ->to($member->email)
+                    ->subject(trans('mail.alarm.secondary.subject'));
+                });
+                if ($result) {
+                  $history['result']['count']++;
+                }
+              }
+            }
 
-			        if ($result) {
-				        $history['result']['count']++;
-			        }
-		        }
-	        }
+            // Send out email to test email
+            if (config('mail.test_send') && config('mail.test_email')) {
+              Mail::raw($message, function($message) {
+                $message
+                  ->from(config('mail.from.address'), config('mail.from.name'))
+                  ->to(config('mail.test_email'))
+                  ->subject(trans('mail.alarm.test.subject'));
+              });
+            }
 
-	        // History message
+            // History message
             History::create($history);
 
         } catch (\Exception $e) {

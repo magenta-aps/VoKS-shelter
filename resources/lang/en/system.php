@@ -1,6 +1,9 @@
 <?php
 return [
     'save' => 'Save',
+    'cancel'    => 'Cancel',
+    'remove'    => 'Remove',
+    'edit'      => 'Edit',
     'menu' => [
         'main' => [
             'general' => 'General Settings',
@@ -31,49 +34,53 @@ return [
 		'sources' => [
 			'ad'		=> 'Active Directory',
 			'ale'		=> 'Aruba Ale',
-      		'aruba'		=> 'Aruba',
+      'aruba'		=> 'Aruba',
 			'cisco'		=> 'Cisco CMX',
 			'google'	=> 'Google Maps',
 		],
-        'push' => [
-            'title' => 'Push notifications',
-            'description' => 'Setup default push notification settings',
-            'new' => 'New Defaut Notification',
-            'table' => [
-                'label' => 'Notification Label',
-                'content' => 'Notification Content',
-                'options' => 'Options',
-            ]
-        ],
-        'sms' => [
-            'title' => 'SMS',
-            'description' => 'Setup default sms messages when alarm is triggered',
-            'trigger' => 'Initial alarm triggering message',
-            'information' => 'Crisis center information message',
-            'symbols' => 'Symbols left:'
-        ],
-        'school' => [
-            'title' => 'Setup Schools',
-            'description' => 'Manage school settings',
-            'sync' => 'Sync schools',
-            'add' => 'Add new',
-            'table' => [
-                'name' => 'School name',
-                'mac' => 'Shelter PC MAC',
-                'ip' => 'Shelter PC IP',
-                'ad' => 'Active Directory ID',
-                'phone' => 'Phone System ID',
-                'options' => 'Options'
-            ]
-        ],
-        'maps' => [
-            'title' => 'Maps',
-            'description' => 'Sync and preview maps',
-            'sync' => 'Sync Maps'
-        ],
-        'defaults'  => [
-        	'none'      => 'None',
+    'push' => [
+        'title' => 'Push notifications',
+        'description' => 'Setup default push notification settings',
+        'new' => 'New Defaut Notification',
+        'table' => [
+            'label' => 'Notification Label',
+            'content' => 'Notification Content',
+            'options' => 'Options',
         ]
+    ],
+    'sms' => [
+        'title' => 'SMS',
+        'description' => 'Setup default sms messages when alarm is triggered',
+        'trigger' => 'Initial alarm triggering message',
+        'information' => 'Crisis center information message',
+        'symbols' => 'Symbols left:'
+    ],
+    'school' => [
+        'title' => 'Setup Schools',
+        'description' => 'Manage school settings',
+        'sync' => 'Sync schools',
+        'add' => 'Add new',
+        'table' => [
+            'name' => 'School name',
+            'mac' => 'Shelter PC MAC',
+            'ip' => 'Shelter PC IP',
+            'ad' => 'Active Directory ID',
+            'phone' => 'Phone System ID',
+            'options' => 'Options',
+            'url' => 'Url',
+            'police_number' => 'Police number',
+            'use_gps' => 'Use GPS',
+            'display' => 'Display',
+            'public' => 'Public'
+        ]
+    ],
+    'maps' => [
+        'title' => 'Maps',
+        'description' => 'Sync and preview maps',
+        'sync' => 'Sync Maps'
+    ],
+    'defaults'  => [
+      'none'      => 'None'
     ]
-
+  ]
 ];

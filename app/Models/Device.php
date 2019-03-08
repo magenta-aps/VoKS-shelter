@@ -40,6 +40,14 @@ class Device extends BaseModel
      *
      */
     const ASKED_TO_CALL = 3;
+    /**
+     *
+     */
+    const COORDINATES_UNAVAILABLE = 1;
+    /**
+     *
+     */
+    const COORDINATES_NOT_MAPPED  = 2;
 
     /**
      * @type array
@@ -198,27 +206,29 @@ class Device extends BaseModel
         if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.clearpass.enabled')) {
           $clearpass = new User();
           if (!$this->getAttribute('mac_address')) {
-              $device = $clearpass->getByIp(\Request::ip());
+            $device = $clearpass->getByIp(\Request::ip());
           } else {
-              $device = $clearpass->getByMac($this->getAttribute('mac_address'));
+            $device = $clearpass->getByMac($this->getAttribute('mac_address'));
+          }
+          if (!isset($device['mac_address'])) {
+            throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
           }
         }
         //Cisco CMX
         if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled')) {
-          if (!empty($this->getAttribute('mac_address')) && $this->getAttribute('mac_address') != '00:00:00:00:00') {
+          if (!empty($this->getAttribute('mac_address'))) {
             $device['mac_address'] = $this->getAttribute('mac_address');
           }
           else {
             $device['mac_address'] = CmxLocation::getMacAddressByIP(\Request::ip());
           }
+          if (!isset($device['mac_address'])) {
+            throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
+          }
         }
       }
       
-        if (!isset($device['mac_address'])) {
-            throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
-        }
-
-        return $device;
+      return $device;
     }
 
     /**
@@ -233,31 +243,40 @@ class Device extends BaseModel
         $default = SchoolDefault::getDefaults();
         //Single Shelter
         if ($school_id) {
-            $floor = Floor::where('school_id', '=', $school_id)->orderBy('id', 'desc')->get()->first();
-            
-            //Aruba Airwave
-            if (empty($floor) && $default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.airwave.enabled')) {
-              throw new \Exception(
-                  'Structure not synchronized on campus #' . $school_id . '. Please wait.'
-              );
+            $overwrite = false;
+            //School ID has changed - need to overwrite floor and coordinates.
+            if ($this->getAttribute('school_id') && $this->getAttribute('school_id') != $school_id) {
+              $overwrite = true;
             }
-            //Cisco CMX
-            if (empty($floor) && $default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled')) {
-              throw new \Exception(
-                  'Structure not synchronized on campus #' . $school_id . '. Please wait.'
-              );
+            if (!$this->getAttribute('floor_id')) {
+              $overwrite = true;
+            }
+            
+            if ($overwrite) {
+              $floor = Floor::where('school_id', '=', $school_id)->orderBy('id', 'desc')->get()->first();
+              //Aruba Airwave
+              if (empty($floor) && $default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.airwave.enabled')) {
+                throw new \Exception(
+                    'Structure not synchronized on campus #' . $school_id . '. Please wait.'
+                );
+              }
+              //Cisco CMX
+              if (empty($floor) && $default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled')) {
+                throw new \Exception(
+                    'Structure not synchronized on campus #' . $school_id . '. Please wait.'
+                );
+              }
+              $device['school_id'] = $school_id;
+              $device['floor_id'] = isset($floor->id) ? $floor->id : 0;
+              $device['x'] = 0;
+              $device['y'] = 0;
             }
 
-            $device['school_id'] = $school_id;
             $device['active'] = 1;
-            $device['floor_id'] = isset($floor->id) ? $floor->id : 0;
 
             if (\Request::get('test')) {
                 $device['x'] = mt_rand(100, 500);
                 $device['y'] = mt_rand(100, 500);
-            } else {
-                $device['x'] = 0;
-                $device['y'] = 0;
             }
             return $device;
             
@@ -291,7 +310,7 @@ class Device extends BaseModel
 
                       throw new \Exception(
                           'There are no coordinates or campuses not synchronized. Please wait.',
-                          Location::COORDINATES_NOT_MAPPED
+                          self::COORDINATES_NOT_MAPPED
                       );
                   }
               } else {
@@ -299,7 +318,7 @@ class Device extends BaseModel
 
                   throw new \Exception(
                       'We could not locate you via ALE. Please wait.',
-                      Location::COORDINATES_UNAVAILABLE
+                      self::COORDINATES_UNAVAILABLE
                   );
               }
               $device['x'] = $location['x'];
@@ -321,7 +340,7 @@ class Device extends BaseModel
 
                       throw new \Exception(
                           'There are no coordinates or campuses not synchronized. Please wait.',
-                          Location::COORDINATES_NOT_MAPPED
+                          self::COORDINATES_NOT_MAPPED
                       );
                   }
               } else {
@@ -329,7 +348,7 @@ class Device extends BaseModel
 
                   throw new \Exception(
                       'We could not locate you via ALE. Please wait.',
-                      Location::COORDINATES_UNAVAILABLE
+                      self::COORDINATES_UNAVAILABLE
                   );
               }
               $device['x'] = $location['x'];

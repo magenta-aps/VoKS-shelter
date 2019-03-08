@@ -44,10 +44,13 @@ return [
             'password' => env('ARUBA_AIRWAVE_PASSWORD')
         ],
         'campuses' => [
-            'url' => $airwave . '/visualrf/campus.xml?buildings=1&sites=1&images=1&aps=1',
+            'url' => $airwave . '/visualrf/campus.xml?buildings=1&sites=1&images=1',
         ],
         'sites'    => [
             'url' => $airwave . '/visualrf/site.xml?images=1'
+        ],
+        'aps' => [
+            'url' => $airwave . '/visualrf/access_point.xml',
         ]
     ],
     'clearpass' => [

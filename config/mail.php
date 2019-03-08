@@ -8,7 +8,11 @@
  */
 
 return [
-
+  
+  'enabled' => env('MAIL_ENABLED', false),
+  'test_send' => env('MAIL_TEST_SEND', false),
+  'test_email' => env('MAIL_TEST_EMAIL', ''),
+  
 	/*
 	|--------------------------------------------------------------------------
 	| Mail Driver
@@ -35,7 +39,7 @@ return [
 	|
 	*/
 
-	'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+	'host' => env('MAIL_HOST', ''),
 
 	/*
 	|--------------------------------------------------------------------------

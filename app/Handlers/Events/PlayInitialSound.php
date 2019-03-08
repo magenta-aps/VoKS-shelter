@@ -27,6 +27,9 @@ class PlayInitialSound
         try {
             // Get integration
             $defaults = SchoolDefault::getDefaults();
+            if (!$defaults->phone_system_provider) {
+              return;
+            }
             $integration = \Component::get('PhoneSystem')
                 ->getIntegration($defaults->phone_system_provider);
 

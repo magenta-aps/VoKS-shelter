@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'BComeSafe\Console\Commands\Inspire',
+        'BComeSafe\Console\Commands\ResetShelters',
         'BComeSafe\Console\Commands\Sync',
         'BComeSafe\Console\Commands\SyncMacs',
         'BComeSafe\Console\Commands\SyncCleanClients',

@@ -106,20 +106,20 @@
                 video.srcObject = client.stream.object;
             }
         };
-
+        
         return {
             link: function($scope, $element, $attrs) {
                 $timeout(function() {
                     scale($element);
                 }, 200);
-
+                    
                 $scope.$watch($attrs.active, function() {
                     scale($element);
                     $timeout(function() {
                         if (null !== $scope.client) {
                             setVideoStream($element, $scope.client); 
                         }
-                    }, 1000);
+                    }, 1500);
                 });
 
                 $rootScope.$watch('tab', function() {
@@ -142,18 +142,27 @@
 
                 $element.on('loadedmetadata', function() {
                     scale($(this));
-                    if (null === State.selected.marker && null !== $scope.client) {
-                        var client = $scope.client,
-                            clientId = client.profile.id;
-                        setVideoStream($(this), $scope.client);
+                    if (null !== $scope.client) {
+                        var client = $scope.client;
+                        //Set Video Stream
+                        setVideoStream($(this), client);
+                        //Select marker
                         if (client.position.floor && client.profile.mac_address) {
                             // Get active route and map state group
                             var route = $route.current.active,
                                 state = ('plan' === route) ? 'map' : 'stream';
-
-                            MapState.state[state].floor = client.position.floor;
-                            MapState.state[state].pan = client.profile.mac_address;
-                            State.selected.marker = clientId;
+                                
+                            if (null === State.selected.marker) {
+                                State.selected.marker = client.profile.id;
+                                MapState.state[state].floor = client.position.floor;
+                                MapState.state[state].pan = client.profile.mac_address;
+                            }
+                            else {
+                                if (client.profile.id == State.selected.marker) {
+                                    MapState.state[state].floor = client.position.floor;
+                                    MapState.state[state].pan = client.profile.mac_address;
+                                }
+                            }
                         }
                     }
                 });
