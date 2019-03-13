@@ -428,13 +428,16 @@ class MainController extends BaseController
         echo "School data: <pre>";
         print_r($school);
         echo "</pre>";
-        echo '<br /><br />';
+        echo '<br />';
         
-        if (empty($school->controller_url)) {
+        if (empty($school['controller_url'])) {
           echo 'Missing Controller URL';
           echo '<br />';
           echo 'Finished.';
           return;
+        }
+        else {
+          echo 'Controller Ready.';
         }
         
         if (!empty($_GET['device_ip'])) {

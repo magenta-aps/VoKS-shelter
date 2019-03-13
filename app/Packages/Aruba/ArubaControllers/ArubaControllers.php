@@ -11,6 +11,7 @@ namespace BComeSafe\Packages\Aruba\ArubaControllers;
 
 use BComeSafe\Libraries\CurlRequest;
 use BComeSafe\Models\School;
+use SoapBox\Formatter\Formatter;
 
 /**
  * Class ArubaControllers
