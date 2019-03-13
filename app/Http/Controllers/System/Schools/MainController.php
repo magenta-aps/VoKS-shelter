@@ -33,11 +33,12 @@ class MainController extends BaseController
 	    $default = SchoolDefault::getDefaults();
 
 	    $data = [
-	    	'shelterId'         => config('alarm.default_id'),
-	    	'use_gps'           => $default->is_gps_location_source,
-        'use_non_gps'       => $default->is_non_gps_location_source,
-        'phone_provider'    => $default->phone_system_provider ? true : false,
-        'ad_enabled'        => config('ad.enabled'),
+        'shelterId'           => config('alarm.default_id'),
+        'use_gps'             => $default->is_gps_location_source,
+        'use_non_gps'         => $default->is_non_gps_location_source,
+        'phone_provider'      => $default->phone_system_provider ? true : false,
+        'ad_enabled'          => config('ad.enabled'),
+        'controllers_enabled' => config('aruba.controllers.enabled'),
 	    ];
 
         return view('system.schools.index', $data);
@@ -63,7 +64,8 @@ class MainController extends BaseController
           'mac_address', 
           'ad_id', 
           'phone_system_id', 
-          'campus_id', 
+          'campus_id',
+          'controller_url', 
           'name',
           'url',
           'police_number',
@@ -94,6 +96,7 @@ class MainController extends BaseController
         	$data['use_gps'] = isset($data['use_gps']) ? $data['use_gps'] : 0;
         	$data['display'] = isset($data['display']) ? $data['display'] : 0;
         	$data['public'] = isset($data['public']) ? $data['public'] : 1;
+        	$data['controller_url'] = isset($data['controller_url']) ? $data['controller_url'] : '';
 
         	$item = School::create($data);
 

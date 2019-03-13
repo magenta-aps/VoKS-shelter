@@ -71,7 +71,8 @@ return [
                 'police_number' => 'Police number',
                 'use_gps' => 'Use GPS',
                 'display' => 'Display',
-                'public' => 'Public'
+                'public' => 'Public',
+                'controller' => 'Controller'
             ]
         ],
         'maps' => [
