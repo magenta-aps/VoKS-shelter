@@ -115,6 +115,7 @@ class SyncMacs extends Command
               if (!isset($floors[$location['floor_id']])) continue;
               $floor = $floors[$location['floor_id']];
               $client = $this->prepareClient($location, $floor);
+              $client['ap_name'] = $device->ap_name;
               $updates[] = $client;
             }
             //Aruba Controllers
@@ -132,6 +133,7 @@ class SyncMacs extends Command
                   $client['mac_address'] = $device->mac_address;
                   $client['username'] = $device->username;
                   $client['fullname'] = $device->fullname;
+                  $client['ap_name'] = $ap_name;
                   $updates[] = $client;
                 }
               }
@@ -143,6 +145,7 @@ class SyncMacs extends Command
             if (!isset($floors[$location['floor_id']])) continue;
             $floor = $floors[$location['floor_id']];
             $client = $this->prepareClient($location, $floor);
+            $client['ap_name'] = $device->ap_name;
             $updates[] = $client;
           }
         }

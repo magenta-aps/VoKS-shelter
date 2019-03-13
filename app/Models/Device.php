@@ -590,7 +590,7 @@ class Device extends BaseModel
             \DB::update(
               "
                 UPDATE devices
-                SET x = :x, y = :y, floor_id = :floor_id, school_id = :school_id, username = :username, fullname = :fullname, updated_at = CURRENT_TIMESTAMP, active = 1
+                SET x = :x, y = :y, floor_id = :floor_id, school_id = :school_id, username = :username, fullname = :fullname, ap_name = :ap_name, updated_at = CURRENT_TIMESTAMP, active = 1
                 WHERE id = :id
               ",
               $l
