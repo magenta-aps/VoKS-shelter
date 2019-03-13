@@ -55,6 +55,7 @@ class Sync extends Command
     {
       
       $skip_ctm = FALSE;
+      $skip_images = FALSE;
       $skip = $this->argument('skip');
       if (!empty($skip)) {
         //Skip Crisis Team members sync
