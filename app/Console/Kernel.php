@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         'BComeSafe\Console\Commands\Inspire',
         'BComeSafe\Console\Commands\ResetShelters',
         'BComeSafe\Console\Commands\Sync',
+        'BComeSafe\Console\Commands\SyncAps',
         'BComeSafe\Console\Commands\SyncMacs',
         'BComeSafe\Console\Commands\SyncCleanClients',
         'BComeSafe\Console\Commands\ArubaSyncActive',

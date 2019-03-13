@@ -40,8 +40,7 @@ class AirwaveImport
         'campuses' => 'campus_ale_id',
         'buildings' => 'building_ale_id',
         'floors' => 'floor_ale_id',
-        'floor_images' => 'file_name',
-        'aps' => 'ap_ale_id'
+        'floor_images' => 'file_name'
     ];
 
     /**
@@ -172,10 +171,11 @@ class AirwaveImport
 
     /**
      * Imports Campus/Building/Floor structure from Airwave
+     * @param $skip_images
      *
      * @return array $data - raw data from a request to ALE
      */
-    public function structure()
+    public function structure($skip_images = false)
     {
         $data = $this->pullData();
 
@@ -223,50 +223,26 @@ class AirwaveImport
                     $floor['id'] = $floor['model']->id;
 
                     $this->addImported('floors', $floor['model']->floor_ale_id);
+                    
+                    if (!$skip_images) {
+                      // loop through images and only pick the original image since it's largest one
+                      foreach ($floor['image'] as $image) {
+                          if ($image['@attributes']['type'] === 'background') {
+                              $mapped = $this->mapper->mapImage($this->options['baseUrl'], $floor, $image);
 
-                    // loop through images and only pick the original image since it's largest one
-                    foreach ($floor['image'] as $image) {
-                        if ($image['@attributes']['type'] === 'background') {
-                            $mapped = $this->mapper->mapImage($this->options['baseUrl'], $floor, $image);
+                              $this->downloadImage($mapped['name'], $mapped['path']);
 
-                            $this->downloadImage($mapped['name'], $mapped['path']);
+                              $map = FloorImage::import(
+                                  $mapped['image'],
+                                  [
+                                  'floor_id' => $floor['model']->id,
+                                  ]
+                              );
 
-                            $map = FloorImage::import(
-                                $mapped['image'],
-                                [
-                                'floor_id' => $floor['model']->id,
-                                ]
-                            );
+                              $this->addImported('floor_images', $map->file_name);
 
-                            $this->addImported('floor_images', $map->file_name);
-
-                            break;
-                        }
-                    }
-                    // import all aps
-                    $aps_data = $this->pullData('aps', '?site_id=' . $floor['model']->floor_ale_id);
-                    if (!empty($aps_data['ap'])) {
-                      foreach ($aps_data['ap'] as $ap) {
-                        $structure = isset($ap['@attributes']) ? $ap['@attributes'] : $ap;
-                        if (!isset($structure['id'])) {
-                          continue;
-                        }
-
-                        $coords = Coordinates::convert(
-                          $mapped['image']['pixel_width'],
-                          $mapped['image']['real_width'],
-                          $mapped['image']['pixel_height'],
-                          $mapped['image']['real_height'],
-                          $structure['x'],
-                          $structure['y']
-                        );
-
-                        $structure['x'] = $coords['x'];
-                        $structure['y'] = $coords['y'];
-
-                        $ap['model'] = Aps::import($this->mapper->mapAps($school->id, $floor['model']->id, $structure));
-                        $ap['id'] = $ap['model']->id;
-                        $this->addImported('aps', $ap['model']->ap_ale_id);
+                              break;
+                          }
                       }
                     }
                 }
@@ -279,6 +255,56 @@ class AirwaveImport
         return $data;
     }
 
+    /**
+     * Imports Aps from Airwave
+     *
+     * @return boolean
+     */
+    public function structureAps() {
+      
+      $imported_aps = array();
+      
+      //Get floors
+      $floors = Floor::with('image')->get()->toArray();
+      $floors = array_map_by_key($floors, 'floor_ale_id');
+      
+      // import all aps
+      foreach ($floors as $floor) {
+        $aps_data = $this->pullData('aps', '?site_id=' . $floor['floor_ale_id']);
+        if (!empty($aps_data['ap'])) {
+          foreach ($aps_data['ap'] as $ap) {
+            $structure = isset($ap['@attributes']) ? $ap['@attributes'] : $ap;
+            if (!isset($structure['id'])) {
+              continue;
+            }
+
+            $coords = Coordinates::convert(
+              $floor['image']['pixel_width'],
+              $floor['image']['real_width'],
+              $floor['image']['pixel_height'],
+              $floor['image']['real_height'],
+              $structure['x'],
+              $structure['y']
+            );
+
+            $structure['x'] = $coords['x'];
+            $structure['y'] = $coords['y'];
+
+            $ap['model'] = Aps::import($this->mapper->mapAps($floor['school_id'], $floor['id'], $structure));
+            $imported_aps[] = $ap['model']->ap_ale_id;
+          }
+        }
+      }
+      
+      //Clean up
+      echo 'Imported Aps: ' . count($imported_aps);
+      if (!empty($imported_aps)) {
+        \DB::table('aps')->whereNotIn('ap_ale_id', $imported_aps)->delete();
+      }
+      
+      return TRUE;
+    }
+    
     protected function cleanUp()
     {
         foreach ($this->importedMap as $table => $column) {
