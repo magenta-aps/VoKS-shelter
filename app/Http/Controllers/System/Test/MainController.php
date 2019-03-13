@@ -481,7 +481,7 @@ class MainController extends BaseController
       else {
         //
         echo '<br />';
-        $schools = School::withNotNull('controller_url')->get()->toArray();
+        $schools = School::whereNotNull('controller_url')->get()->toArray();
         echo "Available schools: <pre>";
         print_r($schools);
         echo "</pre>";
