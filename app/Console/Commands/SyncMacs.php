@@ -132,7 +132,6 @@ class SyncMacs extends Command
                   $client['mac_address'] = $device->mac_address;
                   $client['username'] = $device->username;
                   $client['fullname'] = $device->fullname;
-                  $client['active'] = 1;
                   $updates[] = $client;
                 }
               }
