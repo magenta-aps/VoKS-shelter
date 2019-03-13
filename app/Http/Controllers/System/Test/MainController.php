@@ -469,7 +469,7 @@ class MainController extends BaseController
       }
       //
       if (!empty($_GET['school_id'])) {
-        echo '<hr />'
+        echo '<hr />';
         $school = School::where('id', '=', $_GET['school_id'])->first()->toArray();
         echo "School data: <pre>";
         print_r($school);
