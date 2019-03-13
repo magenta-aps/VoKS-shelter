@@ -125,13 +125,13 @@ class SyncMacs extends Command
                 //AP has changed
                 if ($device->ap_name != $ap_name) {
                   $client = array();
+                  $client['x'] = $aps[$ap_name]['x'];
+                  $client['y'] = $aps[$ap_name]['y'];
+                  $client['floor_id'] = $aps[$ap_name]['floor_id'];
+                  $client['school_id'] = $aps[$ap_name]['school_id'];
                   $client['mac_address'] = $device->mac_address;
                   $client['username'] = $device->username;
                   $client['fullname'] = $device->fullname;
-                  $client['school_id'] = $aps[$ap_name]['school_id'];
-                  $client['floor_id'] = $aps[$ap_name]['floor_id'];
-                  $client['x'] = $aps[$ap_name]['x'];
-                  $client['y'] = $aps[$ap_name]['y'];
                   $client['active'] = 1;
                   $updates[] = $client;
                 }
