@@ -89,13 +89,32 @@ class ArubaControllers {
         return $ret_val;
     }
     
-    public function getAPByIp($device_ip) {
+    /**
+     * Collect data from ALE controllers
+     * 
+     * @param string $device_ip
+     * @param int $possible_school_id - will be checked first
+     * @return string $ap_name
+     */
+    public function getAPByIp($device_ip, $possible_school_id = null) {
       $ret_val = null;
       if (empty($device_ip)) return $ret_val;
       
       // Get all schools list
       $schools = School::whereNotNull('controller_url')->get()->toArray();
       if (empty($schools)) return $ret_val;
+      $schools = array_map_by_key($schools, 'id');
+      
+      // Check possible school first
+      if ($possible_school_id && !empty($schools[$possible_school_id])) {
+        $device = $this->getData($schools[$possible_school_id], array('ip' => $device_ip));
+        if (!empty($device['location'])) {
+          $ret_val = $device['location'];
+        }
+        else {
+          unset($schools[$possible_school_id]);
+        }
+      }
       
       foreach($schools as $school) {
         $device = $this->getData($school['controller_url'], array('ip' => $device_ip));
