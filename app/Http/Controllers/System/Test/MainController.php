@@ -430,6 +430,20 @@ class MainController extends BaseController
       . 'OR <i>device_username=<username></i>';
       echo '<br /><br />';
       
+      $schools = School::whereNotNull('controller_url')->get()->toArray();
+      if (!empty($schools)) {
+        $schools = array_map_by_key($schools, 'id');
+      }
+              
+      //By IP
+      if (!empty($_GET['device_ip'])) {
+        echo 'Search AP name by IP only <br />';
+        $data = $AurbaControllers->getAPByIp($_GET['device_ip'], null, $schools);
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+      }
+          
       if (!empty($_GET['school_id'])) {
         $school = School::where('id', '=', $_GET['school_id'])->first()->toArray();
         echo "School data: <pre>";
@@ -467,10 +481,15 @@ class MainController extends BaseController
           //DB
           if (!empty($_GET['device_ip'])) {
             echo 'Device data in DB by IP: <br />';
-            $device = Device::where('ip_address','=',$_GET['device_ip'])->get()->first()->toArray();
-            echo "<pre>";
-            print_r($device);
-            echo "</pre>";
+            $device = Device::where('ip_address','=',$_GET['device_ip'])->get()->first();
+            if (!empty($device)) {
+              echo "<pre>";
+              print_r($device->toArray());
+              echo "</pre>";
+            }
+            else {
+              echo 'Didn\'t found in database';
+            }
           }
           foreach($params as $k => $p) {
             echo "Searching in Controller by parameter: " . $k;
@@ -487,24 +506,14 @@ class MainController extends BaseController
             print_r($device);
             echo "</pre>";
           }
-          //By IP
-          if (!empty($_GET['device_ip'])) {
-            echo 'Search AP name by IP only <br />';
-            $data = $AurbaControllers->getAPByIp($_GET['device_ip']);
-            echo "<pre>";
-            print_r($data);
-            echo "</pre>";
-          }
         }
       } 
-      else {
-        //
-        echo '<br />';
-        $schools = School::whereNotNull('controller_url')->get()->toArray();
-        echo "Available schools: <pre>";
-        print_r($schools);
-        echo "</pre>";
-      }
+      
+      //
+      echo '<hr>';
+      echo "Available schools: <pre>";
+      print_r($schools);
+      echo "</pre>";
       
       echo '<br />';
       echo 'Finished.';
