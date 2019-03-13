@@ -584,6 +584,7 @@ class Device extends BaseModel
             || $l['school_id'] != $device->school_id
             || $l['username'] != $device->username
             || $l['fullname'] != $device->fullname
+            || $l['ap_name'] != $device->ap_name
           ) {
             $l['id'] = $device->id;
             unset($l['mac_address']);
