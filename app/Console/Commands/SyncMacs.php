@@ -97,7 +97,7 @@ class SyncMacs extends Command
                 $list[] = $mac;
             }
         }
-        $devices = Device::whereIn('mac_address', $list)->get(['id', 'school_id', 'ap_name', 'mac_address', 'ip_address']);
+        $devices = Device::whereIn('mac_address', $list)->get(['id', 'school_id', 'ap_name', 'mac_address', 'ip_address', 'username', 'fullname']);
         if (empty($devices)) return;
         echo 'Found in DB:' . "\n";
         echo "<pre>";
@@ -125,6 +125,9 @@ class SyncMacs extends Command
                 //AP has changed
                 if ($device->ap_name != $ap_name) {
                   $client = array();
+                  $client['mac_address'] = $device->mac_address;
+                  $client['username'] = $device->username;
+                  $client['fullname'] = $device->fullname;
                   $client['school_id'] = $aps[$ap_name]['school_id'];
                   $client['floor_id'] = $aps[$ap_name]['floor_id'];
                   $client['x'] = $aps[$ap_name]['x'];

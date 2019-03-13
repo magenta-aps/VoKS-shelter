@@ -112,6 +112,7 @@ class ArubaControllers {
         $device = $this->getData($schools[$possible_school_id]['controller_url'], array('ip' => $device_ip));
         if (!empty($device['location'])) {
           $ret_val = $device['location'];
+          return $ret_val;
         }
         else {
           unset($schools[$possible_school_id]);
