@@ -270,14 +270,17 @@ class AirwaveImport
       
       // import all aps
       foreach ($floors as $floor) {
+        echo 'School ID: ' . $floor['school_id'] . ' | Floor ID: ' . $floor['id'];
+        // pull aps from Airwave
         $aps_data = $this->pullData('aps', '?site_id=' . $floor['floor_ale_id']);
+        echo 'Found Aps: ' . count($aps_data['ap']);
         if (!empty($aps_data['ap'])) {
           foreach ($aps_data['ap'] as $ap) {
             $structure = isset($ap['@attributes']) ? $ap['@attributes'] : $ap;
             if (!isset($structure['id'])) {
               continue;
             }
-
+            // convert coordinates of ap
             $coords = Coordinates::convert(
               $floor['image']['pixel_width'],
               $floor['image']['real_width'],
@@ -289,7 +292,7 @@ class AirwaveImport
 
             $structure['x'] = $coords['x'];
             $structure['y'] = $coords['y'];
-
+            // Insert to DB
             $ap['model'] = Aps::import($this->mapper->mapAps($floor['school_id'], $floor['id'], $structure));
             $imported_aps[] = $ap['model']->ap_ale_id;
           }
