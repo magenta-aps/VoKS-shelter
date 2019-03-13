@@ -150,7 +150,10 @@ class SyncMacs extends Command
         
         //
         if (!empty($updates)) {
-          echo 'Updated:' . count($updates);
+          echo 'Updating:' . count($updates) . "<br />";
+          echo "<pre>";
+          print_r($updates);
+          echo "</pre>";
           Device::updateClientCoordinates($updates);
         }
     }
