@@ -448,10 +448,12 @@ class MainController extends BaseController
         if (!empty($_GET['device_ip'])) {
           $params['ip'] = $_GET['device_ip'];
         }
-        elseif (!empty($_GET['device_mac'])) {
+        
+        if (!empty($_GET['device_mac'])) {
           $params['mac_address'] = $_GET['device_mac'];
         }
-        elseif (!empty($_GET['device_username'])) {
+        
+        if (!empty($_GET['device_username'])) {
           $params['username'] = $_GET['device_username'];
         }
         
@@ -459,10 +461,13 @@ class MainController extends BaseController
           echo 'Missing device parameters.';
         }
         else {
-          $data = $AurbaControllers->getData($_GET['school_id'] ,$params);
-          echo "<pre>";
-          print_r($data);
-          echo "</pre>";
+          foreach($params as $k => $p) {
+            echo "Searching in Controller by parameter: " . $k;
+            $data = $AurbaControllers->getData($_GET['school_id'], array($k => $p));
+            echo "<pre>";
+            print_r($data);
+            echo "</pre>";
+          }
         }
       } 
       else {

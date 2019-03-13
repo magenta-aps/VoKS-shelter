@@ -61,7 +61,7 @@ class ArubaControllers {
           $post_param = '<macaddr>'. $params['mac_address'] .'</macaddr>';
         }
         elseif (!empty($params['username'])) {
-          $post_param = '<name>'. $params['mac_address'] .'</name>';
+          $post_param = '<name>'. $params['username'] .'</name>';
         }
         
         //Schools
