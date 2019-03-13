@@ -463,14 +463,14 @@ class MainController extends BaseController
         else {
           foreach($params as $k => $p) {
             echo "Searching in Controller by parameter: " . $k;
-            $data = $AurbaControllers->getData($school['controller_url'], array($k => $p));
+            $device_controller = $AurbaControllers->getData($school['controller_url'], array($k => $p));
             echo "<pre>";
             print_r($data);
             echo "</pre>";
           }
           //By IP
           if (!empty($_GET['device_ip'])) {
-            echo 'Search by IP only <br />';
+            echo 'Search AP name by IP only <br />';
             $data = $AurbaControllers->getAPByIp($_GET['device_ip']);
             echo "<pre>";
             print_r($data);
@@ -479,7 +479,7 @@ class MainController extends BaseController
           //DB
           if (!empty($data)) {
             echo 'Device data in DB: <br />';
-            $device = Device::where('mac_address','=',$data['macaddr'])->get()->first()->toArray();
+            $device = Device::where('mac_address','=',$device_controller['macaddr'])->get()->first()->toArray();
             echo "<pre>";
             print_r($device);
             echo "</pre>";
