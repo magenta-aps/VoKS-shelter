@@ -446,21 +446,30 @@ class MainController extends BaseController
       if (!empty($_GET['device_ip'])) {
         echo 'Search AP name by IP only <br />';
         $ap_name = $AurbaControllers->getAPByIp($_GET['device_ip'], null, $schools);
-        echo 'App name: ' . $ap_name;
+        echo 'App name: ' . $ap_name . '<br />';
         if (!empty($aps[$ap_name])) {
+          echo 'Ap by Ap name: <br />';
+          echo "<pre>";
+          print_r($aps[$ap_name]);
+          echo "</pre>";
+          //
           if (!empty($schools[$aps[$ap_name]['school_id']])) {
-            echo 'School by Ap name:';
+            echo 'School by Ap name: <br />';
             echo "<pre>";
             print_r($schools[$aps[$ap_name]['school_id']]);
             echo "</pre>";
           }
           else {
-            echo 'School not found.';
+            echo 'School not found. <br />';
           }
+        }
+        else {
+          echo 'Ap not found. <br />';
         }
       }
       //
       if (!empty($_GET['school_id'])) {
+        echo '<hr />'
         $school = School::where('id', '=', $_GET['school_id'])->first()->toArray();
         echo "School data: <pre>";
         print_r($school);
@@ -474,7 +483,7 @@ class MainController extends BaseController
           return;
         }
         else {
-          echo 'Controller Ready. <br />';
+          echo 'Controller Ready.  <br />';
         }
         
         $params = array();
@@ -491,7 +500,7 @@ class MainController extends BaseController
         }
         
         if (empty($params)) {
-          echo 'Missing device parameters.';
+          echo 'Missing device parameters. <br />';
         }
         else {
           //DB
@@ -504,7 +513,7 @@ class MainController extends BaseController
               echo "</pre>";
             }
             else {
-              echo 'Didn\'t found in database';
+              echo 'Didn\'t found in database. <br />';
             }
           }
           foreach($params as $k => $p) {
