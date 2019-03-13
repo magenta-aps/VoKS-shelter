@@ -12,6 +12,7 @@ namespace BComeSafe\Models;
 use BComeSafe\Models\SchoolDefault;
 use BComeSafe\Models\SchoolDefaultFields;
 use BComeSafe\Packages\Aruba\Ale\AleLocation;
+use BComeSafe\Packages\Aruba\ArubaControllers\ArubaControllers;
 use BComeSafe\Packages\Cisco\Cmx\Location\CmxLocation;
 use BComeSafe\Packages\Coordinates\Coordinates;
 use BComeSafe\Packages\Coordinates\IntegrationException;
@@ -196,19 +197,30 @@ class Device extends BaseModel
      * @return array|mixed
      * @throws IntegrationException
      */
-    protected function getProfileData()   //@Todo - make general function which will take Package by administrated parameter.
+    protected function getProfileData()
     {
       $device = [];
       $default = SchoolDefault::getDefaults();
       //
       if (!empty($default->client_data_source)) {
-        //Aruba Clearpass
-        if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.clearpass.enabled')) {
-          $clearpass = new User();
-          if (!$this->getAttribute('mac_address')) {
-            $device = $clearpass->getByIp(\Request::ip());
-          } else {
-            $device = $clearpass->getByMac($this->getAttribute('mac_address'));
+        //Aruba
+        if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA) {
+          //Aruba Clearpass
+          if (config('aruba.clearpass.enabled')) {
+            $ArubaClearpass = new User();
+            if (!$this->getAttribute('mac_address')) {
+              $device = $ArubaClearpass->getByIp(\Request::ip());
+            } else {
+              $device = $ArubaClearpass->getByMac($this->getAttribute('mac_address'));
+            }
+          }
+          //Aruba Controller
+          if (config('aruba.controllers.enabled')) {
+            $AurbaControllers = new ArubaControllers();
+            $ap_name = $AurbaControllers->getAPByIp($device['ip_address']);
+            if (!empty($ap_name)) {
+              $device['ap_name'] = $ap_name;
+            }
           }
           if (!isset($device['mac_address'])) {
             throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
@@ -282,9 +294,9 @@ class Device extends BaseModel
             
         //Multi Shelter
         } else {
-            //Aruba Clearpass
-            if (config('aruba.clearpass.enabled')) {
-              //Found in Clearpass
+            //Aruba Clearpass or Controllers
+            if (config('aruba.controllers.enabled') || config('aruba.clearpass.enabled')) {
+              //Access Point name is updated from Controller or Clearpass
               $ap_name = $this->getAttribute('ap_name');
               if (!empty($ap_name)) {
                 $ap = Aps::where('ap_name', '=', $ap_name)->get()->first();

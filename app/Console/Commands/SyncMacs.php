@@ -48,7 +48,8 @@ class SyncMacs extends Command
       
         $default = SchoolDefault::getDefaults();
         if (!empty($default->client_data_source)) {
-          //Aruba Airwave
+          //Aruba Ale
+          //@Todo - enable Controllers.
           if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.ale.enabled') === false) {
             return;
           }
@@ -60,10 +61,6 @@ class SyncMacs extends Command
           return;
         }
       
-        if (config('cisco.enabled') === false) {
-          return;
-        }
-        
         $macs = $this->argument();
         array_shift($macs);
 
@@ -77,22 +74,25 @@ class SyncMacs extends Command
 
         $devices = Device::whereIn('mac_address', $list)->get(['id', 'mac_address']);
 
-        $count = count($devices);
-
         $floors = Floor::with('image')->get()->toArray();
         $floors = array_map_by_key($floors, 'floor_hash_id');
 
         $updates = [];
 
-        for ($i = 0; $i < $count; $i++) {
+        foreach ($devices as $device) {
             if (!empty($default->client_data_source)) {
-              //Aruba Airwave
-              if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.airwave.enabled')) {
-                $location = AleLocation::getCoordinates($devices[$i]->mac_address);
+              //Aruba Ale
+              if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA) {
+                if (config('aruba.ale.enabled')) {
+                  $location = AleLocation::getCoordinates($device->mac_address);
+                }
               }
+              //Aruba Controllers
+              //@Todo - update devices AP names and coordinates.
+              
               //Cisco CMX
               if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled')) {
-                $location = CmxLocation::getCoordinates($devices[$i]->mac_address);
+                $location = CmxLocation::getCoordinates($device->mac_address);
               }
             }
 

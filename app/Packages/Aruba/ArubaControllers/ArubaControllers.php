@@ -48,10 +48,11 @@ class ArubaControllers {
             <out_octets>74700</out_octets>
           </aruba>
      */
-    public static function getData($school_id, $params) {
+    public static function getData($controller_url, $params) {
         $ret_val = array();
         if (!config('aruba.controllers.enabled')) return $ret_val;
         
+        if (empty($controller_url)) $ret_val;
         if (empty($params)) $ret_val;
         
         if (!empty($params['ip'])) {
@@ -64,9 +65,6 @@ class ArubaControllers {
           $post_param = '<name>'. $params['username'] .'</name>';
         }
         
-        //Schools
-        $school = School::where('id', '=', $school_id)->first();
-        
         $headers = array('Content-type: application/xml');
         $post = array(
           'xml' => '<aruba command="user_query">
@@ -78,7 +76,7 @@ class ArubaControllers {
         );
         
         $ret_val = (new CurlRequest())
-            ->setUrl($school->controller_url . '/auth/command.xml')
+            ->setUrl($controller_url . '/auth/command.xml')
             ->setHeaders($headers)
             ->setPostRequest($post)
             ->expect(
@@ -89,5 +87,24 @@ class ArubaControllers {
             )->execute();
 
         return $ret_val;
+    }
+    
+    public static function getAPByIp($device_ip) {
+      $ret_val = null;
+      if (empty($device_ip)) return $ret_val;
+      
+      // Get all schools list
+      $schools = School::with('controller_url')->get()->toArray();
+      if (empty($schools)) return $ret_val;
+      
+      foreach($schools as $school) {
+        $device = $this->getData($school['controller_url'], array('ip' => $device_ip));
+        if (!empty($device['location'])) {
+          $ret_val = $device['location'];
+          break;
+        }
+      }
+      
+      return $ret_val;
     }
 }

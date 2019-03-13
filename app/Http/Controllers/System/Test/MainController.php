@@ -46,7 +46,7 @@ class MainController extends BaseController
     }
 
     public function getCoords() {
-        \Artisan::call('aruba:sync:macs', ['mac:1' => '<add mac address here>', 'mac:2' => '<add mac address here>']);
+        \Artisan::call('sync:macs', ['mac:1' => '<add mac address here>', 'mac:2' => '<add mac address here>']);
     }
 
     public function getUser() {
@@ -463,7 +463,15 @@ class MainController extends BaseController
         else {
           foreach($params as $k => $p) {
             echo "Searching in Controller by parameter: " . $k;
-            $data = $AurbaControllers->getData($_GET['school_id'], array($k => $p));
+            $data = $AurbaControllers->getData($school['controller_url'], array($k => $p));
+            echo "<pre>";
+            print_r($data);
+            echo "</pre>";
+          }
+          //
+          if (!empty($_GET['device_ip'])) {
+            echo 'Search by IP only <br />';
+            $data = $AurbaControllers->getAPByIp($_GET['device_ip']);
             echo "<pre>";
             print_r($data);
             echo "</pre>";
