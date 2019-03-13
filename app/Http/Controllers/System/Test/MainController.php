@@ -447,25 +447,30 @@ class MainController extends BaseController
       if (!empty($_GET['device_ip'])) {
         echo 'Search AP name by IP only <br />';
         $ap_name = $AurbaControllers->getAPByIp($_GET['device_ip'], null, $schools);
-        echo 'App name: ' . $ap_name . '<br />';
-        if (!empty($aps[$ap_name])) {
-          echo 'Ap by Ap name: <br />';
-          echo "<pre>";
-          print_r($aps[$ap_name]);
-          echo "</pre>";
-          //
-          if (!empty($schools[$aps[$ap_name]['school_id']])) {
-            echo 'School by Ap name: <br />';
+        if (!empty($ap_name)) {
+          echo 'App name: ' . $ap_name . '<br />';
+          if (!empty($aps[$ap_name])) {
+            echo 'Ap by Ap name: <br />';
             echo "<pre>";
-            print_r($schools[$aps[$ap_name]['school_id']]);
+            print_r($aps[$ap_name]);
             echo "</pre>";
+            //
+            if (!empty($schools[$aps[$ap_name]['school_id']])) {
+              echo 'School by Ap name: <br />';
+              echo "<pre>";
+              print_r($schools[$aps[$ap_name]['school_id']]);
+              echo "</pre>";
+            }
+            else {
+              echo 'School not found. <br />';
+            }
           }
           else {
-            echo 'School not found. <br />';
+            echo 'Ap not found. <br />';
           }
         }
         else {
-          echo 'Ap not found. <br />';
+          echo 'Ap name not found in Controllers. <br />';
         }
       }
       //
