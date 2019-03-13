@@ -17,6 +17,7 @@ use BComeSafe\Models\SchoolDefaultFields;
 use BComeSafe\Packages\Coordinates\Coordinates;
 use BComeSafe\Packages\Cisco\Cmx\Location\CmxLocation;
 use BComeSafe\Packages\Aruba\Ale\AleLocation;
+use BComeSafe\Packages\Aruba\ArubaControllers\ArubaControllers;
 use GuzzleHttp\Promise;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
