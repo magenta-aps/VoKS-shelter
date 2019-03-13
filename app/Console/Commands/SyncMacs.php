@@ -44,26 +44,18 @@ class SyncMacs extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
       
         $default = SchoolDefault::getDefaults();
         if (!empty($default->client_data_source)) {
           //Aruba
           if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA) {
             //Aruba ALE
-            if (config('aruba.ale.enabled') === false) {
-              return;
-            }
-            else {
+            if (config('aruba.ale.enabled')) {
               $floors = Floor::with('image')->get()->toArray();
               $floors = array_map_by_key($floors, 'floor_hash_id');
-            }
-            //Aruba Controllers
-            if (config('aruba.controllers.enabled') === false) {
-              return;
-            }
-            else {
+            //Aruba Controllers              
+            } elseif (config('aruba.controllers.enabled')) {
               //Controller
               $AurbaControllers = new ArubaControllers();
               //Schools
@@ -74,6 +66,9 @@ class SyncMacs extends Command
               $aps = Aps::get()->toArray();
               if (empty($aps)) return;
               $aps = array_map_by_key($aps, 'ap_name');
+            }
+            else {
+              return;
             }
           }
           //Cisco CMX

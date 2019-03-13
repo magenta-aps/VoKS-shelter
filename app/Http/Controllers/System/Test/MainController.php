@@ -49,13 +49,14 @@ class MainController extends BaseController
     public function getCoords() {
       if (!empty($_GET['macs'])) {
         $macs = is_array($_GET['macs']) ? $_GET['macs'] : array($_GET['macs']);
+        //['mac:1' => '<add mac address here>', 'mac:2' => '<add mac address here>'];
         \Artisan::call('sync:macs', $macs);
       }
     }
 
     public function getUser() {
         $user = new User();
-        return $user->getByIp('192.168.21.54');
+        return $user->getByIp($_GET['id_address']);
     }
 
     public function getRegister() { 
