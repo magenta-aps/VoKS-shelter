@@ -9,47 +9,74 @@
 
 namespace BComeSafe\Packages\Aruba\ArubaControllers;
 
-class ArubaControllers
-{
+use BComeSafe\Libraries\CurlRequest;
+use BComeSafe\Models\School;
+
+/**
+ * Class ArubaControllers
+ *
+ * @package BComeSafe\Packages\Aruba\ArubaControllers
+ */
+class ArubaControllers {
 
     /**
      * Collect data from ALE controllers
      *
      * @return array
+     * Response exmaple:
+          <aruba>
+            <status>Ok</status>
+            <macaddr>[Mac address]</macaddr>
+            <ipaddr>[IP address]</ipaddr>
+            <name>[username]</name>
+            <role>[Role]</role>
+            <type>Wireless</type>
+            <vlan>200</vlan>
+            <location>[Ap name]</location>
+            <age>00:00:26</age>
+            <auth_status>Authenticated</auth_status>
+            <auth_server>[Auth server]</auth_server>
+            <auth_method>802.1x</auth_method>
+            <essid>[SSID]</essid>
+            <bssid>[BSSID]</bssid>
+            <phy_type>a-VHT-80</phy_type>
+            <mobility_state>Wireless</mobility_state>
+            <in_packets>264</in_packets>
+            <in_octets>45116</in_octets>
+            <out_packets>230</out_packets>
+            <out_octets>74700</out_octets>
+          </aruba>
      */
-    public static function getData()
-    {
-        $ret_val = [];
-        $controllers_servers = config('aruba.controllers.urls');
-        $servers = explode(',', $controllers_servers);
-        $username = config('aruba.controllers.username');
-        $password = config('aruba.controllers.password');
-
-        if (empty($servers)) {
-          return $ret_val;
-        }
+    public static function getData($ip, $school_id) {
+        $ret_val = array();
+        if (!config('aruba.controllers.enabled')) return $ret_val;
         
-        foreach($servers as $url) {
+        if (empty($ip)) return $ret_val;
         
-          /*$curl = new CurlRequest();
-          $curl->setUrl(
-              'ssh ' . config('aruba.controllers.username') . ':' . config('aruba.controllers.password') . '@' . $url
-          );
-
-          $curl->setAuthentication(config('aruba.ale.controllers.username'), config('aruba.ale.controllers.password'));
-          //$curl->expect(CurlRequest::PLAIN_RESPONSE, $callback);
-
-          $response = $curl->execute();
-          echo '<pre>';
-            print_r($response);
-            echo '</pre>';
-            die(__FILE__);
-          if (!empty($response)) {
-
-          }*/
-          //echo `sshpass -p "{$password}" ssh -o StrictHostKeyChecking=no -X {$username}@{$url} ('show user')`;
-          //die();
-        }
+        //Schools
+        $school = School::where('id', '=', $school_id)->first();
+        
+        $headers = array('Content-type: text/xml');
+        $post = array();
+        $post['body'] = 'xml=
+          <aruba command="user_query">
+            <ipaddr>'. $ip .'</ipaddr>
+            <authentication>cleartext</authentication>
+            <key>'.config('aruba.controllers.key').'</key>
+            <version>1.0</version>
+          </aruba>
+        ';
+        
+        $ret_val = (new CurlRequest())
+            ->setUrl($school->controller_url . '/auth/command.xml')
+            ->setHeaders($headers)
+            ->setPostRequest($post)
+            ->expect(
+                CurlRequest::CUSTOM_RESPONSE,
+                function ($response) {
+                    return Formatter::make($response, Formatter::XML)->toArray();
+                }
+            )->execute();
 
         return $ret_val;
     }

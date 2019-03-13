@@ -314,7 +314,8 @@ class AirwaveImport
     protected function cleanUp()
     {
         foreach ($this->importedMap as $table => $column) {
-          echo 'Imported ' . $table . ': ' . count($column);
+          if (empty($this->imported[$table])) continue;
+          echo 'Imported ' . $table . ': ' . count($this->imported[$table]) . "\n";
           \DB::table($table)->whereNotIn($column, $this->imported[$table])->delete();
         }
     }

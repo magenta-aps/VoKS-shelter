@@ -38,6 +38,7 @@ class School extends BaseModel
         'phone_system_voice_id',
         'phone_system_group_id',
         'phone_system_number',
+        'controller_url',
     ];
 
     /**

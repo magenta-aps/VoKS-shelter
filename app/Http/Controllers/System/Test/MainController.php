@@ -16,6 +16,7 @@ use BComeSafe\Models\School;
 use BComeSafe\Packages\Aruba\Airwave\Base;
 use BComeSafe\Packages\Aruba\Airwave\Importer;
 use BComeSafe\Packages\Aruba\Airwave\Importer\AirwaveImport;
+use BComeSafe\Packages\Aruba\ArubaControllers\ArubaControllers;
 use SoapBox\Formatter\Formatter;
 use BComeSafe\Packages\Aruba\Airwave\Structure;
 use BComeSafe\Packages\Aruba\Ale;
@@ -403,6 +404,47 @@ class MainController extends BaseController
           }
         }
       }
+      //
+      echo '<br />';
+      echo 'Finished.';
+      return;
+    }
+    
+    /**
+     * Test Aruba Controller
+     *
+     * URL: /system/test/aruba-controller
+     */
+    public function getAirwaveStructure() {
+      
+      $AurbaControllers = new ArubaControllers();
+      
+      echo 'Welcome to Aruba Controller test. <br />';
+      echo 'use GET parameter: <i>device_ip=<ip_address></i> and <i>school_id=<school_id></i>. <br />';
+      echo '<br /><br />';
+      
+      if (!empty($_GET['school_id'])) {
+        $school = School::where('id', '=', $_GET['school_id'])->first();
+        echo "School data: <pre>";
+        print_r($school);
+        echo "</pre>";
+        echo '<br /><br />';
+        
+        if (empty($school->contoller_url)) {
+          echo 'Missing Controller URL';
+          echo '<br />';
+          echo 'Finished.';
+          return;
+        }
+        
+        if (!empty($_GET['device_ip'])) {
+          $data = $AurbaControllers->getData($_GET['device_ip'], $_GET['school_id']);
+          echo "<pre>";
+          print_r($data);
+          echo "</pre>";
+        }
+      }
+      
       //
       echo '<br />';
       echo 'Finished.';
