@@ -94,7 +94,7 @@ class ArubaControllers {
       if (empty($device_ip)) return $ret_val;
       
       // Get all schools list
-      $schools = School::with('controller_url')->get()->toArray();
+      $schools = School::withNotNull('controller_url')->get()->toArray();
       if (empty($schools)) return $ret_val;
       
       foreach($schools as $school) {
