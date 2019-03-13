@@ -465,7 +465,15 @@ class MainController extends BaseController
             echo "Searching in Controller by parameter: " . $k;
             $device_controller = $AurbaControllers->getData($school['controller_url'], array($k => $p));
             echo "<pre>";
-            print_r($data);
+            print_r($device_controller);
+            echo "</pre>";
+          }
+          //DB
+          if (!empty($device_controller)) {
+            echo 'Device data in DB: <br />';
+            $device = Device::where('mac_address','=',$device_controller['macaddr'])->get()->first()->toArray();
+            echo "<pre>";
+            print_r($device);
             echo "</pre>";
           }
           //By IP
@@ -476,15 +484,6 @@ class MainController extends BaseController
             print_r($data);
             echo "</pre>";
           }
-          //DB
-          if (!empty($data)) {
-            echo 'Device data in DB: <br />';
-            $device = Device::where('mac_address','=',$device_controller['macaddr'])->get()->first()->toArray();
-            echo "<pre>";
-            print_r($device);
-            echo "</pre>";
-          }
-          
         }
       } 
       else {
