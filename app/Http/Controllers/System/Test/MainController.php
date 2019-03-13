@@ -415,7 +415,7 @@ class MainController extends BaseController
      *
      * URL: /system/test/aruba-controller
      */
-    public function getAirwaveStructure() {
+    public function getArubaController() {
       
       $AurbaControllers = new ArubaControllers();
       
