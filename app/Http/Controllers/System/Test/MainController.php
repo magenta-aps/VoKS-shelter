@@ -424,13 +424,13 @@ class MainController extends BaseController
       echo '<br /><br />';
       
       if (!empty($_GET['school_id'])) {
-        $school = School::where('id', '=', $_GET['school_id'])->first();
+        $school = School::where('id', '=', $_GET['school_id'])->first()->toArray();
         echo "School data: <pre>";
         print_r($school);
         echo "</pre>";
         echo '<br /><br />';
         
-        if (empty($school->contoller_url)) {
+        if (empty($school->controller_url)) {
           echo 'Missing Controller URL';
           echo '<br />';
           echo 'Finished.';
@@ -443,9 +443,15 @@ class MainController extends BaseController
           print_r($data);
           echo "</pre>";
         }
+      } 
+      else {
+        //
+        echo '<br />';
+        $schools = School::get()->toArray();
+        echo "Available schools: <pre>";
+        print_r($schools);
+        echo "</pre>";
       }
-      
-      //
       echo '<br />';
       echo 'Finished.';
       return;
