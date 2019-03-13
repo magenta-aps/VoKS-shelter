@@ -468,7 +468,7 @@ class MainController extends BaseController
             print_r($data);
             echo "</pre>";
           }
-          //
+          //By IP
           if (!empty($_GET['device_ip'])) {
             echo 'Search by IP only <br />';
             $data = $AurbaControllers->getAPByIp($_GET['device_ip']);
@@ -476,6 +476,15 @@ class MainController extends BaseController
             print_r($data);
             echo "</pre>";
           }
+          //DB
+          if (!empty($data)) {
+            echo 'Device data in DB: <br />';
+            $device = Device::where('mac_address','=',$data['macaddr'])->get()->first()->toArray();
+            echo "<pre>";
+            print_r($device);
+            echo "</pre>";
+          }
+          
         }
       } 
       else {

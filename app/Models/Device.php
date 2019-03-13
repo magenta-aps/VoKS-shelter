@@ -61,6 +61,7 @@ class Device extends BaseModel
         'device_id',
         'push_notification_id',
         'mac_address',
+        'ip_address',
         'x',
         'y',
         'active',
@@ -209,7 +210,7 @@ class Device extends BaseModel
           if (config('aruba.clearpass.enabled')) {
             $ArubaClearpass = new User();
             if (!$this->getAttribute('mac_address')) {
-              $device = $ArubaClearpass->getByIp(\Request::ip());
+              $device = $ArubaClearpass->getByIp($this->getAttribute('ip_address'));
             } else {
               $device = $ArubaClearpass->getByMac($this->getAttribute('mac_address'));
             }
@@ -217,7 +218,7 @@ class Device extends BaseModel
           //Aruba Controller
           if (config('aruba.controllers.enabled')) {
             $AurbaControllers = new ArubaControllers();
-            $ap_name = $AurbaControllers->getAPByIp(\Request::ip());
+            $ap_name = $AurbaControllers->getAPByIp($this->getAttribute('ip_address'));
             if (!empty($ap_name)) {
               $device['ap_name'] = $ap_name;
             }
@@ -232,7 +233,7 @@ class Device extends BaseModel
             $device['mac_address'] = $this->getAttribute('mac_address');
           }
           else {
-            $device['mac_address'] = CmxLocation::getMacAddressByIP(\Request::ip());
+            $device['mac_address'] = CmxLocation::getMacAddressByIP($this->getAttribute('ip_address'));
           }
           if (!isset($device['mac_address'])) {
             throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
