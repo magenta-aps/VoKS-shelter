@@ -109,7 +109,7 @@ class ArubaControllers {
       
       // Check possible school first
       if ($possible_school_id && !empty($schools[$possible_school_id])) {
-        $device = $this->getData($schools[$possible_school_id], array('ip' => $device_ip));
+        $device = $this->getData($schools[$possible_school_id]['controller_url'], array('ip' => $device_ip));
         if (!empty($device['location'])) {
           $ret_val = $device['location'];
         }

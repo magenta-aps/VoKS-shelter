@@ -101,7 +101,7 @@ class SyncMacs extends Command
         if (empty($devices)) return;
         echo 'Found in DB:' . "\n";
         echo "<pre>";
-        print_r($devices);
+        print_r($devices->toArray());
         echo "</pre>";
         
         $updates = [];
