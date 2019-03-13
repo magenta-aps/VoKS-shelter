@@ -25,6 +25,7 @@ use BComeSafe\Packages\Aruba\Clearpass\User;
 use BComeSafe\Packages\Notifications;
 use BComeSafe\Packages\Coordinates\Coordinates;
 use BComeSafe\Models\SchoolDefault;
+use BComeSafe\Models\Aps;
 use Devristo\Phpws\Client;
 use React\EventLoop;
 use Zend\Log;

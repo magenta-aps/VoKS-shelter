@@ -11,6 +11,7 @@ namespace BComeSafe\Console\Commands;
 
 use BComeSafe\Models\Device;
 use BComeSafe\Models\Floor;
+use BComeSafe\Models\Aps;
 use BComeSafe\Models\SchoolDefault;
 use BComeSafe\Models\SchoolDefaultFields;
 use BComeSafe\Packages\Coordinates\Coordinates;
