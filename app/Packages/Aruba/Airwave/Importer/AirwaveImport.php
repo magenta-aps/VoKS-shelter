@@ -263,39 +263,46 @@ class AirwaveImport
     public function structureAps() {
       
       $imported_aps = array();
-      
-      //Get floors
-      $floors = Floor::with('image')->get()->toArray();
-      $floors = array_map_by_key($floors, 'floor_ale_id');
-      
-      // import all aps
-      foreach ($floors as $floor) {
-        echo 'School ID: ' . $floor['school_id'] . ' | Floor ID: ' . $floor['id'];
-        // pull aps from Airwave
-        $aps_data = $this->pullData('aps', '?site_id=' . $floor['floor_ale_id']);
-        echo 'Found Aps: ' . count($aps_data['ap']);
-        if (!empty($aps_data['ap'])) {
-          foreach ($aps_data['ap'] as $ap) {
-            $structure = isset($ap['@attributes']) ? $ap['@attributes'] : $ap;
-            if (!isset($structure['id'])) {
-              continue;
-            }
-            // convert coordinates of ap
-            $coords = Coordinates::convert(
-              $floor['image']['pixel_width'],
-              $floor['image']['real_width'],
-              $floor['image']['pixel_height'],
-              $floor['image']['real_height'],
-              $structure['x'],
-              $structure['y']
-            );
+      // pull aps from Airwave
+      $aps_data = $this->pullData('aps');
+      echo 'Found Aps: ' . count($aps_data['ap']);
+      if (!empty($aps_data['ap'])) {
+        //Get floors
+        $floors = Floor::with('image')->get()->toArray();
+        $floors = array_map_by_key($floors, 'floor_ale_id');
+        // import all aps
+        foreach ($aps_data['ap'] as $ap) {
+          echo "<pre>";
+          print_r($ap);
+          echo "</pre>";
+          
+          echo "<pre>";
+          print_r(current($foors));
+          echo "</pre>";
+          
+          die(__FILE__);
 
-            $structure['x'] = $coords['x'];
-            $structure['y'] = $coords['y'];
-            // Insert to DB
-            $ap['model'] = Aps::import($this->mapper->mapAps($floor['school_id'], $floor['id'], $structure));
-            $imported_aps[] = $ap['model']->ap_ale_id;
+          //echo 'School ID: ' . $floor['school_id'] . ' | Floor ID: ' . $floor['id'];
+
+          $structure = isset($ap['@attributes']) ? $ap['@attributes'] : $ap;
+          if (!isset($structure['id'])) {
+            continue;
           }
+          // convert coordinates of ap
+          $coords = Coordinates::convert(
+            $floor['image']['pixel_width'],
+            $floor['image']['real_width'],
+            $floor['image']['pixel_height'],
+            $floor['image']['real_height'],
+            $structure['x'],
+            $structure['y']
+          );
+
+          $structure['x'] = $coords['x'];
+          $structure['y'] = $coords['y'];
+          // Insert to DB
+          $ap['model'] = Aps::import($this->mapper->mapAps($floor['school_id'], $floor['id'], $structure));
+          $imported_aps[] = $ap['model']->ap_ale_id;
         }
       }
       

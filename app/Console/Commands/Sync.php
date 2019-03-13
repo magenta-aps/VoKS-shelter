@@ -42,8 +42,7 @@ class Sync extends Command
     protected function getArguments()
     {
       return [
-        ['--skip-ctm', InputArgument::OPTIONAL, 'Skip Crisis Team members'],
-        ['--skip-images', InputArgument::OPTIONAL, 'Skip Images download'],
+        ['skip', InputArgument::OPTIONAL, 'Skip Crisis Team members or Images download or Both'],
       ];
     }
     
@@ -55,8 +54,23 @@ class Sync extends Command
     public function handle()
     {
       
-      $skip_ctm = $this->argument('--skip-ctm');
-      $skip_images = $this->argument('--skip-images');
+      $skip_ctm = FALSE;
+      $skip = $this->argument('skip');
+      if (!empty($skip)) {
+        //Skip Crisis Team members sync
+        if ($skip == 1) {
+          $skip_ctm = TRUE;
+        }
+        //Skip Image download
+        if ($skip == 2) {
+          $skip_images = TRUE;
+        }
+        //Skip Both
+        if ($skip == 3) {
+          $skip_ctm = TRUE;
+          $skip_images = TRUE;
+        }
+      }
       
       $default = SchoolDefault::getDefaults();
       //Sync crisis team members
