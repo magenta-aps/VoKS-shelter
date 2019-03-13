@@ -97,8 +97,13 @@ class SyncMacs extends Command
                 $list[] = $mac;
             }
         }
-        $devices = Device::whereIn('mac_address', $list)->get(['id', 'mac_address']);
+        $devices = Device::whereIn('mac_address', $list)->get(['id', 'school_id', 'ap_name', 'mac_address', 'ip_address']);
         if (empty($devices)) return;
+        echo 'Found in DB:' . "\n";
+        echo "<pre>";
+        print_r($devices);
+        echo "</pre>";
+        
         $updates = [];
         //
         foreach ($devices as $device) {
@@ -114,16 +119,17 @@ class SyncMacs extends Command
             }
             //Aruba Controllers
             if (config('aruba.controllers.enabled')) {
-              $ap_name = $AurbaControllers->getAPByIp($device->ip_address, $device['school_id'], $schools);
+              $ap_name = $AurbaControllers->getAPByIp($device->ip_address, $device->school_id, $schools);
               //Found AP name
               if (!empty($ap_name) && !empty($aps[$ap_name])) {
                 //AP has changed
                 if ($device->ap_name != $ap_name) {
-                  $device['school_id'] = $aps[$ap_name]['school_id'];
-                  $device['floor_id'] = $aps[$ap_name]['floor_id'];
-                  $device['x'] = $aps[$ap_name]['x'];
-                  $device['y'] = $aps[$ap_name]['y'];
-                  $device['active'] = 1;
+                  $client = array();
+                  $client['school_id'] = $aps[$ap_name]['school_id'];
+                  $client['floor_id'] = $aps[$ap_name]['floor_id'];
+                  $client['x'] = $aps[$ap_name]['x'];
+                  $client['y'] = $aps[$ap_name]['y'];
+                  $client['active'] = 1;
                   $updates[] = $client;
                 }
               }
