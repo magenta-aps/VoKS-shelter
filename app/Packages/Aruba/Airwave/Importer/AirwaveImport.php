@@ -265,29 +265,22 @@ class AirwaveImport
       $imported_aps = array();
       // pull aps from Airwave
       $aps_data = $this->pullData('aps');
-      echo 'Found Aps: ' . count($aps_data['ap']);
+      echo 'Found Aps: ' . count($aps_data['ap']) . "\n";
       if (!empty($aps_data['ap'])) {
         //Get floors
         $floors = Floor::with('image')->get()->toArray();
         $floors = array_map_by_key($floors, 'floor_ale_id');
         // import all aps
         foreach ($aps_data['ap'] as $ap) {
-          echo "<pre>";
-          print_r($ap);
-          echo "</pre>";
-          
-          echo "<pre>";
-          print_r(current($foors));
-          echo "</pre>";
-          
-          die(__FILE__);
-
-          //echo 'School ID: ' . $floor['school_id'] . ' | Floor ID: ' . $floor['id'];
-
           $structure = isset($ap['@attributes']) ? $ap['@attributes'] : $ap;
           if (!isset($structure['id'])) {
             continue;
           }
+          if (empty($floors[$structure['site_id']])) {
+            continue;
+          }
+          // find floor
+          $floor = $floors[$structure['site_id']];
           // convert coordinates of ap
           $coords = Coordinates::convert(
             $floor['image']['pixel_width'],
