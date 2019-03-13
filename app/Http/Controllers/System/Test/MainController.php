@@ -420,7 +420,10 @@ class MainController extends BaseController
       $AurbaControllers = new ArubaControllers();
       
       echo 'Welcome to Aruba Controller test. <br />';
-      echo 'use GET parameter: <i>device_ip=<ip_address></i> and <i>school_id=<school_id></i>. <br />';
+      echo 'use GET parameter: <i>device_ip=<ip_address></i> '
+      . 'OR <i>device_mac=<mac_address></i> '
+      . 'OR <i>device_username=<username></i> '
+      . 'And <i>school_id=<school_id></i>. <br />';
       echo '<br /><br />';
       
       if (!empty($_GET['school_id'])) {
@@ -437,11 +440,25 @@ class MainController extends BaseController
           return;
         }
         else {
-          echo 'Controller Ready.';
+          echo 'Controller Ready. <br />';
         }
         
+        $params = array();
         if (!empty($_GET['device_ip'])) {
-          $data = $AurbaControllers->getData($_GET['device_ip'], $_GET['school_id']);
+          $params['ip'] = $_GET['device_ip'];
+        }
+        elseif (!empty($params['device_mac'])) {
+          $params['mac_address'] = $_GET['device_mac'];
+        }
+        elseif (!empty($params['device_username'])) {
+          $params['username'] = $_GET['device_username'];
+        }
+        
+        if (empty($params)) {
+          echo 'Missing device parameters.';
+        }
+        else {
+          $data = $AurbaControllers->getData($_GET['school_id'] ,$params);
           echo "<pre>";
           print_r($data);
           echo "</pre>";
@@ -455,6 +472,7 @@ class MainController extends BaseController
         print_r($schools);
         echo "</pre>";
       }
+      
       echo '<br />';
       echo 'Finished.';
       return;

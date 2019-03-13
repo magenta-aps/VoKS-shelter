@@ -48,11 +48,21 @@ class ArubaControllers {
             <out_octets>74700</out_octets>
           </aruba>
      */
-    public static function getData($ip, $school_id) {
+    public static function getData($school_id, $params) {
         $ret_val = array();
         if (!config('aruba.controllers.enabled')) return $ret_val;
         
-        if (empty($ip)) return $ret_val;
+        if (empty($params)) $ret_val;
+        
+        if (!empty($params['ip'])) {
+          $post_param = '<ipaddr>'. $params['ip'] .'</ipaddr>';
+        }
+        elseif (!empty($params['mac_address'])) {
+          $post_param = '<macaddr>'. $params['mac_address'] .'</macaddr>';
+        }
+        elseif (!empty($params['username'])) {
+          $post_param = '<name>'. $params['mac_address'] .'</name>';
+        }
         
         //Schools
         $school = School::where('id', '=', $school_id)->first();
@@ -60,7 +70,7 @@ class ArubaControllers {
         $headers = array('Content-type: application/xml');
         $post = array(
           'xml' => '<aruba command="user_query">
-            <ipaddr>'. $ip .'</ipaddr>
+            '.$post_param.'
             <authentication>cleartext</authentication>
             <key>'.config('aruba.controllers.key').'</key>
             <version>1.0</version>
