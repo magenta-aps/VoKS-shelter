@@ -217,7 +217,7 @@ class Device extends BaseModel
           //Aruba Controller
           if (config('aruba.controllers.enabled')) {
             $AurbaControllers = new ArubaControllers();
-            $ap_name = $AurbaControllers->getAPByIp($device['ip_address']);
+            $ap_name = $AurbaControllers->getAPByIp(\Request::ip());
             if (!empty($ap_name)) {
               $device['ap_name'] = $ap_name;
             }
