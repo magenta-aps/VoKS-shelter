@@ -276,6 +276,9 @@ class AirwaveImport
           if (!isset($structure['id'])) {
             continue;
           }
+          if (!isset($structure['site_id'])) {
+            continue;
+          }
           if (empty($floors[$structure['site_id']])) {
             continue;
           }
