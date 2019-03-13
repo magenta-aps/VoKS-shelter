@@ -48,7 +48,7 @@ class ArubaControllers {
             <out_octets>74700</out_octets>
           </aruba>
      */
-    public static function getData($controller_url, $params) {
+    public function getData($controller_url, $params) {
         $ret_val = array();
         if (!config('aruba.controllers.enabled')) return $ret_val;
         
@@ -89,7 +89,7 @@ class ArubaControllers {
         return $ret_val;
     }
     
-    public static function getAPByIp($device_ip) {
+    public function getAPByIp($device_ip) {
       $ret_val = null;
       if (empty($device_ip)) return $ret_val;
       
