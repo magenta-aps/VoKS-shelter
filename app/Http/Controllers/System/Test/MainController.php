@@ -47,7 +47,8 @@ class MainController extends BaseController
 
     public function getCoords() {
       if (!empty($_GET['macs'])) {
-        \Artisan::call('sync:macs', $_GET['macs']);
+        $macs = is_array($_GET['macs']) ? $_GET['macs'] : array($_GET['macs']);
+        \Artisan::call('sync:macs', $macs);
       }
     }
 
