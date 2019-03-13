@@ -434,16 +434,31 @@ class MainController extends BaseController
       if (!empty($schools)) {
         $schools = array_map_by_key($schools, 'id');
       }
+      
+      //Aps
+      $aps = Aps::get()->toArray();
+      if (!empty($aps)) {
+        $aps = array_map_by_key($aps, 'ap_name');
+      }
               
       //By IP
       if (!empty($_GET['device_ip'])) {
         echo 'Search AP name by IP only <br />';
-        $data = $AurbaControllers->getAPByIp($_GET['device_ip'], null, $schools);
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
+        $ap_name = $AurbaControllers->getAPByIp($_GET['device_ip'], null, $schools);
+        echo 'App name: ' . $ap_name;
+        if (!empty($aps[$ap_name])) {
+          if (!empty($schools[$aps[$ap_name]['school_id']])) {
+            echo 'School by Ap name:';
+            echo "<pre>";
+            print_r($schools[$aps[$ap_name]['school_id']]);
+            echo "</pre>";
+          }
+          else {
+            echo 'School not found.';
+          }
+        }
       }
-          
+      //
       if (!empty($_GET['school_id'])) {
         $school = School::where('id', '=', $_GET['school_id'])->first()->toArray();
         echo "School data: <pre>";
