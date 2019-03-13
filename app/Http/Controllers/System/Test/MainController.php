@@ -46,7 +46,9 @@ class MainController extends BaseController
     }
 
     public function getCoords() {
-        \Artisan::call('sync:macs', ['mac:1' => '<add mac address here>', 'mac:2' => '<add mac address here>']);
+      if (!empty($_GET['macs'])) {
+        \Artisan::call('sync:macs', $_GET['macs']);
+      }
     }
 
     public function getUser() {
@@ -461,6 +463,14 @@ class MainController extends BaseController
           echo 'Missing device parameters.';
         }
         else {
+          //DB
+          if (!empty($_GET['device_ip'])) {
+            echo 'Device data in DB by IP: <br />';
+            $device = Device::where('ip_address','=',$_GET['device_ip'])->get()->first()->toArray();
+            echo "<pre>";
+            print_r($device);
+            echo "</pre>";
+          }
           foreach($params as $k => $p) {
             echo "Searching in Controller by parameter: " . $k;
             $device_controller = $AurbaControllers->getData($school['controller_url'], array($k => $p));
@@ -469,8 +479,8 @@ class MainController extends BaseController
             echo "</pre>";
           }
           //DB
-          if (!empty($device_controller)) {
-            echo 'Device data in DB: <br />';
+          if (!empty($device_controller['macaddr'])) {
+            echo 'Device data in DB by mac_address from Controller: <br />';
             $device = Device::where('mac_address','=',$device_controller['macaddr'])->get()->first()->toArray();
             echo "<pre>";
             print_r($device);

@@ -96,14 +96,16 @@ class ArubaControllers {
      * @param int $possible_school_id - will be checked first
      * @return string $ap_name
      */
-    public function getAPByIp($device_ip, $possible_school_id = null) {
+    public function getAPByIp($device_ip, $possible_school_id = null, $schools = array()) {
       $ret_val = null;
       if (empty($device_ip)) return $ret_val;
       
       // Get all schools list
-      $schools = School::whereNotNull('controller_url')->get()->toArray();
-      if (empty($schools)) return $ret_val;
-      $schools = array_map_by_key($schools, 'id');
+      if (empty($schools)) {
+        $schools = School::whereNotNull('controller_url')->get()->toArray();
+        if (empty($schools)) return $ret_val;
+        $schools = array_map_by_key($schools, 'id');
+      }
       
       // Check possible school first
       if ($possible_school_id && !empty($schools[$possible_school_id])) {
