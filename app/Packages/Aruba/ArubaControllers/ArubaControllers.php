@@ -57,16 +57,15 @@ class ArubaControllers {
         //Schools
         $school = School::where('id', '=', $school_id)->first();
         
-        $headers = array('Content-type: text/xml');
-        $post = array();
-        $post['body'] = 'xml=
-          <aruba command="user_query">
+        $headers = array('Content-type: application/xml');
+        $post = array(
+          'xml' => '<aruba command="user_query">
             <ipaddr>'. $ip .'</ipaddr>
             <authentication>cleartext</authentication>
             <key>'.config('aruba.controllers.key').'</key>
             <version>1.0</version>
-          </aruba>
-        ';
+          </aruba>'
+        );
         
         $ret_val = (new CurlRequest())
             ->setUrl($school->controller_url . '/auth/command.xml')
