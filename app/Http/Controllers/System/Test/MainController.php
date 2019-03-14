@@ -550,4 +550,37 @@ class MainController extends BaseController
       echo 'Finished.';
       return;
     }
+    
+    /**
+     * Get all translations
+     *
+     * URL: /system/test/translations
+     */
+    public function getTranslations() {
+      
+      $directories = \File::directories(base_path('resources/lang'));
+      $languages = [];
+      for ($i = 0; $i < count($directories); $i++) {
+          $code = basename($directories[$i]);
+          // $languages[$code] = config('languages.' . $code);
+          $languages[$code] = array(
+            'title' => \Lang::get('languages.' .$code),
+            'files' => \File::files(base_path('resources/lang/' . $code))
+          );
+          //
+          $dirs = \File::directories(base_path('resources/lang/' . $code));
+          foreach($dirs as $files) {
+            $f = basename($files);
+            $languages[$code]['files'][] = \File::files(base_path('resources/lang/' . $code . '/' . $f));
+          }
+      }
+      
+      echo "<pre>";
+      print_r($languages);
+      echo "</pre>";
+      die(__FILE__);
+          
+      
+      
+    }
 }
