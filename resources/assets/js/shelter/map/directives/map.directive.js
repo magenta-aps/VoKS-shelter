@@ -40,6 +40,9 @@
 
             var createMap = function(floorId) {
                 if (null !== floorId) {
+                    // Set Building by Floor
+                    Map.setBuildingByFloorId(floorId);
+                    
                     // Destroy map instance
                     var instance = Map.getMap();
                     if (null !== instance) {
@@ -60,9 +63,6 @@
                     // Create floor
                     Map.createFloor(floorId);
                     
-                    // Create floor
-                    Map.setBuildingByFloorId(floorId);
-
                     // Create markers
                     Map.createMarkers();
                 }
