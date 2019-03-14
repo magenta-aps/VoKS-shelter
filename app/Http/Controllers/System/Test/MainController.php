@@ -573,7 +573,7 @@ class MainController extends BaseController
             foreach($files as $f) {
               $final_name = substr(basename($f), 0, -4);
               if (in_array($final_name, $skip_files)) continue;
-              $languages[$code]['files'][$final_name] = getTranslationValues($final_name);
+              $languages[$code]['files'][$final_name] = self::getTranslationValues($final_name);
             }
           }
           
@@ -586,7 +586,7 @@ class MainController extends BaseController
               foreach($files as $f) {
                 $final_name = $dd . '/' . substr(basename($f), 0, -4);
                 if (in_array($final_name, $skip_files)) continue;
-                $languages[$code]['files'][$final_name] = getTranslationValues($final_name);
+                $languages[$code]['files'][$final_name] = self::getTranslationValues($final_name);
               }
             }
           }
