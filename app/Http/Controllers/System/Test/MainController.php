@@ -598,8 +598,8 @@ class MainController extends BaseController
         return;
       }
       
-      $output = '';
       foreach($languages as $code => $lang) {
+        $output .= '<div style="float:left">';
         $output.= '<table border=1>';
           $output.= '<tr>';
             $output.= '<th>'. $lang['title'] . '</th>';
@@ -635,6 +635,7 @@ class MainController extends BaseController
             }
           }
         $output.= '</table>';
+        $output .= '</div>';
       }
       
       echo $output;
