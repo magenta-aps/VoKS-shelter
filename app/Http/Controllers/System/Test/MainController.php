@@ -597,10 +597,10 @@ class MainController extends BaseController
         echo 'Finished.';
         return;
       }
-      
+      $output = '';
+      $output.= '<table border=1>';
       foreach($languages as $code => $lang) {
-        $output .= '<div style="float:left">';
-        $output.= '<table border=1>';
+          $counter[$code]=0;
           $output.= '<tr>';
             $output.= '<th>'. $lang['title'] . '</th>';
           $output.= '</tr>';
@@ -623,6 +623,7 @@ class MainController extends BaseController
                   if (!is_array($l)) {
                     if (!empty($l)) {
                       $output.= htmlspecialchars($l);
+                      $counter[$code]++;
                     }
                   }
                   else {
@@ -634,10 +635,11 @@ class MainController extends BaseController
               $output.= '</tr>';
             }
           }
-        $output.= '</table>';
-        $output .= '</div>';
       }
-      
+      $output.= '</table>';
+      foreach($counter as $cc => $c) {
+        echo 'Language ' . $cc . ' has ' . $c . ' lines <br />';
+      }
       echo $output;
       return;
     }
