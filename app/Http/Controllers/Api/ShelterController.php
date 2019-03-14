@@ -378,7 +378,8 @@ class ShelterController extends Controller
      */
     public function getCoordinates(Request $request)
     {
-
+        $school_id = \Shelter::getID();
+      
         if ($request->has('list')) {
             $macs = $request->get('list');
 
@@ -395,7 +396,7 @@ class ShelterController extends Controller
         } else {
             // fetch all clients that are active and belong to this school
 
-            $floors = Floor::where('school_id', '=', \Shelter::getID())->get();
+            $floors = Floor::where('school_id', '=', $school_id)->get();
             $floorIds = [];
 
             foreach ($floors as $floor) {
@@ -408,8 +409,14 @@ class ShelterController extends Controller
         }
 
         $response = [];
-        for ($i = 0; $i < count($devices); $i++) {
-            $response[] = Device::mapDeviceCoordinates($devices[$i]);
+        $schools = SchoolStatus::where('school_id', '=', $school_id)->get();
+        
+        foreach ($devices as $device) {
+            // if Alarm is not ON - do not show usernames
+            if (!$schools->status_alarm) {
+              $device->name = $device->device_type;
+            }
+            $response[] = Device::mapDeviceCoordinates($device);
         }
 
         SchoolStatus::updateActivity();
