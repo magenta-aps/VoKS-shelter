@@ -571,7 +571,8 @@ class MainController extends BaseController
           $dirs = \File::directories(base_path('resources/lang/' . $code));
           foreach($dirs as $files) {
             $f = basename($files);
-            $languages[$code]['files'][] = \File::files(base_path('resources/lang/' . $code . '/' . $f));
+            $files = \File::files(base_path('resources/lang/' . $code . '/' . $f));
+            $languages[$code]['files'] = array_merge($languages[$code]['files'], $files);
           }
       }
       
