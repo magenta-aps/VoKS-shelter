@@ -559,6 +559,7 @@ class MainController extends BaseController
     public function getTranslations() {
       
       $directories = \File::directories(base_path('resources/lang'));
+      $skip_files = array('languages');
       $languages = [];
       for ($i = 0; $i < count($directories); $i++) {
           $code = basename($directories[$i]);
@@ -571,10 +572,8 @@ class MainController extends BaseController
           if (!empty($files)) {
             foreach($files as $f) {
               $final_name = substr(basename($f), 0, -4);
-              $languages[$code]['files'][] = array(
-                'name' => $final_name,
-                'translation' => \Lang::get($final_name)
-              );
+              if (in_array($final_name, $skip_files)) continue;
+              $languages[$code]['files'][$final_name] = getTranslationValues($final_name);
             }
           }
           
@@ -586,10 +585,8 @@ class MainController extends BaseController
             if (!empty($files)) {
               foreach($files as $f) {
                 $final_name = $dd . '/' . substr(basename($f), 0, -4);
-                $languages[$code]['files'][] = array(
-                  'name' => $final_name,
-                  'translation' => \Lang::get($final_name)
-                );
+                if (in_array($final_name, $skip_files)) continue;
+                $languages[$code]['files'][$final_name] = getTranslationValues($final_name);
               }
             }
           }
@@ -602,5 +599,50 @@ class MainController extends BaseController
           
       
       
+    }
+    
+    private function getTranslationValues($name) {
+      $trans = \Lang::get($name);
+      $ret_val = array();
+      if (!empty($trans)) {
+        foreach($trans as $k1 => $t1) {
+          if (is_array($t1) && !empty($t1)) {
+            //
+            foreach($t1 as $k2 => $t2) {
+              if (is_array($t2) && !empty($t2)) {
+                //
+                foreach($t2 as $k3 => $t3) {
+                  if (is_array($t3) && !empty($t3)) {
+                    //
+                    foreach($t3 as $k4 => $t4) {
+                      if (is_array($t4) && !empty($t4)) {
+                        echo "<pre>";
+                        print_r($k4);
+                        echo "</pre>";
+                        echo "<pre>";
+                        print_r($t4);
+                        echo "</pre>";
+                        die(__FILE__);
+                      }
+                      else{
+                        $ret_val[$k1 . '.' . $k2 . '.' . $k3 . '.' . $k4] = $t4;
+                      }
+                    }
+                  } else {
+                    $ret_val[$k1 . '.' . $k2 . '.' . $k3] = $t3;
+                  }
+                }
+              }
+              else {
+                $ret_val[$k1 . '.' . $k2] = $t2;
+              }
+            }
+          }
+          else {
+            $ret_val[$k1] = $t1;
+          }
+        } 
+      }
+      return $ret_val;
     }
 }
