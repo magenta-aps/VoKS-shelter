@@ -570,7 +570,11 @@ class MainController extends BaseController
           $files = \File::files(base_path('resources/lang/' . $code));
           if (!empty($files)) {
             foreach($files as $f) {
-              $languages[$code]['files'][] = basename($f);
+              $final_name = substr(basename($f), 0, -4);
+              $languages[$code]['files'][] = array(
+                'name' => $final_name,
+                'translation' => \Lang::get($final_name)
+              );
             }
           }
           
@@ -581,7 +585,11 @@ class MainController extends BaseController
             $files = \File::files(base_path('resources/lang/' . $code . '/' . $dd));
             if (!empty($files)) {
               foreach($files as $f) {
-                $languages[$code]['files'][] = $dd . '/' . basename($f);
+                $final_name = $dd . '/' . substr(basename($f), 0, -4);
+                $languages[$code]['files'][] = array(
+                  'name' => $final_name,
+                  'translation' => \Lang::get($final_name)
+                );
               }
             }
           }
