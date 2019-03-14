@@ -562,17 +562,28 @@ class MainController extends BaseController
       $languages = [];
       for ($i = 0; $i < count($directories); $i++) {
           $code = basename($directories[$i]);
-          // $languages[$code] = config('languages.' . $code);
           $languages[$code] = array(
             'title' => \Lang::get('languages.' .$code),
-            'files' => \File::files(base_path('resources/lang/' . $code))
+            'files' => array(),
           );
+          
+          $files = \File::files(base_path('resources/lang/' . $code));
+          if (!empty($files)) {
+            foreach($files as $f) {
+              $languages[$code]['files'][] = basename($f);
+            }
+          }
+          
           //
           $dirs = \File::directories(base_path('resources/lang/' . $code));
-          foreach($dirs as $files) {
-            $f = basename($files);
-            $files = \File::files(base_path('resources/lang/' . $code . '/' . $f));
-            $languages[$code]['files'] = array_merge($languages[$code]['files'], $files);
+          foreach($dirs as $d) {
+            $dd = basename($d);
+            $files = \File::files(base_path('resources/lang/' . $code . '/' . $dd));
+            if (!empty($files)) {
+              foreach($files as $f) {
+                $languages[$code]['files'][] = $dd . '/' . basename($f);
+              }
+            }
           }
       }
       
