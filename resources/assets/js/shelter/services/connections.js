@@ -265,6 +265,7 @@
                 var _client = list[i],
                     client = getClient('mac_address', _client.profile.mac_address);
 
+
                 // Create new client
                 if (null === client) {
                     client = new Client();
@@ -281,7 +282,12 @@
                 if (undefined !== _client.profile.gcm_id) {
                     client.profile.gcmId = _client.profile.gcm_id;
                 }
-
+                
+                // Update name
+                if (undefined !== _client.profile.name) {
+                    client.profile.name = _client.profile.name || 'Client';
+                }
+                
                 // Set position
                 client.position.floor = _client.position.floor_id;
                 client.position.x = _client.position.x;
