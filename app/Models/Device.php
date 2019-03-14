@@ -495,15 +495,19 @@ class Device extends BaseModel
      * @param $device
      * @return array
      */
-    public static function mapDeviceCoordinates($device)
+    public static function mapDeviceCoordinates($device, $show = true)
     {
         $name = '';
-        if (!empty($device->fullname)) {
-          $name = $device->fullname;
-        } elseif (!empty($device->username)) {
-          $name = $device->username;
+        if (!$show) {
+          $name = ucfirst(strtolower($device->device_type));
         } else {
-          $name = $device->mac_address . ' (' . ucfirst(strtolower($device->device_type)) . ')';
+          if (!empty($device->fullname)) {
+            $name = $device->fullname;
+          } elseif (!empty($device->username)) {
+            $name = $device->username;
+          } else {
+            $name = $device->mac_address . ' (' . ucfirst(strtolower($device->device_type)) . ')';
+          }
         }
 
         return [

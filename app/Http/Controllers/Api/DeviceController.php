@@ -111,13 +111,13 @@ class DeviceController extends Controller
           $log_data = array(
             'device_id' => $device_id,
             'device_type' => $device_type,
-            'data' => json_encode(Device::mapDeviceCoordinates($device))
+            'data' => json_encode(Device::mapDeviceCoordinates($device), SchoolStatus::getStatusAlarm($device->school_id))
           );
           Log::create($log_data);
         }
             
         try {
-            $this->websockets->profile(Device::mapDeviceCoordinates($device));
+            $this->websockets->profile(Device::mapDeviceCoordinates($device, SchoolStatus::getStatusAlarm($device->school_id)));
         } catch (\Exception $e) {
             return response()->json(
                 [
