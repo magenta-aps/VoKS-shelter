@@ -620,20 +620,15 @@ class MainController extends BaseController
                   $output.= $code . '.' . $k . '.' . $m;
                 $output.= '</td>';
                 $output.= '<td>';
-                  if (!is_array($l) && !empty($l)) {
+                  if (!is_array($l)) {
                     if (!empty($l)) {
                       $output.= htmlspecialchars($l);
                     }
                   }
                   else {
-                    echo "Found array: <pre>";
-                    print_r($m);
-                    echo "</pre>";
-                    
-                    echo "<pre>";
-                    print_r($l);
-                    echo "</pre>";
-                    die(__FILE__);
+                    if (!empty($l)) {
+                      $output .='Array()';
+                    }
                   }
                 $output.= '</td>';
               $output.= '</tr>';
