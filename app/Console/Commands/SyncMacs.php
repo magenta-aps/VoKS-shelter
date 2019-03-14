@@ -99,10 +99,10 @@ class SyncMacs extends Command
         }
         $devices = Device::whereIn('mac_address', $list)->get(['id', 'school_id', 'ap_name', 'mac_address', 'ip_address', 'username', 'fullname']);
         if (empty($devices)) return;
-        echo 'Found in DB:' . "\n";
+        /*echo 'Found in DB:' . "\n";
         echo "<pre>";
         print_r($devices->toArray());
-        echo "</pre>";
+        echo "</pre>";*/
         
         $updates = [];
         //
@@ -152,10 +152,10 @@ class SyncMacs extends Command
         
         //
         if (!empty($updates)) {
-          echo 'Updating:' . count($updates) . "<br />";
-          echo "<pre>";
+          //echo 'Updating:' . count($updates) . "<br />";
+          /*echo "<pre>";
           print_r($updates);
-          echo "</pre>";
+          echo "</pre>";*/
           Device::updateClientCoordinates($updates);
         }
     }
