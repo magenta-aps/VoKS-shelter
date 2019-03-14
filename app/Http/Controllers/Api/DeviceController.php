@@ -172,6 +172,12 @@ class DeviceController extends Controller
         $settings = School::getSettings($device['school_id']);
         $stats = \Shelter::getStats($device['school_id'], $settings->timezone);
 
+        // Update client profile, because names are not showed until alarm is not triggered.
+        if ($device['trigger_status'] === Device::TRIGGERED && !$device['already_triggered'] && $status === Device::TRIGGERED) {
+          $device_db = Device::where('device_id', '=', $device['device_id'])->get()->first();
+          $this->websockets->profile(Device::mapDeviceCoordinates($device_db, $status));
+        }
+        
         // update shelter stats
         $this->websockets->update($device['school_id'], $stats);
 
@@ -195,9 +201,6 @@ class DeviceController extends Controller
                     \Event::fire(new AlarmWasTriggered($device['school_id']));
                     //Set School status
                     SchoolStatus::statusAlarm($device['school_id'], $status);
-                    // Update client profile, because names are not showed until alarm is not triggered.
-                    $device = Device::where('device_id', '=', $device['device_id'])->get()->first();
-                    $this->websockets->profile(Device::mapDeviceCoordinates($device, $status));
                 }
 
                 $response = ['success' => true, 'calling' => false, 'status' => $status];
