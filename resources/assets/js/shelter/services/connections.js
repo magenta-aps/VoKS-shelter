@@ -265,12 +265,13 @@
                 var _client = list[i],
                     client = getClient('mac_address', _client.profile.mac_address);
 
+                client.profile.name = _client.profile.name || 'Client';
+
                 // Create new client
                 if (null === client) {
                     client = new Client();
 
                     // Set profile
-                    client.profile.name = _client.profile.name || 'Client';
                     client.profile.mac_address = _client.profile.mac_address;
                     client.profile.device = _client.profile.device || 'desktop';
 
