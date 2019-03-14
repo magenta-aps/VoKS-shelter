@@ -605,43 +605,56 @@ class MainController extends BaseController
       $trans = \Lang::get($name);
       $ret_val = array();
       if (!empty($trans)) {
-        foreach($trans as $k1 => $t1) {
-          if (is_array($t1) && !empty($t1)) {
-            //
-            foreach($t1 as $k2 => $t2) {
-              if (is_array($t2) && !empty($t2)) {
-                //
-                foreach($t2 as $k3 => $t3) {
-                  if (is_array($t3) && !empty($t3)) {
-                    //
-                    foreach($t3 as $k4 => $t4) {
-                      if (is_array($t4) && !empty($t4)) {
-                        echo "<pre>";
-                        print_r($k4);
-                        echo "</pre>";
-                        echo "<pre>";
-                        print_r($t4);
-                        echo "</pre>";
-                        die(__FILE__);
+        if (is_array($trans)) {
+          foreach($trans as $k1 => $t1) {
+            if (is_array($t1) && !empty($t1)) {
+              //
+              foreach($t1 as $k2 => $t2) {
+                if (is_array($t2) && !empty($t2)) {
+                  //
+                  foreach($t2 as $k3 => $t3) {
+                    if (is_array($t3) && !empty($t3)) {
+                      //
+                      foreach($t3 as $k4 => $t4) {
+                        if (is_array($t4) && !empty($t4)) {
+                          //
+                          foreach($t4 as $k5 => $t5) {
+                            if (is_array($t5) && !empty($t5)) {
+                              echo "<pre>";
+                              print_r($k5);
+                              echo "</pre>";
+                              echo "<pre>";
+                              print_r($t5);
+                              echo "</pre>";
+                              die(__FILE__);
+                            }
+                            else {
+                              $ret_val[$k1 . '.' . $k2 . '.' . $k3 . '.' . $k4 . '.' . $k5] = $t5;
+                            }
+                          }
+                        }
+                        else{
+                          $ret_val[$k1 . '.' . $k2 . '.' . $k3 . '.' . $k4] = $t4;
+                        }
                       }
-                      else{
-                        $ret_val[$k1 . '.' . $k2 . '.' . $k3 . '.' . $k4] = $t4;
-                      }
+                    } else {
+                      $ret_val[$k1 . '.' . $k2 . '.' . $k3] = $t3;
                     }
-                  } else {
-                    $ret_val[$k1 . '.' . $k2 . '.' . $k3] = $t3;
                   }
                 }
-              }
-              else {
-                $ret_val[$k1 . '.' . $k2] = $t2;
+                else {
+                  $ret_val[$k1 . '.' . $k2] = $t2;
+                }
               }
             }
-          }
-          else {
-            $ret_val[$k1] = $t1;
-          }
-        } 
+            else {
+              $ret_val[$k1] = $t1;
+            }
+          } 
+        }
+      }
+      else {
+        $ret_val['other'][$name] = $trans;
       }
       return $ret_val;
     }
