@@ -605,22 +605,39 @@ class MainController extends BaseController
             $output.= '<th>'. $lang['title'] . '</th>';
           $output.= '</tr>';
           foreach($lang['translations'] as $k => $t) {
-            $output.= '<tr>';
-              $output.= '<td>';
-                $output.= $code . '.' . $k;
-              $output.= '</td>';
-              $output.= '<td>';
-                if (!is_array($t)) {
-                  $output.= htmlspecialchars($t);
-                }
-                else {
-                  echo "Found array: <pre>";
-                  print_r($t);
-                  echo "</pre>";
-                  die(__FILE__);
-                }
-              $output.= '</td>';
-            $output.= '</tr>';
+            if (empty($t)) {
+              $output.= '<tr>';
+                $output.= '<td>';
+                  $output.= $code . '.' . $k;
+                $output.= '</td>';
+                $output.= '<td>';
+                $output.= '</td>';
+              $output.= '</tr>';
+            }
+            foreach($t as $m => $l) {
+              $output.= '<tr>';
+                $output.= '<td>';
+                  $output.= $code . '.' . $k . '.' . $m;
+                $output.= '</td>';
+                $output.= '<td>';
+                  if (!is_array($l)) {
+                    if (!empty($l)) {
+                      $output.= htmlspecialchars($l);
+                    }
+                  }
+                  else {
+                    echo "Found array: <pre>";
+                    print_r($m);
+                    echo "</pre>";
+                    
+                    echo "<pre>";
+                    print_r($l);
+                    echo "</pre>";
+                    die(__FILE__);
+                  }
+                $output.= '</td>';
+              $output.= '</tr>';
+            }
           }
         }
       $output.= '</table>';
