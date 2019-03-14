@@ -573,7 +573,7 @@ class MainController extends BaseController
             foreach($files as $f) {
               $final_name = substr(basename($f), 0, -4);
               if (in_array($final_name, $skip_files)) continue;
-              $languages[$code]['files'][$final_name] = self::getTranslationValues($final_name);
+              $languages[$code]['translations'][$final_name] = self::getTranslationValues($final_name);
             }
           }
           
@@ -586,19 +586,48 @@ class MainController extends BaseController
               foreach($files as $f) {
                 $final_name = $dd . '/' . substr(basename($f), 0, -4);
                 if (in_array($final_name, $skip_files)) continue;
-                $languages[$code]['files'][$final_name] = self::getTranslationValues($final_name);
+                $languages[$code]['translations'][$final_name] = self::getTranslationValues($final_name);
               }
             }
           }
       }
       
-      echo "<pre>";
-      print_r($languages);
-      echo "</pre>";
-      die(__FILE__);
-          
+      if (empty($languages)) {
+        echo 'No Languages found.';
+        echo 'Finished.';
+        return;
+      }
       
+      $output = '';
+      $output.= '<table>';
+        foreach($languages as $code => $lang) {
+          $output.= '<tr>';
+            $output.= '<th>'. $lang['title'] . '</th>';
+          $output.= '</tr>';
+          foreach($lang['translations'] as $k => $t) {
+            $output.= '<tr>';
+              $output.= '<td>';
+                $output.= $code . '.' . $k;
+              $output.= '</td>';
+              $output.= '<td>';
+                if (!is_array($t)) {
+                  $output.= htmlspecialchars($t);
+                }
+                else {
+                  echo "Found array: <pre>";
+                  print_r($t);
+                  echo "</pre>";
+                  die(__FILE__);
+                }
+              $output.= '</td>';
+            $output.= '</tr>';
+          }
+        }
+      $output.= '</table>';
       
+      echo $output;
+      echo 'Finished.';
+      return;
     }
     
     private function getTranslationValues($name) {
@@ -652,9 +681,6 @@ class MainController extends BaseController
             }
           } 
         }
-      }
-      else {
-        $ret_val['other'][$name] = $trans;
       }
       return $ret_val;
     }
