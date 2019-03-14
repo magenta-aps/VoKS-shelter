@@ -599,8 +599,8 @@ class MainController extends BaseController
       }
       
       $output = '';
-      $output.= '<table>';
-        foreach($languages as $code => $lang) {
+      foreach($languages as $code => $lang) {
+        $output.= '<table border=1>';
           $output.= '<tr>';
             $output.= '<th>'. $lang['title'] . '</th>';
           $output.= '</tr>';
@@ -608,7 +608,7 @@ class MainController extends BaseController
             if (empty($t)) {
               $output.= '<tr>';
                 $output.= '<td>';
-                  $output.= $code . '.' . $k;
+                  $output.= $k;
                 $output.= '</td>';
                 $output.= '<td>';
                 $output.= '</td>';
@@ -617,7 +617,7 @@ class MainController extends BaseController
             foreach($t as $m => $l) {
               $output.= '<tr>';
                 $output.= '<td>';
-                  $output.= $code . '.' . $k . '.' . $m;
+                  $output.= $k . '.' . $m;
                 $output.= '</td>';
                 $output.= '<td>';
                   if (!is_array($l)) {
@@ -634,11 +634,10 @@ class MainController extends BaseController
               $output.= '</tr>';
             }
           }
-        }
-      $output.= '</table>';
+        $output.= '</table>';
+      }
       
       echo $output;
-      echo 'Finished.';
       return;
     }
     
