@@ -620,7 +620,7 @@ class MainController extends BaseController
                   $output.= $code . '.' . $k . '.' . $m;
                 $output.= '</td>';
                 $output.= '<td>';
-                  if (!is_array($l)) {
+                  if (!is_array($l) && !empty($l)) {
                     if (!empty($l)) {
                       $output.= htmlspecialchars($l);
                     }
