@@ -605,24 +605,28 @@ class MainController extends BaseController
           $counter[$code]=0;
           $output.= '<table>';
           $output.= '<tr>';
-            $output.= '<th>'. $lang['title'] . '</th>';
+            $output.= '<th style="border-bottom:1px solid #000;">'. $lang['title'] . '</th>';
           $output.= '</tr>';
           foreach($lang['translations'] as $k => $t) {
             if (empty($t)) {
               $output.= '<tr>';
-                $output.= '<td>';
-                  $output.= $k;
-                $output.= '</td>';
+                if ($code != 'en') {
+                  $output.= '<td style="border-bottom:1px solid #000;">';
+                    $output.= $k;
+                  $output.= '</td>';
+                }
                 $output.= '<td>';
                 $output.= '</td>';
               $output.= '</tr>';
             }
             foreach($t as $m => $l) {
               $output.= '<tr>';
-                $output.= '<td>';
-                  $output.= $k . '.' . $m;
-                $output.= '</td>';
-                $output.= '<td>';
+                if ($code != 'en') {
+                  $output.= '<td style="border-bottom:1px solid #000;">';
+                    $output.= $k . '.' . $m;
+                  $output.= '</td>';
+                }
+                $output.= '<td style="border-bottom:1px solid #000;">';
                   if (!is_array($l)) {
                     if (!empty($l)) {
                       $output.= htmlspecialchars($l);
