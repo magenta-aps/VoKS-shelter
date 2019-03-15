@@ -73,7 +73,7 @@ return [
         'title' => 'SMS Messages',
         'description' => 'Setup sms messages, which will be sent on alarm trigger.',
         'trigger' => 'Initial alarm triggering message',
-        'symbols' => 'Symbols left:'
+        'symbols' => 'Symbols left:',
         'default' => 'Default message:',
         'information' => 'Crisis center information message',
         'save' => 'Save',
