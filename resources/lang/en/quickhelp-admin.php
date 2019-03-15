@@ -11,6 +11,7 @@ return [
     'faq' => 'Frequently Asked Questions',
     'faq_description' => 'Import default Frequently Asked Questions or setup new ones.',
     'faq_capitals' => 'FAQ',
+    'hide' => 'Hide',
     'new_faq' => 'New FAQ',
     'question' => 'Question',
     'answer' => 'Answer',

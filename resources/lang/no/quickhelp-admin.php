@@ -10,6 +10,7 @@ return [
     'save' => 'Lagre',
     'faq' => 'Tiltakslister (aksjonslister)',
     'faq_description' => 'Her kan du velge og laste ned standardlistene i systemet eller lage dine egne lister. Det er lurt å laste ned standard-listene først, for så heller å skjule den eller de listene som ikke er aktuelle.',
+    'faq_capitals' => 'FAQ',
     'hide' => 'Skjul denne listen',
     'new_faq' => 'Lag ny liste',
     'question' => 'Overskrift/innledning på tiltakslister',

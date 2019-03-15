@@ -63,6 +63,7 @@ return [
             'on' => 'ON',
             'off' => 'OFF',
             'started' => 'Started',
+            'not_started' => 'Not started',
             'police_called' => 'Police called',
             'users' => 'users',
             'times' => 'times'
