@@ -599,8 +599,11 @@ class MainController extends BaseController
       }
       $output = '';
       $output.= '<table border=1>';
+      $output.= '<tr>';
       foreach($languages as $code => $lang) {
+          $output.= '<td>';
           $counter[$code]=0;
+          $output.= '<table>';
           $output.= '<tr>';
             $output.= '<th>'. $lang['title'] . '</th>';
           $output.= '</tr>';
@@ -635,7 +638,10 @@ class MainController extends BaseController
               $output.= '</tr>';
             }
           }
+          $output.= '</table>';
+          $output.= '</td>';
       }
+      $output.= '</tr>';
       $output.= '</table>';
       foreach($counter as $cc => $c) {
         echo 'Language ' . $cc . ' has ' . $c . ' lines <br />';
