@@ -69,6 +69,21 @@ class SchoolStatus extends BaseModel
     }
 
     /**
+     * @return boolean
+     */
+    public static function getStatusAlarm($schoolId = null)
+    {
+      if (null === $schoolId) {
+          $schoolId = \Shelter::getID();
+      }
+      
+      $school = static::where('school_id', '=', $schoolId)->get()->first()->toArray();
+      
+      return $school['status_alarm'];
+        
+    }
+    
+    /**
      * Update alarm status.
      *
      * @param integer $schoolId Shelter/School identifier

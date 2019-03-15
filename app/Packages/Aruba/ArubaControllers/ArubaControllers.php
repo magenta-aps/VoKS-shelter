@@ -9,48 +9,124 @@
 
 namespace BComeSafe\Packages\Aruba\ArubaControllers;
 
-class ArubaControllers
-{
+use BComeSafe\Libraries\CurlRequest;
+use BComeSafe\Models\School;
+use SoapBox\Formatter\Formatter;
+
+/**
+ * Class ArubaControllers
+ *
+ * @package BComeSafe\Packages\Aruba\ArubaControllers
+ */
+class ArubaControllers {
 
     /**
      * Collect data from ALE controllers
      *
      * @return array
+     * Response exmaple:
+          <aruba>
+            <status>Ok</status>
+            <macaddr>[Mac address]</macaddr>
+            <ipaddr>[IP address]</ipaddr>
+            <name>[username]</name>
+            <role>[Role]</role>
+            <type>Wireless</type>
+            <vlan>200</vlan>
+            <location>[Ap name]</location>
+            <age>00:00:26</age>
+            <auth_status>Authenticated</auth_status>
+            <auth_server>[Auth server]</auth_server>
+            <auth_method>802.1x</auth_method>
+            <essid>[SSID]</essid>
+            <bssid>[BSSID]</bssid>
+            <phy_type>a-VHT-80</phy_type>
+            <mobility_state>Wireless</mobility_state>
+            <in_packets>264</in_packets>
+            <in_octets>45116</in_octets>
+            <out_packets>230</out_packets>
+            <out_octets>74700</out_octets>
+          </aruba>
      */
-    public static function getData()
-    {
-        $ret_val = [];
-        $controllers_servers = config('aruba.controllers.urls');
-        $servers = explode(',', $controllers_servers);
-        $username = config('aruba.controllers.username');
-        $password = config('aruba.controllers.password');
-
-        if (empty($servers)) {
-          return $ret_val;
+    public function getData($controller_url, $params) {
+        $ret_val = array();
+        if (!config('aruba.controllers.enabled')) return $ret_val;
+        
+        if (empty($controller_url)) $ret_val;
+        if (empty($params)) $ret_val;
+        
+        if (!empty($params['ip'])) {
+          $post_param = '<ipaddr>'. $params['ip'] .'</ipaddr>';
+        }
+        elseif (!empty($params['mac_address'])) {
+          $post_param = '<macaddr>'. $params['mac_address'] .'</macaddr>';
+        }
+        elseif (!empty($params['username'])) {
+          $post_param = '<name>'. $params['username'] .'</name>';
         }
         
-        foreach($servers as $url) {
+        $headers = array('Content-type: application/xml');
+        $post = array(
+          'xml' => '<aruba command="user_query">
+            '.$post_param.'
+            <authentication>cleartext</authentication>
+            <key>'.config('aruba.controllers.key').'</key>
+            <version>1.0</version>
+          </aruba>'
+        );
         
-          /*$curl = new CurlRequest();
-          $curl->setUrl(
-              'ssh ' . config('aruba.controllers.username') . ':' . config('aruba.controllers.password') . '@' . $url
-          );
-
-          $curl->setAuthentication(config('aruba.ale.controllers.username'), config('aruba.ale.controllers.password'));
-          //$curl->expect(CurlRequest::PLAIN_RESPONSE, $callback);
-
-          $response = $curl->execute();
-          echo '<pre>';
-            print_r($response);
-            echo '</pre>';
-            die(__FILE__);
-          if (!empty($response)) {
-
-          }*/
-          //echo `sshpass -p "{$password}" ssh -o StrictHostKeyChecking=no -X {$username}@{$url} ('show user')`;
-          //die();
-        }
+        $ret_val = (new CurlRequest())
+            ->setUrl($controller_url . '/auth/command.xml')
+            ->setHeaders($headers)
+            ->setPostRequest($post)
+            ->expect(
+                CurlRequest::CUSTOM_RESPONSE,
+                function ($response) {
+                    return Formatter::make($response, Formatter::XML)->toArray();
+                }
+            )->execute();
 
         return $ret_val;
+    }
+    
+    /**
+     * Collect data from ALE controllers
+     * 
+     * @param string $device_ip
+     * @param int $possible_school_id - will be checked first
+     * @return string $ap_name
+     */
+    public function getAPByIp($device_ip, $possible_school_id = null, $schools = array()) {
+      $ret_val = null;
+      if (empty($device_ip)) return $ret_val;
+      
+      // Get all schools list
+      if (empty($schools)) {
+        $schools = School::whereNotNull('controller_url')->get()->toArray();
+        if (empty($schools)) return $ret_val;
+        $schools = array_map_by_key($schools, 'id');
+      }
+      
+      // Check possible school first
+      if ($possible_school_id && !empty($schools[$possible_school_id])) {
+        $device = $this->getData($schools[$possible_school_id]['controller_url'], array('ip' => $device_ip));
+        if (!empty($device['location'])) {
+          $ret_val = $device['location'];
+          return $ret_val;
+        }
+        else {
+          unset($schools[$possible_school_id]);
+        }
+      }
+      
+      foreach($schools as $school) {
+        $device = $this->getData($school['controller_url'], array('ip' => $device_ip));
+        if (!empty($device['location'])) {
+          $ret_val = $device['location'];
+          break;
+        }
+      }
+      
+      return $ret_val;
     }
 }

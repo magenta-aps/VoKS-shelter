@@ -23,6 +23,16 @@ return [
         ],
         'save' => 'Lagre'
     ],
+	'api' => [
+        'title' => 'API Configuration',
+        'description' => 'Explanation text about api configuration',
+        'labels' => [
+            'sms_provider' => 'SMS provider',
+            'phone_system_provider' => 'Phone system provider',
+            'user_data_source' => 'User data source',
+            'client_data_source' => 'Device location source'
+        ]
+    ],
     'buttons' => [
         'title' => 'Fysiske alarmgivere',
         'description' => 'Her ser du om det er lagt inn fysiske alarmgiverne for din lokasjon. Du kan se om de er plassert riktig på kartet og ev. justere plasseringen. Skal det installeres en ny alarmgiver, må denne legges inn av super-admin.',

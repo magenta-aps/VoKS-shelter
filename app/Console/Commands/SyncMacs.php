@@ -11,11 +11,14 @@ namespace BComeSafe\Console\Commands;
 
 use BComeSafe\Models\Device;
 use BComeSafe\Models\Floor;
+use BComeSafe\Models\Aps;
+use BComeSafe\Models\School;
 use BComeSafe\Models\SchoolDefault;
 use BComeSafe\Models\SchoolDefaultFields;
 use BComeSafe\Packages\Coordinates\Coordinates;
 use BComeSafe\Packages\Cisco\Cmx\Location\CmxLocation;
 use BComeSafe\Packages\Aruba\Ale\AleLocation;
+use BComeSafe\Packages\Aruba\ArubaControllers\ArubaControllers;
 use GuzzleHttp\Promise;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -43,27 +46,47 @@ class SyncMacs extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
       
         $default = SchoolDefault::getDefaults();
         if (!empty($default->client_data_source)) {
-          //Aruba Airwave
-          if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.ale.enabled') === false) {
-            return;
+          //Aruba
+          if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA) {
+            //Aruba ALE
+            if (config('aruba.ale.enabled')) {
+              $floors = Floor::with('image')->get()->toArray();
+              $floors = array_map_by_key($floors, 'floor_hash_id');
+            //Aruba Controllers              
+            } elseif (config('aruba.controllers.enabled')) {
+              //Controller
+              $AurbaControllers = new ArubaControllers();
+              //Schools
+              $schools = School::whereNotNull('controller_url')->get()->toArray();
+              if (empty($schools)) return;
+              $schools = array_map_by_key($schools, 'id');
+              //Aps
+              $aps = Aps::get()->toArray();
+              if (empty($aps)) return;
+              $aps = array_map_by_key($aps, 'ap_name');
+            }
+            else {
+              return;
+            }
           }
           //Cisco CMX
-          if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled') === false) {
-            return;
+          if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO) {
+            if (config('cisco.enabled') === false) {
+              return;
+            }
+            else {
+              $floors = Floor::with('image')->get()->toArray();
+              $floors = array_map_by_key($floors, 'floor_hash_id');
+            }
           }
         } else {
           return;
         }
       
-        if (config('cisco.enabled') === false) {
-          return;
-        }
-        
         $macs = $this->argument();
         array_shift($macs);
 
@@ -74,60 +97,93 @@ class SyncMacs extends Command
                 $list[] = $mac;
             }
         }
-
-        $devices = Device::whereIn('mac_address', $list)->get(['id', 'mac_address']);
-
-        $count = count($devices);
-
-        $floors = Floor::with('image')->get()->toArray();
-        $floors = array_map_by_key($floors, 'floor_hash_id');
-
+        $devices = Device::whereIn('mac_address', $list)->get(['id', 'school_id', 'ap_name', 'mac_address', 'ip_address', 'username', 'fullname']);
+        if (empty($devices)) return;
+        /*echo 'Found in DB:' . "\n";
+        echo "<pre>";
+        print_r($devices->toArray());
+        echo "</pre>";*/
+        
         $updates = [];
-
-        for ($i = 0; $i < $count; $i++) {
-            if (!empty($default->client_data_source)) {
-              //Aruba Airwave
-              if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.airwave.enabled')) {
-                $location = AleLocation::getCoordinates($devices[$i]->mac_address);
-              }
-              //Cisco CMX
-              if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled')) {
-                $location = CmxLocation::getCoordinates($devices[$i]->mac_address);
+        //
+        foreach ($devices as $device) {
+          //Aruba
+          if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA) {
+            //Aruba Ale
+            if (config('aruba.ale.enabled')) {
+              $location = AleLocation::getCoordinates($device->mac_address);
+              if (!isset($floors[$location['floor_id']])) continue;
+              $floor = $floors[$location['floor_id']];
+              $client = $this->prepareClient($location, $floor);
+              $client['ap_name'] = $device->ap_name;
+              $updates[] = $client;
+            }
+            //Aruba Controllers
+            if (config('aruba.controllers.enabled')) {
+              $ap_name = $AurbaControllers->getAPByIp($device->ip_address, $device->school_id, $schools);
+              //Found AP name
+              if (!empty($ap_name) && !empty($aps[$ap_name])) {
+                //AP has changed
+                if ($device->ap_name != $ap_name) {
+                  $client = array();
+                  $client['x'] = $aps[$ap_name]['x'];
+                  $client['y'] = $aps[$ap_name]['y'];
+                  $client['floor_id'] = $aps[$ap_name]['floor_id'];
+                  $client['school_id'] = $aps[$ap_name]['school_id'];
+                  $client['mac_address'] = $device->mac_address;
+                  $client['username'] = $device->username;
+                  $client['fullname'] = $device->fullname;
+                  $client['ap_name'] = $ap_name;
+                  $updates[] = $client;
+                }
               }
             }
-
-            if (!isset($floors[$location['floor_id']])) {
-                continue;
-            }
-
+          }
+          //Cisco CMX
+          if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_CISCO && config('cisco.enabled')) {
+            $location = CmxLocation::getCoordinates($device->mac_address);
+            if (!isset($floors[$location['floor_id']])) continue;
             $floor = $floors[$location['floor_id']];
-
-            $client['x'] = $location['x'];
-            $client['y'] = $location['y'];
-            $client['floor_id'] = $floors[$location['floor_id']]['id'];
-            $client['school_id'] = $floors[$location['floor_id']]['school_id'];
-            $client['mac_address'] = $location['mac_address'];
-            $client['username'] = $location['username'];
-            $client['fullname'] = $location['username'];
-
-            $client = array_merge_filled(
-                $client,
-                Coordinates::convert(
-                    $floor['image']['pixel_width'],
-                    $floor['image']['real_width'],
-                    $floor['image']['pixel_height'],
-                    $floor['image']['real_height'],
-                    $client['x'],
-                    $client['y']
-                )
-            );
-
+            $client = $this->prepareClient($location, $floor);
+            $client['ap_name'] = $device->ap_name;
             $updates[] = $client;
+          }
         }
-
-        Device::updateClientCoordinates($updates);
+        
+        //
+        if (!empty($updates)) {
+          //echo 'Updating:' . count($updates) . "<br />";
+          /*echo "<pre>";
+          print_r($updates);
+          echo "</pre>";*/
+          Device::updateClientCoordinates($updates);
+        }
     }
+    
+    public function prepareClient($location, $floor) {
+      $client = array();
+      $client['x'] = $location['x'];
+      $client['y'] = $location['y'];
+      $client['floor_id'] = $floor['id'];
+      $client['school_id'] = $floor['school_id'];
+      $client['mac_address'] = $location['mac_address'];
+      $client['username'] = $location['username'];
+      $client['fullname'] = $location['username'];
 
+      $client = array_merge_filled(
+          $client,
+          Coordinates::convert(
+              $floor['image']['pixel_width'],
+              $floor['image']['real_width'],
+              $floor['image']['pixel_height'],
+              $floor['image']['real_height'],
+              $client['x'],
+              $client['y']
+          )
+      );
+      return $client;
+    }
+    
     public function getOptions()
     {
         return [

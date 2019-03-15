@@ -66,7 +66,6 @@ return [
                 'element' => 'STREAM_ANSWER_BUTTON'
             ],
             [
-
                 'title' => 'Maksimer vinduet',
                 'content' => 'Her maksimerer du videovinduet. Aktuelt å gjøre hvis du ønsker å se tydligere hva som skjer',
                 'element' => 'STREAM_MAXIMIZE_BUTTON'
@@ -125,7 +124,6 @@ return [
                 'content' => 'Alle meldingene sendt fra brukere som har utløst alarmen kommer opp her. For å kommunisere med en bestemt brukere (chatte), skru lyden av eller på, eller se brukerens videostrøm; klikk på brukerens navn og klikk på ønsket knapp',
                 'element' => 'MESSAGE_FEED_MESSAGE'
             ],
-
             [
                 'title' => 'Minimaliser vindu',
                 'content' => 'Minimaliser videovinduet. Da kommer man samtidig tilbake til krisesenterets hovedbilde, hvor du ser alle valgte videostrømmer.',

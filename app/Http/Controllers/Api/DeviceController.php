@@ -80,6 +80,7 @@ class DeviceController extends Controller
             $device->setAttribute('push_notification_id', $request->get('gcm_id'));
             $device->setAttribute('fullname', $request->get('user_name'));
             $device->setAttribute('user_email', $request->get('user_email'));
+            $device->setAttribute('ip_address', \Request::ip());
             $device->updateDeviceProfile();
 
         } catch (\Exception $e) {
@@ -110,13 +111,13 @@ class DeviceController extends Controller
           $log_data = array(
             'device_id' => $device_id,
             'device_type' => $device_type,
-            'data' => json_encode(Device::mapDeviceCoordinates($device))
+            'data' => json_encode(Device::mapDeviceCoordinates($device), SchoolStatus::getStatusAlarm($device->school_id))
           );
           Log::create($log_data);
         }
             
         try {
-            $this->websockets->profile(Device::mapDeviceCoordinates($device));
+            $this->websockets->profile(Device::mapDeviceCoordinates($device, SchoolStatus::getStatusAlarm($device->school_id)));
         } catch (\Exception $e) {
             return response()->json(
                 [
@@ -161,7 +162,7 @@ class DeviceController extends Controller
         }
 
         $device = Device::updateOnTrigger($device);
-
+        
         $status = (int)\Shelter::getInitiationStatus($device['school_id']);
 
         // update shelter activity timestamp
@@ -171,6 +172,12 @@ class DeviceController extends Controller
         $settings = School::getSettings($device['school_id']);
         $stats = \Shelter::getStats($device['school_id'], $settings->timezone);
 
+        // Update client profile, because names are not showed until alarm is not triggered.
+        if ($device['trigger_status'] === Device::TRIGGERED && !$device['already_triggered'] && $status === Device::TRIGGERED) {
+          $device_db = Device::where('device_id', '=', $device['device_id'])->get()->first();
+          $this->websockets->profile(Device::mapDeviceCoordinates($device_db, $status));
+        }
+        
         // update shelter stats
         $this->websockets->update($device['school_id'], $stats);
 
@@ -182,18 +189,18 @@ class DeviceController extends Controller
 
         switch ($device['trigger_status']) {
             case Device::TRIGGERED:
-                // if it's the first trigger, fire up the events
-                if (!$device['already_triggered'] && $status === Device::TRIGGERED) {
-                    \Event::fire(new AlarmWasTriggered($device['school_id'], $device['device_id']));
-                    //Set School status
-                    SchoolStatus::statusAlarm($device['school_id'], 1);
-                }
-
                 // the desktop app may reconnect on return from hibernation, pc restart etc
                 // therefore the cache maybe be clean but we still need to notify the shelter
                 // about its connection
                 if (!$device['already_triggered'] || $device['device_type'] === 'desktop') {
                     $this->websockets->trigger($device['school_id'], $device['device_id']);
+                }
+                
+                // if it's the first trigger, fire up the events
+                if (!$device['already_triggered'] && $status === Device::TRIGGERED) {
+                    \Event::fire(new AlarmWasTriggered($device['school_id'], $device['device_id']));
+                    //Set School status
+                    SchoolStatus::statusAlarm($device['school_id'], $status);
                 }
 
                 $response = ['success' => true, 'calling' => false, 'status' => $status];

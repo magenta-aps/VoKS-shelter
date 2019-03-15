@@ -378,7 +378,6 @@ class ShelterController extends Controller
      */
     public function getCoordinates(Request $request)
     {
-
         if ($request->has('list')) {
             $macs = $request->get('list');
 
@@ -408,8 +407,8 @@ class ShelterController extends Controller
         }
 
         $response = [];
-        for ($i = 0; $i < count($devices); $i++) {
-            $response[] = Device::mapDeviceCoordinates($devices[$i]);
+        foreach ($devices as $device) {
+            $response[] = Device::mapDeviceCoordinates($device, SchoolStatus::getStatusAlarm());
         }
 
         SchoolStatus::updateActivity();

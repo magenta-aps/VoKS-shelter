@@ -16,6 +16,7 @@ use BComeSafe\Models\School;
 use BComeSafe\Packages\Aruba\Airwave\Base;
 use BComeSafe\Packages\Aruba\Airwave\Importer;
 use BComeSafe\Packages\Aruba\Airwave\Importer\AirwaveImport;
+use BComeSafe\Packages\Aruba\ArubaControllers\ArubaControllers;
 use SoapBox\Formatter\Formatter;
 use BComeSafe\Packages\Aruba\Airwave\Structure;
 use BComeSafe\Packages\Aruba\Ale;
@@ -24,6 +25,7 @@ use BComeSafe\Packages\Aruba\Clearpass\User;
 use BComeSafe\Packages\Notifications;
 use BComeSafe\Packages\Coordinates\Coordinates;
 use BComeSafe\Models\SchoolDefault;
+use BComeSafe\Models\Aps;
 use Devristo\Phpws\Client;
 use React\EventLoop;
 use Zend\Log;
@@ -45,12 +47,16 @@ class MainController extends BaseController
     }
 
     public function getCoords() {
-        \Artisan::call('aruba:sync:macs', ['mac:1' => '<add mac address here>', 'mac:2' => '<add mac address here>']);
+      if (!empty($_GET['macs'])) {
+        $macs = is_array($_GET['macs']) ? $_GET['macs'] : array($_GET['macs']);
+        //['mac:1' => '<add mac address here>', 'mac:2' => '<add mac address here>'];
+        \Artisan::call('sync:macs', $macs);
+      }
     }
 
     public function getUser() {
         $user = new User();
-        return $user->getByIp('192.168.21.54');
+        return $user->getByIp($_GET['id_address']);
     }
 
     public function getRegister() { 
@@ -407,5 +413,296 @@ class MainController extends BaseController
       echo '<br />';
       echo 'Finished.';
       return;
+    }
+    
+    /**
+     * Test Aruba Controller
+     *
+     * URL: /system/test/aruba-controller
+     */
+    public function getArubaController() {
+      
+      $AurbaControllers = new ArubaControllers();
+      
+      echo 'Welcome to Aruba Controller test. <br />';
+      echo 'use GET parameter: <br />'
+      . '<i>school_id=<school_id></i> <br /><br />'
+      . 'AND <i>device_ip=<ip_address></i> <br />'
+      . 'OR <i>device_mac=<mac_address></i> <br />'
+      . 'OR <i>device_username=<username></i>';
+      echo '<br /><br />';
+      
+      $schools = School::whereNotNull('controller_url')->get()->toArray();
+      if (!empty($schools)) {
+        $schools = array_map_by_key($schools, 'id');
+      }
+      
+      //Aps
+      $aps = Aps::get()->toArray();
+      if (!empty($aps)) {
+        $aps = array_map_by_key($aps, 'ap_name');
+      }
+              
+      //By IP
+      if (!empty($_GET['device_ip'])) {
+        echo 'Search AP name by IP only <br />';
+        $ap_name = $AurbaControllers->getAPByIp($_GET['device_ip'], null, $schools);
+        if (!empty($ap_name)) {
+          echo 'App name: ' . $ap_name . '<br />';
+          if (!empty($aps[$ap_name])) {
+            echo 'Ap by Ap name: <br />';
+            echo "<pre>";
+            print_r($aps[$ap_name]);
+            echo "</pre>";
+            //
+            if (!empty($schools[$aps[$ap_name]['school_id']])) {
+              echo 'School by Ap name: <br />';
+              echo "<pre>";
+              print_r($schools[$aps[$ap_name]['school_id']]);
+              echo "</pre>";
+            }
+            else {
+              echo 'School not found. <br />';
+            }
+          }
+          else {
+            echo 'Ap not found. <br />';
+          }
+        }
+        else {
+          echo 'Ap name not found in Controllers. <br />';
+        }
+      }
+      //
+      if (!empty($_GET['school_id'])) {
+        echo '<hr />';
+        $school = School::where('id', '=', $_GET['school_id'])->first()->toArray();
+        echo "School data: <pre>";
+        print_r($school);
+        echo "</pre>";
+        echo '<br />';
+        
+        if (empty($school['controller_url'])) {
+          echo 'Missing Controller URL';
+          echo '<br />';
+          echo 'Finished.';
+          return;
+        }
+        else {
+          echo 'Controller Ready.  <br />';
+        }
+        
+        $params = array();
+        if (!empty($_GET['device_ip'])) {
+          $params['ip'] = $_GET['device_ip'];
+        }
+        
+        if (!empty($_GET['device_mac'])) {
+          $params['mac_address'] = $_GET['device_mac'];
+        }
+        
+        if (!empty($_GET['device_username'])) {
+          $params['username'] = $_GET['device_username'];
+        }
+        
+        if (empty($params)) {
+          echo 'Missing device parameters. <br />';
+        }
+        else {
+          //DB
+          if (!empty($_GET['device_ip'])) {
+            echo 'Device data in DB by IP: <br />';
+            $device = Device::where('ip_address','=',$_GET['device_ip'])->get()->first();
+            if (!empty($device)) {
+              echo "<pre>";
+              print_r($device->toArray());
+              echo "</pre>";
+            }
+            else {
+              echo 'Didn\'t found in database. <br />';
+            }
+          }
+          foreach($params as $k => $p) {
+            echo "Searching in Controller by parameter: " . $k;
+            $device_controller = $AurbaControllers->getData($school['controller_url'], array($k => $p));
+            echo "<pre>";
+            print_r($device_controller);
+            echo "</pre>";
+          }
+          //DB
+          if (!empty($device_controller['macaddr'])) {
+            echo 'Device data in DB by mac_address from Controller: <br />';
+            $device = Device::where('mac_address','=',$device_controller['macaddr'])->get()->first()->toArray();
+            echo "<pre>";
+            print_r($device);
+            echo "</pre>";
+          }
+        }
+      } 
+      
+      //
+      echo '<hr>';
+      echo "Available schools: <pre>";
+      print_r($schools);
+      echo "</pre>";
+      
+      echo '<br />';
+      echo 'Finished.';
+      return;
+    }
+    
+    /**
+     * Get all translations
+     *
+     * URL: /system/test/translations
+     */
+    public function getTranslations() {
+      
+      $directories = \File::directories(base_path('resources/lang'));
+      $skip_files = array('languages');
+      $languages = [];
+      for ($i = 0; $i < count($directories); $i++) {
+          $code = basename($directories[$i]);
+          $languages[$code] = array(
+            'title' => \Lang::get('languages.' .$code),
+            'files' => array(),
+          );
+          
+          $files = \File::files(base_path('resources/lang/' . $code));
+          if (!empty($files)) {
+            foreach($files as $f) {
+              $final_name = substr(basename($f), 0, -4);
+              if (in_array($final_name, $skip_files)) continue;
+              $languages[$code]['translations'][$final_name] = self::getTranslationValues($final_name, $code);
+            }
+          }
+          
+          //
+          $dirs = \File::directories(base_path('resources/lang/' . $code));
+          foreach($dirs as $d) {
+            $dd = basename($d);
+            $files = \File::files(base_path('resources/lang/' . $code . '/' . $dd));
+            if (!empty($files)) {
+              foreach($files as $f) {
+                $final_name = $dd . '/' . substr(basename($f), 0, -4);
+                if (in_array($final_name, $skip_files)) continue;
+                $languages[$code]['translations'][$final_name] = self::getTranslationValues($final_name, $code);
+              }
+            }
+          }
+      }
+      
+      if (empty($languages)) {
+        echo 'No Languages found.';
+        echo 'Finished.';
+        return;
+      }
+      $output = '';
+      $output.= '<table border=1>';
+      $output.= '<tr>';
+      foreach($languages as $code => $lang) {
+          $output.= '<td style="vertical-align:top;">';
+          $counter[$code]=0;
+            $output.= '<table>';
+            $output.= '<tr>';
+              $output.= '<th style="border-bottom:1px solid #000;">'. $lang['title'] . '</th>';
+              $output.= '<th style="border-bottom:1px solid #000;"></th>';
+            $output.= '</tr>';
+            foreach($lang['translations'] as $k => $t) {
+              if (empty($t)) {
+                $output.= '<tr>';
+                  $output.= '<td style="border-bottom:1px solid #000;">';
+                    $output.= $k;
+                  $output.= '</td>';
+                  $output.= '<td>';
+                  $output.= '</td>';
+                $output.= '</tr>';
+              }
+              foreach($t as $m => $l) {
+                $output.= '<tr>';
+                  $output.= '<td style="border-bottom:1px solid #000;">';
+                    $output.= $k . '.' . $m;
+                  $output.= '</td>';
+                  $output.= '<td style="border-bottom:1px solid #000;">';
+                    if (!is_array($l)) {
+                      if (!empty($l)) {
+                        $output.= htmlspecialchars($l);
+                        $counter[$code]++;
+                      }
+                    }
+                    else {
+                      if (!empty($l)) {
+                        $output .='Array()';
+                      }
+                    }
+                  $output.= '</td>';
+                $output.= '</tr>';
+              }
+            }
+            $output.= '</table>';
+          $output.= '</td>';
+      }
+      $output.= '</tr>';
+      $output.= '</table>';
+      foreach($counter as $cc => $c) {
+        echo 'Language ' . $cc . ' has ' . $c . ' lines <br />';
+      }
+      echo $output;
+      return;
+    }
+    
+    private function getTranslationValues($name, $lang) {
+      $trans = \Lang::get($name, array(), $lang);
+      $ret_val = array();
+      if (!empty($trans)) {
+        if (is_array($trans)) {
+          foreach($trans as $k1 => $t1) {
+            if (is_array($t1) && !empty($t1)) {
+              //
+              foreach($t1 as $k2 => $t2) {
+                if (is_array($t2) && !empty($t2)) {
+                  //
+                  foreach($t2 as $k3 => $t3) {
+                    if (is_array($t3) && !empty($t3)) {
+                      //
+                      foreach($t3 as $k4 => $t4) {
+                        if (is_array($t4) && !empty($t4)) {
+                          //
+                          foreach($t4 as $k5 => $t5) {
+                            if (is_array($t5) && !empty($t5)) {
+                              echo "<pre>";
+                              print_r($k5);
+                              echo "</pre>";
+                              echo "<pre>";
+                              print_r($t5);
+                              echo "</pre>";
+                              die(__FILE__);
+                            }
+                            else {
+                              $ret_val[$k1 . '.' . $k2 . '.' . $k3 . '.' . $k4 . '.' . $k5] = $t5;
+                            }
+                          }
+                        }
+                        else{
+                          $ret_val[$k1 . '.' . $k2 . '.' . $k3 . '.' . $k4] = $t4;
+                        }
+                      }
+                    } else {
+                      $ret_val[$k1 . '.' . $k2 . '.' . $k3] = $t3;
+                    }
+                  }
+                }
+                else {
+                  $ret_val[$k1 . '.' . $k2] = $t2;
+                }
+              }
+            }
+            else {
+              $ret_val[$k1] = $t1;
+            }
+          } 
+        }
+      }
+      return $ret_val;
     }
 }

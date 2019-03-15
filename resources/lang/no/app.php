@@ -66,6 +66,7 @@ return [
             'not_started' => 'Ikke utløst',
             'police_called' => 'Antall som har ringt politiet:',
             'users' => 'personer',
+            'times' => 'Times'
         ]
     ],
     'trigger' => [

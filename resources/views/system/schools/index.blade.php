@@ -41,6 +41,9 @@
                           @if ( $phone_provider )
                               <th>{{ Lang::get('system.contents.school.table.phone') }}</th>
                           @endif
+                          @if ( $controllers_enabled )
+                            <th>{{ Lang::get('system.contents.school.table.controller') }}</th>
+                          @endif
                           <th class="-cell-options">{{ Lang::get('system.contents.school.table.options') }}</th>
                         </tr>
                         </thead>
@@ -63,6 +66,9 @@
                                 <td><span e-class="textarea-block__input-text -medium" onshow="updatePhoneSystemIdList(school.id)" onbeforesave="validatePhoneSystemId(school.id, $data)" editable-select="school.phone_system_id" e-name="phone_system_id" e-form="rowform" e-required e-ng-options="ids.id as ids.name for ids in model.phoneSystemIds">
                                         <% model.phoneSystemIds[school.phone_system_id].name || '{{ Lang::get('system.contents.defaults.none') }}' %>
                                 </span></td>
+                            @endif
+                            @if ( $controllers_enabled )
+                                <td><span e-class="textarea-block__input-text -medium" editable-text="school.controller_url" e-name="controller_url" e-form="rowform" e-required><% school.controller_url || '{{ Lang::get('system.contents.defaults.none') }}' %></span></td>
                             @endif
                             <td class="-cell-options">
                                 <form editable-form name="rowform" onbeforesave="saveItem(school, $index)" oncancel="cancel(school.id, $index)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == school">
