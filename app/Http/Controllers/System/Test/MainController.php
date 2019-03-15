@@ -601,7 +601,7 @@ class MainController extends BaseController
       $output.= '<table border=1>';
       $output.= '<tr>';
       foreach($languages as $code => $lang) {
-          $output.= '<td>';
+          $output.= '<td style="vertical-align:top;">';
           $counter[$code]=0;
             $output.= '<table>';
             $output.= '<tr>';
