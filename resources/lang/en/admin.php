@@ -51,8 +51,8 @@ return [
     ],
     'maps' => [
         'title' => 'Maps',
-        'description' => 'Explanation about description'
-		'sync' => 'Sync manually'
+        'description' => 'Explanation about description',
+        'sync' => 'Sync manually'
     ],
     'push' => [
         'title' => 'Push notifications',
