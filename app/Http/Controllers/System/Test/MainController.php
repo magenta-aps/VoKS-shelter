@@ -550,4 +550,159 @@ class MainController extends BaseController
       echo 'Finished.';
       return;
     }
+    
+    /**
+     * Get all translations
+     *
+     * URL: /system/test/translations
+     */
+    public function getTranslations() {
+      
+      $directories = \File::directories(base_path('resources/lang'));
+      $skip_files = array('languages');
+      $languages = [];
+      for ($i = 0; $i < count($directories); $i++) {
+          $code = basename($directories[$i]);
+          $languages[$code] = array(
+            'title' => \Lang::get('languages.' .$code),
+            'files' => array(),
+          );
+          
+          $files = \File::files(base_path('resources/lang/' . $code));
+          if (!empty($files)) {
+            foreach($files as $f) {
+              $final_name = substr(basename($f), 0, -4);
+              if (in_array($final_name, $skip_files)) continue;
+              $languages[$code]['translations'][$final_name] = self::getTranslationValues($final_name, $code);
+            }
+          }
+          
+          //
+          $dirs = \File::directories(base_path('resources/lang/' . $code));
+          foreach($dirs as $d) {
+            $dd = basename($d);
+            $files = \File::files(base_path('resources/lang/' . $code . '/' . $dd));
+            if (!empty($files)) {
+              foreach($files as $f) {
+                $final_name = $dd . '/' . substr(basename($f), 0, -4);
+                if (in_array($final_name, $skip_files)) continue;
+                $languages[$code]['translations'][$final_name] = self::getTranslationValues($final_name, $code);
+              }
+            }
+          }
+      }
+      
+      if (empty($languages)) {
+        echo 'No Languages found.';
+        echo 'Finished.';
+        return;
+      }
+      $output = '';
+      $output.= '<table border=1>';
+      $output.= '<tr>';
+      foreach($languages as $code => $lang) {
+          $output.= '<td style="vertical-align:top;">';
+          $counter[$code]=0;
+            $output.= '<table>';
+            $output.= '<tr>';
+              $output.= '<th style="border-bottom:1px solid #000;">'. $lang['title'] . '</th>';
+              $output.= '<th style="border-bottom:1px solid #000;"></th>';
+            $output.= '</tr>';
+            foreach($lang['translations'] as $k => $t) {
+              if (empty($t)) {
+                $output.= '<tr>';
+                  $output.= '<td style="border-bottom:1px solid #000;">';
+                    $output.= $k;
+                  $output.= '</td>';
+                  $output.= '<td>';
+                  $output.= '</td>';
+                $output.= '</tr>';
+              }
+              foreach($t as $m => $l) {
+                $output.= '<tr>';
+                  $output.= '<td style="border-bottom:1px solid #000;">';
+                    $output.= $k . '.' . $m;
+                  $output.= '</td>';
+                  $output.= '<td style="border-bottom:1px solid #000;">';
+                    if (!is_array($l)) {
+                      if (!empty($l)) {
+                        $output.= htmlspecialchars($l);
+                        $counter[$code]++;
+                      }
+                    }
+                    else {
+                      if (!empty($l)) {
+                        $output .='Array()';
+                      }
+                    }
+                  $output.= '</td>';
+                $output.= '</tr>';
+              }
+            }
+            $output.= '</table>';
+          $output.= '</td>';
+      }
+      $output.= '</tr>';
+      $output.= '</table>';
+      foreach($counter as $cc => $c) {
+        echo 'Language ' . $cc . ' has ' . $c . ' lines <br />';
+      }
+      echo $output;
+      return;
+    }
+    
+    private function getTranslationValues($name, $lang) {
+      $trans = \Lang::get($name, array(), $lang);
+      $ret_val = array();
+      if (!empty($trans)) {
+        if (is_array($trans)) {
+          foreach($trans as $k1 => $t1) {
+            if (is_array($t1) && !empty($t1)) {
+              //
+              foreach($t1 as $k2 => $t2) {
+                if (is_array($t2) && !empty($t2)) {
+                  //
+                  foreach($t2 as $k3 => $t3) {
+                    if (is_array($t3) && !empty($t3)) {
+                      //
+                      foreach($t3 as $k4 => $t4) {
+                        if (is_array($t4) && !empty($t4)) {
+                          //
+                          foreach($t4 as $k5 => $t5) {
+                            if (is_array($t5) && !empty($t5)) {
+                              echo "<pre>";
+                              print_r($k5);
+                              echo "</pre>";
+                              echo "<pre>";
+                              print_r($t5);
+                              echo "</pre>";
+                              die(__FILE__);
+                            }
+                            else {
+                              $ret_val[$k1 . '.' . $k2 . '.' . $k3 . '.' . $k4 . '.' . $k5] = $t5;
+                            }
+                          }
+                        }
+                        else{
+                          $ret_val[$k1 . '.' . $k2 . '.' . $k3 . '.' . $k4] = $t4;
+                        }
+                      }
+                    } else {
+                      $ret_val[$k1 . '.' . $k2 . '.' . $k3] = $t3;
+                    }
+                  }
+                }
+                else {
+                  $ret_val[$k1 . '.' . $k2] = $t2;
+                }
+              }
+            }
+            else {
+              $ret_val[$k1] = $t1;
+            }
+          } 
+        }
+      }
+      return $ret_val;
+    }
 }

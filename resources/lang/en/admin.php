@@ -51,7 +51,8 @@ return [
     ],
     'maps' => [
         'title' => 'Maps',
-        'description' => 'Explanation about description'
+        'description' => 'Explanation about description',
+        'sync' => 'Sync manually'
     ],
     'push' => [
         'title' => 'Push notifications',
@@ -71,10 +72,11 @@ return [
     'sms' => [
         'title' => 'SMS Messages',
         'description' => 'Setup sms messages, which will be sent on alarm trigger.',
-        'default' => 'Default message:',
         'trigger' => 'Initial alarm triggering message',
+        'symbols' => 'Symbols left:',
+        'default' => 'Default message:',
         'information' => 'Crisis center information message',
-        'symbols' => 'Symbols left:'
+        'save' => 'Save',
     ],
     'team' => [
         'title' => 'Crisis Center',
