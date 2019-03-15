@@ -611,9 +611,7 @@ class MainController extends BaseController
               if (empty($t)) {
                 $output.= '<tr>';
                   $output.= '<td style="border-bottom:1px solid #000;">';
-                  if ($code == 'en') {
                     $output.= $k;
-                  }
                   $output.= '</td>';
                   $output.= '<td>';
                   $output.= '</td>';
@@ -622,9 +620,7 @@ class MainController extends BaseController
               foreach($t as $m => $l) {
                 $output.= '<tr>';
                   $output.= '<td style="border-bottom:1px solid #000;">';
-                  if ($code == 'en') {
                     $output.= $k . '.' . $m;
-                  }
                   $output.= '</td>';
                   $output.= '<td style="border-bottom:1px solid #000;">';
                     if (!is_array($l)) {
