@@ -610,7 +610,7 @@ class MainController extends BaseController
           foreach($lang['translations'] as $k => $t) {
             if (empty($t)) {
               $output.= '<tr>';
-                if ($code != 'en') {
+                if ($code == 'en') {
                   $output.= '<td style="border-bottom:1px solid #000;">';
                     $output.= $k;
                   $output.= '</td>';
@@ -621,7 +621,7 @@ class MainController extends BaseController
             }
             foreach($t as $m => $l) {
               $output.= '<tr>';
-                if ($code != 'en') {
+                if ($code == 'en') {
                   $output.= '<td style="border-bottom:1px solid #000;">';
                     $output.= $k . '.' . $m;
                   $output.= '</td>';
