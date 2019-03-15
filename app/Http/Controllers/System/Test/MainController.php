@@ -603,46 +603,46 @@ class MainController extends BaseController
       foreach($languages as $code => $lang) {
           $output.= '<td>';
           $counter[$code]=0;
-          $output.= '<table>';
-          $output.= '<tr>';
-            $output.= '<th style="border-bottom:1px solid #000;">'. $lang['title'] . '</th>';
-          $output.= '</tr>';
-          foreach($lang['translations'] as $k => $t) {
-            if (empty($t)) {
-              $output.= '<tr>';
-                if ($code == 'en') {
+            $output.= '<table>';
+            $output.= '<tr>';
+              $output.= '<th style="border-bottom:1px solid #000;">'. $lang['title'] . '</th>';
+            $output.= '</tr>';
+            foreach($lang['translations'] as $k => $t) {
+              if (empty($t)) {
+                $output.= '<tr>';
                   $output.= '<td style="border-bottom:1px solid #000;">';
+                  if ($code == 'en') {
                     $output.= $k;
+                  }
                   $output.= '</td>';
-                }
-                $output.= '<td>';
-                $output.= '</td>';
-              $output.= '</tr>';
-            }
-            foreach($t as $m => $l) {
-              $output.= '<tr>';
-                if ($code == 'en') {
+                  $output.= '<td>';
+                  $output.= '</td>';
+                $output.= '</tr>';
+              }
+              foreach($t as $m => $l) {
+                $output.= '<tr>';
                   $output.= '<td style="border-bottom:1px solid #000;">';
+                  if ($code == 'en') {
                     $output.= $k . '.' . $m;
+                  }
                   $output.= '</td>';
-                }
-                $output.= '<td style="border-bottom:1px solid #000;">';
-                  if (!is_array($l)) {
-                    if (!empty($l)) {
-                      $output.= htmlspecialchars($l);
-                      $counter[$code]++;
+                  $output.= '<td style="border-bottom:1px solid #000;">';
+                    if (!is_array($l)) {
+                      if (!empty($l)) {
+                        $output.= htmlspecialchars($l);
+                        $counter[$code]++;
+                      }
                     }
-                  }
-                  else {
-                    if (!empty($l)) {
-                      $output .='Array()';
+                    else {
+                      if (!empty($l)) {
+                        $output .='Array()';
+                      }
                     }
-                  }
-                $output.= '</td>';
-              $output.= '</tr>';
+                  $output.= '</td>';
+                $output.= '</tr>';
+              }
             }
-          }
-          $output.= '</table>';
+            $output.= '</table>';
           $output.= '</td>';
       }
       $output.= '</tr>';
