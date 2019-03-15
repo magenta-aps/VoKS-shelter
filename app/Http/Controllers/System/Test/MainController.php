@@ -606,6 +606,7 @@ class MainController extends BaseController
             $output.= '<table>';
             $output.= '<tr>';
               $output.= '<th style="border-bottom:1px solid #000;">'. $lang['title'] . '</th>';
+              $output.= '<th style="border-bottom:1px solid #000;"></th>';
             $output.= '</tr>';
             foreach($lang['translations'] as $k => $t) {
               if (empty($t)) {
