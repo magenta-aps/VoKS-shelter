@@ -35,6 +35,10 @@
         config['locale'] = '{!! $config['locale'] !!}';
         config['stream-block-limit'] = {!! $config['stream-block-limit'] !!};
         config['police'] = {!! $config['police'] !!};
+        config['video-do-recording'] = {!! $config['video-do-recording'] ? 'true' : 'false' !!};
+        config['video-endpoint-start'] = '{!! $config['video-base-url'] !!}' + '{!! $config['video-endpoint-start'] !!}';
+        config['video-endpoint-stop'] = '{!! $config['video-base-url'] !!}' + '{!! $config['video-endpoint-stop'] !!}';
+
 
         lang = function(key) {
             return config['lang'][key];

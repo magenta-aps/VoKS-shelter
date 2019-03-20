@@ -310,6 +310,10 @@ class Shelter
 	    $config['cisco-enabled'] = config('cisco.enabled');
 	    $config['use-gps'] = $school->is_gps_location_source ? true : false;
 	    $config['use-non-gps'] = $school->is_non_gps_location_source ? true : false;
+	    $config['video-do-recording'] = config('video.do_recording');
+	    $config['video-base-url'] = config('video.base_url');
+	    $config['video-endpoint-start'] = config('video.endpoints.start');
+        $config['video-endpoint-stop'] = config('video.endpoints.stop');
 
         return $config;
     }

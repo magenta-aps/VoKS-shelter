@@ -16,6 +16,11 @@ return [
         'reset' => [
             'message' => 'Do you really want to reset Shelter?',
             'success' => 'Shelter has been reset. Reloading page.',
+            'video' => [
+                'prompt' => 'A video has been recorded. Please enter your name if you want to save the video',
+                'success' => 'Video has been saved.',
+                'error' => 'Video not saved.'
+            ]
         ],
         'school' => [
             'push' => [
