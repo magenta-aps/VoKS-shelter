@@ -36,4 +36,26 @@ class AuthController extends Controller
 
         $this->middleware('guest', ['except' => 'getLogout']);
     }
+    
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRegister() 
+    {
+      //Disable registration
+      return redirect($this->redirectAfterLogout);
+    }
+  
+  	/**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postRegister(Request $request) {
+      //Disable registration
+      return redirect($this->redirectAfterLogout);
+    }
 }
