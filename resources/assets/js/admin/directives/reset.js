@@ -20,28 +20,26 @@
 
                             if(config['video-do-recording']) {
                                 var name = prompt($translate.instant('toast.contents.reset.video.prompt'));
-                                if (name) {
-                                    var url = "http://localhost:8080/stop";
-                                    //var url = config['video-base-url'] + config['video-endpoint-stop']; // this for some reason becomes "undefinedhttp:/localhost8080stop" - must be something to do with string escaping
-                                    var data = {name: name};
-                                    var xhr = new XMLHttpRequest();
-                                    xhr.open("POST", url);
-                                    xhr.setRequestHeader("Content-Type", "application/json");
-                                    xhr.onreadystatechange = function () {
-                                        if (xhr.readyState === 4) {
-                                            if (xhr.status === 200) {
-                                                Toast.push('success', $translate.instant('toast.contents.reset.video.success'));
-                                            } else {
-                                                Toast.push('error', $translate.instant('toast.contents.reset.video.error'));
-                                            }
-                                            setTimeout(function() {
-                                                //window.location.reload();
-                                            }, 500);
+                                var url = "https://loc.bcomesafe.com:3032/stop";
+                                //var url = config['video-base-url'] + config['video-endpoint-stop']; // this for some reason becomes "undefinedhttp:/localhost8080stop" - must be something to do with string escaping
+                                var data = {name: name || ""};
+                                var xhr = new XMLHttpRequest();
+                                xhr.open("POST", url, true);
+                                xhr.setRequestHeader("Content-Type", "application/json");
+                                xhr.onreadystatechange = function () {
+                                    if (xhr.readyState === 4) {
+                                        if (xhr.status === 200) {
+                                            // if xhr.response.data.status == "video_saved" ... else if == "video_deleted" etc.
+                                            Toast.push('success', $translate.instant('toast.contents.reset.video.success'));
+                                        } else {
+                                            Toast.push('error', $translate.instant('toast.contents.reset.video.error'));
                                         }
-                                    };
-                                    xhr.send(JSON.stringify(data));
-                                    // } else { send empty name and don't show video.success message? }
-                                }
+                                        setTimeout(function() {
+                                            //window.location.reload();
+                                        }, 500);
+                                    }
+                                };
+                                xhr.send(JSON.stringify(data));
                             } else {
                                 setTimeout(function() {
                                     window.location.reload();
