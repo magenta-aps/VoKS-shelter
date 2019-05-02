@@ -133,7 +133,7 @@ class Device extends BaseModel
     {
         $device = static::where('device_id', '=', $deviceId)->first(
             [
-                'id', 'mac_address', 'device_id', 'fullname', 'push_notification_id', 'device_type', 'x', 'y', 'username'
+                'id', 'mac_address', 'device_id', 'fullname', 'push_notification_id', 'device_type', 'x', 'y', 'username', 'floor_id'
             ]
         );
 
