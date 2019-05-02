@@ -66,14 +66,11 @@
     * Video Screen Capture
     */  
 	
-    console.log('Hello');
-
-
     if(config['video-do-recording']) {
 	console.log('VIDEO_RECORDING');
 
         var videoRecorder = function (Recorder) {
-            Recorder.getStatus();
+            Recorder.startStatusPing();
         };
 
         videoRecorder.$inject = ['Recorder'];

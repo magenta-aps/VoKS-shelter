@@ -40,8 +40,14 @@
                 this.recording = 0;
             };
 
-	   this.getStatus = function() {
-                var status_url = this.url + "status";
+           this.startStatusPing = function() {
+                console.log("Starting status ping");
+                this.getStatus(this.url + "status");
+                
+                setInterval(this.getStatus, 10000, this.url + "status");
+           }
+
+	   this.getStatus = function(status_url) {
                 var xhr = new XMLHttpRequest();
                 xhr.open("GET", status_url, true);
                 xhr.send();
@@ -51,8 +57,6 @@
                     this.stopRecording(name);
                     this.recording = 0;
                 }
-
-               setTimeout(this.getStatus, 1000);
             };
         };
 

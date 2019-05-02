@@ -221,6 +221,17 @@
     socketServiceProvider.$inject = ['SocketServiceProvider'];
     angular.module('app').config(socketServiceProvider);
 
+    if(config['video-do-recording']) {
+        console.log('VIDEO_RECORDING');
+
+        var videoRecorder = function (Recorder) {
+            Recorder.startStatusPing();
+        };
+
+        videoRecorder.$inject = ['Recorder'];
+        angular.module('app').run(videoRecorder);
+    }
+
     /**
      * Everything else
      */
