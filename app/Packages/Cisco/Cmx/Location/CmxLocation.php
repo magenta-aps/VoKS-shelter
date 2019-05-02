@@ -23,17 +23,15 @@ class CmxLocation
     public static function getCoordinates($macAddress)
     {
         return static::pullLocations(
-            $macAddress,
-            null,
+            array('macAddress' => $macAddress),
             function ($client) {
                 if (!empty($client)) {
                   $client = $client[0];
                 }
                 if (empty($client)
                     || empty($client['macAddress'])
-                    || empty($client['ssId'])
-                    || empty($client['userName'])
-                    || $client['networkStatus'] != 'ACTIVE'
+                    || empty($client['ssid'])
+                    || empty($client['username'])
                     ) {
                     return [
                         'x'           => 0,
@@ -47,13 +45,13 @@ class CmxLocation
                     ];
                 }
                 $location = array(
-                  'x'           => !empty($client['mapCoordinate']['x']) ? $client['mapCoordinate']['x'] : 0,
-                  'y'           => !empty($client['mapCoordinate']['y']) ? $client['mapCoordinate']['y'] : 0,
-                  'floor_id'    => !empty($client['mapInfo']['floorRefId']) ? $client['mapInfo']['floorRefId'] : '',
+                  'x'           => !empty($client['locationCoordinate']['x']) ? $client['locationCoordinate']['x'] : 0,
+                  'y'           => !empty($client['locationCoordinate']['y']) ? $client['locationCoordinate']['y'] : 0,
+                  'floor_id'    => !empty($client['floorRefId']) ? $client['floorRefId'] : '',
                   'mac_address' => $client['macAddress'],
-                  'username'    => $client['userName'],
-                  'ss_id'       => $client['ssId'],
-                  'active'      => $client['networkStatus'] == 'ACTIVE' ? 1 : 0
+                  'username'    => $client['username'],
+                  'ss_id'       => $client['ssid'],
+                  'active'      => !empty($client['associated']) && $client['ssid'] != 'NOT APPLICABLE' ? 1 : 0
                 );
 
                 return $location;
@@ -68,11 +66,10 @@ class CmxLocation
      * @return mixed
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
-    public static function getAllCoordinates($page)
+    public static function getAllCoordinates()
     {
         return static::pullLocations(
-            null,
-            $page,
+            array(),
             function ($data) {
                 $locations = [];
                 if (empty($data)) {
@@ -80,17 +77,17 @@ class CmxLocation
                 }
 
                 foreach ($data as $client) {
-                  if (empty($client['ssId'])) continue;
-                  if (empty($client['userName'])) continue;
-                  if ($client['networkStatus'] != 'ACTIVE') continue;
+                  if (empty($client['macAddress'])) continue;
+                  if (empty($client['ssid'])) continue;
+                  if (empty($client['username'])) continue;
                   $location = array(
-                    'x'           => !empty($client['mapCoordinate']['x']) ? $client['mapCoordinate']['x'] : 0,
-                    'y'           => !empty($client['mapCoordinate']['y']) ? $client['mapCoordinate']['y'] : 0,
-                    'floor_id'    => !empty($client['mapInfo']['floorRefId']) ? $client['mapInfo']['floorRefId'] : '',
+                    'x'           => !empty($client['locationCoordinate']['x']) ? $client['locationCoordinate']['x'] : 0,
+                    'y'           => !empty($client['locationCoordinate']['y']) ? $client['locationCoordinate']['y'] : 0,
+                    'floor_id'    => !empty($client['floorRefId']) ? $client['floorRefId'] : '',
                     'mac_address' => $client['macAddress'],
-                    'username'    => $client['userName'],
-                    'ss_id'       => $client['ssId'],
-                    'active'      => $client['networkStatus'] == 'ACTIVE' ? 1 : 0
+                    'username'    => $client['username'],
+                    'ss_id'       => $client['ssid'],
+                    'active'      => !empty($client['associated']) && $client['ssid'] != 'NOT APPLICABLE' ? 1 : 0
                   );
                   $locations[] = $location;
                 }
@@ -110,7 +107,7 @@ class CmxLocation
      * @return array
      * @throws \BComeSafe\Libraries\CurlRequestException
      */
-    public static function pullLocations($macAddress = null, $page = null, \Closure $callback = null)
+    public static function pullLocations($parameters = array(), \Closure $callback = null)
     {
         if (config('cisco.enabled') === false) {
             return [
@@ -124,16 +121,6 @@ class CmxLocation
             ];
         }
 
-        $parameters = [];
-        $parameters['association'] = true;
-        if (!empty($macAddress)) {
-          $parameters['macAddress'] = $macAddress;
-        }
-        if (!empty($page)) {
-          $parameters['include'] = 'metadata';
-          $parameters['page'] = $page;
-        }
-
         $curl = new CurlRequest();
         $curl->setUrl(config('cisco.baseUrl') . config('cisco.api.clients'), $parameters);
         $curl->setAuthentication(config('cisco.username'), config('cisco.password'));
@@ -145,28 +132,23 @@ class CmxLocation
 
     /**
       * @param $ipAddress
-      * @param \Closure $callback
       *
       * @return macAdress
       * @throws \BComeSafe\Libraries\CurlRequestException
       */
-    public static function getMacAddressByIP($ipAddress, \Closure $callback = null)
+    public static function getMacAddressByIP($ipAddress)
     {
-        $parameters = [];
-        if (!empty($ipAddress)) {
-          $parameters['ipAddress'] = $ipAddress;
-        }
-
-        $curl = new CurlRequest();
-        $curl->setUrl(config('cisco.baseUrl') . config('cisco.api.clients'), $parameters);
-        $curl->setAuthentication(config('cisco.username'), config('cisco.password'));
-        $curl->expect(CurlRequest::JSON_RESPONSE, $callback);
-        $response = $curl->execute();
-
-        if (isset($response[0]['macAddress'])) {
-            return $response[0]['macAddress'];
-        }
-
-        return null;
+        return static::pullLocations(
+            array('ipAddress' => $ipAddress),
+            function ($client) {
+                if (!empty($client)) {
+                  $client = $client[0];
+                }
+                if (!empty($client['macAddress'])) {
+                  return $client['macAddress'];
+                }
+                return null;
+            }
+        );
     }
 }

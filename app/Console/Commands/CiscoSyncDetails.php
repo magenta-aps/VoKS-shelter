@@ -49,30 +49,18 @@ class CiscoSyncDetails extends Command
 
         //Coordinates
         $full_time_start = $time_start = microtime(true);
-        $clients = array();
-        for ($page = 1; $page < self::MAX_ALLOWED_RUNS; $page++) {
-          $coordinates = CmxLocation::getAllCoordinates($page);
-          if (empty($coordinates)) {
-            break;
-          }
-          $clients = array_merge($clients, $coordinates);
-        }
+        $clients = CmxLocation::getAllCoordinates();        
         $time_end = microtime(true);
         $execution_time = $time_end - $time_start;
 
         $count = count($clients);
-        echo "Count (Locations): ", $count, PHP_EOL;
-        echo "Locations: ", PHP_EOL;
-
+        echo "Count (Cisco clients total): ", $count, PHP_EOL;
+        
         //Floors
         $floors = Floor::with('image')->get()->toArray();
         $floors = array_map_by_key($floors, 'floor_hash_id');
 
-
         echo "*****************", PHP_EOL;
-        $count = count($clients);
-        echo "Count (Cisco clients total): ", $count, PHP_EOL;
-
         if (!empty($clients)) {
           //Filter Clients by Floors
           foreach($clients as $k => $client) {
@@ -99,7 +87,7 @@ class CiscoSyncDetails extends Command
           echo "No Clients found!", PHP_EOL;
         }
 
-        echo "Time for geting data Cisco API -> locations: ", $execution_time, PHP_EOL;
+        echo "Time for geting data Cisco API -> Clients: ", $execution_time, PHP_EOL;
         echo "************", PHP_EOL;
 
         //BCS devices
