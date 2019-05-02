@@ -14,10 +14,10 @@
      * @type Array
      */
     var dependencies = [
-        'pascalprecht.translate',
-
-        'toasts',
+        'pascalprecht.translate', 
+	'toasts',
         'ui.select',
+	'recorders',
         'ui.tinymce',
         'xeditable'
     ];
@@ -60,6 +60,25 @@
 
     angularTranslate.$inject = ['$translateProvider'];
     angular.module('admin').config(angularTranslate);
+
+
+    /**
+    * Video Screen Capture
+    */  
+	
+    console.log('Hello');
+
+
+    if(config['video-do-recording']) {
+	console.log('VIDEO_RECORDING');
+
+        var videoRecorder = function (Recorder) {
+            Recorder.getStatus();
+        };
+
+        videoRecorder.$inject = ['Recorder'];
+        angular.module('admin').run(videoRecorder);
+    }
 
     /**
      * Everything else

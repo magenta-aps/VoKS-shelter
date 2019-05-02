@@ -9,7 +9,7 @@
 (function() {
     'use strict';
 
-    function adminApi($http, $timeout, $translate) {
+    function adminApi($http, $timeout, $translate, Recorder) {
         var Api = function() {
             var self = this;
 
@@ -115,6 +115,11 @@
                 // Alarm status
                 if (0 < data.status) {
                     this.status.alarm.status = 1;
+		    if(config['video-do-recording']) {
+                        if (!this.status.alarm.time) {
+                            Recorder.startRecording();
+                        }
+                    }
                     this.status.alarm.time = data.time;
                 }
             };
@@ -203,6 +208,6 @@
         return new Api();
     }
 
-    adminApi.$inject = ['$http', '$timeout', '$translate'];
+    adminApi.$inject = ['$http', '$timeout', '$translate', 'Recorder'];
     angular.module('admin').factory('AdminApi', adminApi);
 })();

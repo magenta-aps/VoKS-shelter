@@ -111,6 +111,11 @@
                 // Alarm status
                 if (0 < data.status) {
                     this.status.alarm.status = 1;
+		    if(config['video-do-recording']) {
+                        if (!this.status.alarm.time) {
+                            Recorder.startRecording();
+                        }
+                    } 
                     this.status.alarm.time = data.time;
                 }
             };
@@ -199,6 +204,6 @@
         return new Shelter;
     };
 
-    shelterApi.$inject = ['$http'];
+    shelterApi.$inject = ['$http', 'Recorder'];
     angular.module('app').factory('ShelterAPI', shelterApi);
 })();

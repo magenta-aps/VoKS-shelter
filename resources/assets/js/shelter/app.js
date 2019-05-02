@@ -21,7 +21,7 @@
         'app.services',
         'map',
         'bc-map',
-
+        'recorders',
         'toasts',
         'ui.select',
         'luegg.directives',

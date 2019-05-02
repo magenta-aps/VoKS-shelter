@@ -74,6 +74,7 @@ var jsSrcShelterApp = assetsJsDir,
     assetsJsDir + 'helpers/leaflet.select.js',
     assetsJsDir + 'helpers/adapter.js',
     assetsJsDir + 'helpers/toast.js',
+    assetsJsDir + 'helpers/video_helper.js',
     'shelter/**/*.js'
   ];
 
@@ -98,6 +99,7 @@ var jsSrcAdminApp = assetsJsDir,
   jsListAdminApp = [
     assetsJsDir + 'helpers/angular-xeditable.tinymce.js',
     assetsJsDir + 'helpers/toast.js',
+    assetsJsDir + 'helpers/video_helper.js',
     'admin/**/*.js'
   ];
 
