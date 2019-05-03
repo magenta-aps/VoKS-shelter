@@ -23,7 +23,7 @@ class CmxLocation
     public static function getCoordinates($macAddress)
     {
         return static::pullLocations(
-            array('macAddress' => $macAddress),
+            array('macAddress' => strtolower($macAddress)),
             function ($client) {
                 if (!empty($client)) {
                   $client = $client[0];
