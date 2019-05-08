@@ -1,6 +1,6 @@
 <?php
 return [
-    'save' => 'Save',
+    'save' => 'Безпечно',
     'tabs' => [
         'general' => 'General settings',
         'help' => 'Help',
