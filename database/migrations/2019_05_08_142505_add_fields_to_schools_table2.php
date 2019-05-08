@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFieldsToSchoolsTable extends Migration {
+class AddFieldsToSchoolsTable2 extends Migration {
 
 	/**
 	 * Run the migrations.
