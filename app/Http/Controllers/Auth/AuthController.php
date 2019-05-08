@@ -45,6 +45,9 @@ class AuthController extends Controller
     public function getRegister() 
     {
       //Disable registration
+      if (config('alarm.registration_status')) {
+        return parent::getRegister();
+      }
       return redirect($this->redirectAfterLogout);
     }
   
@@ -56,6 +59,9 @@ class AuthController extends Controller
      */
     public function postRegister(Request $request) {
       //Disable registration
+      if (config('alarm.registration_status')) {
+        return parent::postRegister(Request $request);
+      }
       return redirect($this->redirectAfterLogout);
     }
 }
