@@ -1,104 +1,104 @@
 <?php
 return [
     'title' => [
-        'success' => 'Success',
-        'error' => 'Error',
-        'message_sent' => 'Message sent',
-        'message_played' => 'Message played',
-        'error_playing' => 'Error playing message',
-        'warning' => 'Warning'
+        'success' => 'Успішно',
+        'error' => 'Помилка',
+        'message_sent' => 'Повідомлення надіслано',
+        'message_played' => 'Повідомлення відтворено',
+        'error_playing' => 'Помилка відтворення повідомлення',
+        'warning' => 'Застереження (Увага!)'
     ],
     'contents' => [
         'validation' => [
-            'required' => 'Field is required.',
-            'max_char' => 'Field cannot exceed 144 characters'
+            'required' => 'Обов\'язкове поле',
+            'max_char' => 'Поле не може перевищувати 144 символи'
         ],
         'reset' => [
-            'message' => 'Do you really want to reset Shelter?',
-            'success' => 'Shelter has been reset. Reloading page.',
+            'message' => 'Ви дійсно хочете перевстановити Shelter?',
+            'success' => 'Shelter перевстановлено. Перезавантаження сторінки.',
         ],
         'school' => [
             'push' => [
-                'select_client' => 'Please select at least one client.',
-                'no_message' => 'Please type in a message or select a message template.',
-                'too_long' => 'Message too long.',
-                'sent' => 'Push notification has been sent.',
-                'not_sent' => 'Push was not sent.',
+                'select_client' => 'Будь ласка виберіть хоча б одного клієнта.',
+                'no_message' => 'Введіть повідомлення або виберіть шаблон повідомлення.',
+                'too_long' => 'Повідомлення занадто довге.',
+                'sent' => 'Push-сповіщення було надіслано.',
+                'not_sent' => 'Push-повідомлення не було надіслано.',
 
             ]
         ],
         'system' => [
             'button' => [
-                'save_success' => 'Button saved successfully.',
-                'save_error' => 'Could not save button.',
-                'remove_success' => 'Button removed successfully.',
-                'remove_message' => 'Do you really want to delete this button?'
+                'save_success' => 'Кнопку успішно збережено.',
+                'save_error' => 'Не вдалося зберегти кнопку.',
+                'remove_success' => 'Кнопку було успішно видалено.',
+                'remove_message' => 'Ви дійсно бажаєте видалити цю кнопку?'
             ],
             'faq' => [
-                'save_success' => 'Question saved successfully.',
-                'save_error' => 'Could not save question.',
-                'order_success' => 'Order saved successfully.',
-                'remove_success' => 'Question removed successfully.',
-                'remove_message' => 'Do you really want to delete this question?',
-                'settings_saved' => 'Quick help settings have been saved.'
+                'save_success' => 'Питання збережено.',
+                'save_error' => 'Не вдалося зберегти запитання.',
+                'order_success' => 'Замовлення збережено.',
+                'remove_success' => 'Питання видалено.',
+                'remove_message' => 'Ви дійсно бажаєте видалити це запитання?',
+                'settings_saved' => 'Налаштування установок швидкої допомоги збережено.'
 
             ],
             'maps' => [
-                'sync' => 'Syncing maps. Please wait.',
-                'sync_success' => 'Maps have been synchronized. Reloading page.'
+                'sync' => 'Синхронізація мап. Зачекайте будь ласка.',
+                'sync_success' => 'Мапи синхронізовані. Перезавантаження сторінки.'
             ],
             'push' => [
-                'save_success' => 'Notification template saved successfully.',
-                'save_error' => 'Could not save notification template.',
-                'remove_message' => 'Do you really want to delete this notification template?',
-                'remove_success' => 'Notification template removed successfully.',
-                'order_success' => 'Order saved successfully.'
+                'save_success' => 'Шаблон сповіщень успішно збережено.',
+                'save_error' => 'Не вдалося зберегти шаблон сповіщення.',
+                'remove_message' => 'Ви дійсно бажаєте видалити цей шаблон сповіщень?',
+                'remove_success' => 'Шаблон сповіщень видалено.',
+                'order_success' => 'Замовлення збережено.'
             ],
             'school' => [
-                'save_success' => 'School saved successfully.',
-                'save_error' => 'Could not save school.',
-                'sync' => 'Syncing schools. Please wait.',
-                'sync_success' => 'Schools have been synchronized. Reloading page.',
-                'remove_message' => 'Do you really want to delete this school?',
-                'remove_success' => 'School removed successfully.'
+                'save_success' => 'Дані школи збережено.',
+                'save_error' => 'Неможливо зберегти дані школи.',
+                'sync' => 'Синхронізація шкіл. Чекайте будь ласка.',
+                'sync_success' => 'Школи синхронізовані. Перезавантаження сторінки.',
+                'remove_message' => 'Ви дійсно хочете видалити цю школу?',
+                'remove_success' => 'Школу видалено успішно.'
             ]
         ],
         'admin' => [
               'button' => [
-                  'save_success' => 'Button saved successfully.',
-                  'save_error' => 'Could not save button.',
-                  'remove_success' => 'Button removed successfully.'
+                  'save_success' => 'Кнопку успішно збережено.',
+                  'save_error' => 'Не вдалося зберегти кнопку.',
+                  'remove_success' => 'Кнопку видалено.'
               ],
             'team' => [
-                'sync' => 'Synchronizing crisis center members. Please wait.',
-                'complete' => 'Crisis center members have been synchronized. Reloading page.'
+                'sync' => 'Синхронізація членів кризового центру. Чекайте будь ласка.',
+                'complete' => 'Членів кризового центру синхронізовано. Сторінка перезавантажується.'
             ],
             'faq' => [
-                'save_success' => 'Question saved successfully.',
-                'save_error' => 'Could not save question.',
-                'order_success' => 'Order saved successfully.',
-                'remove_success' => 'Question removed successfully.',
-                'remove_message' => 'Do you really want to delete this question?',
-                'import_message' => 'Do you really want to import default questions?',
-                'import_success' => 'Questions have been imported. Reloading page.',
-                'settings_saved' => 'Quick help settings have been saved.'
+                'save_success' => 'Питання збережено.',
+                'save_error' => 'Не вдалося зберегти запитання.',
+                'order_success' => 'Замовлення збережено.',
+                'remove_success' => 'Питання успішо збережено.',
+                'remove_message' => 'Ви дійсно бажаєте видалити це запитання?',
+                'import_message' => 'Ви дійсно бажаєте імпортувати запитання за замовчуванням?',
+                'import_success' => 'Питання імпортовано. Перезавантаження сторінки.',
+                'settings_saved' => 'Налаштування установок швидкої допомоги збережено.'
             ],
             'maps' => [
-                'sync' => 'Syncing maps. Please wait.',
-                'sync_success' => 'Maps have been synchronized.'
+                'sync' => 'Синхронізація мап. Зачекайте будь ласка.',
+                'sync_success' => 'Мапи синхронізовані. Перезавантаження сторінки.'
             ],
             'push' => [
-                'save_success' => 'Notification template saved successfully.',
-                'save_error' => 'Could not save notification template.',
-                'remove_message' => 'Do you really want to delete this notification template?',
-                'import_message' => 'Do you really want to import default notification templates?',
-                'import_success' => 'Push notification templates have been imported. Reloading page.',
-                'remove_success' => 'Notification template removed successfully.',
-                'order_success' => 'Order saved successfully.'
+                'save_success' => 'Шаблон сповіщень успішно збережено.',
+                'save_error' => 'Не вдалося зберегти шаблон сповіщення.',
+                'remove_message' => 'Ви дійсно бажаєте видалити цей шаблон сповіщень?',
+                'import_message' => 'Ви дійсно бажаєте імпортувати шаблон сповіщень за замовчуванням?',
+                'import_success' => 'Шаблони Push-сповіщень було імпортовано. Сторінка перезавантажується.',
+                'remove_success' => 'Шаблон сповіщень видалено.',
+                'order_success' => 'Замовлення збережено.'
             ],
         ],
         'help' =>[
-            'not_available' => 'Quick help is not available on this page.'
+            'not_available' => 'Швидка допомога не можлива на цій сторінці.'
         ]
     ]
 ];

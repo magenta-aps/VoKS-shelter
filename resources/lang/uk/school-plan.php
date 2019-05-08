@@ -2,37 +2,37 @@
 
 return [
     'toolbox' => [
-        'zoom' => 'Zoom',
-        'tools' => 'Tools',
-        'building' => 'Select building',
-        'floor' => 'Select floor'
+        'zoom' => 'Ближче/далі',
+        'tools' => 'Інструменти',
+        'building' => 'Виберіть будівлю',
+        'floor' => 'Виберіть поверх'
     ],
     'messages' => [
-        'batch_select' => 'Batch select users:',
-        'label' => 'Send messages',
+        'batch_select' => 'Вибір групи користувачів:',
+        'label' => 'Надилати повідомлення',
         'tabs' => [
-            'push' => 'Push',
-            'audio' => 'Audio',
-            'history' => 'History',
+            'push' => 'Push-сповіщення',
+            'audio' => 'Звук / аудіо',
+            'history' => 'Історія',
         ],
         'button' => [
-            'all' => 'All',
-            'floor' => 'Floor',
-            'building' => 'Building',
-            'none' => 'None'
+            'all' => 'Всі',
+            'floor' => 'Поверх',
+            'building' => 'Будівля',
+            'none' => 'Жоден'
         ],
         'placeholder' => [
-            'select_template' => 'Select template',
-            'enter_message' => 'Enter message text here...',
-            'symbols' => 'Symbols left:'
+            'select_template' => 'Виберіть шаблон',
+            'enter_message' => 'Введіть текст повідомлення тут...',
+            'symbols' => 'Залишилось символів:'
         ],
         'history' => [
-            'time' => 'Time',
-            'message' => 'Message',
-            'type' => 'Type',
-            'result' => 'Result',
-            'gotit' => 'Got it'
+            'time' => 'Час',
+            'message' => 'Повідомлення',
+            'type' => 'Тип',
+            'result' => 'Результат',
+            'gotit' => 'Зрозуміло'
         ],
-        'send' => 'Send',
+        'send' => 'Надіслати',
     ]
 ];

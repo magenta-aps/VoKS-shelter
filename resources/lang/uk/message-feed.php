@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'label' => 'Message feed',
+    'label' => 'Потік повідомлень',
 
 ];

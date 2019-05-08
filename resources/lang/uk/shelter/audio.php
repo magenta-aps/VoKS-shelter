@@ -4,55 +4,55 @@ return [
     'play' => [
         'field' => [
             'voice' => [
-                'placeholder' => 'Select audio message'
+                'placeholder' => 'Виберіть звукове повідомлення'
             ],
             'group' => [
-                'placeholder' => 'Select device group'
+                'placeholder' => 'Виберіть групу пристроїв'
             ],
-            'submit' => 'Play to devices'
+            'submit' => 'Відтворення на пристроях'
         ],
         'toast' => [
             'success' => [
-                'title' => 'Success',
-                'message' => 'Voice message has been played successfully.'
+                'title' => 'Успішно',
+                'message' => 'Голосове повідомлення успішно відтворено.'
             ],
             'error' => [
                 'playback' => [
-                    'title' => 'Playback error',
-                    'message' => 'Error playing voice message to selected group.'
+                    'title' => 'Помилка відтворення',
+                    'message' => 'Помилка відтворення голосового повідомлення для вибраної групи.'
                 ],
                 'invalid' => [
-                    'title' => 'Error',
-                    'message' => 'Invalid voice message or group provided.'
+                    'title' => 'Помилка',
+                    'message' => 'Надано недійсне голосове повідомлення або групу.'
                 ]
             ]
         ]
     ],
     'live' => [
-        'heading' => 'Broadcast new audio message',
+        'heading' => 'Транслювати нове звукове повідомлення',
         'field' => [
             'group' => [
-                'placeholder' => 'Select device group'
+                'placeholder' => 'Виберіть групу пристроїв'
             ],
             'number' => [
-                'label' => 'Please provide an internal phone number you will use to broadcast a live message.',
-                'placeholder' => 'Phone number'
+                'label' => 'Будь ласка введіть внутрішній номер телефону, який буде використовуватися для трансляції повідомлення в прямому ефірі.',
+                'placeholder' => 'Номер телефону'
             ],
-            'submit' => 'Start broadcasting'
+            'submit' => 'Почати трансляцію'
         ],
         'toast' => [
             'success' => [
-                'title' => 'Success',
-                'message' => 'Phone number has been called successfully.'
+                'title' => 'Успішно',
+                'message' => 'Номер телефону успішно викликано.'
             ],
             'error' => [
                 'playback' => [
-                    'title' => 'Playback error',
-                    'message' => 'Error making the call.'
+                    'title' => 'Помилка відтворення',
+                    'message' => 'Помилка здійснення виклику.'
                 ],
                 'invalid' => [
-                    'title' => 'Error',
-                    'message' => 'Invalid phone number or group provided.'
+                    'title' => 'Помилка',
+                    'message' => 'Надано недійсний номер телефону або групу.'
                 ]
             ]
         ]

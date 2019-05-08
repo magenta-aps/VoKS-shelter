@@ -27,7 +27,7 @@
 return [
     'fake' => [
         'client' => [
-            'name' => 'John Smith'
+            'name' => 'Іван Коваленко'
         ],
         'message' => [
             'content' => 'Lorem ipsum dolor sit amet.'
@@ -36,237 +36,237 @@ return [
     'view' => [
         'streams' => [
             [
-                'title' => 'Message feed',
-                'content' => 'All messages sent form users who have triggered the alarm can be seen here. To start a chat, mute/unmute audio or view video stream, press on name of the user in the message',
+                'title' => 'Потік повідомлень',
+                'content' => "Усі повідомлення, надіслані користувачами, що надіслали сигнал тривоги, можна побачити тут. Щоб почати чат, вимкнути / увімкнути звук або переглянути відеопотік, натисніть на ім'я користувача в повідомленні.",
                 'element' => 'MESSAGE_FEED_MESSAGE'
             ],
             [
-                'title' => 'Location',
-                'content' => 'Check the user’s position on the map. User location will be shown on small user map (8th container)',
+                'title' => 'Місцезнаходження',
+                'content' => "Перевірте позицію користувача на мапі. Місцезнаходження користувача буде показано на малій мапі користувача (8-й контейнер).",
                 'element' => 'STREAM_LOCATION_BUTTON'
             ],
             [
-                'title' => 'Volume ',
-                'content' => 'Mute/Unmute audio from user to shelter',
+                'title' => 'Гучність',
+                'content' => 'Вимкнути / Увімкнути звук від користувача до shelter',
                 'element' => 'STREAM_VOLUME_BUTTON'
             ],
             [
-                'title' => 'Messages',
-                'content' => 'Open chat with this user. Number of unread messages from user is shown on the button. ',
+                'title' => 'Повідомлення',
+                'content' => 'Відкрити чат із цим користувачем. Кількість непрочитаних повідомлень від користувача відображається на кнопці.',
                 'element' => 'STREAM_MESSAGE_BUTTON'
             ],
             [
-                'title' => 'Chat window',
-                'content' => 'Chat is closed by pressing a cross in the top right corner or by pressing the same chat button again',
+                'title' => 'Вікно чату',
+                'content' => 'Чат можна закрити, натиснувши хрестик у верхньому правому куті, або знову натиснувши на ту ж кнопку чату',
                 'element' => 'STREAM_CHAT_WINDOW'
             ],
             [
-                'title' => 'Answer',
-                'content' => 'Answer to a user call and enable a two way audio connection. Answer button has three states: Disabled - The user is not calling crisis center; Green - User is calling the crisis center; Red - Conversation is in progress. ',
+                'title' => 'Відповідь',
+                'content' => "Відповідь на дзвінок користувача та включення двостороннього аудіозв'язку. Кнопка відповіді має три стани: Вимкнено - користувач не викликає кризовий центр; Зелений - Користувач викликає кризовий центр; Червоний - Розмова триває.",
                 'element' => 'STREAM_ANSWER_BUTTON'
             ],
             [
-                'title' => 'Maximize',
-                'content' => 'Enlarge video window',
+                'title' => 'Збільшити до максимуму',
+                'content' => 'Збільшити вікно відео',
                 'element' => 'STREAM_MAXIMIZE_BUTTON'
             ],
             [
-                'title' => 'Empty stream window',
-                'content' => 'When there are no active streams selected the crisis center member can choose which user video-audio stream he/she would like to see from a dropdown list ',
+                'title' => 'Вікно потоку пусте',
+                'content' => 'Якщо активних потоків не вибрано, учасник кризового центру може вибрати, відео-аудіопотік від якого користувач він / вона хотіли б бачити з випадаючого списку.',
                 'element' => 'EMPTY_STREAM_WINDOW'
             ],
             [
-                'title' => 'Small map',
-                'content' => 'On the last component (8th) of the main Shelter window map of the user can be seen. Crisis center can change the map by clicking the map icon on each video stream.',
+                'title' => 'Мала мапа',
+                'content' => 'На останньому компоненті (8-му) головного вікyf Shelter -у можна побачити мапу користувача. Кризовий центр може змінювати мапу, натискаючи на значок мапи на кожному відеопотоці.',
                 'element' => 'SMALL_MAP',
                 'placement' => 'top'
             ],
             [
-                'title' => 'Waiting line',
-                'content' => 'Crisis center can find all the users who triggered the alarm, but are not streaming video to video stream slots in the waiting line. Hover over selected user to start a chat, mute/unmute audio or view the video stream of the user.',
+                'title' => 'Черга',
+                'content' => 'Кризовий центр може знайти всіх користувачів, які натиснули сигнал тривоги, але не передають відео на слоти відеопотоку в черзі. Наведіть курсор на вибраного користувача, щоб розпочати чат, вимкнути / увімкнути звук або переглянути відеопотік користувача.',
                 'element' => 'WAITING_LINE',
                 'placement' => 'left'
             ],
             [
-                'title' => 'Sorting select',
-                'content' => 'Select sorting type for users that are on the waiting line',
+                'title' => 'Вибір сортування',
+                'content' => 'Виберіть тип сортування для користувачів в черзі',
                 'element' => 'WAITING_LINE_SORTING',
                 'placement' => 'left'
             ],
             [
-                'title' => 'Police Status',
-                'content' => '“Police status bar” component, shows the status regarding contacting the police. The purpose of this component is to quickly inform the crisis center whether the police has been called.',
+                'title' => 'Статус поліції',
+                'content' => 'Компонент «Статус поліції» показує статус контакту з поліцією. Метою цього компоненту є швидке інформування кризового центру про те, чи викликали поліцію.',
                 'element' => 'HEADER_STATUS',
                 'placement' => 'bottom'
             ],
             [
-                'title' => 'Change police status',
-                'content' => 'Police status can be changed manually by pressing "Called" or "Not called" on the status bar.',
+                'title' => 'Змінити статус поліції',
+                'content' => 'Статус поліції можна змінювати вручну, натиснувши "Викликано" або "Не викликано" на панелі статусу.',
                 'element' => 'POLICE_STATUS',
                 'placement' => 'bottom'
             ],
             [
-                'title' => 'Alarm statistics',
-                'content' => 'Information about alarm can be previewed on police status bar: time, when alarm has first been triggered and quantity of unique users who have called the police via mobile application (user count)',
+                'title' => 'Статистика сигналів тривоги',
+                'content' => 'Відомості про сигали тривоги можна переглянути на панелі статусу поліції: час, коли сигнал спрацював вперше, і кількість унікальних користувачів, які викликали поліцію через мобільний додаток (кількість користувачів).',
                 'element' => 'ALARM_STATISTICS',
                 'placement' => 'bottom'
             ],
             [
-                'title' => 'Administration button',
-                'content' => 'Administration tools for the shelter page',
+                'title' => 'Кнопка адміністрування',
+                'content' => 'Інструменти адміністрування для сторінки shelter',
                 'element' => 'ADMINISTRATION_BUTTON',
                 'placement' => 'left'
             ],
         ],
         'stream' => [
             [
-                'title' => 'Message feed',
-                'content' => 'All messages sent form users who have triggered the alarm can be seen here. To start a chat, mute/unmute audio or view video stream, press on name of the user in the message',
+                'title' => 'Потік повідомлень',
+                'content' => "Усі повідомлення, надіслані користувачами, що надіслали сигнал тривоги, можна побачити тут. Щоб почати чат, вимкнути / увімкнути звук або переглянути відеопотік, натисніть на ім'я користувача в повідомленні.",
                 'element' => 'MESSAGE_FEED_MESSAGE'
             ],
             [
-                'title' => 'Minimize',
-                'content' => 'Minimize large video window to main shelter screen',
+                'title' => 'Згорнути',
+                'content' => 'Мінімізувати велике вікно відео до головного екрану Shelter',
                 'element' => 'STREAM_MINIMIZE_BUTTON'
             ],
             [
-                'title' => 'Answer',
-                'content' => 'Answer to a user call and enable a two way audio connection. Answer button has three states: Disabled - The user is not calling crisis center; Green - User is calling the crisis center; Red - Conversation is in progress. ',
+                'title' => 'Відповідь',
+                'content' => "Відповідь на дзвінок користувача та включення двостороннього аудіозв'язку. Кнопка відповіді має три стани: Вимкнено - користувач не викликає кризовий центр; Зелений - користувач викликає кризовий центр; Червоний - розмова триває.",
                 'element' => 'LARGE_STREAM_ANSWER_BUTTON'
             ],
             [
-                'title' => 'Volume control',
-                'content' => 'Mute/Unmute audio from user to shelter',
+                'title' => 'Контроль гучності',
+                'content' => 'Вимкнути / Увімкнути звук від користувача до Shelter',
                 'element' => 'LARGE_STREAM_VOLUME_BUTTON'
             ],
             [
-                'title' => 'Chat',
-                'content' => 'Chat with single selected user',
+                'title' => 'Чат',
+                'content' => 'Чат з одним вибраним користувачем',
                 'element' => 'LARGE_STREAM_CHAT_WINDOW',
             ],
             [
-                'title' => 'Map',
-                'content' => 'Selected user location is shown on map. Crisis center can change the map by clicking the map icon on each video stream.',
+                'title' => 'Мапа',
+                'content' => 'Розташування вибраного користувача показано на мапі. Кризовий центр може змінити мапу, натиснувши на значок мапи на кожному відеопотоці.',
                 'element' => 'LARGE_STREAM_MAP',
             ],
             [
-                'title' => 'Small video',
-                'content' => 'Small video stream component has 7 video stream slots. Video streams are shown in the same order they were displayed on main shelter window.',
+                'title' => 'Мале відео',
+                'content' => 'Компонент малого відеопотоку має 7 слотів відеопотоку. Відеопотоки відображаються в тому ж порядку, в якому вони відображалися на головному вікні Shelter',
                 'element' => 'SMALL_STREAM'
             ],
             [
-                'title' => 'Empty small stream',
-                'content' => 'When there are empty stream slots available, the crisis center member can choose which user video-audio stream he/she would like to see from a dropdown list ',
+                'title' => 'Малий потік порожній',
+                'content' => 'Якщо є вільні порожні слоти потоку, співробітник кризового центру може вибрати, якого користувача відео-аудіопотоку він/вона хотіли б бачити з  випадаючого списку.',
                 'element' => 'SMALL_EMPTY_STREAM'
             ],
             [
-                'title' => 'Waiting line',
-                'content' => 'Crisis center can find all the users who triggered the alarm, but are not streaming video to video stream slots in the waiting line. Hover over selected user to start a chat, mute/unmute audio or view the video stream of the user.',
+                'title' => 'Черга',
+                'content' => 'Кризовий центр може знайти всіх користувачів, які натиснули сигнал тривоги, але не передають відео на слоти відеопотоку в черзі. Наведіть курсор на вибраного користувача, щоб розпочати чат, вимкнути / увімкнути звук або переглянути відеопотік користувача.',
                 'element' => 'WAITING_LINE',
                 'placement' => 'left'
             ],
             [
-                'title' => 'Sorting select',
-                'content' => 'Select sorting type for users that are on the waiting line',
+                'title' => 'Вибір сортування',
+                'content' => 'Виберіть тип сортування для користувачів в черзі',
                 'element' => 'WAITING_LINE_SORTING',
                 'placement' => 'left'
             ],
             [
-                'title' => 'Police Status',
-                'content' => '“Police status bar” component, shows the status regarding contacting the police. The purpose of this component is to quickly inform the crisis center whether the police has been called.',
+                'title' => 'Статус поліції',
+                'content' => 'Компонент «Статус поліції» показує статус контакту з поліцією. Метою цього компоненту є швидке інформування кризового центру про те, чи викликали поліцію.',
                 'element' => 'HEADER_STATUS',
                 'placement' => 'bottom'
             ],
             [
-                'title' => 'Change police status',
-                'content' => 'Police status can be changed manually by pressing "Called" or "Not called" on the status bar.',
+                'title' => 'Змінити статус поліції',
+                'content' => 'Статус поліції можна змінювати вручну, натиснувши "Викликано" або "Не викликано" на панелі статусу.',
                 'element' => 'POLICE_STATUS',
                 'placement' => 'bottom'
             ],
             [
-                'title' => 'Alarm statistics',
-                'content' => 'Information about alarm can be previewed on police status bar: time, when alarm has first been triggered and quantity of unique users who have called the police via mobile application (user count)',
+                'title' => 'Статистика сигналів тривоги',
+                'content' => 'Відомості про сигали тривоги можна переглянути на панелі статусу поліції: час, коли сигнал спрацював вперше, і кількість унікальних користувачів, які викликали поліцію через мобільний додаток (кількість користувачів).',
                 'element' => 'ALARM_STATISTICS',
                 'placement' => 'bottom'
             ],
             [
-                'title' => 'Administration button',
-                'content' => 'Administration tools for the shelter page',
+                'title' => 'Кнопка адміністрування',
+                'content' => 'Інструменти адміністрування для сторінки shelter',
                 'element' => 'ADMINISTRATION_BUTTON',
                 'placement' => 'left'
             ],
         ],
         'plan' => [
             [
-                'title' => 'Message feed',
-                'content' => 'All messages sent form users who have triggered the alarm can be seen here. To start a chat, mute/unmute audio or view video stream, press on name of the user in the message',
+                'title' => 'Потік повідомлень',
+                'content' => "Усі повідомлення, надіслані користувачами, що надіслали сигнал тривоги, можна побачити тут. Щоб почати чат, вимкнути / увімкнути звук або переглянути відеопотік, натисніть на ім'я користувача в повідомленні.",
                 'element' => 'MESSAGE_FEED_MESSAGE'
             ],
             [
-                'title' => 'Tools',
-                'content' => 'Tools for map navigation and selecting users to message sending component',
+                'title' => 'Інструменти',
+                'content' => 'Інструменти для мапи навігації та вибору користувачів до компоненту надсилання повідомлення',
                 'element' => 'SCHOOL_PLAN_MAP_TOOLS'
             ],
             [
-                'title' => 'Push notification',
-                'content' => 'Push notifications to selected users are sent via this component',
+                'title' => 'Push-сповіщення',
+                'content' => 'Push-сповіщення для вибраних користувачів надіслані через цей компонент',
                 'element' => 'PUSH_NOTIFICATION_TAB',
                 'placement' => 'bottom'
             ],
             [
-                'title' => 'Audio message',
-                'content' => 'Prerecorded or broadcasted ad hoc audio messages are selected in audio component',
+                'title' => 'Звукове повідомлення',
+                'content' => 'Попередньо записані чи передані (трансльовані) ad hoc звукові повідомлення є вибрані у звуковому компоненті.',
                 'element' => 'AUDIO_MESSAGE_TAB',
                 'placement' => 'bottom'
             ],
             [
-                'title' => 'Notification history',
-                'content' => 'A crisis center member can see additional historical/statistical information in "History" tab',
+                'title' => 'Історія сповіщень',
+                'content' => 'Член кризового центру може переглядати додаткову історію/ статистичну інформацію на вкладці "Історія"',
                 'element' => 'MESSAGE_HISTORY_TAB'
             ],
             [
-                'title' => 'Small video',
-                'content' => 'Small video stream component has 7 video stream slots. Video streams are shown in the same order they were displayed on main shelter window.',
+                'title' => 'Мале відео',
+                'content' => 'Компонент малого відеопотоку має 7 слотів відеопотоку. Відеопотоки відображаються в тому ж порядку, в якому вони відображалися на головному вікні Shelter',
                 'element' => 'SMALL_STREAM'
             ],
             [
-                'title' => 'Empty small stream',
-                'content' => 'When there are empty stream slots available, the crisis center member can choose which user video-audio stream he/she would like to see from a dropdown list ',
+                'title' => 'Малий потік порожній',
+                'content' => 'Якщо є вільні порожні слоти потоку, співробітник кризового центру може вибрати, якого користувача відео-аудіопотоку він/вона хотіли б бачити з  випадаючого списку.',
                 'element' => 'SMALL_EMPTY_STREAM'
             ],
             [
-                'title' => 'Waiting line',
-                'content' => 'Crisis center can find all the users who triggered the alarm, but are not streaming video to video stream slots in the waiting line. Hover over selected user to start a chat, mute/unmute audio or view the video stream of the user.',
+                'title' => 'Черга',
+                'content' => 'Кризовий центр може знайти всіх користувачів, які натиснули сигнал тривоги, але не передають відео на слоти відеопотоку в черзі. Наведіть курсор на вибраного користувача, щоб розпочати чат, вимкнути / увімкнути звук або переглянути відеопотік користувача.',
                 'element' => 'WAITING_LINE',
                 'placement' => 'left'
             ],
             [
-                'title' => 'Sorting select',
-                'content' => 'Select sorting type for users that are on the waiting line',
+                'title' => 'Вибір сортування',
+                'content' => 'Виберіть тип сортування для користувачів в черзі.',
                 'element' => 'WAITING_LINE_SORTING',
                 'placement' => 'left'
             ],
             [
-                'title' => 'Police Status',
-                'content' => '“Police status bar” component, shows the status regarding contacting the police. The purpose of this component is to quickly inform the crisis center whether the police has been called.',
+                'title' => 'Статус поліції',
+                'content' => 'Компонент «Статус поліції» показує статус контакту з поліцією. Метою цього компоненту є швидке інформування кризового центру про те, чи викликали поліцію.',
                 'element' => 'HEADER_STATUS',
                 'placement' => 'bottom'
             ],
             [
-                'title' => 'Change police status',
-                'content' => 'Police status can be changed manually by pressing "Called" or "Not called" on the status bar.',
+                'title' => 'Змінити статус поліції',
+                'content' => 'Статус поліції можна змінювати вручну, натиснувши "Викликано" або "Не викликано" на панелі статусу.',
                 'element' => 'POLICE_STATUS',
                 'placement' => 'bottom'
             ],
             [
-                'title' => 'Alarm statistics',
-                'content' => 'Information about alarm can be previewed on police status bar: time, when alarm has first been triggered and quantity of unique users who have called the police via mobile application (user count)',
+                'title' => 'Статистика сигналів тривоги',
+                'content' => 'Відомості про сигали тривоги можна переглянути на панелі статусу поліції: час, коли сигнал спрацював вперше, і кількість унікальних користувачів, які викликали поліцію через мобільний додаток (кількість користувачів).',
                 'element' => 'ALARM_STATISTICS',
                 'placement' => 'bottom'
             ],
             [
-                'title' => 'Administration button',
-                'content' => 'Administration tools for the shelter page',
+                'title' => 'Кнопка адміністрування',
+                'content' => 'Інструменти адміністрування для сторінки shelter',
                 'element' => 'ADMINISTRATION_BUTTON',
                 'placement' => 'left'
             ],

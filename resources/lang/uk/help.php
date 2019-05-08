@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'header' => 'Help and Documentation',
-    'faq' => 'Frequently Asked Questions and Answers',
-    'instructions' => 'Quick Use Instructions',
-    'instructions_police' => 'Quick Use Instructions (police)',
-    'download' => 'Download Quick Use Instruction',
-    'print' => 'Print Quick Use Instruction',
+    'header' => 'Підтримка та Документація',
+    'faq' => 'Популярні питання та відповіді',
+    'instructions' => 'Інструкції з швидкого використання',
+    'instructions_police' => 'Інструкції з швидкого використання (поліція)',
+    'download' => 'Завантажити Інструкції з швидкого використання',
+    'print' => 'Роздрукувати Інструкції з швидкого використання',
 ];

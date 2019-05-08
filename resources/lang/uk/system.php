@@ -1,35 +1,35 @@
 <?php
 return [
-    'save' => 'Save',
-    'cancel'    => 'Cancel',
-    'remove'    => 'Remove',
-    'edit'      => 'Edit',
+    'save' => 'Зберегти',
+    'cancel'    => 'Відмінити',
+    'remove'    => 'Видалити',
+    'edit'      => 'Додати',
     'menu' => [
         'main' => [
-            'general' => 'General Settings',
-            'school' => 'Shelters management',
-            'buttons' => 'IP Buttons',
-            'map' => 'Map',
+            'general' => 'Загальні налаштування',
+            'school' => 'Управління кризовими центрами',
+            'buttons' => 'IP Кнопки',
+            'map' => 'Мапа',
         ],
         'general' => [
-            'system' => 'System',
-            'help' => 'Help defaults',
-            'push' => 'Push notification defaults',
-            'sms' => 'SMS texts defaults'
+            'system' => 'Система',
+            'help' => 'Допомога за замовчуванням',
+            'push' => 'Push-сповіщення за замовчуванням',
+            'sms' => 'Текст SMS за замовчуванням'
         ],
     ],
     'contents' => [
         'system' => [
-            'title' => 'System',
-            'description' => 'Default system settings',
-            'timezone' => 'Default timezone',
-            'language' => 'Default language',
-            'reconnect' => 'Default Audio reconnect time',
-            'ordering' => 'Default ordering in waiting line',
-            'sms' => 'SMS provider',
-            'phone' => 'Phone system provider',
-            'user' => 'User data source',
-            'device' => 'Device location source'
+            'title' => 'Система',
+            'description' => 'Налаштування системи за замовчуванням',
+            'timezone' => 'Часовий пояс за замовчуванням',
+            'language' => 'мова за замовчуванням',
+            'reconnect' => 'Час відновлення аудіо за замовчуванням',
+            'ordering' => 'Порядок за замовчуванням при черзі',
+            'sms' => 'SMS провайдер',
+            'phone' => 'Провайдер телефонної системи',
+            'user' => 'Джерело даних користувача',
+            'device' => 'Джерело місцезнаходження пристрою'
         ],
 		'sources' => [
 			'ad'		=> 'Active Directory',
@@ -39,49 +39,49 @@ return [
 			'google'	=> 'Google Maps',
 		],
     'push' => [
-        'title' => 'Push notifications',
-        'description' => 'Setup default push notification settings',
-        'new' => 'New Defaut Notification',
+        'title' => 'Push-сповіщення',
+        'description' => 'Встановіть налаштування за замовчуванням для Push-сповіщень',
+        'new' => 'Нове сповіщення за замовчуванням',
         'table' => [
-            'label' => 'Notification Label',
-            'content' => 'Notification Content',
-            'options' => 'Options',
+            'label' => 'Мітка сповіщень',
+            'content' => 'Зміст сповіщень',
+            'options' => 'Параметри',
         ]
     ],
     'sms' => [
         'title' => 'SMS',
-        'description' => 'Setup default sms messages when alarm is triggered',
-        'trigger' => 'Initial alarm triggering message',
-        'information' => 'Crisis center information message',
-        'symbols' => 'Symbols left:'
+        'description' => 'Налаштуйте стандартні SMS при спрацюванні сигналу тривоги',
+        'trigger' => 'Повідомлення про початковий сигнал тривоги',
+        'information' => 'Інформаційне повідомлення кризового центру',
+        'symbols' => 'Символів залишилось:'
     ],
     'school' => [
-        'title' => 'Setup Schools',
-        'description' => 'Manage school settings',
-        'sync' => 'Sync schools',
-        'add' => 'Add new',
+        'title' => 'Налаштування шкіл',
+        'description' => 'Управляти налаштуваннями школи',
+        'sync' => 'Синхронізувати школи',
+        'add' => 'Додати нову',
         'table' => [
-            'name' => 'School name',
+            'name' => 'Назва школи',
             'mac' => 'Shelter PC MAC',
             'ip' => 'Shelter PC IP',
             'ad' => 'Active Directory ID',
-            'phone' => 'Phone System ID',
-            'options' => 'Options',
+            'phone' => 'ID системи телефону',
+            'options' => 'Параметри',
             'url' => 'Url',
-            'police_number' => 'Police number',
-            'use_gps' => 'Use GPS',
-            'display' => 'Display',
-            'public' => 'Public',
-            'controller' => 'Controller'
+            'police_number' => 'Номер поліції',
+            'use_gps' => 'Користуйтесь GPS',
+            'display' => 'Дисплей',
+            'public' => 'Публічний',
+            'controller' => 'Контролер'
         ]
     ],
     'maps' => [
-        'title' => 'Maps',
-        'description' => 'Sync and preview maps',
-        'sync' => 'Sync Maps'
+        'title' => 'Мапи',
+        'description' => 'Синхронізувати та переглянути карти',
+        'sync' => 'Синхронізувати мапи'
     ],
     'defaults'  => [
-      'none'      => 'None'
+      'none'      => 'Жоден'
     ]
   ]
 ];

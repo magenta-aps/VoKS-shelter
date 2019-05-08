@@ -9,8 +9,8 @@
 
 return [
     'websockets' => [
-        'down' => 'Server is unreachable. Please wait.'
+        'down' => 'Сервер недоступний. Зачекайте.'
     ],
-    'generic' => 'Error',
-    'ip_not_found' => 'Your IP address (:ip) is not assigned to any school.'
+    'generic' => 'Помилка',
+    'ip_not_found' => 'Ваша IP-адреса (: ip) не прив\'язана до будь-якої школи.'
 ];

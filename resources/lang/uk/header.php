@@ -3,50 +3,50 @@
 return [
     // Logo
     'logo' => [
-        'title' => 'BCOME SAFE'
+        'title' => 'BCOMESAFE'
     ],
 
     // Menus
     'menu' => [
         'main' => [
-            'help' => 'Help documentation',
-            'plan' => 'School plan',
-            'stream' => 'Video streams'
+            'help' => 'Довідкова документація',
+            'plan' => 'План школи',
+            'stream' => 'Відео стрім'
         ],
         'user' => [
-            'help' => 'Help',
-            'settings' => 'Settings'
+            'help' => 'Допомога',
+            'settings' => 'Налаштування'
         ]
     ],
 
     // Heading police status
     'heading' => [
-        'no' => 'Police has not been called',
-        'yes' => 'Police has been called',
-        'asked' => 'Desktop App has asked to call the police',
-        'cancelled' => 'Police has not been called'
+        'no' => 'Поліцію не було викликано',
+        'yes' => 'Викликано поліцію',
+        'asked' => 'Desktop App попросив викликати поліцію',
+        'cancelled' => 'Поліцію не було викликано'
     ],
 
     // Change police status controls
     'police' => [
-        'title' => 'Change police status',
-        'no' => 'Not called',
-        'yes' => 'Called'
+        'title' => 'Змінити статус поліції',
+        'no' => 'Викликано',
+        'yes' => 'Не викликано'
     ],
 
     // Shelter status
     'status' => [
         // Alarm status
         'alarm' => [
-            'on' => 'Alarm triggered: ',
-            'off' => 'Alarm is not triggered'
+            'on' => 'Сигнал тривоги: ',
+            'off' => 'Сигнал тривоги не включено'
         ],
 
         // Police status
         // Number of users that called the police
         'police' => [
-            'title' => 'Police called',
-            'users' => 'users'
+            'title' => 'Зателефоновано до поліції',
+            'users' => 'Користувачі'
         ]
     ]
 ];

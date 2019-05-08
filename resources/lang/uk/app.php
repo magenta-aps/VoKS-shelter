@@ -4,72 +4,72 @@ return [
     'header' => [
         'menu' => [
             'main' => [
-                'help' => 'Help documentation',
-                'plan' => 'School plan',
-                'stream' => 'Video streams'
+                'help' => 'Довідкова документація',
+                'plan' => 'План школи',
+                'stream' => 'Відео стрім'
             ],
             'users' => [
-                'help' => 'Help',
-                'settings' => 'Settings'
+                'help' => 'Допомога',
+                'settings' => 'Налаштування'
             ]
         ]
     ],
     'stream' => [
-        'add' => 'Add',
-        'chat_with' => 'Chat with:',
-        'conversation' => 'Conversation',
-        'minimize' => 'Close stream',
-        'close_chat' => 'Close chat',
+        'add' => 'Додати',
+        'chat_with' => 'Чат із:',
+        'conversation' => 'Бесіда',
+        'minimize' => 'Закрити потік',
+        'close_chat' => 'Вибрати чат',
         'police_called' => '112',
         'mobile' => [
-            'battery_loading' => 'Battery: Loading',
-            'battery' => 'Battery: ',
+            'battery_loading' => 'Акумулятор: Завантаження',
+            'battery' => 'Акумулятор: ',
 
         ],
-        'placeholder' => 'Type your message',
+        'placeholder' => 'Введіть повідомлення',
         'button' => [
-            'messages' => 'Messages',
-            'answer' => 'Answer',
-            'hold' => 'On Hold',
-            'minimize' => 'Minimize',
-            'mute' => 'Mute',
-            'unmute' => 'Unmute',
-            'zoom_in' => 'Zoom in',
-            'zoom_out' => 'Zoom out',
+            'messages' => 'Повідомлення',
+            'answer' => 'Відповідь',
+            'hold' => 'Утримується',
+            'minimize' => 'Згорнути',
+            'mute' => 'Без звуку',
+            'unmute' => 'Увімкнути звук',
+            'zoom_in' => 'Приближення',
+            'zoom_out' => 'Віддалення',
         ],
         'empty' => [
-            'title' => 'Empty place for video stream',
-            'select' => 'Select stream from waiting line or list below',
-            'placeholder' => 'Select stream',
+            'title' => 'Порожнє місце для відеопотоку',
+            'select' => 'Виберіть потік з черги або списку нижче',
+            'placeholder' => 'Вибрати потік',
         ]
     ],
     'message' => [
-        'stream' => 'Message stream',
-        'type' => 'Type your message'
+        'stream' => 'Потік повідомлень',
+        'type' => 'Введіть повідомлення'
     ],
     'police' => [
         'called' => [
-            'no' => 'Police has not been called.',
-            'yes' => 'Police has been called.',
-            'asked' => 'Desktop App has asked to call the police'
+            'no' => 'Поліцію не було викликано.',
+            'yes' => 'Викликано поліцію.',
+            'asked' => 'Desktop App попросив викликати поліцію'
         ],
         'switch' => [
-            'status' => 'Change police status',
-            'called' => 'Called',
-            'not_called' => 'Not called'
+            'status' => 'Змінити статус поліції',
+            'called' => 'Викликано',
+            'not_called' => 'Не викликано'
         ],
         'status' => [
-            'label' => 'Alarm status',
-            'on' => 'ON',
-            'off' => 'OFF',
-            'started' => 'Started',
-            'not_started' => 'Not started',
-            'police_called' => 'Police called',
-            'users' => 'users',
-            'times' => 'times'
+            'label' => 'Статус тривоги',
+            'on' => 'Ввімкнути',
+            'off' => 'Вимкнути',
+            'started' => 'Запущено',
+            'not_started' => 'Не запущено',
+            'police_called' => 'Зателефоновано до поліції',
+            'users' => 'Користувачі',
+            'times' => 'Кількість разів'
         ]
     ],
     'trigger' => [
-        'message' => 'Connecting to the shelter, please wait.....'
+        'message' => 'З\'єднуємо з центром управління кризою, зачекайте будь ласка.....'
     ]
 ];

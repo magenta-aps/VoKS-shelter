@@ -2,35 +2,35 @@
 
 return [
     'alarm' => [
-        'title' => 'Alarm trigger',
-        'desc' => 'Set crisis message that is going to be played to the crisis center when Alarm is triggered',
+        'title' => 'Сигнал тривоги',
+        'desc' => 'Встановіть кризове повідомлення, яке буде відтворено в кризовий центр, коли тривожна сигналізація',
         'field' => [
             'group' => [
-                'label' => 'Crisis center',
-                'value' => 'Please select crisis center'
+                'label' => 'Кризовий центр',
+                'value' => 'Будь ласка виберіть повідомлення про кризу'
             ],
             'media' => [
-                'label' => 'Crisis message',
-                'value' => 'Please select crisis message'
+                'label' => 'Повідомлення про кризу',
+                'value' => 'Будь ласка виберіть повідомлення про кризу'
             ],
             'interrupt' => [
-                'label' => 'Choose message to the other part in a call',
-                'value' => 'None'
+                'label' => 'Виберіть повідомлення для іншої частини у виклику',
+                'value' => 'Жоден'
             ],
             'save' => [
-                'label' => 'Save alarm trigger settings'
+                'label' => 'Зберегти налаштування сигналу тривоги'
             ]
         ]
     ],
     'broadcast' => [
-        'title' => 'Live broadcast',
-        'desc' => 'Set live broadcast default phone number',
+        'title' => 'Пряма трансляція',
+        'desc' => 'Встановити номер телефону по замовчуванню для трансляції',
         'field' => [
             'number' => [
-                'label' => 'Phone number for live broadcasting'
+                'label' => 'Номер телефону для трансляції онлайн'
             ],
             'save' => [
-                'label' => 'Save phone number'
+                'label' => 'Зберегти номер телефону'
             ]
         ]
     ]

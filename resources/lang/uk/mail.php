@@ -2,13 +2,13 @@
 return [
     'alarm'	=> [
 		'initial'	=> [
-			'subject'	=> 'BCS Alarm (initial)!',
+			'subject'	=> 'BCS сигнал (початковий)!',
 		],
 		'secondary'	=> [
-			'subject'	=> 'BCS Alarm (secondary)!',
+			'subject'	=> 'BCS сигнал (другий)!',
 		],
     'test'	=> [
-			'subject'	=> 'BCS Alarm (test)!',
+			'subject'	=> 'BCS сигнал (тест)!',
 		],
 	],
 ];

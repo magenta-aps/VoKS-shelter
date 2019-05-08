@@ -2,15 +2,15 @@
 
 return [
     'name' => [
-        'descending' => 'Name Z-A',
-        'ascending' => 'Name A-Z'
+        'descending' => 'Імена Я-А',
+        'ascending' => 'Імена А-Я'
     ],
     'messages' => [
-        'descending' => 'Most Unread Messages',
-        'ascending' => 'Least Unread Messages'
+        'descending' => 'Більшість непрочитаних повідомлень',
+        'ascending' => 'Менше непрочитаних повідомлень'
     ],
     'activity' => [
-        'descending' => 'Latest Activity',
-        'ascending' => 'Oldest Activity'
+        'descending' => 'Остання активність',
+        'ascending' => 'Найдавніша активність'
     ],
 ];

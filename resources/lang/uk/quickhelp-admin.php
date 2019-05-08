@@ -1,28 +1,28 @@
 <?php
 
 return [
-    'header' => 'Quick help',
-    'description' => 'Quick help settings',
-    'file_label' => 'Quick instructions file (PDF)',
-    'police_file_label' => 'Police quick instructions file (PDF)',
-    'file_description' => 'File description',
-    'browse' => 'Browse',
-    'save' => 'Save',
-    'faq' => 'Frequently Asked Questions',
-    'faq_description' => 'Import default Frequently Asked Questions or setup new ones.',
+    'header' => 'Швидка допомога',
+    'description' => 'Налаштування швидкої допомоги',
+    'file_label' => 'Короткі інструкції (PDF)',
+    'police_file_label' => 'Короткі інструкції для поліції (PDF)',
+    'file_description' => 'Опис документу',
+    'browse' => 'Приєднати',
+    'save' => 'Зберегти',
+    'faq' => 'Популярні питання',
+    'faq_description' => 'Імпорт за замовчуванням популярних питаннь або налаштування нових.',
     'faq_capitals' => 'FAQ',
-    'hide' => 'Hide',
-    'new_faq' => 'New FAQ',
-    'question' => 'Question',
-    'answer' => 'Answer',
-    'options' => 'Options',
-    'download' => 'Download default PDF instructions',
-    'download_police' => 'Download default police PDF instructions',
-    'enter_text' => 'Enter text here',
-    'import_defaults' => 'Import defaults',
+    'hide' => 'Приховати',
+    'new_faq' => 'Нові FAQ',
+    'question' => 'Питання',
+    'answer' => 'Відповіді',
+    'options' => 'Параметри',
+    'download' => 'Завантажити інструкції PDF за замовчуванням',
+    'download_police' => 'Завантажити інструкції PDF для поліції за замовчуванням',
+    'enter_text' => 'Введіть текст сюди',
+    'import_defaults' => 'Імпортувати за замовчуванням',
     'tour_ui' => [
-        'next' => 'Next',
-        'prev' => 'Prev'
+        'next' => 'Наступний',
+        'prev' => 'Попередній'
     ],
 
 ];

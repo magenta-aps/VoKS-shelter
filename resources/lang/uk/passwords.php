@@ -13,24 +13,24 @@ return [
 	|
 	*/
 
-	"password" => "Passwords must be at least six characters and match the confirmation.",
-	"user" => "We can't find a user with that e-mail address.",
-	"token" => "This password reset token is invalid.",
-	"sent" => "We have e-mailed your password reset link!",
-	"reset" => "Your password has been reset!",
+	"password" => "Паролі повинні містити принаймні шість символів та відповідати один одному при підтвердженні.",
+	"user" => "Ми не можемо знайти користувача з цією адресою електронної пошти.",
+	"token" => "Цей маркер скидання пароля недійсний.",
+	"sent" => "Ми надіслали електронною поштою посилання на зміну пароля!",
+	"reset" => "Ваш пароль змінено!",
 	"view" => [
-		"login" => "Login",
-		"username" => "Username",
-		"password" => "Password",
-		"remember_me" => "Remember me",
-		"forgot_password" => "Forgot your password?",
-		"name" => "Name",
-		"email" => "E-Mail Address",
-		"confirm_password" => "Confirm Password",
-		"register" => "Register",
-		"reset_password" => "Reset Password",
-		"send_reset_password" => "Send Password Reset Link"
+		"login" => "Вхід",
+		"username" => "Ім'я користувача",
+		"password" => "Пароль",
+		"remember_me" => "Запам'ятати мене",
+		"forgot_password" => "Забули пароль?",
+		"name" => "Ім'я",
+		"email" => "Адреса електронної пошти",
+		"confirm_password" => "Підтвердити пароль",
+		"register" => "Реєстрація",
+		"reset_password" => "Перевстановити пароль",
+		"send_reset_password" => "Надіслати посилання на зміну пароля"
 	],
-	"invalid_input" => "Whoops! There were some problems with your input."
+	"invalid_input" => "Ой! Виникли деякі проблеми з вашим входом."
 
 ];
