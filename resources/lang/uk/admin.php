@@ -1,93 +1,93 @@
 <?php
 return [
-    'save' => 'Безпечно',
+    'save' => 'Зберегти',
     'tabs' => [
-        'general' => 'General settings',
-        'help' => 'Help',
-        'sms' => 'Information SMS management',
-        'phone' => 'Phone System',
-        'push' => 'Push notification management',
-        'buttons' => 'IP buttons',
-        'team' => 'Crisis center list',
-        'reset' => 'Reset Shelter'
+        'general' => 'Загальні налаштування',
+        'help' => 'Допомога',
+        'sms' => 'Інформаційне управління SMS',
+        'phone' => 'Система телефону',
+        'push' => 'Керування Push-сповіщеннями',
+        'buttons' => 'ІР-кнопки',
+        'team' => 'Перелік кризових центрів',
+        'reset' => 'Перезавантаження Кризового центру'
     ],
     'general' => [
-        'title' => 'General settings',
-        'description' => 'Setup general settings',
+        'title' => 'Загальні налаштування',
+        'description' => 'Встановіть загальні налаштування/Встановлення загальних налаштувань',
         'labels' => [
-            'timezone' => 'Default timezone',
-            'language' => 'Default language',
-            'reconnect' => 'Default reconnect',
-            'ordering' => 'Default ordering in waiting line'
+            'timezone' => 'Часовий пояс за замовчуванням',
+            'language' => 'мова за замовчуванням',
+            'reconnect' => 'Стандартне поновлення підключення (повторне підключення за замовчуванням)',
+            'ordering' => 'Стандартний порядок у черзі  '
         ],
-        'save' => 'Save'
+        'save' => 'Зберегти'
     ],
     'api' => [
-        'title' => 'API Configuration',
-        'description' => 'Explanation text about api configuration',
+        'title' => 'API Конфігурація',
+        'description' => 'Пояснювальний текст про  api конфігурацію',
         'labels' => [
-            'sms_provider' => 'SMS provider',
-            'phone_system_provider' => 'Phone system provider',
-            'user_data_source' => 'User data source',
-            'client_data_source' => 'Device location source'
+            'sms_provider' => 'SMS провайдер',
+            'phone_system_provider' => 'Провайдер системи телефона',
+            'user_data_source' => 'Джерело даних користувача',
+            'client_data_source' => 'Джерело місцезнаходження пристрою'
         ]
     ],
     'buttons' => [
-        'title' => 'Buttons',
-        'description' => 'Set up IP buttons',
-        'add' => 'Add Button',
+        'title' => 'Кнопки',
+        'description' => 'Налаштування кнопок IP',
+        'add' => 'Додати кнопку',
         'table' => [
-            'number' => 'Button number',
-            'name' => 'Button name',
-            'cbf' => 'Campus, Building, Floor',
-            'mac' => 'Shelter PC MAC',
-            'ip' => 'Shelter PC IP',
+            'number' => 'Номер кнопки',
+            'name' => 'Назва кнопки',
+            'cbf' => 'Територія, будівля, поверх',
+            'mac' => 'Кризовий центр PC MAC',
+            'ip' => 'Кризовий центр PC IP',
             'x' => 'X',
             'y' => 'Y',
-            'options' => 'Options'
+            'options' => 'Параметри'
         ],
-        'placeholder' => 'Please select'
+        'placeholder' => 'Будь ласка виберіть'
 
     ],
     'maps' => [
-        'title' => 'Maps',
-        'description' => 'Explanation about description',
-        'sync' => 'Sync manually'
+        'title' => 'Мапи (карти)',
+        'description' => 'Пояснення щодо опису',
+        'sync' => 'Синхронізувати вручну'
     ],
     'push' => [
-        'title' => 'Push notifications',
-        'description' => 'Manage push notification templates',
+        'title' => 'Push-сповіщення',
+        'description' => 'Керуйте (керувати) шаблонами Push-сповіщень',
         'button' => [
-            'new' => 'New Default Notification',
-            'import' => 'Import defaults',
-            'show' => 'Show',
-            'hide' => 'Hide'
+            'new' => 'Нове сповіщення про установки по замовчуванню',
+            'import' => 'Імпортувати налаштування за замовчуванням',
+            'show' => 'Показати',
+            'hide' => 'Приховати'
         ],
         'table' => [
-            'label' => 'Notification Label',
-            'content' => 'Notification Content',
-            'options' => 'Options',
+            'label' => 'Мітка сповіщень',
+            'content' => 'Зміст сповіщень ',
+            'options' => 'Параметри (опції)',
         ]
     ],
     'sms' => [
-        'title' => 'SMS Messages',
-        'description' => 'Setup sms messages, which will be sent on alarm trigger.',
-        'trigger' => 'Initial alarm triggering message',
-        'symbols' => 'Symbols left:',
-        'default' => 'Default message:',
-        'information' => 'Crisis center information message',
-        'save' => 'Save',
+        'title' => 'SMS повідомлення',
+        'description' => 'Налаштуйте sms-повідомлення, які будуть відправлятися при сигналі тривоги.',
+        'trigger' => 'Повідомлення про початковий сигнал тривоги',
+        'symbols' => 'Символів залишилось:',
+        'default' => 'Стандартне повідомлення (повідомлення по замовчуванню):',
+        'information' => 'Інформаційне повідомлення кризового центру',
+        'save' => 'Зберегти',
     ],
     'team' => [
-        'title' => 'Crisis Center',
-        'description' => 'Synchronize and preview crisis center members',
+        'title' => 'Кризовий центр',
+        'description' => 'Синхронізуйте та перегляньте членів кризового центру',
         'button' => [
-            'sync' => 'Sync members',
+            'sync' => 'Члени процесу синхронізації',
         ],
         'table' => [
-            'name' => 'Name',
-            'email' => 'Email',
-            'phone' => 'Phone number'
+            'name' => 'Ім\'я',
+            'email' => 'Електронна пошта',
+            'phone' => 'Номер мобільного телефону'
         ]
     ],
 ];
