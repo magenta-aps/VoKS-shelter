@@ -74,6 +74,7 @@ class CmxLocation
                 foreach ($data as $client) {
                   if (empty($client['macAddress'])) continue;
                   if (empty($client['username'])) continue;
+                  if (empty($client['ssid'])) continue;
                   if ($client['ssid'] == 'NOT APPLICABLE') continue;
                   $location = array(
                     'x'           => !empty($client['locationCoordinate']['x']) ? $client['locationCoordinate']['x'] : 0,

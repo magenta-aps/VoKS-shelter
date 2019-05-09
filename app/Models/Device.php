@@ -626,7 +626,7 @@ class Device extends BaseModel
         $debug = config('app.debug');
         //Deactivate all devices
         if ($debug) {
-          echo "Setting devices to non active";
+          echo "Setting devices to non active", PHP_EOL;
           $time_start = microtime(true);
         }
         \DB::update("UPDATE devices SET active = 0 WHERE active = 1");
