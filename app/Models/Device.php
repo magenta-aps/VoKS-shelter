@@ -726,7 +726,7 @@ class Device extends BaseModel
             echo "Iteration: " .$i, PHP_EOL;
             echo "Found: " . $found_count, PHP_EOL;
             echo "Updated: " . $updated_count, PHP_EOL;
-            echo "Inrested: " . $inserted_count, PHP_EOL;
+            echo "Inserted: " . $inserted_count, PHP_EOL;
             echo "Skipped: " . $skipped_count, PHP_EOL;
             if (!empty($inserted_client)) {
               echo PHP_EOL;
