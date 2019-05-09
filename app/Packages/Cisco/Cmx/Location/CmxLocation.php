@@ -30,7 +30,6 @@ class CmxLocation
                 }
                 if (empty($client)
                     || empty($client['macAddress'])
-                    || empty($client['ssid'])
                     || empty($client['username'])
                     ) {
                     return [
@@ -39,9 +38,7 @@ class CmxLocation
                         'floor_id'    => '',
                         'campus_id'   => '',
                         'mac_address' => '',
-                        'username'    => '',
-                        'ss_id'       => '',
-                        'active'      => 0
+                        'username'    => ''
                     ];
                 }
                 $location = array(
@@ -49,9 +46,7 @@ class CmxLocation
                   'y'           => !empty($client['locationCoordinate']['y']) ? $client['locationCoordinate']['y'] : 0,
                   'floor_id'    => !empty($client['floorRefId']) ? $client['floorRefId'] : '',
                   'mac_address' => $client['macAddress'],
-                  'username'    => $client['username'],
-                  'ss_id'       => $client['ssid'],
-                  'active'      => !empty($client['associated']) && $client['ssid'] != 'NOT APPLICABLE' ? 1 : 0
+                  'username'    => $client['username']
                 );
 
                 return $location;
@@ -78,16 +73,15 @@ class CmxLocation
 
                 foreach ($data as $client) {
                   if (empty($client['macAddress'])) continue;
-                  if (empty($client['ssid'])) continue;
                   if (empty($client['username'])) continue;
+                  if (empty($client['ssid'])) continue;
+                  if ($client['ssid'] == 'NOT APPLICABLE') continue;
                   $location = array(
                     'x'           => !empty($client['locationCoordinate']['x']) ? $client['locationCoordinate']['x'] : 0,
                     'y'           => !empty($client['locationCoordinate']['y']) ? $client['locationCoordinate']['y'] : 0,
                     'floor_id'    => !empty($client['floorRefId']) ? $client['floorRefId'] : '',
                     'mac_address' => $client['macAddress'],
-                    'username'    => $client['username'],
-                    'ss_id'       => $client['ssid'],
-                    'active'      => !empty($client['associated']) && $client['ssid'] != 'NOT APPLICABLE' ? 1 : 0
+                    'username'    => $client['username']
                   );
                   $locations[] = $location;
                 }
@@ -115,9 +109,7 @@ class CmxLocation
                 'y'           => 0,
                 'floor_id'    => '',
                 'mac_address' => '',
-                'username'    => '',
-                'ss_id'       => '',
-                'active'      => 0
+                'username'    => ''
             ];
         }
 

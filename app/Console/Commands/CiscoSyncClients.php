@@ -123,7 +123,11 @@ class CiscoSyncClients extends Command {
           }
 
           //*** Debug ***
-          if ($debug) $time_start = microtime(true);
+          if ($debug) {
+            echo "Starting Clients update in DB";
+            echo PHP_EOL;
+            $time_start = microtime(true);
+          }
 
           //Update Clients in DB
           Device::updateClients($clients);
