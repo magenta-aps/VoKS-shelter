@@ -716,7 +716,10 @@ class Device extends BaseModel
               )
               VALUES $join
             ");
-            if ($debug) $inserted_count++;
+            if ($debug) {
+              $inserted_count++;
+              $inserted_client = $client;
+            }
           }
           if ($i % 500 == 0) {
             echo "Iteration: " .$i, PHP_EOL;
@@ -724,6 +727,10 @@ class Device extends BaseModel
             echo "Updated: " . $updated_count, PHP_EOL;
             echo "Inrested: " . $inserted_count, PHP_EOL;
             echo "Skipped: " . $skipped_count, PHP_EOL;
+            echo PHP_EOL;
+            echo "Last insert:", PHP_EOL;
+            print_r($inserted_client);
+            echo PHP_EOL;
           }
           $i++;
         }
