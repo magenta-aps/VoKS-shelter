@@ -645,9 +645,9 @@ class Device extends BaseModel
           $inserted_count=0;
           $skipped_count=0;
           $i=1;
+          $inserted_client = array();
         }
         foreach ($clients as $client) {
-          $inserted_client = array();
           if (env('SCHOOL_ID')) {
             $client['school_id'] = env('SCHOOL_ID');
           }
