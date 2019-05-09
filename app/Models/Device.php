@@ -647,6 +647,7 @@ class Device extends BaseModel
           $i=1;
         }
         foreach ($clients as $client) {
+          $inserted_client = array();
           if (env('SCHOOL_ID')) {
             $client['school_id'] = env('SCHOOL_ID');
           }
@@ -727,10 +728,12 @@ class Device extends BaseModel
             echo "Updated: " . $updated_count, PHP_EOL;
             echo "Inrested: " . $inserted_count, PHP_EOL;
             echo "Skipped: " . $skipped_count, PHP_EOL;
-            echo PHP_EOL;
-            echo "Last insert:", PHP_EOL;
-            print_r($inserted_client);
-            echo PHP_EOL;
+            if (!empty($inserted_client)) {
+              echo PHP_EOL;
+              echo "Last insert:", PHP_EOL;
+              print_r($inserted_client);
+              echo PHP_EOL;
+            }
           }
           $i++;
         }
