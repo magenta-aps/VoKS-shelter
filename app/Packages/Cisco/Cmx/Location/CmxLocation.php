@@ -81,8 +81,7 @@ class CmxLocation
                     'y'           => !empty($client['locationCoordinate']['y']) ? $client['locationCoordinate']['y'] : 0,
                     'floor_id'    => !empty($client['floorRefId']) ? $client['floorRefId'] : '',
                     'mac_address' => $client['macAddress'],
-                    'username'    => $client['username'],
-                    'ssid'        => $client['ssid']
+                    'username'    => $client['username']
                   );
                   $locations[] = $location;
                 }
