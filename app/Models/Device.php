@@ -716,7 +716,7 @@ class Device extends BaseModel
               )
               VALUES $join
             ");
-            if ($debug) $inserted_count=0;
+            if ($debug) $inserted_count++;
           }
           if ($i % 500 == 0) {
             echo "Iteration: " .$i, PHP_EOL;
