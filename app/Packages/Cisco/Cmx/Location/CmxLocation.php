@@ -69,7 +69,7 @@ class CmxLocation
     public static function getAllCoordinates()
     {
         return static::pullLocations(
-            array(),
+            array('associatedOnly' => 'true'),
             function ($data) {
                 $locations = [];
                 if (empty($data)) {
