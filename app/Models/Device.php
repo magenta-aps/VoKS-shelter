@@ -240,6 +240,20 @@ class Device extends BaseModel
           }
         }
       }
+      //Ios and Pcapp do not send Mac Address (if exception config is disabled)
+      elseif (!$this->getAttribute('mac_address')) {
+        //Create uniq dummy mac address for device
+        $t_arr = str_split(time());
+        $rand = rand(10, 99);
+
+        $mac_address = $t_arr[0] . $t_arr[1] . ':';
+        $mac_address .= $t_arr[2] . $t_arr[3] . ':';
+        $mac_address .= $t_arr[4] . $t_arr[5] . ':';
+        $mac_address .= $t_arr[6] . $t_arr[7] . ':';
+        $mac_address .= $t_arr[8] . $t_arr[9] . ':';
+        $mac_address .= $rand;
+        $device['mac_address'] = $mac_address;
+      }
       
       return $device;
     }

@@ -76,6 +76,10 @@ class DeviceController extends Controller
             if (!config('alarm.use_mac_address_for_pcapp') && $device_type == 'desktop') {
               $mac_address = NULL;
             }
+            //Android exceptions
+            if (!config('alarm.use_mac_address_for_android') && $device_type == 'android') {
+              $mac_address = NULL;
+            }
             $device->setAttribute('mac_address', $mac_address);
             $device->setAttribute('push_notification_id', $request->get('gcm_id'));
             $device->setAttribute('fullname', $request->get('user_name'));
