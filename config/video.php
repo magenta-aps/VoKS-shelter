@@ -9,7 +9,7 @@
 
 return [
     'do_recording' 	=> env('VIDEO_DO_RECORDING', false),
-    'base_url' => env('VIDEO_BASE_URL', 'http://localhost:8080/'),
+    'base_url' => env('VIDEO_BASE_URL', 'https://loc.bcomesafe.com:3032/'),
     'endpoints'     => [
             'start' => env('VIDEO_START_ENDPOINT', 'start'),
             'stop' => env('VIDEO_STOP_ENDPOINT', 'stop')

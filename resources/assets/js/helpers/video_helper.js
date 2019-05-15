@@ -2,67 +2,61 @@
 (function() {
     'use strict';
 
-    var videoFactory = function() {
+    var videoFactory = function($http, Toast, $translate) {
         var Recorder = function() {
  
-	    this.url = "https://loc.bcomesafe.com:3032/";
-            this.recording = 0;
+	    this.url = config['video-base-url'];
+	    console.log(this.url);
 
             this.startRecording = function() {
                 var start_url = this.url + "start";
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", start_url, true);
-                xhr.send();
-
-                this.recording = 1;
-            };
+            	$http.get(start_url);
+	    };
 
 
 	     this.stopRecording = function(name) {
                 var stop_url = this.url + "stop";
                 var data = {name: name || ""};
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", stop_url, true);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            Toast.push('success', $translate.instant('toast.contents.reset.video.success'));
-                        } else {
-                            Toast.push('error', $translate.instant('toast.contents.reset.video.error'));
-                        }
-                        setTimeout(function() {
-                        }, 500);
-                    }
-                };
-                xhr.send(JSON.stringify(data));
 
-                this.recording = 0;
+		$http.post(stop_url, JSON.stringify(data))
+		.success( function () {
+		    Toast.push('success', $translate.instant('toast.contents.reset.video.success'));
+		})
+		.error( function () {
+                    Toast.push('error', $translate.instant('toast.contents.reset.video.error'));
+		});
             };
 
+
            this.startStatusPing = function() {
-                console.log("Starting status ping");
-                this.getStatus(this.url + "status");
+                this.getStatus(this.url);
                 
-                setInterval(this.getStatus, 10000, this.url + "status");
-           }
+                setInterval(this.getStatus, 10000, this.url);
+           };
 
-	   this.getStatus = function(status_url) {
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", status_url, true);
-                xhr.send();
 
-                if (this.recording === 1 && xhr.responseText === 'stopped') {
-                    var name = prompt($translate.instant('toast.contents.reset.video.prompt'));
-                    this.stopRecording(name);
-                    this.recording = 0;
-                }
+	   this.getStatus = function(url) {
+                $http.get(url + "status")
+                     .success( function (data) {
+			console.log(data);
+		     	if ( data['Status'] === 2) {
+                    	    var name = prompt($translate.instant('toast.contents.reset.video.prompt'));
+			    var data = {name: name || ""};
+	                    $http.post(url + "stop", JSON.stringify(data))
+                	    .success( function () {
+                    		Toast.push('success', $translate.instant('toast.contents.reset.video.success'));
+                	    })
+                	    .error( function () {
+                    		Toast.push('error', $translate.instant('toast.contents.reset.video.error'));
+                	    });
+			}
+		     });
             };
         };
 
      	return new Recorder();
     };
 
-    videoFactory().$inject = [];
+    videoFactory.$inject = ['$http', 'Toast', '$translate'];
     angular.module('recorders', []).factory('Recorder', videoFactory);
 })();

@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    var shelterApi = function($http) {
+    var shelterApi = function($http, Recorder) {
         var Shelter = function() {
             var self = this;
 
@@ -112,10 +112,8 @@
                 if (0 < data.status) {
                     this.status.alarm.status = 1;
 		    if(config['video-do-recording']) {
-                        if (!this.status.alarm.time) {
-                            Recorder.startRecording();
-                        }
-                    } 
+		    	Recorder.startRecording();
+		    } 
                     this.status.alarm.time = data.time;
                 }
             };

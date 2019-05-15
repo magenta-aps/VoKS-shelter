@@ -38,7 +38,7 @@
         config['video-do-recording'] = {!! $config['video-do-recording'] ? 'true' : 'false' !!};
         config['video-endpoint-start'] = '{!! $config['video-base-url'] !!}' + '{!! $config['video-endpoint-start'] !!}';
         config['video-endpoint-stop'] = '{!! $config['video-base-url'] !!}' + '{!! $config['video-endpoint-stop'] !!}';
-
+	config['video-base-url'] = '{!! $config['video-base-url'] !!}';
 
         lang = function(key) {
             return config['lang'][key];
