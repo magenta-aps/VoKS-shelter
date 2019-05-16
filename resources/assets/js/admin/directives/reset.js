@@ -20,12 +20,12 @@
 
                             if(config['video-do-recording']) {
                                 var name = prompt($translate.instant('toast.contents.reset.video.prompt'));
-                            	Recorder.stopRecording();
+                            	Recorder.stopRecording(name);
                             }
 			    
 			    setTimeout(function() {
                                 window.location.reload();
-                            }, 500);
+                            }, 2000);
                         });
                     }
                 });

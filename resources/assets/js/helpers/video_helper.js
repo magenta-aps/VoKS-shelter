@@ -6,7 +6,6 @@
         var Recorder = function() {
  
 	    this.url = config['video-base-url'];
-	    console.log(this.url);
 
             this.startRecording = function() {
                 var start_url = this.url + "start";
@@ -16,7 +15,7 @@
 
 	     this.stopRecording = function(name) {
                 var stop_url = this.url + "stop";
-                var data = {name: name || ""};
+                var data = {name: name || "", reset: "true"};
 
 		$http.post(stop_url, JSON.stringify(data))
 		.success( function () {
@@ -38,10 +37,9 @@
 	   this.getStatus = function(url) {
                 $http.get(url + "status")
                      .success( function (data) {
-			console.log(data);
 		     	if ( data['Status'] === 2) {
                     	    var name = prompt($translate.instant('toast.contents.reset.video.prompt'));
-			    var data = {name: name || ""};
+			    var data = {name: name || "", reset: "false"};
 	                    $http.post(url + "stop", JSON.stringify(data))
                 	    .success( function () {
                     		Toast.push('success', $translate.instant('toast.contents.reset.video.success'));

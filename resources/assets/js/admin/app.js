@@ -67,7 +67,6 @@
     */  
 	
     if(config['video-do-recording']) {
-	console.log('VIDEO_RECORDING');
 
         var videoRecorder = function (Recorder) {
             Recorder.startStatusPing();
