@@ -15,7 +15,7 @@ return [
   'api' => [
     'campuses'    => '/api/config/v1/maps',
     'images'      => '/common/data/floormaps',
-    'clients'     => '/api/location/v2/clients'
+    'clients'     => '/api/location/v3/clients'
   ],
   'campusesList'  => env('CISCO_CAMPUSES_LIST', ''),
   'clientsDebug'  => env('CISCO_CLIENTS_DEBUG', '')

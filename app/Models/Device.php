@@ -240,6 +240,20 @@ class Device extends BaseModel
           }
         }
       }
+      //Ios and Pcapp do not send Mac Address (if exception config is disabled)
+      elseif (!$this->getAttribute('mac_address')) {
+        //Create uniq dummy mac address for device
+        $t_arr = str_split(time());
+        $rand = rand(10, 99);
+
+        $mac_address = $t_arr[0] . $t_arr[1] . ':';
+        $mac_address .= $t_arr[2] . $t_arr[3] . ':';
+        $mac_address .= $t_arr[4] . $t_arr[5] . ':';
+        $mac_address .= $t_arr[6] . $t_arr[7] . ':';
+        $mac_address .= $t_arr[8] . $t_arr[9] . ':';
+        $mac_address .= $rand;
+        $device['mac_address'] = $mac_address;
+      }
       
       return $device;
     }
@@ -623,9 +637,30 @@ class Device extends BaseModel
         if (empty($clients)) {
           return false;
         }
+        $debug = config('app.debug');
         //Deactivate all devices
+        if ($debug) {
+          echo "Setting devices to non active", PHP_EOL;
+          $time_start = microtime(true);
+        }
         \DB::update("UPDATE devices SET active = 0 WHERE active = 1");
+        if ($debug) {
+          $time_end = microtime(true);
+          $execution_time = $time_end - $time_start;
+          echo "Time for seting clients to non active: ", $execution_time, PHP_EOL;
+          echo "*****************", PHP_EOL;
+        }
+        
         //Activate only active devices
+        if ($debug) {
+          echo "Updating devices in DB", PHP_EOL;
+          $found_count=0;
+          $updated_count=0;
+          $inserted_count=0;
+          $skipped_count=0;
+          $i=1;
+          $inserted_client = array();
+        }
         foreach ($clients as $client) {
           if (env('SCHOOL_ID')) {
             $client['school_id'] = env('SCHOOL_ID');
@@ -636,6 +671,7 @@ class Device extends BaseModel
           );
           //Found - update
           if (!empty($device)) {
+            if ($debug) $found_count++;
             $device = current($device);
             if(
               $client['x'] != $device->x
@@ -662,6 +698,9 @@ class Device extends BaseModel
                   WHERE id = :id
                 ", $client
               );
+              if ($debug) $updated_count++;
+            } else {
+              if ($debug) $skipped_count++;
             }
           }
           //Not found - insert
@@ -692,7 +731,25 @@ class Device extends BaseModel
               )
               VALUES $join
             ");
+            if ($debug) {
+              $inserted_count++;
+              $inserted_client = $client;
+            }
           }
+          if ($i % 500 == 0) {
+            echo "Iteration: " .$i, PHP_EOL;
+            echo "Found: " . $found_count, PHP_EOL;
+            echo "Updated: " . $updated_count, PHP_EOL;
+            echo "Inserted: " . $inserted_count, PHP_EOL;
+            echo "Skipped: " . $skipped_count, PHP_EOL;
+            if (!empty($inserted_client)) {
+              echo PHP_EOL;
+              echo "Last insert:", PHP_EOL;
+              print_r($inserted_client);
+              echo PHP_EOL;
+            }
+          }
+          $i++;
         }
         return true;
     }

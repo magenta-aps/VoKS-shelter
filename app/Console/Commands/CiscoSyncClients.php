@@ -65,43 +65,24 @@ class CiscoSyncClients extends Command {
         $floors = Floor::with('image')->get()->toArray();
         $floors = array_map_by_key($floors, 'floor_hash_id');
 
-        //Get Clients
-        $clients = array();
-        for ($page = 0; $page < self::MAX_ALLOWED_RUNS; $page++) {
-          //*** Debug ***
-          if ($debug) echo "Page: ", $page, PHP_EOL;
-          if ($debug) $time_start = microtime(true);
+        //*** Debug ***
+        if ($debug) $time_start = microtime(true);
 
-          //Get Clients from Cisco CMX
-          $coordinates = CmxLocation::getAllCoordinates($page);
-
-          //*** Debug ***
-          if ($debug) $time_end = microtime(true);
-          if ($debug) {
-            $count = count($coordinates);
-            echo "Count (Cisco clients on page " . $page . "): ", $count, PHP_EOL;
-          }
-          if ($debug) $execution_time = $time_end - $time_start;
-          if ($debug) echo "Time for geting clients from Cisco: ", $execution_time, PHP_EOL;
-
-          //Merge clients
-          if (!empty($coordinates)) {
-            $clients = array_merge($clients, $coordinates);
-          }
-          else {
-            break;
-          }
-        }
+        //Get Clients from Cisco CMX
+        $clients = CmxLocation::getAllCoordinates();
+        
+        if ($debug) $time_end = microtime(true);
 
         //*** Debug ***
         if ($debug) {
           echo "*****************", PHP_EOL;
           $count = count($clients);
           echo "Count (Cisco clients total): ", $count, PHP_EOL;
+          $execution_time = $time_end - $time_start;
+          echo "Time for geting clients from Cisco: ", $execution_time, PHP_EOL;
         }
-
+        
         if (!empty($clients)) {
-
           //Filter Clients by Floors
           foreach($clients as $k => $client) {
             if (!isset($floors[$client['floor_id']])) {
@@ -142,7 +123,11 @@ class CiscoSyncClients extends Command {
           }
 
           //*** Debug ***
-          if ($debug) $time_start = microtime(true);
+          if ($debug) {
+            echo "Starting Clients update in DB";
+            echo PHP_EOL;
+            $time_start = microtime(true);
+          }
 
           //Update Clients in DB
           Device::updateClients($clients);

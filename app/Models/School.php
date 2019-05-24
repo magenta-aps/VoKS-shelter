@@ -39,6 +39,11 @@ class School extends BaseModel
         'phone_system_group_id',
         'phone_system_number',
         'controller_url',
+        'url',
+        'police_number',
+        'use_gps',
+        'display',
+        'public'
     ];
 
     /**

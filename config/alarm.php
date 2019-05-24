@@ -18,6 +18,8 @@ return [
     ],
     'use_mac_address_for_pcapp' => env('USE_MAC_ADDRESS_FOR_PCAPP', false),
     'use_mac_address_for_ios' =>  env('USE_MAC_ADDRESS_FOR_IOS', false),
+    'use_mac_address_for_android' =>  env('USE_MAC_ADDRESS_FOR_ANDROID', true),
+    'registration_status'		=> env('REGISTRATION_STATUS', false),
     'secure' => env('SSL_ON', false),
     'default_id' => env('SCHOOL_ID', null),
     'default_bcs' => array(
