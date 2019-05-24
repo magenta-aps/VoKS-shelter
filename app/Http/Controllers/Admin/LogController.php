@@ -12,11 +12,11 @@ namespace BComeSafe\Http\Controllers\Admin;
 use BComeSafe\Models\EventLog;
 use Illuminate\Http\Request;
 
-class ReportsController extends BaseController
+class LogController extends BaseController
 {
     public function getIndex()
     {
-        return view('admin.reports.index');
+        return view('admin.logs.index');
     }
 
     public function getList()
@@ -26,10 +26,10 @@ class ReportsController extends BaseController
         for ($i=0; $i<count($list); $i++) {
             switch ($list[$i]->log_type) {
                 case "alarm_triggered":
-                    $log_type = \Lang::get('admin.reports.table.log_types.alarm_triggered');
+                    $log_type = \Lang::get('admin.logs.table.log_types.alarm_triggered');
                     break;
                 default:
-                    $log_type = \Lang::get('admin.reports.table.log_types.unknown_type');
+                    $log_type = \Lang::get('admin.logs.table.log_types.unknown_type');
             }
             $list[$i]->log_type = $log_type;
         }

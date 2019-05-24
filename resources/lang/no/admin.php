@@ -50,7 +50,7 @@ return [
         'placeholder' => 'Vennligst velg'
 
     ],
-    'reports' => [
+    'logs' => [
         'title' => 'Log',
         'description' => 'Beskrivelse',
         'table' => [

@@ -50,7 +50,7 @@ return [
         'placeholder' => 'Please select'
 
     ],
-    'reports' => [
+    'logs' => [
         'title' => 'Log',
         'description' => 'Log of events in BCS',
         'table' => [

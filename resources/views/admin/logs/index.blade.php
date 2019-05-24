@@ -1,15 +1,15 @@
 @extends('admin.base')
 
 @section('content')
-    <div class="settings text help-block" ng-controller="ReportsController">
+    <div class="settings text help-block" ng-controller="LogController">
 
         <div class="help-block__nav block-style">
             @include('admin.partials.tabs')
         </div>
 
         <div class="help-block__description">
-            <h2 class="-title">{{ Lang::get('admin.reports.title') }}</h2>
-            <p class="-text">{{ Lang::get('admin.reports.description') }}</p>
+            <h2 class="-title">{{ Lang::get('admin.logs.title') }}</h2>
+            <p class="-text">{{ Lang::get('admin.logs.description') }}</p>
         </div>
 
         <div class="help-block__container">
@@ -18,15 +18,15 @@
                 <table class="table-style table-style__settings textarea-block">
                     <thead>
                     <tr>
-                        <th>{{ Lang::get('admin.reports.table.created_at') }}</th>
-                        <th>{{ Lang::get('admin.reports.table.log_type') }}</th>
-                        <th>{{ Lang::get('admin.reports.table.device_type') }}</th>
-                        <th>{{ Lang::get('admin.reports.table.device_id') }}</th>
-                        <th>{{ Lang::get('admin.reports.table.fullname') }}</th>
-                        <th>{{ Lang::get('admin.reports.table.mac_address') }}</th>
-                        <th>{{ Lang::get('admin.reports.table.floor_id') }}</th>
-                        <th>{{ Lang::get('admin.reports.table.x') }}</th>
-                        <th>{{ Lang::get('admin.reports.table.y') }}</th>
+                        <th>{{ Lang::get('admin.logs.table.created_at') }}</th>
+                        <th>{{ Lang::get('admin.logs.table.log_type') }}</th>
+                        <th>{{ Lang::get('admin.logs.table.device_type') }}</th>
+                        <th>{{ Lang::get('admin.logs.table.device_id') }}</th>
+                        <th>{{ Lang::get('admin.logs.table.fullname') }}</th>
+                        <th>{{ Lang::get('admin.logs.table.mac_address') }}</th>
+                        <th>{{ Lang::get('admin.logs.table.floor_id') }}</th>
+                        <th>{{ Lang::get('admin.logs.table.x') }}</th>
+                        <th>{{ Lang::get('admin.logs.table.y') }}</th>
                     </tr>
                     </thead>
                     <tbody>

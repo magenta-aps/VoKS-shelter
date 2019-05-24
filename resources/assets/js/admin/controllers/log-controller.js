@@ -25,7 +25,7 @@
                 if (confirm('Do you really want to delete this log item?')) {
                     AdminApi.removeEventLog({id: $id}).success(function() {
                         $scope.list.splice($index, 1);
-                        Toast.push('success', $translate.instant('toast.contents.admin.reports.remove_success'), '');
+                        Toast.push('success', $translate.instant('toast.contents.admin.logs.remove_success'), '');
                     });
                 }
             }
