@@ -25,8 +25,13 @@ class CreateEventLogTable extends Migration {
             $table->float('x', 10, 3)->nullable();
             $table->float('y', 10, 3)->nullable();
             $table->text('data')->nullable()->default('');
+            $table->dateTime('triggered_at')->default('0000-00-00 00:00:00')->index('event_log_triggered_at');
 			$table->timestamps();
 		});
+
+		DB::unprepared('
+		    CREATE TRIGGER `copy_alarm_timestamp` BEFORE INSERT ON `event_logs`
+		    FOR EACH ROW SET NEW.triggered_at = (SELECT triggered_at FROM school_statuses WHERE NEW.school_id = school_statuses.school_id);');
 	}
 
 	/**
@@ -36,6 +41,7 @@ class CreateEventLogTable extends Migration {
 	 */
 	public function down()
 	{
+	    DB::unprepared('DROP TRIGGER `copy_alarm_timestamp`');
 		Schema::drop('event_logs');
 	}
 
