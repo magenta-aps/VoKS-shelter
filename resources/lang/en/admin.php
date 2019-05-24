@@ -89,6 +89,23 @@ return [
             'options' => 'Options',
         ]
     ],
+    'reports' => [
+        'title' => 'Reports',
+        'description' => 'Reports of events in BCS',
+        'table' => [
+            'triggered_at' => 'Time',
+            'device_type' => 'Device type',
+            'device_id' => 'Device ID',
+            'fullname' => 'Full name',
+            'duration' => 'Duration',
+            'push_notifications' => 'Push notifications',
+            'video_chats' => 'Video chats',
+            'download_log' => 'Download log',
+            'download_report' => 'Download report',
+            'download_csv' => 'Get .csv',
+            'download_pdf' => 'Get .pdf'
+        ]
+    ],
     'sms' => [
         'title' => 'SMS Messages',
         'description' => 'Setup sms messages, which will be sent on alarm trigger.',

@@ -8,9 +8,9 @@
 (function() {
     'use strict';
 
-    var reportsController = function($scope, Toast, AdminApi, $translate) {
+    var logController = function($scope, Toast, AdminApi, $translate) {
 
-        AdminApi.getReports().success(function(data) {
+        AdminApi.getLogs().success(function(data) {
             $scope.list = data;
         });
 
@@ -32,6 +32,6 @@
         });
     };
 
-    reportsController.$inject = ['$scope', 'Toast', 'AdminApi', '$translate'];
-    angular.module('admin').controller('ReportsController', reportsController);
+    logController.$inject = ['$scope', 'Toast', 'AdminApi', '$translate'];
+    angular.module('admin').controller('LogController', logController);
 })();

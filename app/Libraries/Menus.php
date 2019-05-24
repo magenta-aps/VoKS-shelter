@@ -113,7 +113,7 @@ class Menus
                 [
                     'title' => 'admin.tabs.logs',
                     'path' => 'admin/logs',
-                    'controllers' => ['Admin\LogsController']
+                    'controllers' => ['Admin\LogController']
                 ]
             ]
         ],

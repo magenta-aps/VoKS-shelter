@@ -179,12 +179,16 @@
                 return $http.post('/admin/buttons/save-button', data);
             };
 
+            this.getLogs = function() {
+                return $http.get('/admin/logs/list');
+            };
+
             this.getReports = function() {
                 return $http.get('/admin/reports/list');
             };
 
             this.removeEventLog = function(data) {
-                return $http.post('/admin/reports/remove', data);
+                return $http.post('/admin/logs/remove', data);
             };
 
             this.previewMap = function (floorId, buttonId) {

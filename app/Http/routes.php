@@ -35,6 +35,7 @@ Route::group(
         Route::controller('notifications', 'Admin\NotificationController');
         Route::controller('buttons', 'Admin\ButtonController');
         Route::controller('crisis-team', 'Admin\CrisisTeamController');
+        Route::controller('logs', 'Admin\LogController');
         Route::controller('reports', 'Admin\ReportsController');
     }
 );
