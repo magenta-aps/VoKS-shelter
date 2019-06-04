@@ -188,7 +188,7 @@
             };
 
             this.saveReportItem = function (data) {
-                return $http.post('/admin/reports/save-report-item')
+                return $http.post('/admin/reports/save-report-item', data)
             }
 
             this.removeEventLog = function(data) {
