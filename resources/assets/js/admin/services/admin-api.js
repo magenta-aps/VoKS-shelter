@@ -115,10 +115,14 @@
                 // Alarm status
                 if (0 < data.status) {
                     this.status.alarm.status = 1;
+		    
+		    // Start screen capture on alarm trigger if setting is enabled.
+			
 		    if(config['video-do-recording']) {
                     	Recorder.startRecording();
 		    }
-                    this.status.alarm.time = data.time;
+                    
+		    this.status.alarm.time = data.time;
                 }
             };
 

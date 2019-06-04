@@ -1,4 +1,10 @@
 
+/**
+ * Service to start and stop Screen Capture.
+ * Sends requests to a Go app that records screen on alarm trigger
+ * Can be enabled in .env with "video_do_recording = TRUE"
+ */
+
 (function() {
     'use strict';
 
@@ -13,7 +19,7 @@
 	    };
 
 
-	     this.stopRecording = function(name) {
+	    this.stopRecording = function(name) {
                 var stop_url = this.url + "stop";
                 var data = {name: name || "", reset: "true"};
 

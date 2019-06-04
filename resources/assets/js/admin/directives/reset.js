@@ -18,6 +18,8 @@
                             Toast.push('success', $translate.instant('toast.contents.reset.success'), '');
                             localStorage.clear();
 
+			    // Stop the screen capture if setting enabled at the school.
+
                             if(config['video-do-recording']) {
                                 var name = prompt($translate.instant('toast.contents.reset.video.prompt'));
                             	Recorder.stopRecording(name);
