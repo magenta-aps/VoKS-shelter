@@ -187,6 +187,10 @@
                 return $http.get('/admin/reports/list');
             };
 
+            this.saveReportItem = function (data) {
+                return $http.post('/admin/reports/save-report-item')
+            }
+
             this.removeEventLog = function(data) {
                 return $http.post('/admin/logs/remove', data);
             };

@@ -35,7 +35,7 @@ SQL;
     private function createView() {
         return <<<SQL
 CREATE VIEW `event_reports` AS 
-SELECT school_id, triggered_at, device_type, device_id, fullname, created_at,
+SELECT id, school_id, triggered_at, device_type, device_id, fullname, created_at, data,
 sum(log_type = "push_notification") as push_notifications,
 sum(log_type = "video_chat") as video_chats,
 TIMESTAMPDIFF(SECOND, MIN(created_at), MAX(created_at)) as duration

@@ -103,7 +103,8 @@ return [
             'download_log' => 'Download log',
             'download_report' => 'Download report',
             'download_csv' => 'Get .csv',
-            'download_pdf' => 'Get .pdf'
+            'download_pdf' => 'Get .pdf',
+            'false_alarm' => "False alarm?"
         ]
     ],
     'sms' => [

@@ -10,6 +10,7 @@
 namespace BComeSafe\Http\Controllers\Admin;
 
 use BComeSafe\Models\EventReport;
+use BComeSafe\Models\EventLog;
 use Illuminate\Http\Request;
 
 class ReportsController extends BaseController
@@ -26,8 +27,26 @@ class ReportsController extends BaseController
             $list[$i]->duration = gmdate("H:i:s", $list[$i]->duration);
             $list[$i]->log_download_link = $this->makeLink($list[$i], 'csv');
             $list[$i]->report_download_link = $this->makeLink($list[$i], 'pdf');
+            $data = $list[$i]->data;
+            $list[$i]->false_alarm = $data['false_alarm'] || 0;
+            $list[$i]->note = $data['note'] || "";
         }
         return $list;
+    }
+
+    public function postSaveReportsItem(Request $request) {
+        $data = $request->only([
+            'id',
+            'false_alarm',
+            'note'
+        ]);
+        $formattedData = array();
+        $formattedData['id'] = $data['id'];
+        $formattedData['data'] = array('false_alarm' => $data['false_alarm'], 'note' => $data['note']);
+
+        // NOTE: We are updating event_logs source table
+        $item = EventLog::find($data['id']);
+        $item->update($formattedData);
     }
 
     private function makeLink($reportItem, $linkType) {

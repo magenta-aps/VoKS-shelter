@@ -17,6 +17,7 @@ class EventReport extends BaseModel
         'device_id',
         'fullname',
         'created_at',
+        'data',
         'push_notifications',
         'video_chats',
         'duration',

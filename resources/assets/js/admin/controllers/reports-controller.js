@@ -16,7 +16,15 @@
 
         angular.extend($scope, {
             list: [],
-            inserted: {}
+            inserted: {},
+            saveItem: function(item, $index) {
+                AdminApi.saveReportItem(item).success(function(data) {
+                    Toast.push('success', $translate.instant('toast.contents.admin.reports.save_success'), '');
+                    $scope.list[$index] = data;
+                }).error(function() {
+                    Toast.push('error', $translate.instant('toast.contents.admin.reports.save_error'), '');
+                });
+            },
         });
     };
 
