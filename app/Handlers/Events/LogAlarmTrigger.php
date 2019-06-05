@@ -11,6 +11,7 @@ namespace BComeSafe\Handlers\Events;
 
 use BComeSafe\Events\AlarmWasTriggered;
 use BComeSafe\Models\EventLog;
+use BComeSafe\Models\EventReport;
 use BComeSafe\Models\School;
 use BComeSafe\Models\Device;
 
@@ -21,14 +22,13 @@ class LogAlarmTrigger
 
     public function handle(AlarmWasTriggered $event)
     {
-        \Log::debug("HANDLING EVENT ###############################");
         $this->school = School::getSettings($event->schoolId);
         if (isset($event->deviceId)) {
             $this->device = Device::getByDeviceId($event->deviceId);
         }
 
         $data = [
-            'log_type' => 'alarm_triggered',
+            'log_type' => EventLog::ALARM_TRIGGERED,
             'school_id' => $event->schoolId,
         ];
         if ($this->device) {
@@ -42,7 +42,8 @@ class LogAlarmTrigger
         } else {
             $data['device_type'] = 'shelter';
         }
-        $data['data'] = 'sample_data';
+        $data['data'] = array();
         EventLog::create($data);
+        // TODO create EventReport on first alarm trigger
     }
 }

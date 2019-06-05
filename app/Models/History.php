@@ -99,4 +99,48 @@ class History extends BaseModel
             'result'    => json_encode(['total' => $count, 'read' => 0])
         ]);
     }
+
+    public static function copy_to_event_logs($id)
+    {
+        $history = static::where('school_id', '=', $id)->get();
+
+        foreach ($history as $value) {
+            // Convert model to array
+            $item = $value->toArray();
+
+            // Process by type
+            switch ($item['type']) {
+                case 'push':
+                    $item->log_type = EventLog::PUSH_NOTIFICATION_SENT;
+                    // TODO Do something with 'result' before saving it to $item->data
+                    $item->data = $item['result'];
+                    $item->data['message'] = $item['message'];
+                    $item->data['source_id'] = $item['source_id'];
+                    break;
+
+                case 'sms':
+                    $item->log_type = EventLog::SMS_SENT;
+                    // TODO Do something with 'result' before saving it to $item->data
+                    $item->data = $item['result'];
+                    break;
+
+                case 'trigger':
+                case 'play':
+                case 'live':
+                    $item->log_type = EventLog::AUDIO_PLAYED;
+                    // TODO Do something with 'result' before saving it to $item->data
+                    $item->data = $item['result'];
+                    break;
+            }
+            // do we need to clear unused data before create event log item?
+            // unset($item['result']);
+            // unset($item['source_id']);
+            // unset($item['type']);
+            // unset($item['message']);
+
+            unset($item['id']); // ensure we get a new auto-incremented id
+            EventLog::create($item);
+        }
+
+    }
 }
