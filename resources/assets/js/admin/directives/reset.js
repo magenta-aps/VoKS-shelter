@@ -19,8 +19,14 @@
                             localStorage.clear();
 
                             if(config['video-do-recording']) {
-                                var name = prompt($translate.instant('toast.contents.reset.video.prompt'));
-                            	Recorder.stopRecording(name);
+                                var url = config['video-base-url'];
+				$http.get(url + 'status')
+				     .success( function (data) {
+					if(data['Status'] === 1) {
+					    var name = prompt($translate.instant('toast.contents.reset.video.prompt')); 
+                            		    Recorder.stopRecording(name);
+					}
+				     }); 
                             }
 			    
 			    setTimeout(function() {
