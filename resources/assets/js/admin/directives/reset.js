@@ -18,6 +18,8 @@
                             Toast.push('success', $translate.instant('toast.contents.reset.success'), '');
                             localStorage.clear();
 
+			    // Stop the screen capture if setting enabled at the school.
+
                             if(config['video-do-recording']) {
                                 var url = config['video-base-url'];
 				$http.get(url + 'status')
