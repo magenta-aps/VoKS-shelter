@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    var resetShelterDirective = function(AdminApi, Toast, $translate, Recorder) {
+    var resetShelterDirective = function(AdminApi, Toast, $translate, Recorder, $http) {
         return {
             restrict: 'A',
             link: function(scope, element, attrs) {
@@ -41,6 +41,6 @@
         };
     };
 
-    resetShelterDirective.$inject = ['AdminApi', 'Toast', '$translate', 'Recorder'];
+    resetShelterDirective.$inject = ['AdminApi', 'Toast', '$translate', 'Recorder', '$http'];
     angular.module('admin').directive('resetShelter', resetShelterDirective);
 })();
