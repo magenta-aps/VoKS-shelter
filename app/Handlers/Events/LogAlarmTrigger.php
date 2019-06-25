@@ -42,7 +42,6 @@ class LogAlarmTrigger
         } else {
             $data['device_type'] = 'shelter';
         }
-        $data['data'] = array();
         EventLog::create($data);
         // TODO create EventReport on first alarm trigger
     }

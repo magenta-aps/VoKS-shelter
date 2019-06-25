@@ -12,7 +12,6 @@ namespace BComeSafe\Http\Controllers\Admin;
 use BComeSafe\Models\EventReport;
 use BComeSafe\Models\EventLog;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 
 class ReportsController extends BaseController
@@ -29,8 +28,10 @@ class ReportsController extends BaseController
         for ($i=0; $i<count($list); $i++) {
             $list[$i]->log_download_link = $this->makeLink($list[$i], 'csv');
             $list[$i]->report_download_link = $this->makeLink($list[$i], 'pdf');
+
             $eventLogData = $this->getEventLogData($schoolId, $list[$i]->triggered_at);
             if (!$eventLogData) continue;
+
             $list[$i]->duration = gmdate("H:i:s", (strtotime($eventLogData['alarm_reset_time']) - strtotime($list[$i]->triggered_at)));
             $list[$i]->fullname = $eventLogData['fullname'];
             $list[$i]->device_id = $eventLogData['device_id'];
@@ -43,20 +44,34 @@ class ReportsController extends BaseController
         return $list;
     }
 
-    public function getDownload(Request $request) {
+    public function getDownload(Request $request)
+    {
         $data = $request->only([
             'type',
             'school_id',
             'triggered_at']);
+        switch ($data['type']) {
+            case "csv":
+                return $this->getCsvDownload($data['school_id'], $data['triggered_at']);
+                break;
+            default:
+                return "Unsupported download format";
+                break;
+        }
+    }
+
+    private function getCsvDownload($school_id, $triggered_at)
+    {
+
         $headers = [
             'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
             ,   'Content-type'        => 'text/csv'
-            ,   'Content-Disposition' => 'attachment; filename=test.csv'
+            ,   'Content-Disposition' => 'attachment; filename=' . preg_replace('/[\s:]/', '_', $triggered_at) . '.csv'
             ,   'Expires'             => '0'
             ,   'Pragma'              => 'public'
         ];
 
-        $list = EventLog::where('school_id', '=', $data['school_id'])->where('triggered_at', '=', $data['triggered_at'])->get()->toArray();
+        $list = EventLog::where('school_id', '=', $school_id)->where('triggered_at', '=', $triggered_at)->get()->toArray();
 
         # add headers for each column in the CSV download
         array_unshift($list, array_keys($list[0]));
