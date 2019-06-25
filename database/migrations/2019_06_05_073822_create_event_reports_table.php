@@ -27,7 +27,7 @@ class CreateEventReportsTable extends Migration {
         DB::unprepared('
         CREATE TRIGGER `copy_alarm_data_to_reports` AFTER INSERT ON `event_logs`
 		    FOR EACH ROW IF (NEW.log_type = "alarm_triggered") THEN
-                INSERT INTO event_reports values (NULL, NEW.school_id, NEW.id, 0, NULL, NEW.triggered_at, NOW(), NOW());
+                INSERT INTO event_reports values (NULL, NEW.school_id, NEW.id, 0, NULL, NULL, NEW.triggered_at, NOW(), NOW());
             END IF;
         ');
 
@@ -41,6 +41,7 @@ class CreateEventReportsTable extends Migration {
 	 */
 	public function down()
 	{
+	    DB::unprepared('DROP TRIGGER `copy_alarm_data_to_reports`');
 		Schema::drop('event_reports');
 	}
 

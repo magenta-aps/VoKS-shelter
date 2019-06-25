@@ -12,6 +12,8 @@ namespace BComeSafe\Http\Controllers\Admin;
 use BComeSafe\Models\EventReport;
 use BComeSafe\Models\EventLog;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
 
 class ReportsController extends BaseController
 {
@@ -41,6 +43,36 @@ class ReportsController extends BaseController
         return $list;
     }
 
+    public function getDownload(Request $request) {
+        $data = $request->only([
+            'type',
+            'school_id',
+            'triggered_at']);
+        $headers = [
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
+            ,   'Content-type'        => 'text/csv'
+            ,   'Content-Disposition' => 'attachment; filename=test.csv'
+            ,   'Expires'             => '0'
+            ,   'Pragma'              => 'public'
+        ];
+
+        $list = EventLog::where('school_id', '=', $data['school_id'])->where('triggered_at', '=', $data['triggered_at'])->get()->toArray();
+
+        # add headers for each column in the CSV download
+        array_unshift($list, array_keys($list[0]));
+
+        $callback = function() use ($list)
+        {
+            $FH = fopen('php://output', 'w');
+            foreach ($list as $row) {
+                fputcsv($FH, $row);
+            }
+            fclose($FH);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
     public function postSaveReportItem(Request $request) {
         $data = $request->only([
             'id',
@@ -62,7 +94,7 @@ class ReportsController extends BaseController
 
     private function makeLink($reportItem, $linkType) {
 
-        return "/admin/reports/download?type=$linkType&school={$reportItem['school_id']}&alarm_time={$reportItem['triggered_at']}";
+        return "/admin/reports/download?type=$linkType&school_id={$reportItem['school_id']}&triggered_at={$reportItem['triggered_at']}";
     }
 
     private function getEventLogData($schoolId, $triggeredAt) {
