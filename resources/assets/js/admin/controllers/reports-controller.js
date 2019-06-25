@@ -11,6 +11,9 @@
     var reportsController = function($scope, Toast, AdminApi, $translate) {
 
         AdminApi.getReports().success(function(data) {
+            data.forEach(function(item) {
+                item.false_alarm = !!+item.false_alarm; // coerce "1" to int and coerce int to boolean
+            });
             $scope.list = data;
         });
 
@@ -20,10 +23,23 @@
             saveItem: function(item, $index) {
                 AdminApi.saveReportItem(item).success(function(data) {
                     Toast.push('success', $translate.instant('toast.contents.admin.reports.save_success'), '');
-                    $scope.list[$index] = data;
+                    $scope.list[$index].false_alarm = !!+data.false_alarm;
+                    $scope.list[$index].note = data.note;
                 }).error(function() {
                     Toast.push('error', $translate.instant('toast.contents.admin.reports.save_error'), '');
                 });
+            },
+            removeItem: function($id, $index) {
+                if (!$id) {
+                    $scope.list.splice($index, 1);
+                }
+
+                if (confirm($translate.instant('toast.contents.admin.reports.remove_message'))) {
+                    AdminApi.removeReportItem({id: $id}).success(function() {
+                        $scope.list.splice($index, 1);
+                        Toast.push('success', $translate.instant('toast.contents.admin.reports.remove_success'), '');
+                    });
+                }
             },
         });
     };

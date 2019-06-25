@@ -96,6 +96,12 @@ return [
                 'remove_success' => 'Notification template removed successfully.',
                 'order_success' => 'Order saved successfully.'
             ],
+            'reports' => [
+                'save_success' => 'Report updated successfully',
+                'save_error' => 'Could not update report',
+                'remove_message' => 'Do you really want to delete this report?',
+                'remove_success' => 'Report removed successfully'
+            ]
         ],
         'help' =>[
             'not_available' => 'Quick help is not available on this page.'

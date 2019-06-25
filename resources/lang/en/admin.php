@@ -9,6 +9,7 @@ return [
         'push' => 'Push notification management',
         'buttons' => 'IP buttons',
         'reports' => 'Reports',
+        'logs' => 'Logs',
         'team' => 'Crisis center list',
         'reset' => 'Reset Shelter'
     ],
@@ -104,7 +105,10 @@ return [
             'download_report' => 'Download report',
             'download_csv' => 'Get .csv',
             'download_pdf' => 'Get .pdf',
-            'false_alarm' => "False alarm?"
+            'false_alarm' => "False alarm?",
+            'note' => 'Note',
+            'yes' => 'Yes',
+            'no' => 'No'
         ]
     ],
     'sms' => [

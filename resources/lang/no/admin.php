@@ -9,6 +9,7 @@ return [
         'push' => 'Push-meldinger',
         'buttons' => 'Fysiske alarmgivere',
         'reports' => 'Rapporter',
+        'logs' => 'Logs',
         'team' => 'Kriseledelsen',
         'reset' => 'Resett krisesenteret'
     ],
@@ -87,6 +88,27 @@ return [
             'label' => 'Navn på push-meldingen',
             'content' => 'Innhold i push-meldingen',
             'options' => 'Opsjoner (endre rekkefølgen, endre innhold, slette)',
+        ]
+    ],
+    'reports' => [
+        'title' => 'Rapporter',
+        'description' => 'Aktivitetsrapporter',
+        'table' => [
+            'triggered_at' => 'Tidspunkt',
+            'device_type' => 'Enhedstype',
+            'device_id' => 'EnhedsID',
+            'fullname' => 'Fuldt navn',
+            'duration' => 'Varighed',
+            'push_notifications' => 'Push-meldinger sendt',
+            'video_chats' => 'Video-chatter',
+            'download_log' => 'Hent log',
+            'download_report' => 'Hent rapport',
+            'download_csv' => 'Hent .csv',
+            'download_pdf' => 'Hent .pdf',
+            'false_alarm' => "Falsk alarm?",
+            'note' => 'Note',
+            'yes' => 'Ja',
+            'no' => 'Nei'
         ]
     ],
     'sms' => [

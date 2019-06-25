@@ -22,14 +22,21 @@ class ReportsController extends BaseController
 
     public function getList()
     {
-        $list = EventReport::where('school_id', '=', \Shelter::getID())->orderBy('created_at', 'desc')->get();
+        $schoolId = \Shelter::getID();
+        $list = EventReport::where('school_id', '=', $schoolId)->orderBy('created_at', 'desc')->get();
         for ($i=0; $i<count($list); $i++) {
             $list[$i]->duration = gmdate("H:i:s", $list[$i]->duration);
             $list[$i]->log_download_link = $this->makeLink($list[$i], 'csv');
             $list[$i]->report_download_link = $this->makeLink($list[$i], 'pdf');
-            $data = json_decode($list[$i]->data, true);
-            $list[$i]->false_alarm = isset($data['false_alarm']) ? $data['false_alarm'] : 0;
-            $list[$i]->note = isset($data['note']) ? $data['note'] : "";
+            $eventLogData = $this->getEventLogData($schoolId, $list[$i]->triggered_at);
+            if (!$eventLogData) continue;
+            $list[$i]->fullname = $eventLogData['fullname'];
+            $list[$i]->device_id = $eventLogData['device_id'];
+            $list[$i]->device_type = $eventLogData['device_type'];
+            $list[$i]->push_notifications = $eventLogData['push_notifications_sent'];
+            $list[$i]->video_chats = $eventLogData['video_chats'];
+            $list[$i]->audio_played = $eventLogData['audio_played'];
+            $list[$i]->other_events = $eventLogData['other_events'];
         }
         return $list;
     }
@@ -40,18 +47,49 @@ class ReportsController extends BaseController
             'false_alarm',
             'note'
         ]);
-        $formattedData = array();
-        $formattedData['id'] = $data['id'];
-        $formattedData['data'] = array('false_alarm' => $data['false_alarm'], 'note' => $data['note']);
-        // NOTE: We are updating event_logs source table
-        $item = EventLog::find($data['id']);
-        $initialArray = json_decode($item->data, true);
-        $formattedData['data'] = json_encode($formattedData['data'] + $initialArray);
-        $item->update($formattedData);
+        return EventReport::findAndUpdate(['id' => $data['id']], $data);
+    }
+
+    public function postRemoveReportItem(Request $request)
+    {
+        $item = EventReport::find($request->get('id'));
+        if ($item) {
+            $item->delete();
+        }
+
+        return $item;
     }
 
     private function makeLink($reportItem, $linkType) {
 
         return "/admin/reports/download?type=$linkType&school={$reportItem['school_id']}&alarm_time={$reportItem['triggered_at']}";
+    }
+
+    private function getEventLogData($schoolId, $triggeredAt) {
+        $eventLogs = EventLog::where(['school_id' => $schoolId, 'triggered_at' => $triggeredAt])->get();
+        if (count($eventLogs) == 0) return null;
+
+        $data = ['push_notifications_sent' => 0, 'video_chats' => 0, 'audio_played' => 0, 'other_events' => 0];
+        for ($i=0; $i<count($eventLogs); $i++) {
+            switch($eventLogs[$i]->log_type) {
+                case "push_notification_sent":
+                    $data['push_notifications_sent']++;
+                    break;
+                case "audio_played":
+                    $data['audio_played']++;
+                    break;
+                case "video_chat_started":
+                    $data['video_chats']++;
+                    break;
+                case "alarm_triggered":
+                    $data['device_id'] = $eventLogs[$i]->device_id;
+                    $data['device_type'] = $eventLogs[$i]->device_type;
+                    $data['fullname'] = $eventLogs[$i]->fullname;
+                    break;
+                default:
+                    $data['other_events']++;
+            }
+        }
+        return $data;
     }
 }

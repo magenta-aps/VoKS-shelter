@@ -191,8 +191,8 @@
                 return $http.post('/admin/reports/save-report-item', data)
             }
 
-            this.removeEventLog = function(data) {
-                return $http.post('/admin/logs/remove', data);
+            this.removeReportItem = function(data) {
+                return $http.post('/admin/reports/remove-report-item', data);
             };
 
             this.previewMap = function (floorId, buttonId) {
