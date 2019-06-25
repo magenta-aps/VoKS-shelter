@@ -16,7 +16,12 @@ return [
         'reset' => [
             'message' => 'Vil du virkelig resette krisesenteret?',
             'success' => 'Krisesenteret er resatt, siden oppdateres.',
-        ],
+	    'video' => [
+                'prompt' => 'NORSK PROMPT',
+                'success' => 'NORSK VIDEO SUCCESS',
+                'error' => 'NORSK VIDEO ERROR'
+            ]        
+	],
         'school' => [
             'push' => [
                 'select_client' => 'Velg minst en klient',

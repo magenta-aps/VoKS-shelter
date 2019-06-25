@@ -9,7 +9,8 @@
     'use strict';
 
     var avStreamFactory = function($q) {
-        var AVStream = function() {
+        
+	var AVStream = function() {
             var self = this;
 
             this.stream = null;

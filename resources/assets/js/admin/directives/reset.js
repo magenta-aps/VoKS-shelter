@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    var resetShelterDirective = function(AdminApi, Toast, $translate) {
+    var resetShelterDirective = function(AdminApi, Toast, $translate, Recorder, $http) {
         return {
             restrict: 'A',
             link: function(scope, element, attrs) {
@@ -18,9 +18,22 @@
                             Toast.push('success', $translate.instant('toast.contents.reset.success'), '');
                             localStorage.clear();
 
-                            setTimeout(function() {
+			    // Stop the screen capture if setting enabled at the school.
+
+                            if(config['video-do-recording']) {
+                                var url = config['video-base-url'];
+				$http.get(url + 'status')
+				     .success( function (data) {
+					if(data['Status'] === 1) {
+					    var name = prompt($translate.instant('toast.contents.reset.video.prompt')); 
+                            		    Recorder.stopRecording(name);
+					}
+				     }); 
+                            }
+			    
+			    setTimeout(function() {
                                 window.location.reload();
-                            }, 500);
+                            }, 2000);
                         });
                     }
                 });
@@ -28,6 +41,6 @@
         };
     };
 
-    resetShelterDirective.$inject = ['AdminApi', 'Toast', '$translate'];
+    resetShelterDirective.$inject = ['AdminApi', 'Toast', '$translate', 'Recorder', '$http'];
     angular.module('admin').directive('resetShelter', resetShelterDirective);
 })();
