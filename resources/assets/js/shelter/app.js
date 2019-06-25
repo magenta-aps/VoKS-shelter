@@ -20,8 +20,8 @@
         'app.controllers',
         'app.services',
         'map',
-        'bc-map',
-
+	'recorders',
+	'bc-map',
         'toasts',
         'ui.select',
         'luegg.directives',
@@ -220,6 +220,22 @@
     };
     socketServiceProvider.$inject = ['SocketServiceProvider'];
     angular.module('app').config(socketServiceProvider);
+
+
+    /**
+     * Video Capture
+     */
+
+	
+    if(config['video-do-recording']) {
+
+        var videoRecorder = function (Recorder) {
+            Recorder.startStatusPing();
+        };
+
+        videoRecorder.$inject = ['Recorder'];
+        angular.module('app').run(videoRecorder);
+    }
 
     /**
      * Everything else

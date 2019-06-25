@@ -1,6 +1,8 @@
 <script type="text/javascript">
     config = {};
     config['id'] = '{!! $config['peer-id'] !!}';
+    config['video-do-recording'] = {!! $config['video-do-recording'] ? 'true' : 'false' !!};
+    config['video-base-url'] = '{!! $config['video-base-url'] !!}';
     config['num-id'] = '{!! $config['id'] !!}';
     config['mode'] = {!! $config['mode'] ? 'true' : 'false' !!};
     config['lang'] = {!! $config['translations'] !!};

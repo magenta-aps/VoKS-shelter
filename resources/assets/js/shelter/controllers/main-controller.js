@@ -62,7 +62,9 @@
             Connections.enableMicrophone();
         };
 
-        var permissionsError = function() {
+        
+
+	var permissionsError = function() {
             ShelterAPI.getStatus().then(function(response) {
                 var data = response.data;
                 ShelterAPI.processStatus(data);
@@ -90,7 +92,8 @@
         'State',
         'AVStream',
         'ShelterAPI',
-        'Connections'
+        'Connections',
+	
     ];
     angular.module('app').controller('MainController', mainController);
 })();
