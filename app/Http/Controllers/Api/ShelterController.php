@@ -14,6 +14,7 @@ use BComeSafe\Events\AlarmWasTriggered;
 use BComeSafe\Http\Controllers\Controller;
 use BComeSafe\Models\ClientDevice;
 use BComeSafe\Models\Device;
+use BComeSafe\Models\EventLog;
 use BComeSafe\Models\Faq;
 use BComeSafe\Models\GotItHistory;
 use BComeSafe\Models\HelpFile;
@@ -252,6 +253,11 @@ class ShelterController extends Controller
         //send out shelter reset message to all clients
         $websockets = new ShelterClient(config('alarm.php_ws_url') . '/' . config('alarm.php_ws_client'));
         $websockets->reset($id);
+
+        EventLog::create([
+            'log_type' => EventLog::SHELTER_RESET,
+            'school_id' => $id
+        ]);
 
         // School status
         SchoolStatus::statusAlarm($id, 0);

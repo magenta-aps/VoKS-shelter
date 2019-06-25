@@ -27,11 +27,11 @@ class ReportsController extends BaseController
         $schoolId = \Shelter::getID();
         $list = EventReport::where('school_id', '=', $schoolId)->orderBy('created_at', 'desc')->get();
         for ($i=0; $i<count($list); $i++) {
-            $list[$i]->duration = gmdate("H:i:s", $list[$i]->duration);
             $list[$i]->log_download_link = $this->makeLink($list[$i], 'csv');
             $list[$i]->report_download_link = $this->makeLink($list[$i], 'pdf');
             $eventLogData = $this->getEventLogData($schoolId, $list[$i]->triggered_at);
             if (!$eventLogData) continue;
+            $list[$i]->duration = gmdate("H:i:s", (strtotime($eventLogData['alarm_reset_time']) - strtotime($list[$i]->triggered_at)));
             $list[$i]->fullname = $eventLogData['fullname'];
             $list[$i]->device_id = $eventLogData['device_id'];
             $list[$i]->device_type = $eventLogData['device_type'];
@@ -101,7 +101,7 @@ class ReportsController extends BaseController
         $eventLogs = EventLog::where(['school_id' => $schoolId, 'triggered_at' => $triggeredAt])->get();
         if (count($eventLogs) == 0) return null;
 
-        $data = ['push_notifications_sent' => 0, 'video_chats' => 0, 'audio_played' => 0, 'other_events' => 0];
+        $data = ['push_notifications_sent' => 0, 'video_chats' => 0, 'audio_played' => 0, 'other_events' => 0, 'alarm_reset_time' => ''];
         for ($i=0; $i<count($eventLogs); $i++) {
             switch($eventLogs[$i]->log_type) {
                 case "push_notification_sent":
@@ -117,6 +117,9 @@ class ReportsController extends BaseController
                     $data['device_id'] = $eventLogs[$i]->device_id;
                     $data['device_type'] = $eventLogs[$i]->device_type;
                     $data['fullname'] = $eventLogs[$i]->fullname;
+                    break;
+                case "shelter_reset":
+                    $data['alarm_reset_time'] = $eventLogs[$i]->created_at;
                     break;
                 default:
                     $data['other_events']++;

@@ -43,10 +43,10 @@ class EventLog extends BaseModel
         }
 
         // JSON encode result array
-        if (is_array($data['data'])) {
+        if (isset($data['data']) && is_array($data['data'])) {
             $data['data'] = json_encode($data['data']);
         }
-
+        \Log::debug($data);
         return parent::create($data);
     }
 }
