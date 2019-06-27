@@ -17,9 +17,9 @@ return [
             'message' => 'Vil du virkelig resette krisesenteret?',
             'success' => 'Krisesenteret er resatt, siden oppdateres.',
 	    'video' => [
-                'prompt' => 'NORSK PROMPT',
-                'success' => 'NORSK VIDEO SUCCESS',
-                'error' => 'NORSK VIDEO ERROR'
+                'prompt' => 'Det er gjort et opptak av det som har skjedd på skjermen. Er det ønskelig å lagre opptaket, vennligst skriv inn et ansvarlig navn. Hvis det ikke ønskes å lagre opptaket, trykk "Avbryt".',
+                'success' => 'Opptaket er lagret.',
+                'error' => 'Opptaket ble ikke lagret.'
             ]        
 	],
         'school' => [

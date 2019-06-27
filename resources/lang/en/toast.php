@@ -17,8 +17,8 @@ return [
             'message' => 'Do you really want to reset Shelter?',
             'success' => 'Shelter has been reset. Reloading page.',
             'video' => [
-                'prompt' => 'A video has been recorded. Please enter your name if you want to save the video',
-                'success' => 'Video has been saved in C:\BCSVideos.',
+                'prompt' => 'A video has been recorded. Please enter your name if you want to save the video. If you do not wish to save the video press "Cancel".',
+                'success' => 'Video has been saved.',
                 'error' => 'Video was not saved.',
             ]
         ],
