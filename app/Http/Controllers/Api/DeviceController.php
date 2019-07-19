@@ -337,7 +337,10 @@ class DeviceController extends Controller
         $update = array();
         if (!empty($request->get('user_phone'))) {
           $update['user_phone'] = $request->get('user_phone');
-          $update['need_phone'] = 0;
+          $update['need_phone'] = 0; 
+        }
+        if (!empty($request->get('skip_phone'))) {
+          $update['need_phone'] = 0; 
         }
         
         if (!empty($request->get('accepted_tac'))) {
