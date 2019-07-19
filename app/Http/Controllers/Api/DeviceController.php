@@ -332,7 +332,7 @@ class DeviceController extends Controller
      *
      * @return array
      */
-    public function postSaveDevice(SaveDeviceRequest $request)
+    public function anyUpdateDevice(SaveDeviceRequest $request)
     {
         $update = array();
         if (!empty($request->get('user_phone'))) {
