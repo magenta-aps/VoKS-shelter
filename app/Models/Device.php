@@ -72,6 +72,8 @@ class Device extends BaseModel
         'need_phone',
         'need_tac',
         'renew',
+        'user_phone_confirm',
+        'user_phone_token'
     ];
 
     /**

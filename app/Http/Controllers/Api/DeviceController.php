@@ -148,6 +148,7 @@ class DeviceController extends Controller
             'use_gps'  => $default->is_gps_location_source ? true : false,
             'renew'    => $device->renew, //@Todo - make possible to enable Temporary. Will be used to re-check BCS projects URL.
             'use_phone' => $device->user_phone,
+            'user_phone_confirm' => $device->user_phone_confirm,
             'need_phone' => $device->need_phone,
             'need_tac' => $device->need_tac,
             'tac_text' => \Lang::get('app.tac.default', [], $request->get('lang', $lang)) //@Todo - make administrated.
@@ -335,14 +336,23 @@ class DeviceController extends Controller
     public function anyUpdateDevice(SaveDeviceRequest $request)
     {
         $update = array();
+        //
         if (!empty($request->get('user_phone'))) {
           $update['user_phone'] = $request->get('user_phone');
           $update['need_phone'] = 0; 
         }
+        //
         if (!empty($request->get('skip_phone'))) {
           $update['need_phone'] = 0; 
         }
-        
+        //
+        if (!empty($request->get('user_phone_token'))) {
+          $device_data = Device::getByDeviceId($request->get('device_id'));
+          if ($device_data['user_phone_token'] == $request->get('user_phone_token')) {
+            $update['user_phone_confirm'] = 1;
+          }
+        }
+        //
         if (!empty($request->get('accepted_tac'))) {
           $update['need_tac'] = 0;
         }
