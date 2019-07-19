@@ -92,7 +92,6 @@ class DeviceController extends Controller
             $device->updateDeviceProfile();
 
         } catch (\Exception $e) {
-            //@Todo - remove this.
             $message = $e->getMessage();
 
             switch ($e->getCode()) {
@@ -146,8 +145,9 @@ class DeviceController extends Controller
             'success' => true,
             'dev_mode' => false,
             'use_gps'  => $default->is_gps_location_source ? true : false,
-            'renew'    => $device->renew, //@Todo - make possible to enable Temporary. Will be used to re-check BCS projects URL.
+            'renew'    => $device->renew,
             'use_phone' => $device->user_phone,
+            'user_phone_token' => $device->user_phone_token,
             'user_phone_confirm' => $device->user_phone_confirm,
             'need_phone' => $device->need_phone,
             'need_tac' => $device->need_tac,
@@ -340,8 +340,15 @@ class DeviceController extends Controller
         if (!empty($request->get('user_phone'))) {
           $update['user_phone'] = $request->get('user_phone');
           $update['need_phone'] = 0;
-          //@Todo - generate and send token
-          $update['user_phone_token'] = 'TOKEN123456';
+          $update['user_phone_confirm'] = 0;
+          //Generate token
+          $update['user_phone_token'] = Device::generateToken();
+          //Send token via SMS
+          $defaults = SchoolDefault::getDefaults();
+          if (!empty($defaults->sms_provider)) {
+            $integration = \Component::get('Sms')->getIntegration($defaults->sms_provider);
+            $integration->sendMessage($update['user_phone'], $update['user_phone_token']);
+          }
         }
         //
         if (!empty($request->get('skip_phone'))) {

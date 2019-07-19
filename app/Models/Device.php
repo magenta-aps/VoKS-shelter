@@ -775,4 +775,11 @@ class Device extends BaseModel
 
         return parent::update($device);
     }
+    
+    /**
+     * @return string
+     */
+    function generateToken() {
+      return md5(rand(1, 10) . microtime());
+    }
 }
