@@ -17,6 +17,7 @@ class AddFieldsToDevicesTableTacPhone extends Migration {
       $table->string('user_phone', 255)->nullable();
       $table->boolean('need_phone')->default(false);
       $table->boolean('need_tac')->default(true);
+      $table->boolean('renew')->default(false);
 		});
 	}
 
@@ -32,6 +33,7 @@ class AddFieldsToDevicesTableTacPhone extends Migration {
 			$table->dropColumn(['user_phone']);
 			$table->dropColumn(['need_phone']);
 			$table->dropColumn(['need_tac']);
+			$table->dropColumn(['renew']);
 		});
 	}
 

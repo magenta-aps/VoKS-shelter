@@ -70,7 +70,8 @@ class Device extends BaseModel
         'user_email',
         'user_phone',
         'need_phone',
-        'need_tac'
+        'need_tac',
+        'renew',
     ];
 
     /**

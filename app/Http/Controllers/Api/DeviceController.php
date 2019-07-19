@@ -142,7 +142,9 @@ class DeviceController extends Controller
             'success' => true,
             'dev_mode' => false,
             'use_gps'  => $default->is_gps_location_source ? true : false,
-            'renew'    => false //@Todo - make possible to enable Temporary. Will be used to re-check BCS projects URL.
+            'renew'    => $device->renew, //@Todo - make possible to enable Temporary. Will be used to re-check BCS projects URL.
+            'need_phone' => $device->need_phone,
+            'need_tac' => $device->need_tac
             ]
         );
     }
