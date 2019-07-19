@@ -779,7 +779,7 @@ class Device extends BaseModel
     /**
      * @return string
      */
-    function generateToken() {
+    public static function generateToken() {
       return md5(rand(1, 10) . microtime());
     }
 }
