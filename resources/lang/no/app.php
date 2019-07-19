@@ -71,5 +71,8 @@ return [
     ],
     'trigger' => [
         'message' => 'Connecting to the shelter, please wait...(no)'
+    ],
+    'tac' => [
+        'default' => 'T&C default text.[NO]'
     ]
 ];

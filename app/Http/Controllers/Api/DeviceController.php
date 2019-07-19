@@ -18,6 +18,7 @@ use BComeSafe\Http\Requests\TriggerAlarmRequest;
 use BComeSafe\Http\Requests\WatchdogRequest;
 use BComeSafe\Http\Requests\SheltersRequest;
 use BComeSafe\Http\Requests\BcsRequest;
+use BComeSafe\Http\Requests\SaveDeviceRequest;
 use BComeSafe\Models\Device;
 use BComeSafe\Models\History;
 use BComeSafe\Models\Log;
@@ -59,6 +60,9 @@ class DeviceController extends Controller
             else {
               $device_id = $request->get('device_id');
             }
+            //Language
+            $lang = !empty($request->get('lang')) ? $request->get('lang') : 'en';
+            
             //Search in Database
             $device_data = Device::getByDeviceId($device_id);
             $id = !empty($device_data['id']) ? $device_data['id'] : null;
@@ -143,8 +147,10 @@ class DeviceController extends Controller
             'dev_mode' => false,
             'use_gps'  => $default->is_gps_location_source ? true : false,
             'renew'    => $device->renew, //@Todo - make possible to enable Temporary. Will be used to re-check BCS projects URL.
+            'use_phone' => $device->user_phone,
             'need_phone' => $device->need_phone,
-            'need_tac' => $device->need_tac
+            'need_tac' => $device->need_tac,
+            'tac_text' => \Lang::get('app.tac.default', [], $request->get('lang', $lang)) //@Todo - make administrated.
             ]
         );
     }
@@ -320,5 +326,33 @@ class DeviceController extends Controller
 
         return response()->json($ret_val);
     }
-
+    
+    /**
+     * @param \BComeSafe\Http\Requests\SaveDeviceRequest $request
+     *
+     * @return array
+     */
+    public function postSaveDevice(SaveDeviceRequest $request)
+    {
+        $update = array();
+        if (!empty($request->get('user_phone'))) {
+          $update['user_phone'] = $request->get('user_phone');
+          $update['need_phone'] = 0;
+        }
+        
+        if (!empty($request->get('accepted_tac'))) {
+          $update['need_tac'] = 0;
+        }
+        
+        if (!empty($update)) {
+          Device::findAndUpdate(
+            [
+              'device_id' => $request->get('device_id')
+            ],
+            $update
+          );
+          return ['success' => true];
+        }
+        return ['false' => true];
+    }
 }
