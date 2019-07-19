@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFieldsToDevicesTable4 extends Migration {
+class AddFieldsToDevicesTableTacPhone extends Migration {
 
 	/**
 	 * Run the migrations.
