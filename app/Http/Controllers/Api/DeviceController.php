@@ -350,7 +350,7 @@ class DeviceController extends Controller
         //
         if (!empty($request->get('user_phone_token'))) {
           $device_data = Device::getByDeviceId($request->get('device_id'));
-          if ($device_data['user_phone_token'] == $request->get('user_phone_token')) {
+          if (!empty($device_data['user_phone_token']) && $device_data['user_phone_token'] == $request->get('user_phone_token')) {
             $update['user_phone_confirm'] = 1;
           }
         }
