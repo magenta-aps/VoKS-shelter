@@ -15,7 +15,7 @@ class AddFieldsToDevicesTableTacPhone extends Migration {
 		Schema::table('devices', function(Blueprint $table)
 		{
       $table->string('user_phone', 255)->nullable();
-      $table->boolean('need_phone')->default(true);
+      $table->boolean('need_phone')->default(false);
       $table->boolean('need_tac')->default(true);
 		});
 	}
