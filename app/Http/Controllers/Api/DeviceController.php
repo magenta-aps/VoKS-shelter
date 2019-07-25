@@ -390,6 +390,6 @@ class DeviceController extends Controller
           );
           return ['success' => true];
         }
-        return ['false' => true];
+        return ['success' => false];
     }
 }
