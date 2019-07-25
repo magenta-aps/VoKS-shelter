@@ -336,8 +336,9 @@ class DeviceController extends Controller
     public function anyUpdateDevice(SaveDeviceRequest $request)
     {
         $update = array();
+        $params = $request->all();
         //
-        if (isset($request->get('user_phone'))) {
+        if (isset($params['user_phone'])) {
           if (!empty($request->get('user_phone'))) {
             $update['user_phone'] = $request->get('user_phone');
             $update['need_phone'] = 0;
@@ -371,7 +372,7 @@ class DeviceController extends Controller
           }
         }
         //
-        if (isset($request->get('accepted_tac'))) {
+        if (isset($params['accepted_tac'])) {
           if (!empty($request->get('accepted_tac'))) {
             $update['need_tac'] = 0;
           }
