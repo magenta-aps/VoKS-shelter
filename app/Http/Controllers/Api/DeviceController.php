@@ -146,7 +146,7 @@ class DeviceController extends Controller
             'dev_mode' => false,
             'use_gps'  => $default->is_gps_location_source ? true : false,
             'renew'    => $device->renew,
-            'use_phone' => $device->user_phone,
+            'user_phone' => $device->user_phone,
             'user_phone_token' => $device->user_phone_token,
             'user_phone_confirm' => $device->user_phone_confirm,
             'need_phone' => $device->need_phone,
@@ -337,18 +337,27 @@ class DeviceController extends Controller
     {
         $update = array();
         //
-        if (!empty($request->get('user_phone'))) {
-          $update['user_phone'] = $request->get('user_phone');
-          $update['need_phone'] = 0;
-          $update['user_phone_confirm'] = 0;
-          //Generate token
-          $update['user_phone_token'] = Device::generateToken();
-          //Send token via SMS
-          $defaults = SchoolDefault::getDefaults();
-          if (!empty($defaults->sms_provider)) {
-            $integration = \Component::get('Sms')->getIntegration($defaults->sms_provider);
-            $integration->sendMessage($update['user_phone'], $update['user_phone_token']);
+        if (isset($request->get('user_phone'))) {
+          if (!empty($request->get('user_phone'))) {
+            $update['user_phone'] = $request->get('user_phone');
+            $update['need_phone'] = 0;
+            $update['user_phone_confirm'] = 0;
+            //Generate token
+            $update['user_phone_token'] = Device::generateToken();
+            //Send token via SMS
+            $defaults = SchoolDefault::getDefaults();
+            if (!empty($defaults->sms_provider)) {
+              $integration = \Component::get('Sms')->getIntegration($defaults->sms_provider);
+              $integration->sendMessage($update['user_phone'], $update['user_phone_token']);
+            }
           }
+          else {
+            $update['user_phone'] = '';
+            $update['need_phone'] = 1;
+            $update['user_phone_confirm'] = 0;
+            $update['user_phone_token'] = '';
+          }
+          
         }
         //
         if (!empty($request->get('skip_phone'))) {
@@ -362,8 +371,13 @@ class DeviceController extends Controller
           }
         }
         //
-        if (!empty($request->get('accepted_tac'))) {
-          $update['need_tac'] = 0;
+        if (isset($request->get('accepted_tac'))) {
+          if (!empty($request->get('accepted_tac'))) {
+            $update['need_tac'] = 0;
+          }
+          else {
+            $update['need_tac'] = 1;
+          }
         }
         
         if (!empty($update)) {
