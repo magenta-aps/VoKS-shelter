@@ -54,17 +54,18 @@ class DeviceController extends Controller
              * @var $device \BcomeSafe\Models\Device
              */
             $device_type = $request->get('device_type');
+            $device_id = $request->get('device_id');
             //Language
             $lang = !empty($request->get('lang')) ? $request->get('lang') : 'en';
             
             //Search in Database
-            $device_data = Device::getByDeviceId($request->get('device_id'));
+            $device_data = Device::getByDeviceId($device_id);
             $id = !empty($device_data['id']) ? $device_data['id'] : null;
             //Find or Create model
             $device = Device::findOrNew($id);
             //Set Attributes
             $device->setAttribute('device_type', $device_type);
-            $device->setAttribute('device_id', $request->get('device_id'));
+            $device->setAttribute('device_id', $device_id);
             $mac_address = $request->get('mac_address', config('alarm.default.mac'));
             //Iphone exceptions
             if (!config('alarm.use_mac_address_for_ios') && $mac_address == '00:00:00:00:00') {
