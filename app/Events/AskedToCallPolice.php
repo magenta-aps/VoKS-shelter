@@ -17,14 +17,16 @@ class AskedToCallPolice extends Event
     use SerializesModels;
 
     public $schoolId;
+    public $deviceId;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($schoolId)
+    public function __construct($schoolId, $deviceId)
     {
         $this->schoolId = $schoolId;
+        $this->deviceId = $deviceId;
     }
 }

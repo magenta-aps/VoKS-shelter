@@ -1,25 +1,19 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: emt
- * Date: 3/1/19
- * Time: 9:40 AM
- */
 
 namespace BComeSafe\Handlers\Events;
 
 
-use BComeSafe\Events\AlarmWasTriggered;
+use BComeSafe\Events\AskedToCallPolice;
 use BComeSafe\Models\EventLog;
 use BComeSafe\Models\School;
 use BComeSafe\Models\Device;
 
-class LogAlarmTrigger
+class LogAskedToCallPolice
 {
     protected $school;
     protected $device;
 
-    public function handle(AlarmWasTriggered $event)
+    public function handle(AskedToCallPolice $event)
     {
         $this->school = School::getSettings($event->schoolId);
         if (isset($event->deviceId)) {
@@ -27,7 +21,7 @@ class LogAlarmTrigger
         }
 
         $data = [
-            'log_type' => EventLog::ALARM_TRIGGERED,
+            'log_type' => EventLog::ASKED_TO_CALL_POLICE,
             'school_id' => $event->schoolId,
         ];
         if ($this->device) {

@@ -212,7 +212,7 @@ class DeviceController extends Controller
 
             case Device::ASKED_TO_CALL:
                 if (!$device['already_triggered'] && $status === Device::ASKED_TO_CALL) {
-                    \Event::fire(new AskedToCallPolice($device['school_id']));
+                    \Event::fire(new AskedToCallPolice($device['school_id'], $device['device_id']));
                 }
 
                 $response = ['success' => true, 'calling' => false, 'asked' => true, 'status' => $status];
