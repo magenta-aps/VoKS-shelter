@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: emt
- * Date: 3/1/19
- * Time: 9:46 AM
- */
 
 namespace BComeSafe\Models;
 
@@ -17,6 +11,8 @@ class EventLog extends BaseModel
     const SMS_SENT = "sms_sent";
     const SHELTER_RESET = "shelter_reset";
     const AUDIO_PLAYED = "audio_played";
+    const VIDEO_RECORDED = "video_recorded";
+    const VIDEO_CHAT_STARTED = "video_chat_started";
 
     protected $fillable = [
         'log_type',
@@ -46,7 +42,6 @@ class EventLog extends BaseModel
         if (isset($data['data']) && is_array($data['data'])) {
             $data['data'] = json_encode($data['data']);
         }
-        \Log::debug($data);
         return parent::create($data);
     }
 }

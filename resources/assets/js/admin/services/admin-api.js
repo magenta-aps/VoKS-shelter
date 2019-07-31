@@ -221,6 +221,10 @@
             this.syncCrisisTeam = function() {
                 return $http.get('/admin/crisis-team/sync');
             };
+
+            this.saveVideoFileName = function(filename) {
+                return $http.post('/admin/logs/save-video-file-name', filename)
+            }
         };
 
         return new Api();

@@ -36,10 +36,11 @@ class ReportsController extends BaseController
             $list[$i]->fullname = $eventLogData['fullname'];
             $list[$i]->device_id = $eventLogData['device_id'];
             $list[$i]->device_type = $eventLogData['device_type'];
-            $list[$i]->push_notifications = $eventLogData['push_notifications_sent'];
-            $list[$i]->video_chats = $eventLogData['video_chats'];
-            $list[$i]->audio_played = $eventLogData['audio_played'];
-            $list[$i]->other_events = $eventLogData['other_events'];
+            $list[$i]->push_notifications = $eventLogData['stats'][EventLog::PUSH_NOTIFICATION_SENT];
+            $list[$i]->video_chats = $eventLogData['stats'][EventLog::VIDEO_CHAT_STARTED];
+            $list[$i]->audio_played = $eventLogData['stats'][EventLog::AUDIO_PLAYED];
+            $list[$i]->other_events = $eventLogData['stats']['other_events'];
+            $list[$i]->video_link = $eventLogData['video_link'];
         }
         return $list;
     }
@@ -116,28 +117,40 @@ class ReportsController extends BaseController
         $eventLogs = EventLog::where(['school_id' => $schoolId, 'triggered_at' => $triggeredAt])->get();
         if (count($eventLogs) == 0) return null;
 
-        $data = ['push_notifications_sent' => 0, 'video_chats' => 0, 'audio_played' => 0, 'other_events' => 0, 'alarm_reset_time' => ''];
+        $data = [
+            'stats' => [
+                EventLog::PUSH_NOTIFICATION_SENT => 0,
+                EventLog::VIDEO_CHAT_STARTED => 0,
+                EventLog::AUDIO_PLAYED => 0,
+                'other_events' => 0
+            ],
+            'alarm_reset_time' => '',
+            'video_link' => ''
+        ];
+
+        // Merge event log data into simple assoc. arr
         for ($i=0; $i<count($eventLogs); $i++) {
             switch($eventLogs[$i]->log_type) {
-                case "push_notification_sent":
-                    $data['push_notifications_sent']++;
+                // Counters
+                case EventLog::PUSH_NOTIFICATION_SENT:
+                case EventLog::AUDIO_PLAYED:
+                case EventLog::VIDEO_CHAT_STARTED:
+                    $data['stats'][$eventLogs[$i]->log_type]++;
                     break;
-                case "audio_played":
-                    $data['audio_played']++;
-                    break;
-                case "video_chat_started":
-                    $data['video_chats']++;
-                    break;
-                case "alarm_triggered":
+                case EventLog::ALARM_TRIGGERED:
                     $data['device_id'] = $eventLogs[$i]->device_id;
                     $data['device_type'] = $eventLogs[$i]->device_type;
                     $data['fullname'] = $eventLogs[$i]->fullname;
                     break;
-                case "shelter_reset":
+                case EventLog::SHELTER_RESET:
                     $data['alarm_reset_time'] = $eventLogs[$i]->created_at;
                     break;
+                case EventLog::VIDEO_RECORDED:
+                    $videoData = json_decode($eventLogs[$i]->data, true);
+                    $data['video_link'] = $videoData['filename'];
+                    break;
                 default:
-                    $data['other_events']++;
+                    $data['stats']['other_events']++;
             }
         }
         return $data;

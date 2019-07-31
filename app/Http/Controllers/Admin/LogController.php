@@ -36,7 +36,12 @@ class LogController extends BaseController
         return $list;
     }
 
-
+    public function postSaveVideoFileName($filename) {
+        EventLog::create([
+            'log_type' => EventLog::VIDEO_RECORDED,
+            'data' => ['filename' => $filename]
+        ]);
+    }
 
     public function postRemoveLogItem(Request $request)
     {

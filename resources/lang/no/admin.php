@@ -105,6 +105,8 @@ return [
             'download_report' => 'Hent rapport',
             'download_csv' => 'Hent .csv',
             'download_pdf' => 'Hent .pdf',
+            'has_video' => 'Video?',
+            'video_tooltip' => 'Klik for at kopiere stien til videoen',
             'false_alarm' => "Falsk alarm?",
             'note' => 'Note',
             'yes' => 'Ja',
