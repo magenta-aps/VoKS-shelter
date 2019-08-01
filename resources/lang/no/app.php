@@ -74,17 +74,15 @@ return [
     ],
     'tac' => [
         'default' => '<b>Brukervilkår</b><br />
-<br />
-Ved å godta installasjon av denne app-en, godtar du at:<br />
-<br />
-<ul>
-<li>appen får tilgang til ditt kamera og mikrofon, når du trykker på alarmknappen.</li>
-<li>du får sms og/eller push-notifikasjon når skolens ledelse sender ut en krisemelding.</li>
-<li>at systemet viser på en byggtegning ca hvor du befinner seg. Dette er ingen nøyaktig angivelse, men viser omtrentlig i hvilken del av en bygning du befinner deg.</li>
-<li>at det gjøres opptak av all lyd og video som din telefon leverer til systemet når du utløser alarmen.</li>
-</ul><br />
-<br />
-Når alarmen ikke er utløst, dvs. du ikke har trykket på alarmknappen, så ligger appen i bakgrunnen og samler ingen data om deg eller din telefon. Eneste grunn til at den ligger og kjører i bakgrunnen er at skolens ledelse skal kunne sende deg en melding i forbindelse med en alvorlig hendelse.
+        <br />
+        Ved å godta installasjon av denne app-en, godtar du at:<br />
+         - appen får tilgang til ditt kamera og mikrofon, når du trykker på alarmknappen.<br />
+         - du får sms og/eller push-notifikasjon når skolens ledelse sender ut en krisemelding.<br />
+         - systemet viser på en byggtegning ca hvor du befinner seg. Dette er ingen nøyaktig angivelse, men viser omtrentlig i hvilken del av en bygning du befinner deg.<br />
+         - at det gjøres opptak av all lyd og video som din telefon leverer til systemet når du utløser alarmen.<br />
+        <br />
+        <br />
+        Når alarmen ikke er utløst, dvs. du ikke har trykket på alarmknappen, så ligger appen i bakgrunnen og samler ingen data om deg eller din telefon. Eneste grunn til at den ligger og kjører i bakgrunnen er at skolens ledelse skal kunne sende deg en melding i forbindelse med en alvorlig hendelse.
 		'
     ]
 ];
