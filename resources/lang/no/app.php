@@ -73,16 +73,21 @@ return [
         'message' => 'Connecting to the shelter, please wait...(no)'
     ],
     'tac' => [
-        'default' => '<b>Brukervilkår</b><br />
-        <br />
-        Ved å godta installasjon av denne app-en, godtar du at:<br />
-         - appen får tilgang til ditt kamera og mikrofon, når du trykker på alarmknappen.<br />
-         - du får sms og/eller push-notifikasjon når skolens ledelse sender ut en krisemelding.<br />
-         - systemet viser på en byggtegning ca hvor du befinner seg. Dette er ingen nøyaktig angivelse, men viser omtrentlig i hvilken del av en bygning du befinner deg.<br />
-         - at det gjøres opptak av all lyd og video som din telefon leverer til systemet når du utløser alarmen.<br />
-        <br />
-        <br />
-        Når alarmen ikke er utløst, dvs. du ikke har trykket på alarmknappen, så ligger appen i bakgrunnen og samler ingen data om deg eller din telefon. Eneste grunn til at den ligger og kjører i bakgrunnen er at skolens ledelse skal kunne sende deg en melding i forbindelse med en alvorlig hendelse.
+        'default' => '		
+		<b>Brukervilkår</b><br />
+		<br />
+		Ved installasjon av BComeSafe-appen, godtar du at appen får tilgang til ditt kamera, mikrofon og din posisjon når du er innenfor skolens område. Appen vil ikke fungere dersom du ikke er oppkoblet eller er utenfor skolens trådløse nettverk.<br />
+		<br />
+		Dersom du samtykker til det, vil appen også få tilgang til ditt mobilnummer.<br />
+		<br />
+		<b>Hva skjer når jeg trykker på alarmknappen?</b><br />
+		- Appen åpner kamera og mikrofon for å sende lyd og video direkte til et sentralt system på skolen. Denne videostrømmen vil lagres i maksimum ett år. Skolens kriseledelse har tilgang til opptaket. Hvis nødvendig, kan skolens ledelse gi opptaket til politiet.<br />
+		- Dersom du er på skolens område, vil appen sende informasjon til et sentralt system på skolen som viser omtrentlig hvor du befinner deg, Skolens kriseledelse har tilgang til din posisjon.<br />
+		<br />
+		<b></b>Hvilken funksjon har appen når alarmen ikke er utløst?</b><br />
+		- Du får en push-notifikasjon i appen dersom skolens ledelse sender ut en melding i forbindelse med en alvorlig hendelse.<br />
+		- Har du oppgitt ditt mobilnummer, vil du i tillegg få en tekstmelding (sms).<br />
+		- Skolens ledelse kan ikke se din posisjon.
 		'
     ]
 ];
