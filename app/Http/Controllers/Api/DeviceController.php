@@ -328,9 +328,10 @@ class DeviceController extends Controller
      *
      * @return array
      */
-    public function anyUpdateDevice(SaveDeviceRequest $request)
+    public function postUpdateDevice(SaveDeviceRequest $request)
     {
         $update = array();
+        //@Todo - use $request->filled('user_phone') 
         $params = $request->all();
         //
         if (isset($params['user_phone'])) {
@@ -367,6 +368,7 @@ class DeviceController extends Controller
           }
         }
         //
+        //@Todo - use $request->filled('accepted_tac') 
         if (isset($params['accepted_tac'])) {
           if (!empty($request->get('accepted_tac'))) {
             $update['need_tac'] = 0;
