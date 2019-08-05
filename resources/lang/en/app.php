@@ -71,5 +71,20 @@ return [
     ],
     'trigger' => [
         'message' => 'Connecting to the shelter, please wait.....'
+    ],
+    'tac' => [
+        'default' => '
+			<b>T&C title</b><br />
+			<br />
+			Sub text:<br />
+			<br />
+			<ul>
+				<li>Point 1</li>
+				<li>Point 2</li>
+				<li>Point 3</li>
+				<li>Point 4</li>
+			</ul><br />
+			<br />
+			Ending text.'
     ]
 ];
