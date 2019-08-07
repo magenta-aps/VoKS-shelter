@@ -451,7 +451,7 @@ class ShelterController extends Controller
         $message = $request->get('message');
 
         foreach ($clients as $client) {
-            $device = Device::where('push_notification_id', '=', $client['gcm_id'])->first();
+            $device = Device::where('push_notification_id', '=', $client['gcm_id'])->whereNotNull('user_phone')->first();
             $devices[] = ['id' => $client['gcm_id'], 'type' => $client['type'], 'user_phone' => $device['user_phone']];
         }
 
