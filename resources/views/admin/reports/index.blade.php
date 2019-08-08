@@ -14,6 +14,28 @@
 
         <div class="help-block__container">
             <div class="custom">
+                <form>
+                    <div class="form-group">
+                        <label for="dateRange" class="control-label">Date range</label>
+                        <div>
+                            <input date-range-picker id="dateRange" name="dateRange" class="form-control date-picker" type="text" ng-model="searchFilter.date" options="dateOpts" clearable="true"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="radio" ng-model="searchFilter.name" value="red">
+                            Red
+                        </label><br/>
+                        <label>
+                            <input type="radio" ng-model="searchFilter.name" value="specialValue">
+                            Green
+                        </label><br/>
+                        <label>
+                            <input type="radio" ng-model="searchFilter.name" value="blue">
+                            Blue
+                        </label>
+                    </div>
+                </form>
 
                 <table class="table-style table-style__settings textarea-block">
                     <thead>

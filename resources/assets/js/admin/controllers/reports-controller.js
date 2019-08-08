@@ -17,6 +17,23 @@
             $scope.list = data;
         });
 
+        $scope.searchFilter = { date: {startDate: null, endDate: null} };
+
+        $scope.ranges = {
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'Last year': [moment().subtract(1, 'years'), moment()]
+        };
+
+        $scope.dateOpts = {
+            maxDate: moment(),
+            ranges: $scope.ranges
+        };
+
+        $scope.$watch('searchFilter', function(newFilter) {
+            console.log('Options changed: ', newFilter);
+        }, true);
+
         angular.extend($scope, {
             list: [],
             inserted: {},
