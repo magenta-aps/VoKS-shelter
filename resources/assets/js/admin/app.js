@@ -14,12 +14,13 @@
      * @type Array
      */
     var dependencies = [
-        'pascalprecht.translate', 
+        'pascalprecht.translate',
 	'toasts',
         'ui.select',
 	'recorders',
         'ui.tinymce',
-        'xeditable'
+        'xeditable',
+        'daterangepicker'
     ];
     angular.module('admin', dependencies);
 
