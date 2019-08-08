@@ -12,7 +12,7 @@ return [
         'batch_select' => 'Plukk ut brukere med markeringsverktøyet eller velg et av alternativene under:',
         'label' => 'Send meldinger',
         'tabs' => [
-            'push' => 'Push-meldinger',
+            'push' => 'Tekstmeldinger',
             'audio' => 'Talemeldinger',
             'history' => 'Logg',
         ],
