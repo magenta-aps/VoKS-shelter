@@ -67,6 +67,7 @@ class Device extends BaseModel
         'active',
         'floor_id',
         'triggered_at',
+        'ap_name',
         'user_email',
         'user_phone',
         'need_phone',
