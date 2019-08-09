@@ -14,7 +14,7 @@ return [
         'general' => [
             'system' => 'System',
             'help' => 'Help defaults',
-            'push' => 'Push notification defaults',
+            'push' => 'Notification defaults',
             'sms' => 'SMS texts defaults'
         ],
     ],
@@ -39,9 +39,9 @@ return [
 			'google'	=> 'Google Maps',
 		],
     'push' => [
-        'title' => 'Push notifications',
-        'description' => 'Setup default push notification settings',
-        'new' => 'New Defaut Notification',
+        'title' => 'Notifications',
+        'description' => 'Setup default notification settings',
+        'new' => 'New Default Notification',
         'table' => [
             'label' => 'Notification Label',
             'content' => 'Notification Content',

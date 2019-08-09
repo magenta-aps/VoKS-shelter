@@ -6,7 +6,7 @@ return [
         'help' => 'Help',
         'sms' => 'Information SMS management',
         'phone' => 'Phone System',
-        'push' => 'Push notification management',
+        'push' => 'Notification management',
         'buttons' => 'IP buttons',
         'team' => 'Crisis center list',
         'reset' => 'Reset Shelter'
@@ -55,8 +55,8 @@ return [
         'sync' => 'Sync manually'
     ],
     'push' => [
-        'title' => 'Push notifications',
-        'description' => 'Manage push notification templates',
+        'title' => 'Notifications',
+        'description' => 'Manage notification templates',
         'button' => [
             'new' => 'New Default Notification',
             'import' => 'Import defaults',

@@ -27,8 +27,8 @@ return [
                 'select_client' => 'Please select at least one client.',
                 'no_message' => 'Please type in a message or select a message template.',
                 'too_long' => 'Message too long.',
-                'sent' => 'Push notification has been sent.',
-                'not_sent' => 'Push was not sent.',
+                'sent' => 'Message has been sent.',
+                'not_sent' => 'Message was not sent.',
 
             ]
         ],
