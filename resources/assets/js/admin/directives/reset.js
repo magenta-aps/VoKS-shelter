@@ -25,7 +25,10 @@
                                 .success( function (data) {
                                     if(data['Status'] === 1) {
                                         var name = prompt($translate.instant('toast.contents.reset.video.prompt'));
-                                        Recorder.stopRecording(name);
+                                        var filename = Recorder.stopRecording(name);
+                                        if (filename) {
+                                            AdminApi.saveVideoFileName(filename);
+                                        }
                                     }
 				                });
                             }

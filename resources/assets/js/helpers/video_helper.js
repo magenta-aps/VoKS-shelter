@@ -25,8 +25,8 @@
                 $http.post(stop_url, JSON.stringify(data))
                     .success(function (res) {
                         var filename = res['filename'];
-                        AdminApi.saveVideoFileName(filename);
                         Toast.push('success', $translate.instant('toast.contents.reset.video.success'));
+                        return filename;
                     })
                     .error(function () {
                         Toast.push('error', $translate.instant('toast.contents.reset.video.error'));
@@ -62,6 +62,6 @@
         return new Recorder();
     };
 
-    videoFactory.$inject = ['$http', 'AdminApi', 'Toast', '$translate'];
+    videoFactory.$inject = ['$http', 'Toast', '$translate'];
     angular.module('recorders', []).factory('Recorder', videoFactory);
 })();
