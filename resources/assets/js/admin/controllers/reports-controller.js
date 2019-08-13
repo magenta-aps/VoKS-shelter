@@ -9,15 +9,7 @@
     'use strict';
 
     var reportsController = function($scope, Toast, AdminApi, $translate) {
-
-        AdminApi.getReports().success(function(data) {
-            data.forEach(function(item) {
-                item.false_alarm = !!+item.false_alarm; // coerce "1" to int and coerce int to boolean
-            });
-            $scope.list = data;
-        });
-
-        $scope.searchFilter = { date: {startDate: null, endDate: null} };
+        $scope.searchFilter = { date: {startDate: null, endDate: null}, false_alarm: "null" };
 
         $scope.ranges = {
             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
@@ -31,7 +23,7 @@
         };
 
         $scope.$watch('searchFilter', function(newFilter) {
-            console.log('Options changed: ', newFilter);
+            $scope.search(newFilter);
         }, true);
 
         angular.extend($scope, {
@@ -58,7 +50,18 @@
                     });
                 }
             },
+            search: function(filter) {
+                console.log(filter);
+                AdminApi.getReports(filter).success(function(data) {
+                    data.forEach(function(item) {
+                        item.false_alarm = !!+item.false_alarm; // coerce "1" to int and coerce int to boolean
+                    });
+                    $scope.list = data;
+                });
+            }
         });
+
+        $scope.search($scope.searchFilter);
     };
 
     reportsController.$inject = ['$scope', 'Toast', 'AdminApi', '$translate'];

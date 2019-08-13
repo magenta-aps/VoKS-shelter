@@ -21,10 +21,18 @@ class ReportsController extends BaseController
         return view('admin.reports.index');
     }
 
-    public function getList()
+    public function postList(Request $request)
     {
+        $filter = $request->all();
         $schoolId = \Shelter::getID();
-        $list = EventReport::where('school_id', '=', $schoolId)->orderBy('created_at', 'desc')->get();
+        $query = EventReport::where('school_id', '=', $schoolId);
+
+        $where = $this->getWhereArrayFromSearchFilter($filter);
+        for ($i = 0; $i<count($where); $i++) {
+            $query = $query->where($where[$i][0], $where[$i][1], $where[$i][2]);
+        }
+
+        $list = $query->orderBy('created_at', 'desc')->get();
         for ($i=0; $i<count($list); $i++) {
             $list[$i]->log_download_link = $this->makeLink($list[$i], 'csv');
             $list[$i]->report_download_link = $this->makeLink($list[$i], 'pdf');
@@ -154,5 +162,29 @@ class ReportsController extends BaseController
             }
         }
         return $data;
+    }
+
+    private function getWhereArrayFromSearchFilter($filter) {
+        $schoolId = \Shelter::getID();
+        $where = array(['school_id', '=', $schoolId]);
+        $date = $filter['date'];
+        if (isset($date['startDate'])) {
+            array_push($where, ['created_at', '>=', $date['startDate']]);
+        }
+        if (isset($date['endDate'])) {
+            array_push($where, ['created_at', '<=', $date['endDate']]);
+        }
+        $false_alarm_filter = $filter['false_alarm'];
+        switch ($false_alarm_filter) {
+            case "no_false":
+                array_push($where, ['false_alarm', '=', 0]);
+                break;
+            case "only_false":
+                array_push($where, ['false_alarm', '=', 1]);
+                break;
+            default:
+        }
+
+        return $where;
     }
 }

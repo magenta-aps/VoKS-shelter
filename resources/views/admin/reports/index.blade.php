@@ -23,16 +23,16 @@
                     </div>
                     <div class="form-group">
                         <label>
-                            <input type="radio" ng-model="searchFilter.name" value="red">
-                            Red
+                            <input type="radio" ng-model="searchFilter.false_alarm" value="all">
+                            All alarms
                         </label><br/>
                         <label>
-                            <input type="radio" ng-model="searchFilter.name" value="specialValue">
-                            Green
+                            <input type="radio" ng-model="searchFilter.false_alarm" value="no_false">
+                            Exclude false alarms
                         </label><br/>
                         <label>
-                            <input type="radio" ng-model="searchFilter.name" value="blue">
-                            Blue
+                            <input type="radio" ng-model="searchFilter.false_alarm" value="only_false">
+                            Only show false alarms
                         </label>
                     </div>
                 </form>

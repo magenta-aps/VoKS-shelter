@@ -30,6 +30,7 @@
                     })
                     .error(function () {
                         Toast.push('error', $translate.instant('toast.contents.reset.video.error'));
+                        return null;
                     });
             };
 

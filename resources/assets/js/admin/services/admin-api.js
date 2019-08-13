@@ -190,8 +190,8 @@
                 return $http.get('/admin/logs/list');
             };
 
-            this.getReports = function() {
-                return $http.get('/admin/reports/list');
+            this.getReports = function(filter) {
+                return $http.post('/admin/reports/list', filter);
             };
 
             this.saveReportItem = function (data) {
