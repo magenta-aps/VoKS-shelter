@@ -39,6 +39,9 @@ class EventServiceProvider extends ServiceProvider
             'BComeSafe\Handlers\Events\SendSecondaryEmail',
             'BComeSafe\Handlers\Events\SendSecondarySms',
             'BComeSafe\Handlers\Events\LogAskedToCallPolice'
+        ],
+        'BComeSafe\Events\PoliceWasCalled' => [
+            'BComeSafe\Handlers\Events\LogPoliceWasCalled'
         ]
     ];
 

@@ -11,6 +11,7 @@ namespace BComeSafe\Http\Controllers\Api;
 
 use BComeSafe\Events\AlarmWasTriggered;
 use BComeSafe\Events\AskedToCallPolice;
+use BComeSafe\Events\PoliceWasCalled;
 use BComeSafe\Http\Controllers\Controller;
 use BComeSafe\Http\Requests\GotItRequest;
 use BComeSafe\Http\Requests\RegisterDeviceRequest;
@@ -212,6 +213,7 @@ class DeviceController extends Controller
 
             case Device::ASKED_TO_CALL:
                 if (!$device['already_triggered'] && $status === Device::ASKED_TO_CALL) {
+                    // TODO fire event regardless of whether device has already triggered?
                     \Event::fire(new AskedToCallPolice($device['school_id'], $device['device_id']));
                 }
 
@@ -220,6 +222,7 @@ class DeviceController extends Controller
 
             case Device::CALLED:
                 $response = ['success' => true, 'calling' => true, 'status' => $status];
+                \Event::fire(new PoliceWasCalled($device['school_id'], $device['device_id']));
                 break;
 
             default:

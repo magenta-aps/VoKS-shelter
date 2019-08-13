@@ -7,6 +7,7 @@ class EventLog extends BaseModel
 {
     const ALARM_TRIGGERED = "alarm_triggered";
     const ASKED_TO_CALL_POLICE = "asked_to_call_police";
+    const POLICE_WAS_CALLED = "police_called";
     const PUSH_NOTIFICATION_SENT = "push_notification_sent";
     const SMS_SENT = "sms_sent";
     const SHELTER_RESET = "shelter_reset";
