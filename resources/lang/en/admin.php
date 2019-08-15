@@ -93,6 +93,15 @@ return [
     'reports' => [
         'title' => 'Reports',
         'description' => 'Reports of events in BCS',
+        'no_results' => 'No reports found matching the search criteria.',
+        'filters' => [
+            'date_range' => 'Date range',
+            'false_alarm' => [
+                'all' => 'All alarms',
+                'exclude_false' => 'Exclude false alarms',
+                'only_false' => 'Only show false alarms'
+            ]
+        ],
         'table' => [
             'triggered_at' => 'Time',
             'device_type' => 'Device type',

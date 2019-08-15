@@ -93,6 +93,15 @@ return [
     'reports' => [
         'title' => 'Rapporter',
         'description' => 'Aktivitetsrapporter',
+        'no_results' => 'Ingen resultater funnet for de valgte kriteriene.',
+        'filters' => [
+            'date_range' => 'Datointervall',
+            'false_alarm' => [
+                'all' => 'Alle alarmer',
+                'exclude_false' => 'Ekskluder falske alarmer',
+                'only_false' => 'Vis bare falske alarmer'
+            ]
+        ],
         'table' => [
             'triggered_at' => 'Tidspunkt',
             'device_type' => 'Enhedstype',

@@ -16,7 +16,7 @@
             <div class="custom">
                 <form>
                     <div class="form-group">
-                        <label for="dateRange" class="control-label">Date range</label>
+                        <label for="dateRange" class="control-label">{{ Lang::get('admin.reports.filters.date_range') }}</label>
                         <div>
                             <input date-range-picker id="dateRange" name="dateRange" class="form-control date-picker" type="text" ng-model="searchFilter.date" options="dateOpts" clearable="true"/>
                         </div>
@@ -24,20 +24,23 @@
                     <div class="form-group">
                         <label>
                             <input type="radio" ng-model="searchFilter.false_alarm" value="all">
-                            All alarms
+                            {{ Lang::get('admin.reports.filters.false_alarm.all') }}
                         </label><br/>
                         <label>
                             <input type="radio" ng-model="searchFilter.false_alarm" value="no_false">
-                            Exclude false alarms
+                            {{ Lang::get('admin.reports.filters.false_alarm.exclude_false') }}
                         </label><br/>
                         <label>
                             <input type="radio" ng-model="searchFilter.false_alarm" value="only_false">
-                            Only show false alarms
+                            {{ Lang::get('admin.reports.filters.false_alarm.only_false') }}
                         </label>
                     </div>
                 </form>
-
-                <table class="table-style table-style__settings textarea-block">
+                <hr>
+                <div ng-if="!list.length">
+                    <p>{{ Lang::get('admin.reports.no_results') }}</p>
+                </div>
+                <table ng-if="list.length" class="table-style table-style__settings textarea-block">
                     <thead>
                     <tr>
                         <th>{{ Lang::get('admin.reports.table.triggered_at') }}</th>

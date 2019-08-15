@@ -110,7 +110,10 @@ class ReportsController extends BaseController
     {
         $item = EventReport::find($request->get('id'));
         if ($item) {
+            $triggered_at = $item['triggered_at'];
             $item->delete();
+            // Also delete related event_logs. TODO find out whether this is desired behaviour
+            EventLog::where('triggered_at', '=', $triggered_at)->delete();
         }
 
         return $item;
@@ -164,9 +167,14 @@ class ReportsController extends BaseController
         return $data;
     }
 
+    /*
+    Returns an array of where clause arrays in the form ['field', 'operator', 'value']
+    */
     private function getWhereArrayFromSearchFilter($filter) {
-        $schoolId = \Shelter::getID();
-        $where = array(['school_id', '=', $schoolId]);
+        // Always filter by school_id
+        $where = array(['school_id', '=', \Shelter::getID()]);
+
+        // Date filters
         $date = $filter['date'];
         if (isset($date['startDate'])) {
             array_push($where, ['created_at', '>=', $date['startDate']]);
@@ -174,6 +182,8 @@ class ReportsController extends BaseController
         if (isset($date['endDate'])) {
             array_push($where, ['created_at', '<=', $date['endDate']]);
         }
+
+        // False alarm filters
         $false_alarm_filter = $filter['false_alarm'];
         switch ($false_alarm_filter) {
             case "no_false":

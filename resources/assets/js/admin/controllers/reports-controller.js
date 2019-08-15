@@ -9,9 +9,9 @@
     'use strict';
 
     var reportsController = function($scope, Toast, AdminApi, $translate) {
-        $scope.searchFilter = { date: {startDate: null, endDate: null}, false_alarm: "null" };
+        $scope.searchFilter = { date: {startDate: null, endDate: null}, false_alarm: "all" };
 
-        $scope.ranges = {
+        $scope.ranges = { // TODO $translate.instant('toast.reports.filters.date.ranges.last_7') etc.
             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
             'Last year': [moment().subtract(1, 'years'), moment()]
@@ -19,8 +19,44 @@
 
         $scope.dateOpts = {
             maxDate: moment(),
-            ranges: $scope.ranges
+            ranges: $scope.ranges,
+            autoApply: true
         };
+        /*
+        TODO translate datepicker using locale
+         "locale": {
+        "format": "MM/DD/YYYY",
+        "separator": " - ",
+        "applyLabel": "Apply",
+        "cancelLabel": "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel": "W",
+        "daysOfWeek": [
+            "Su",
+            "Mo",
+            "Tu",
+            "We",
+            "Th",
+            "Fr",
+            "Sa"
+        ],
+        "monthNames": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        ],
+         */
 
         $scope.$watch('searchFilter', function(newFilter) {
             $scope.search(newFilter);
