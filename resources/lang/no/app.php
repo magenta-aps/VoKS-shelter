@@ -1,6 +1,6 @@
 <?php
 
-return [
+$data = [
     'header' => [
         'menu' => [
             'main' => [
@@ -73,21 +73,37 @@ return [
         'message' => 'Connecting to the shelter, please wait...(no)'
     ],
     'tac' => [
-        'default' => '		
-		<b>Brukervilkår</b><br />
-		<br />
-		Ved installasjon av BComeSafe-appen, godtar du at appen får tilgang til ditt kamera, mikrofon og din posisjon når du er innenfor skolens område. Appen vil ikke fungere dersom du ikke er oppkoblet eller er utenfor skolens trådløse nettverk.<br />
-		<br />
-		Dersom du samtykker til det, vil appen også få tilgang til ditt mobilnummer.<br />
-		<br />
-		<b>Hva skjer når jeg trykker på alarmknappen?</b><br />
-		- Appen åpner kamera og mikrofon for å sende lyd og video direkte til et sentralt system på skolen. Denne videostrømmen vil lagres i maksimum ett år. Skolens kriseledelse har tilgang til opptaket. Hvis nødvendig, kan skolens ledelse gi opptaket til politiet.<br />
-		- Dersom du er på skolens område, vil appen sende informasjon til et sentralt system på skolen som viser omtrentlig hvor du befinner deg, Skolens kriseledelse har tilgang til din posisjon.<br />
-		<br />
-		<b></b>Hvilken funksjon har appen når alarmen ikke er utløst?</b><br />
-		- Du får en push-notifikasjon i appen dersom skolens ledelse sender ut en melding i forbindelse med en alvorlig hendelse.<br />
-		- Har du oppgitt ditt mobilnummer, vil du i tillegg få en tekstmelding (sms).<br />
-		- Skolens ledelse kan ikke se din posisjon.
-		'
+        'default' => ""
     ]
 ];
+
+$data['tac']['default'] = <<<ENDOFTAC
+<b>Brukervilkår</b>
+<p>1. INNLEDNING<br/>
+Velkommen til BComeSafe, en applikasjon til din mobiltelefon som er utviklet for å sette deg i forbindelse med øyeblikkelig hjelp i tilfelle av krisesituasjoner. BComeSafe eies og drives av BComeSafe ApS (“oss”, “vi”, “vår” eller “BComeSafe”).</p>
+<p>2. AKSEPT AV BRUKERVILKÅR<br/>
+Disse brukervilkårene, sammen med eventuelle vilkår som godtas i forbindelse med andre funksjoner tilgjengelige i Appen, regulerer din bruk av BComeSafe (“Vilkår” eller “Brukervilkår”). Ved å bruke BComeSafe godtar du, og er bundet av, Brukervilkårene. Dersom du er uenig i disse Vilkårene, eller deler av dem, kan du ikke bruke Appen.</p>
+<p>Vi oppfordrer deg til å lese disse Brukervilkårene nøye før du tar i bruk BComeSafe.</p>
+<p>BComeSafe forbeholder seg retten til når som helst, etter eget skjønn, å endre, modifisere, legge til eller fjerne deler av disse Brukervilkårene. Dersom endringene er vesentlige, vil vi gi deg beskjed ved å legge ut en melding i BComeSafe Appen. Ved fortsatt bruk av BComeSafe godtar du, og er enig i, slike eventuelle endringer av Vilkårene.</p>
+<p>3. TJENESTEN<br/>
+BComeSafe er en plattform som forbinder Appens brukere med en beredskapsenhet som vil veilede brukerne i krisesituasjoner. Brukeren utløser en alarm, som opplyser et dedikert kriseteam om situasjonen, hvoretter de handle på situasjonen.</p>
+<p>4. PERSONVERN OG PERSONOPPLYSNINGER<br/>
+Vennligst <a href='https://bcomesafe.com/privacy-policy/'>klikk her</a> for å lese vår Personvernpolicy.</p>
+<p>Vi behandler dine personopplysninger i samsvar med vår Personvernpolicy.</p>
+<p>Du garanterer at opplysningene du oppgir er korrekte, nøyaktige, gyldige, fullstendige, og du har rett til å gi opplysningene.</p>
+<p>5. IMMATERIELLE RETTIGHETER<br/>
+BComeSafe og dens lisensgivere har, og vil fortsette å ha, eneretten til tjenesten og dens innhold, funksjoner og funksjonalitet og alle tilhørende varemerker, opphavsrettigheter og immaterielle rettigheter. Du kan bare bruke slike rettigheter og materiale i forbindelse med bruk av BComeSafe, i samsvar med disse Vilkårene.</p>
+<p>6. KLAGER<br/>
+Hvis du oppdager feil i BComeSafe kan du klage til oss. Hvis du ønsker å klage til oss, må du ta kontakt uten unødvendig opphold etter at feilen er oppdaget.</p>
+<p>7. INGEN GARANTIER<br/>
+Du bruker Appen på egen risiko. BComeSafe er ment å tilby ekstra trygghet, men erstatter ikke på noen måte de normale sikkerhetsforbehold der bør tages i en given krisesituation, og skal kun brukes som et tillegg til disse.</p>
+<p>Funksjonaliteten til din telefon er ditt ansvar alene. Dette inkluderer, men er ikke begrenset til, å holde telefonen sin programvare oppdatert og fri fra skadevare, og å forsikre at telefonen har internettforbindelse og innenfor rekkevidden av slike tjenester. Det er ditt ansvar alene å gi BComeSafe relevante tillatelser og tilganger i dine telefoninnstillinger.</p>
+<p>BComeSafe garanterer ikke at Appen vil fungere uavbrutt eller være tilgjengelig på bestemte tider eller steder. BComeSafe garanterer ikke at feil eller mangler vil bli utbedret eller at Appen er uten virus eller andre skadelige komponenter.</p>
+<p>8. ANSVARSFRASKRIVELSE<br/>
+I den grad det er tillatt etter gjeldende lov, skal BComeSafe ikke holdes ansvarlig for skader eller personskader tilknyttet eller som følge av (i) bruken av, eller manglende evne til å bruke, Appen; (ii) eventuell ikke-oppfyllelse av tjenestene tilbudt av Tjenestetilbyderen eller annen tredjepart; (iii) noe innhold i Appen; eller (iv) noen eventuell uautorisert tilgang, bruk eller endring av dine opplysninger. Dette inkluderer, men er ikke begrenset til, forsinkelser, feil, ytelsesproblemer, avbrudd i tjenesten, tap av data eller andre potensielle funksjonsfeil i Appen.</p>
+<p>9. LOVVALG OG TVISTELØSNING<br/>
+Disse Vilkårene skal tolkes og utfylles i overensstemmelse med norsk rett. Eventuelle tvister skal være underlagt norske domstolers eksklusive jurisdiksjon.</p>
+<p>Brukervilkårene ble sist oppdatert 6.8.2019</p>
+ENDOFTAC;
+
+return $data;
