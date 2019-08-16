@@ -52,7 +52,7 @@
                         <th>{{ Lang::get('admin.reports.table.video_chats') }}</th>
                         <th>{{ Lang::get('admin.reports.table.download_log') }}</th>
                         <th>{{ Lang::get('admin.reports.table.download_report') }}</th>
-                        <th ng-if="config['video-do-recording']">{{ Lang::get('admin.reports.table.has_video') }}</th>
+                        <th ng-if="video_enabled()">{{ Lang::get('admin.reports.table.has_video') }}</th>
                         <th>{{ Lang::get('admin.reports.table.false_alarm') }}</th>
                         <th>{{ Lang::get('admin.reports.table.note') }}</th>
                     </tr>
@@ -68,7 +68,7 @@
                         <td><% report_item.video_chats %></td>
                         <td><a href="<% report_item.log_download_link %>">{{ Lang::get('admin.reports.table.download_csv') }}</a></td>
                         <td><a href="<% report_item.report_download_link %>">{{ Lang::get('admin.reports.table.download_pdf') }}</a></td>
-                        <td ng-if="config['video-do-recording']">
+                        <td ng-if="video_enabled()">
                             <a ng-if="report_item.video_link" href="" class="tooltip" copy-to-clipboard="file:///var/www/<% report_item.video_link %>">
                                 {{ Lang::get('admin.reports.table.yes') }}
                                 <span class="tooltip-text">

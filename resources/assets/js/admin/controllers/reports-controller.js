@@ -87,13 +87,15 @@
                 }
             },
             search: function(filter) {
-                console.log(filter);
                 AdminApi.getReports(filter).success(function(data) {
                     data.forEach(function(item) {
                         item.false_alarm = !!+item.false_alarm; // coerce "1" to int and coerce int to boolean
                     });
                     $scope.list = data;
                 });
+            },
+            video_enabled: function() {
+                return angular.isDefined(config['video-do-recording']) && config['video-do-recording'];
             }
         });
 
