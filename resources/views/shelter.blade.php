@@ -30,7 +30,7 @@
     @include('config')
 
     @if ( config('google.maps.enabled') )
-        <script src="https://maps.google.com/maps/api/js?key={{ config('google.maps.key') }}"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config('google.maps.key') }}" type="text/javascript"></script>
     @endif
 
     <script src="{{ elixir('js/shelter.js') }}"></script>

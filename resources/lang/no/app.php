@@ -71,5 +71,23 @@ return [
     ],
     'trigger' => [
         'message' => 'Connecting to the shelter, please wait...(no)'
+    ],
+    'tac' => [
+        'default' => '		
+		<b>Brukervilkår</b><br />
+		<br />
+		Ved installasjon av BComeSafe-appen, godtar du at appen får tilgang til ditt kamera, mikrofon og din posisjon når du er innenfor skolens område. Appen vil ikke fungere dersom du ikke er oppkoblet eller er utenfor skolens trådløse nettverk.<br />
+		<br />
+		Dersom du samtykker til det, vil appen også få tilgang til ditt mobilnummer.<br />
+		<br />
+		<b>Hva skjer når jeg trykker på alarmknappen?</b><br />
+		- Appen åpner kamera og mikrofon for å sende lyd og video direkte til et sentralt system på skolen. Denne videostrømmen vil lagres i maksimum ett år. Skolens kriseledelse har tilgang til opptaket. Hvis nødvendig, kan skolens ledelse gi opptaket til politiet.<br />
+		- Dersom du er på skolens område, vil appen sende informasjon til et sentralt system på skolen som viser omtrentlig hvor du befinner deg, Skolens kriseledelse har tilgang til din posisjon.<br />
+		<br />
+		<b></b>Hvilken funksjon har appen når alarmen ikke er utløst?</b><br />
+		- Du får en push-notifikasjon i appen dersom skolens ledelse sender ut en melding i forbindelse med en alvorlig hendelse.<br />
+		- Har du oppgitt ditt mobilnummer, vil du i tillegg få en tekstmelding (sms).<br />
+		- Skolens ledelse kan ikke se din posisjon.
+		'
     ]
 ];

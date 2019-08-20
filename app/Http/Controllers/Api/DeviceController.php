@@ -19,6 +19,7 @@ use BComeSafe\Http\Requests\TriggerAlarmRequest;
 use BComeSafe\Http\Requests\WatchdogRequest;
 use BComeSafe\Http\Requests\SheltersRequest;
 use BComeSafe\Http\Requests\BcsRequest;
+use BComeSafe\Http\Requests\SaveDeviceRequest;
 use BComeSafe\Models\Device;
 use BComeSafe\Models\History;
 use BComeSafe\Models\Log;
@@ -54,12 +55,16 @@ class DeviceController extends Controller
              * @var $device \BcomeSafe\Models\Device
              */
             $device_type = $request->get('device_type');
+            //@Todo - remove after iOS new release.
             if ($device_type == 'ios') {
               $device_id = $request->get('device_id') . "_" . $device_type;
             }
             else {
               $device_id = $request->get('device_id');
             }
+            //Language
+            $lang = !empty($request->get('lang')) ? $request->get('lang') : 'en';
+            
             //Search in Database
             $device_data = Device::getByDeviceId($device_id);
             $id = !empty($device_data['id']) ? $device_data['id'] : null;
@@ -67,7 +72,7 @@ class DeviceController extends Controller
             $device = Device::findOrNew($id);
             //Set Attributes
             $device->setAttribute('device_type', $device_type);
-            $device->setAttribute('device_id', $request->get('device_id'));
+            $device->setAttribute('device_id', $device_id);
             $mac_address = $request->get('mac_address', config('alarm.default.mac'));
             //Iphone exceptions
             if (!config('alarm.use_mac_address_for_ios') && $mac_address == '00:00:00:00:00') {
@@ -89,7 +94,6 @@ class DeviceController extends Controller
             $device->updateDeviceProfile();
 
         } catch (\Exception $e) {
-            //@Todo - remove this.
             $message = $e->getMessage();
 
             switch ($e->getCode()) {
@@ -143,7 +147,13 @@ class DeviceController extends Controller
             'success' => true,
             'dev_mode' => false,
             'use_gps'  => $default->is_gps_location_source ? true : false,
-            'renew'    => false //@Todo - make possible to enable Temporary. Will be used to re-check BCS projects URL.
+            'renew'    => $device->renew,
+            'user_phone' => $device->user_phone,
+            'user_phone_token' => $device->user_phone_token,
+            'user_phone_confirm' => $device->user_phone_confirm,
+            'need_phone' => $device->need_phone,
+            'need_tac' => $device->need_tac,
+            'tac_text' => \Lang::get('app.tac.default', [], $request->get('lang', $lang)) //@Todo - make administrated.
             ]
         );
     }
@@ -321,5 +331,71 @@ class DeviceController extends Controller
 
         return response()->json($ret_val);
     }
-
+    
+    /**
+     * @param \BComeSafe\Http\Requests\SaveDeviceRequest $request
+     *
+     * @return array
+     */
+    public function postUpdateDevice(SaveDeviceRequest $request)
+    {
+        $update = array();
+        //@Todo - use $request->filled('user_phone') 
+        $params = $request->all();
+        //
+        if (isset($params['user_phone'])) {
+          if (!empty($request->get('user_phone'))) {
+            $update['user_phone'] = $request->get('user_phone');
+            $update['need_phone'] = 0;
+            $update['user_phone_confirm'] = 0;
+            //Generate token
+            $update['user_phone_token'] = Device::generateToken();
+            //Send token via SMS
+            $defaults = SchoolDefault::getDefaults();
+            if (!empty($defaults->sms_provider)) {
+              $integration = \Component::get('Sms')->getIntegration($defaults->sms_provider);
+              $integration->sendMessage($update['user_phone'], $update['user_phone_token']);
+            }
+          }
+          else {
+            $update['user_phone'] = '';
+            $update['need_phone'] = 1;
+            $update['user_phone_confirm'] = 0;
+            $update['user_phone_token'] = '';
+          }
+          
+        }
+        //
+        if (!empty($request->get('skip_phone'))) {
+          $update['need_phone'] = 0;
+        }
+        //
+        if (!empty($request->get('user_phone_token'))) {
+          $device_data = Device::getByDeviceId($request->get('device_id'));
+          if (!empty($device_data['user_phone_token']) && $device_data['user_phone_token'] == $request->get('user_phone_token')) {
+            $update['user_phone_confirm'] = 1;
+          }
+        }
+        //
+        //@Todo - use $request->filled('accepted_tac') 
+        if (isset($params['accepted_tac'])) {
+          if (!empty($request->get('accepted_tac'))) {
+            $update['need_tac'] = 0;
+          }
+          else {
+            $update['need_tac'] = 1;
+          }
+        }
+        
+        if (!empty($update)) {
+          Device::findAndUpdate(
+            [
+              'device_id' => $request->get('device_id')
+            ],
+            $update
+          );
+          return ['success' => true];
+        }
+        return ['success' => false];
+    }
 }

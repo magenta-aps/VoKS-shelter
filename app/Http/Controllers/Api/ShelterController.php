@@ -10,6 +10,7 @@
 namespace BComeSafe\Http\Controllers\Api;
 
 use BComeSafe\Commands\SendPushNotifications;
+use BComeSafe\Commands\SendSms;
 use BComeSafe\Events\AlarmWasTriggered;
 use BComeSafe\Events\AlarmWasTriggeredByShelter;
 use BComeSafe\Events\PoliceWasCalled;
@@ -459,7 +460,8 @@ class ShelterController extends Controller
         $message = $request->get('message');
 
         foreach ($clients as $client) {
-            $devices[] = ['id' => $client['gcm_id'], 'type' => $client['type']];
+            $device = Device::where('push_notification_id', '=', $client['gcm_id'])->whereNotNull('user_phone')->first();
+            $devices[] = ['id' => $client['gcm_id'], 'type' => $client['type'], 'user_phone' => $device['user_phone']];
         }
 
         $notification = SentPushNotification::create(
@@ -472,6 +474,8 @@ class ShelterController extends Controller
         History::pushNotification($notification, count($devices));
 
         \Queue::push(new SendPushNotifications($devices, $message, $notification->id));
+
+        \Queue::push(new SendSms($devices, $message));
 
         return $devices;
     }

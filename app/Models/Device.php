@@ -67,8 +67,14 @@ class Device extends BaseModel
         'active',
         'floor_id',
         'triggered_at',
+        'ap_name',
         'user_email',
-        'ap_name'
+        'user_phone',
+        'need_phone',
+        'need_tac',
+        'renew',
+        'user_phone_confirm',
+        'user_phone_token'
     ];
 
     /**
@@ -133,7 +139,7 @@ class Device extends BaseModel
     {
         $device = static::where('device_id', '=', $deviceId)->first(
             [
-                'id', 'mac_address', 'device_id', 'fullname', 'push_notification_id', 'device_type', 'x', 'y', 'username', 'floor_id'
+                'id', 'mac_address', 'device_id', 'fullname', 'push_notification_id', 'device_type', 'x', 'y', 'username', 'floor_id', 'user_phone_token'
             ]
         );
 
@@ -769,5 +775,12 @@ class Device extends BaseModel
         }
 
         return parent::update($device);
+    }
+    
+    /**
+     * @return string
+     */
+    public static function generateToken() {
+      return md5(rand(1, 10) . microtime());
     }
 }
