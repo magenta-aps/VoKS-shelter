@@ -26,12 +26,12 @@ class LogController extends BaseController
         for ($i=0; $i<count($list); $i++) {
             switch ($list[$i]->log_type) {
                 case "alarm_triggered":
-                    $log_type = \Lang::get('admin.logs.table.log_types.alarm_triggered');
+                    $list[$i]->log_type = \Lang::get('admin.logs.table.log_types.alarm_triggered');
                     break;
                 default:
-                    $log_type = \Lang::get('admin.logs.table.log_types.unknown_type');
+                    // TODO translate remaining log types
+      //              $list[$i]->log_type = \Lang::get('admin.logs.table.log_types.unknown_type');
             }
-            $list[$i]->log_type = $log_type;
         }
         return $list;
     }
