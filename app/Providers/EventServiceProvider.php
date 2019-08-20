@@ -42,6 +42,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'BComeSafe\Events\PoliceWasCalled' => [
             'BComeSafe\Handlers\Events\LogPoliceWasCalled'
+        ],
+        'BComeSafe\Events\AlarmWasTriggeredByShelter' => [
+            'BComeSafe\Handlers\Events\LogAlarmTrigger'
         ]
     ];
 

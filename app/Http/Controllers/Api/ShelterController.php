@@ -11,6 +11,7 @@ namespace BComeSafe\Http\Controllers\Api;
 
 use BComeSafe\Commands\SendPushNotifications;
 use BComeSafe\Events\AlarmWasTriggered;
+use BComeSafe\Events\AlarmWasTriggeredByShelter;
 use BComeSafe\Events\PoliceWasCalled;
 use BComeSafe\Http\Controllers\Controller;
 use BComeSafe\Models\ClientDevice;
@@ -326,7 +327,7 @@ class ShelterController extends Controller
         if (0 === $schoolStatus->status_alarm) {
             SchoolStatus::statusAlarm($shelterId, 1);
 
-            \Event::fire(new AlarmWasTriggered($shelterId, null));
+            \Event::fire(new AlarmWasTriggeredByShelter($shelterId));
         }
 
         SchoolStatus::statusPolice($shelterId, 1);
