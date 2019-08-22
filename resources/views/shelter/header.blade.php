@@ -1,4 +1,4 @@
-<header class="header" ng-controller="HeaderController as Header" ng-class="{'-active': Header.isPoliceCalled()}">
+<header class="header" ng-controller="HeaderController as Header" ng-class="{'-active': Header.status.alarm.status}">
     <div class="header__container">
         <div class="table-style__table">
             <div class="table-style__cell">
@@ -19,15 +19,12 @@
 
             <div class="table-style__cell">
                 <div class="header__status">
-                    <span class="header__status-text"><% Header.text.heading[Header.status.police.status] | translate %></span>
+                    <span class="header__status-text"><% Header.text.alarm[Header.status.alarm.status] | translate %><% Header.status.alarm.time %></span>
                 </div>
             </div>
 
             <div class="table-style__cell">
                 <ul class="status-bar">
-                    <li class="status-bar__unit">
-                        <span class="status-bar__item"><% Header.text.alarm[Header.status.alarm.status] | translate %><% Header.status.alarm.time %></span>
-                    </li>
                     <li class="status-bar__unit" ng-show="Header.status.alarm.status">
                         <span class="status-bar__item">{{ Lang::get('header.status.police.title') }}: <% Header.status.police.count %> {{ Lang::get('header.status.police.users') }}</span>
                     </li>
