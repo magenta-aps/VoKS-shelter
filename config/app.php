@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(E_ALL ^ E_DEPRECATED);
 /**
  * BComeSafe, http://bcomesafe.com
  * Copyright 2015 Magenta ApS, http://magenta.dk
@@ -87,7 +87,7 @@ return [
 
     'key' => env('APP_KEY', 'SomeRandomString'),
 
-    'cipher' => MCRYPT_RIJNDAEL_128,
+    'cipher' => "AES-256-CBC",
 
     /*
     |--------------------------------------------------------------------------
@@ -154,7 +154,6 @@ return [
         'BComeSafe\Providers\RouteServiceProvider',
         'BComeSafe\Providers\HelperServiceProvider',
         'BComeSafe\Providers\ValidationServiceProvider',
-        'Illuminate\Workbench\WorkbenchServiceProvider',
         'BComeSafe\Packages\Configuration\ComponentServiceProvider',
         'BComeSafe\Packages\Configuration\ShelterServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
