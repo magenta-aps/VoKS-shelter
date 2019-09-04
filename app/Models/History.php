@@ -38,7 +38,7 @@ class History extends BaseModel
      * @param array $data
      * @return static
      */
-    public static function create(array $data)
+    public static function create(array $data = [])
     {
         // Set Shelter identifier
         if (!array_key_exists('school_id', $data)) {
