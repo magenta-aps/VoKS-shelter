@@ -90,7 +90,7 @@ return [
           </li>
           <li>
             4: PERSONAL INFORMATION<br />
-            Please <a href="https://bcomesafe.com/en/privacy-policy" target="_blank">click here</a> to read our privacy policy. We treat your personal information according to our privacy policy. You guarantee that the information you deliver are correct, precise, valid and complete and that you have the right to share this information.
+            Please visit https://bcomesafe.com/en/privacy-policy to read our privacy policy. We treat your personal information according to our privacy policy. You guarantee that the information you deliver are correct, precise, valid and complete and that you have the right to share this information.
           </li>
           <li>
             5: IMMATERIAL RIGHTS<br />
