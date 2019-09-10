@@ -333,6 +333,15 @@ class DeviceController extends Controller
         $update = array();
         //@Todo - use $request->filled('user_phone') 
         $params = $request->all();
+        //Log
+        if (config('app.debug')) {
+          $log_data = array(
+            'device_id' => $request->get('device_id'),
+            'device_type' => 'Unknown',
+            'data' => json_encode($params)
+          );
+          Log::create($log_data);
+        }
         //
         if (isset($params['user_phone'])) {
           if (!empty($request->get('user_phone'))) {
