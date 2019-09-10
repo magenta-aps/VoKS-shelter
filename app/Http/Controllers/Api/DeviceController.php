@@ -54,13 +54,7 @@ class DeviceController extends Controller
              * @var $device \BcomeSafe\Models\Device
              */
             $device_type = $request->get('device_type');
-            //@Todo - remove after iOS new release.
-            if ($device_type == 'ios') {
-              $device_id = $request->get('device_id') . "_" . $device_type;
-            }
-            else {
-              $device_id = $request->get('device_id');
-            }
+            $device_id = $request->get('device_id');
             //Language
             $lang = !empty($request->get('lang')) ? $request->get('lang') : 'en';
             
