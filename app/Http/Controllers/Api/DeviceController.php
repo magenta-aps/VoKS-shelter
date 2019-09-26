@@ -57,7 +57,10 @@ class DeviceController extends Controller
             $device_id = $request->get('device_id');
             //Language
             $lang = !empty($request->get('lang')) ? $request->get('lang') : 'en';
-            
+            //Ios workaround
+            if ($lang = 'nb') {
+              $lang = 'no';
+            }
             //Search in Database
             $device_data = Device::getByDeviceId($device_id);
             $id = !empty($device_data['id']) ? $device_data['id'] : null;
@@ -83,7 +86,9 @@ class DeviceController extends Controller
             $device->setAttribute('push_notification_id', $request->get('gcm_id'));
             $device->setAttribute('fullname', $request->get('user_name'));
             $device->setAttribute('user_email', $request->get('user_email'));
-            $device->setAttribute('ip_address', \Request::ip());
+            //For debuging IP address
+            $ip_address = !empty($request->get('ip_address')) ? $request->get('ip_address') : \Request::ip();
+            $device->setAttribute('ip_address', $ip_address);
             $device->updateDeviceProfile();
 
         } catch (\Exception $e) {
