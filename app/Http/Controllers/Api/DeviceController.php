@@ -58,7 +58,7 @@ class DeviceController extends Controller
             //Language
             $lang = !empty($request->get('lang')) ? $request->get('lang') : 'en';
             //Ios workaround
-            if ($lang = 'nb') {
+            if ($lang == 'nb') {
               $lang = 'no';
             }
             //Search in Database
