@@ -165,6 +165,10 @@ class DeviceController extends Controller
     {
         // Get all request data
         $device = $request->only(['device_id', 'call_police']);
+        //Temporary fix for IOS devices
+        if (substr($device['device_id'], -8) == '_ios_ios') {
+          $device['device_id'] = substr($device['device_id'], 0, -4);
+        }
         $device['trigger_status'] = $device['call_police'];
         unset($device['call_police']);
 
