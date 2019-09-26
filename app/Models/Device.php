@@ -248,7 +248,7 @@ class Device extends BaseModel
         }
       }
       //Ios and Pcapp do not send Mac Address (if exception config is disabled)
-      if (!$this->getAttribute('mac_address')) {
+      if (!$this->getAttribute('mac_address') && empty($device['mac_address'])) {
         //Create uniq dummy mac address for device
         $t_arr = str_split(time());
         $rand = rand(10, 99);
