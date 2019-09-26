@@ -96,10 +96,10 @@ class DeviceController extends Controller
 
             switch ($e->getCode()) {
                 case Device::COORDINATES_UNAVAILABLE:
-                    $message = \Lang::get('aruba.ale.errors.unavailable', [], $request->get('lang', 'en'));
+                    $message = \Lang::get('aruba.ale.errors.unavailable', [], $lang);
                     break;
                 case Device::COORDINATES_NOT_MAPPED:
-                    $message = \Lang::get('aruba.ale.errors.unsynchronized', [], $request->get('lang', 'en'));
+                    $message = \Lang::get('aruba.ale.errors.unsynchronized', [], $lang);
                     break;
             }
 
@@ -151,7 +151,7 @@ class DeviceController extends Controller
             'user_phone_confirm' => $device->user_phone_confirm,
             'need_phone' => $device->need_phone,
             'need_tac' => $device->need_tac,
-            'tac_text' => \Lang::get('app.tac.default', [], $request->get('lang', $lang)) //@Todo - make administrated.
+            'tac_text' => \Lang::get('app.tac.default', [], $lang) //@Todo - make administrated.
             ]
         );
     }
