@@ -11,22 +11,16 @@ namespace BComeSafe\Events;
 
 use Illuminate\Queue\SerializesModels;
 
-class AskedToCallPolice extends Event
+class AlarmWasTriggeredByShelter extends AlarmWasTriggered
 {
-
     use SerializesModels;
-
-    public $schoolId;
-    public $deviceId;
 
     /**
      * Create a new event instance.
-     *
-     * @return void
+     * @param $schoolId
      */
-    public function __construct($schoolId, $deviceId)
+    public function __construct($schoolId)
     {
-        $this->schoolId = $schoolId;
-        $this->deviceId = $deviceId;
+        parent::__construct($schoolId, null);
     }
 }

@@ -14,12 +14,13 @@
      * @type Array
      */
     var dependencies = [
-        'pascalprecht.translate', 
+        'pascalprecht.translate',
 	'toasts',
         'ui.select',
 	'recorders',
         'ui.tinymce',
-        'xeditable'
+        'xeditable',
+        'daterangepicker'
     ];
     angular.module('admin', dependencies);
 
@@ -101,6 +102,22 @@
                 link: function (scope, element) {
                     element.bind('click', function () {
                         element.parent().toggleClass('-active');
+                    });
+                }
+            };
+        })
+        .directive('copyToClipboard', function() {
+            return {
+                restrict: 'A',
+                link: function (scope, elem, attrs) {
+                    elem.click(function () {
+                        if (attrs.copyToClipboard) {
+                            var $temp_input = $("<input>");
+                            $("body").append($temp_input);
+                            $temp_input.val(attrs.copyToClipboard).select();
+                            document.execCommand("copy");
+                            $temp_input.remove();
+                        }
                     });
                 }
             };

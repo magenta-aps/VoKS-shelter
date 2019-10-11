@@ -8,6 +8,8 @@ return [
         'phone' => 'Phone System',
         'push' => 'Push notification management',
         'buttons' => 'IP buttons',
+        'reports' => 'Reports',
+        'logs' => 'Logs',
         'team' => 'Crisis center list',
         'reset' => 'Reset Shelter'
     ],
@@ -49,6 +51,25 @@ return [
         'placeholder' => 'Please select'
 
     ],
+    'logs' => [
+        'title' => 'Log',
+        'description' => 'Log of events in BCS',
+        'table' => [
+            'created_at' => 'Time',
+            'log_type' => 'Log type',
+            'device_type' => 'Device type',
+            'device_id' => 'Device ID',
+            'fullname' => 'Full name',
+            'mac_address' => 'MAC address',
+            'floor_id' => 'Floor ID',
+            'x' => 'X',
+            'y' => 'Y',
+            'log_types' => [
+                'alarm_triggered' => 'Alarm triggered',
+                'unknown_type' => 'Unknown log type'
+            ]
+        ]
+    ],
     'maps' => [
         'title' => 'Maps',
         'description' => 'Explanation about description',
@@ -67,6 +88,36 @@ return [
             'label' => 'Notification Label',
             'content' => 'Notification Content',
             'options' => 'Options',
+        ]
+    ],
+    'reports' => [
+        'title' => 'Reports',
+        'description' => 'Reports of events in BCS',
+        'no_results' => 'No reports found matching the search criteria.',
+        'filters' => [
+            'date_range' => 'Date range',
+            'false_alarm' => [
+                'all' => 'All alarms',
+                'exclude_false' => 'Exclude false alarms',
+                'only_false' => 'Only show false alarms'
+            ]
+        ],
+        'table' => [
+            'triggered_at' => 'Time',
+            'device_type' => 'Device type',
+            'device_id' => 'Device ID',
+            'fullname' => 'Full name',
+            'duration' => 'Duration',
+            'push_notifications' => 'Push notifications',
+            'video_chats' => 'Video chats',
+            'download_log' => 'Download log',
+            'download_report' => 'Download report',
+            'download_csv' => 'Get .csv',
+            'download_pdf' => 'Get .pdf',
+            'false_alarm' => "False alarm?",
+            'note' => 'Note',
+            'yes' => 'Yes',
+            'no' => 'No'
         ]
     ],
     'sms' => [

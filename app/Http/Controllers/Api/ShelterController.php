@@ -12,9 +12,12 @@ namespace BComeSafe\Http\Controllers\Api;
 use BComeSafe\Commands\SendPushNotifications;
 use BComeSafe\Commands\SendSms;
 use BComeSafe\Events\AlarmWasTriggered;
+use BComeSafe\Events\AlarmWasTriggeredByShelter;
+use BComeSafe\Events\PoliceWasCalled;
 use BComeSafe\Http\Controllers\Controller;
 use BComeSafe\Models\ClientDevice;
 use BComeSafe\Models\Device;
+use BComeSafe\Models\EventLog;
 use BComeSafe\Models\Faq;
 use BComeSafe\Models\GotItHistory;
 use BComeSafe\Models\HelpFile;
@@ -254,6 +257,11 @@ class ShelterController extends Controller
         $websockets = new ShelterClient(config('alarm.php_ws_url') . '/' . config('alarm.php_ws_client'));
         $websockets->reset($id);
 
+        EventLog::create([
+            'log_type' => EventLog::SHELTER_RESET,
+            'school_id' => $id
+        ]);
+
         // School status
         SchoolStatus::statusAlarm($id, 0);
         SchoolStatus::statusPolice($id, 0);
@@ -320,10 +328,11 @@ class ShelterController extends Controller
         if (0 === $schoolStatus->status_alarm) {
             SchoolStatus::statusAlarm($shelterId, 1);
 
-            \Event::fire(new AlarmWasTriggered($shelterId));
+            \Event::fire(new AlarmWasTriggeredByShelter($shelterId));
         }
 
         SchoolStatus::statusPolice($shelterId, 1);
+        \Event::fire(new PoliceWasCalled($shelterId, null));
     }
 
     /**

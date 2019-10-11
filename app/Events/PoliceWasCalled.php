@@ -11,9 +11,8 @@ namespace BComeSafe\Events;
 
 use Illuminate\Queue\SerializesModels;
 
-class AskedToCallPolice extends Event
+class PoliceWasCalled extends Event
 {
-
     use SerializesModels;
 
     public $schoolId;
@@ -21,8 +20,6 @@ class AskedToCallPolice extends Event
 
     /**
      * Create a new event instance.
-     *
-     * @return void
      */
     public function __construct($schoolId, $deviceId)
     {

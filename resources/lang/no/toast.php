@@ -101,6 +101,12 @@ return [
                 'remove_success' => 'De predefinerte meldingene er slettet',
                 'order_success' => 'Rekkefølgen er lagret'
             ],
+            'reports' => [
+                'save_success' => 'Rapporten er lagret.',
+                'save_error' => 'Kunne ikke lagre rapporten',
+                'remove_message' => 'Vil du virkelig slette denne rapporten?',
+                'remove_success' => 'Rapporten er slettet'
+            ]
         ],
         'help' =>[
             'not_available' => 'Hjelpefunksjonen er ikke tilgjengelig for denne siden'

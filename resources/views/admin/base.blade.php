@@ -51,6 +51,7 @@
 
     <script src="{{ elixir('js/admin/admin.js') }}"></script>
     <script src="/vendor/tinymce/tinymce.min.js"></script>
+    <!--<script src="/vendor/moment/moment.js"></script>-->
     <script src="{{ elixir('js/admin/app.js') }}"></script>
 </body>
 </html>

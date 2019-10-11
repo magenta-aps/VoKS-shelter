@@ -99,4 +99,45 @@ class History extends BaseModel
             'result'    => json_encode(['total' => $count, 'read' => 0])
         ]);
     }
+
+    public static function copyToEventLogs($id)
+    {
+        $history = static::where('school_id', '=', $id)->get();
+
+        foreach ($history as $value) {
+            // Convert model to array
+            $item = $value->toArray();
+
+            // Process by type
+            switch ($item['type']) {
+                case 'push':
+                    $item['log_type'] = EventLog::PUSH_NOTIFICATION_SENT;
+                    $item['data'] = json_decode($item['result'], true);
+                    $item['data']['message'] = $item['message'];
+                    $item['data']['source_id'] = $item['source_id'];
+                    break;
+
+                case 'sms':
+                    $item['log_type'] = EventLog::SMS_SENT;
+                    $item['data'] = json_decode($item['result'], true);
+                    $item['data']['message'] = $item['message'];
+                    break;
+
+                case 'trigger':
+                case 'play':
+                case 'live':
+                    $item['log_type'] = EventLog::AUDIO_PLAYED;
+                    $item['data'] = json_decode($item['result'], true);
+                    // Extract localized message value from message key
+                    $lang = School::getSettings()->locale;
+                    $message = \Lang::get($item['message'], array(), $lang);
+                    $item['data']['message'] = $message;
+                    break;
+            }
+
+            unset($item['id']); // ensure we get a new auto-incremented id
+            EventLog::create($item);
+        }
+
+    }
 }

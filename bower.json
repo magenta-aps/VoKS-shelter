@@ -22,14 +22,15 @@
     "jquery-ui": "~1.11.4",
     "leaflet": "~0.7.3",
     "less.js": "~1.6",
-    "moment": "~2.5",
+    "moment": "~2.9",
     "ng-file-upload": "~5.0.9",
     "select2": "~3.5",
     "sprintf": "~1.0.3",
     "tinymce": "~4.5.1",
     "bootstrap-tour": "~0.10.2",
     "underscore": "~1.5",
-    "perfect-scrollbar": "~0.5.9"
+    "perfect-scrollbar": "~0.5.9",
+    "angular-daterangepicker": "~0.3.0"
   },
   "resolutions": {
     "angular": "~1.4.14",

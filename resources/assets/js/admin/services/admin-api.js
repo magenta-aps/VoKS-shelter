@@ -186,6 +186,22 @@
                 return $http.post('/admin/buttons/save-button', data);
             };
 
+            this.getLogs = function() {
+                return $http.get('/admin/logs/list');
+            };
+
+            this.getReports = function(filter) {
+                return $http.post('/admin/reports/list', filter);
+            };
+
+            this.saveReportItem = function (data) {
+                return $http.post('/admin/reports/save-report-item', data)
+            }
+
+            this.removeReportItem = function(data) {
+                return $http.post('/admin/reports/remove-report-item', data);
+            };
+
             this.previewMap = function (floorId, buttonId) {
                 window.open('/maps/preview/' + floorId + '/' + (buttonId ? buttonId : ''));
             };
@@ -205,6 +221,10 @@
             this.syncCrisisTeam = function() {
                 return $http.get('/admin/crisis-team/sync');
             };
+
+            this.saveVideoFileName = function(filename) {
+                return $http.post('/admin/logs/save-video-file-name', filename)
+            }
         };
 
         return new Api();
