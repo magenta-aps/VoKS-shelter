@@ -11,7 +11,7 @@ return [
         'batch_select' => 'Batch select users:',
         'label' => 'Send messages',
         'tabs' => [
-            'push' => 'Push',
+            'push' => 'Text message',
             'audio' => 'Audio',
             'history' => 'History',
         ],

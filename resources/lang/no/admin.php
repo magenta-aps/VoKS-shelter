@@ -4,9 +4,9 @@ return [
     'tabs' => [
         'general' => 'Generelle innstillinger',
         'help' => 'Tiltakslister',
-        'sms' => 'SMS (tekstmelding)',
+        'sms' => 'Tekstmelding (sms) til kriseledelsen',
         'phone' => 'Telefonisystem',
-        'push' => 'Push-meldinger',
+        'push' => 'Tekstmeldinger til brukerne',
         'buttons' => 'Fysiske alarmgivere',
         'reports' => 'Rapporter',
         'logs' => 'Logs',
@@ -76,17 +76,17 @@ return [
         'sync' => 'Synkroniser manuelt'
     ],
     'push' => [
-        'title' => 'Push-meldinger',
-        'description' => 'Her oppretter du egne push-meldinger. Du bør først velge å importere systemets standardmeldinger. Kan de benyttes? Er det noen av dem som ikke kan benyttes, så skjuler du disse og ev. oppretter dine egne. ',
+        'title' => 'Tekstmeldinger (sms og push)',
+        'description' => 'Her oppretter du egne tekstmeldinger. Du bør først velge å importere systemets standardmeldinger. Kan de benyttes? Er det noen av dem som ikke kan benyttes, så skjuler du disse og ev. oppretter dine egne. ',
         'button' => [
-            'new' => 'Opprett ny push-melding',
+            'new' => 'Opprett ny tekstmelding',
             'import' => 'Importer systemets standard-meldinger',
             'show' => 'Show(no)',
             'hide' => 'Skjul denne meldingen'
         ],
         'table' => [
-            'label' => 'Navn på push-meldingen',
-            'content' => 'Innhold i push-meldingen',
+            'label' => 'Navn på meldingen',
+            'content' => 'Innhold i meldingen',
             'options' => 'Opsjoner (endre rekkefølgen, endre innhold, slette)',
         ]
     ],
@@ -123,7 +123,7 @@ return [
         ]
     ],
     'sms' => [
-        'title' => 'SMS (tekstmeldinger)',
+        'title' => 'Tekstmelding (sms) til kriseledelsen',
         'description' => 'Her oppretter du eller endrer på de to tekstmeldingene som går ut til skolens kriseledelse når alarmen utløses. Hvis standard-meldingen (som du ser nede til høyre ikke passer, så oppretter du nye meldinger.',
         'trigger' => 'Melding til skolens kriseledelse når alarmen utløses',
         'symbols' => 'Antall tegn du har igjen:',

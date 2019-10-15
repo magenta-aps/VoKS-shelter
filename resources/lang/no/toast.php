@@ -27,8 +27,8 @@ return [
                 'select_client' => 'Velg minst en klient',
                 'no_message' => 'Skriv inn en melding eller velg en av de predefinerte meldingene',
                 'too_long' => 'Meldingen er for lang.',
-                'sent' => 'Push-meldingen har blitt sendt.',
-                'not_sent' => 'Push-meldingen har ikke blitt sendt.',
+                'sent' => 'Meldingen har blitt sendt.',
+                'not_sent' => 'Meldingen har ikke blitt sendt.',
 
             ]
         ],
@@ -93,11 +93,11 @@ return [
                 'sync_success' => 'Kartene har blitt synkronisert.'
             ],
             'push' => [
-                'save_success' => 'Den predefinerte push-meldingen er lagret.',
-                'save_error' => 'Kunne ikke lagre den predefinerte push-meldingen',
-                'remove_message' => 'Vil du virkelig slette denne predefinerte push-meldingen?',
-                'import_message' => 'Vil du virkelig importere de standard predefinerte push-meldingene?',
-                'import_success' => 'De standard predefinerte push-meldingene er importert, siden oppdateres.',
+                'save_success' => 'Den predefinerte meldingen er lagret.',
+                'save_error' => 'Kunne ikke lagre den predefinerte meldingen',
+                'remove_message' => 'Vil du virkelig slette denne predefinerte meldingen?',
+                'import_message' => 'Vil du virkelig importere de standard predefinerte meldingene?',
+                'import_success' => 'De standard predefinerte meldingene er importert, siden oppdateres.',
                 'remove_success' => 'De predefinerte meldingene er slettet',
                 'order_success' => 'Rekkefølgen er lagret'
             ],

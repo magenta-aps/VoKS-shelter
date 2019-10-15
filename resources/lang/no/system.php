@@ -14,8 +14,8 @@ return [
         'general' => [
             'system' => 'Systemsettinger',
             'help' => 'Tiltakslister',
-            'push' => 'Push-meldinger',
-            'sms' => 'SMS (tekstmelding)'
+            'push' => 'Tekstmeldinger til brukerne',
+            'sms' => 'Tekstmelding (sms) til kriseledelsen'
         ],
     ],
     'contents' => [
@@ -39,17 +39,17 @@ return [
 	        'google'	=> 'Google Maps',
         ],
         'push' => [
-            'title' => 'Push-meldinger',
-            'description' => 'Her oppretter du eller endrer på de ferdiglagede push-meldingene (standard-meldingene)',
-            'new' => 'Opprett ny push-melding',
+            'title' => 'Tekstmeldinger til brukerne (sms og push)',
+            'description' => 'Her oppretter du eller endrer på de ferdiglagede meldingene (standard-meldingene)',
+            'new' => 'Opprett ny melding',
             'table' => [
-                'label' => 'Navn på push-meldingen',
-                'content' => 'Innhold i push-melding',
+                'label' => 'Navn på meldingen',
+                'content' => 'Innhold i melding',
                 'options' => 'Opsjoner (endre, slette)',
             ]
         ],
         'sms' => [
-            'title' => 'SMS (tekstmelding)',
+            'title' => 'Tekstmelding (sms) til kriseledelsen',
             'description' => 'Her oppretter du eller endrer på de to tekstmeldingene som går ut til skolens kriseledelse når alarmen utløses.',
             'trigger' => 'Melding til skolens kriseledelse når alarmen utløses :',
             'information' => 'Melding til skolens kriseledelse når alarmen utløses og alarmgiveren vil at politiet skal tilkalles :',
