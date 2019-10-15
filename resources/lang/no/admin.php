@@ -8,6 +8,8 @@ return [
         'phone' => 'Telefonisystem',
         'push' => 'Tekstmeldinger til brukerne',
         'buttons' => 'Fysiske alarmgivere',
+        'reports' => 'Rapporter',
+        'logs' => 'Logs',
         'team' => 'Kriseledelsen',
         'reset' => 'Resett krisesenteret'
     ],
@@ -49,6 +51,25 @@ return [
         'placeholder' => 'Vennligst velg'
 
     ],
+    'logs' => [
+        'title' => 'Log',
+        'description' => 'Beskrivelse',
+        'table' => [
+            'created_at' => 'Tidspunkt',
+            'log_type' => 'Logtype',
+            'device_type' => 'Enhedstype',
+            'device_id' => 'EnhedsID',
+            'fullname' => 'Fuldt navn',
+            'mac_address' => 'MAC-adresse',
+            'floor_id' => 'EtasjeID',
+            'x' => 'X',
+            'y' => 'Y',
+            'log_types' => [
+                'alarm_triggered' => 'Alarm utløst',
+                'unknown_type' => 'Ukjent type'
+            ]
+        ]
+    ],
     'maps' => [
         'title' => 'Kart/byggtegninger',
         'description' => 'Her legges kart/byggtegninger inn. En tegning pr bygning, pr. etasje. Er systemet integrert mot f.eks. Aruba Airwave, hentes kartene inn automatisk hver natt. Man kan når som helst manuelt synkronisere kartene ved å trykke på "Synkroniser manuelt"-knappen.',
@@ -67,6 +88,38 @@ return [
             'label' => 'Navn på meldingen',
             'content' => 'Innhold i meldingen',
             'options' => 'Opsjoner (endre rekkefølgen, endre innhold, slette)',
+        ]
+    ],
+    'reports' => [
+        'title' => 'Rapporter',
+        'description' => 'Aktivitetsrapporter',
+        'no_results' => 'Ingen resultater funnet for de valgte kriteriene.',
+        'filters' => [
+            'date_range' => 'Datointervall',
+            'false_alarm' => [
+                'all' => 'Alle alarmer',
+                'exclude_false' => 'Ekskluder falske alarmer',
+                'only_false' => 'Vis bare falske alarmer'
+            ]
+        ],
+        'table' => [
+            'triggered_at' => 'Tidspunkt',
+            'device_type' => 'Enhedstype',
+            'device_id' => 'EnhedsID',
+            'fullname' => 'Fuldt navn',
+            'duration' => 'Varighed',
+            'push_notifications' => 'Push-meldinger sendt',
+            'video_chats' => 'Video-chatter',
+            'download_log' => 'Hent log',
+            'download_report' => 'Hent rapport',
+            'download_csv' => 'Hent .csv',
+            'download_pdf' => 'Hent .pdf',
+            'has_video' => 'Video?',
+            'video_tooltip' => 'Klik for at kopiere stien til videoen',
+            'false_alarm' => "Falsk alarm?",
+            'note' => 'Note',
+            'yes' => 'Ja',
+            'no' => 'Nei'
         ]
     ],
     'sms' => [

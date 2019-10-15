@@ -104,6 +104,16 @@ class Menus
                     'title' => 'admin.tabs.team',
                     'path' => 'admin/crisis-team',
                     'controllers' => ['Admin\CrisisTeamController']
+                ],
+                [
+                    'title' => 'admin.tabs.reports',
+                    'path' => 'admin/reports',
+                    'controllers' => ['Admin\ReportsController']
+                ],
+                [
+                    'title' => 'admin.tabs.logs',
+                    'path' => 'admin/logs',
+                    'controllers' => ['Admin\LogController']
                 ]
             ]
         ],

@@ -11,6 +11,7 @@ namespace BComeSafe\Http\Controllers\Api;
 
 use BComeSafe\Events\AlarmWasTriggered;
 use BComeSafe\Events\AskedToCallPolice;
+use BComeSafe\Events\PoliceWasCalled;
 use BComeSafe\Http\Controllers\Controller;
 use BComeSafe\Http\Requests\GotItRequest;
 use BComeSafe\Http\Requests\RegisterDeviceRequest;
@@ -54,16 +55,13 @@ class DeviceController extends Controller
              * @var $device \BcomeSafe\Models\Device
              */
             $device_type = $request->get('device_type');
-            //@Todo - remove after iOS new release.
-            if ($device_type == 'ios') {
-              $device_id = $request->get('device_id') . "_" . $device_type;
-            }
-            else {
-              $device_id = $request->get('device_id');
-            }
+            $device_id = $request->get('device_id');
             //Language
             $lang = !empty($request->get('lang')) ? $request->get('lang') : 'en';
-            
+            //Ios workaround
+            if ($lang == 'nb') {
+              $lang = 'no';
+            }
             //Search in Database
             $device_data = Device::getByDeviceId($device_id);
             $id = !empty($device_data['id']) ? $device_data['id'] : null;
@@ -89,7 +87,9 @@ class DeviceController extends Controller
             $device->setAttribute('push_notification_id', $request->get('gcm_id'));
             $device->setAttribute('fullname', $request->get('user_name'));
             $device->setAttribute('user_email', $request->get('user_email'));
-            $device->setAttribute('ip_address', \Request::ip());
+            //For debuging IP address
+            $ip_address = !empty($request->get('ip_address')) ? $request->get('ip_address') : \Request::ip();
+            $device->setAttribute('ip_address', $ip_address);
             $device->updateDeviceProfile();
 
         } catch (\Exception $e) {
@@ -97,10 +97,10 @@ class DeviceController extends Controller
 
             switch ($e->getCode()) {
                 case Device::COORDINATES_UNAVAILABLE:
-                    $message = \Lang::get('aruba.ale.errors.unavailable', [], $request->get('lang', 'en'));
+                    $message = \Lang::get('aruba.ale.errors.unavailable', [], $lang);
                     break;
                 case Device::COORDINATES_NOT_MAPPED:
-                    $message = \Lang::get('aruba.ale.errors.unsynchronized', [], $request->get('lang', 'en'));
+                    $message = \Lang::get('aruba.ale.errors.unsynchronized', [], $lang);
                     break;
             }
 
@@ -152,7 +152,7 @@ class DeviceController extends Controller
             'user_phone_confirm' => $device->user_phone_confirm,
             'need_phone' => $device->need_phone,
             'need_tac' => $device->need_tac,
-            'tac_text' => \Lang::get('app.tac.default', [], $request->get('lang', $lang)) //@Todo - make administrated.
+            'tac_text' => \Lang::get('app.tac.default', [], $lang) //@Todo - make administrated.
             ]
         );
     }
@@ -166,6 +166,10 @@ class DeviceController extends Controller
     {
         // Get all request data
         $device = $request->only(['device_id', 'call_police']);
+        //Temporary fix for IOS devices
+        if (substr($device['device_id'], -8) == '_ios_ios') {
+          $device['device_id'] = substr($device['device_id'], 0, -4);
+        }
         $device['trigger_status'] = $device['call_police'];
         unset($device['call_police']);
 
@@ -212,7 +216,7 @@ class DeviceController extends Controller
                 
                 // if it's the first trigger, fire up the events
                 if (!$device['already_triggered'] && $status === Device::TRIGGERED) {
-                    \Event::fire(new AlarmWasTriggered($device['school_id']));
+                    \Event::fire(new AlarmWasTriggered($device['school_id'], $device['device_id']));
                     //Set School status
                     SchoolStatus::statusAlarm($device['school_id'], $status);
                 }
@@ -222,7 +226,8 @@ class DeviceController extends Controller
 
             case Device::ASKED_TO_CALL:
                 if (!$device['already_triggered'] && $status === Device::ASKED_TO_CALL) {
-                    \Event::fire(new AskedToCallPolice($device['school_id']));
+                    // TODO fire event regardless of whether device has already triggered?
+                    \Event::fire(new AskedToCallPolice($device['school_id'], $device['device_id']));
                 }
 
                 $response = ['success' => true, 'calling' => false, 'asked' => true, 'status' => $status];
@@ -230,6 +235,7 @@ class DeviceController extends Controller
 
             case Device::CALLED:
                 $response = ['success' => true, 'calling' => true, 'status' => $status];
+                \Event::fire(new PoliceWasCalled($device['school_id'], $device['device_id']));
                 break;
 
             default:
@@ -339,6 +345,15 @@ class DeviceController extends Controller
         $update = array();
         //@Todo - use $request->filled('user_phone') 
         $params = $request->all();
+        //Log
+        if (config('app.debug')) {
+          $log_data = array(
+            'device_id' => $request->get('device_id'),
+            'device_type' => 'Unknown',
+            'data' => json_encode($params)
+          );
+          Log::create($log_data);
+        }
         //
         if (isset($params['user_phone'])) {
           if (!empty($request->get('user_phone'))) {

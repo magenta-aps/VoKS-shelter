@@ -51,7 +51,15 @@ class BaseModel extends Model
      */
     public static function truncateForShelter($id)
     {
+        if (config('eventlog.active')) {
+            static::copyToEventLogs($id);
+        }
         static::where('school_id', '=', $id)->delete();
+    }
+
+    public static function copyToEventLogs($id)
+    {
+        return $id; // empty function for overloading where we want to save logs
     }
 
     /**

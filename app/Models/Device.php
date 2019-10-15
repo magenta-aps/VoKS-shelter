@@ -139,7 +139,7 @@ class Device extends BaseModel
     {
         $device = static::where('device_id', '=', $deviceId)->first(
             [
-                'id', 'mac_address', 'device_id', 'fullname', 'push_notification_id', 'device_type', 'x', 'y', 'username', 'user_phone_token'
+                'id', 'mac_address', 'device_id', 'fullname', 'push_notification_id', 'device_type', 'x', 'y', 'username', 'floor_id', 'user_phone_token'
             ]
         );
 
@@ -248,7 +248,7 @@ class Device extends BaseModel
         }
       }
       //Ios and Pcapp do not send Mac Address (if exception config is disabled)
-      elseif (!$this->getAttribute('mac_address')) {
+      if (!$this->getAttribute('mac_address') && empty($device['mac_address'])) {
         //Create uniq dummy mac address for device
         $t_arr = str_split(time());
         $rand = rand(10, 99);

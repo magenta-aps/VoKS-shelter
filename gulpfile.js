@@ -34,7 +34,8 @@ var cssSrcAdminVendor = assetsVendorDir,
     'select2/select2.css',
     'angular-ui-select/dist/select.css',
     'angular-xeditable/dist/css/xeditable.css',
-    'leaflet/dist/leaflet.css'
+    'leaflet/dist/leaflet.css',
+    'bootstrap-daterangepicker/daterangepicker.css'
   ];
 
 // CSS - System
@@ -91,7 +92,10 @@ var jsSrcAdminVendor = assetsVendorDir,
 
     'leaflet/dist/leaflet.js',
 
-    'select2/select2.js'
+    'select2/select2.js',
+    'moment/moment.js',
+    'bootstrap-daterangepicker/daterangepicker.js',
+    'angular-daterangepicker/js/angular-daterangepicker.js'
   ];
 
 var jsSrcAdminApp = assetsJsDir,

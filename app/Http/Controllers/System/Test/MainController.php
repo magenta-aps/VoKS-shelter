@@ -705,4 +705,163 @@ class MainController extends BaseController
       }
       return $ret_val;
     }
+    
+    /**
+     * Test Aruba Controller Clients
+     *
+     * URL: /system/test/aruba-controller-clients
+     */
+    
+    /*
+     * Login
+     * 
+     * Request URL: <controller URL>/screens/wms/wms.login
+     * Request Method: POST
+     * Parameters:
+      * needxml = 0
+      * opcode = login
+      * url = /
+      * uid = <username>
+      * passwd = <password>
+     */
+    
+    // curl --insecure -c "aruba-cookie" -d "username=asd&password=asd" http://10.248.32.3:4343/v1/api/login
+    
+    /*
+     * Request
+     * 
+     * Request URL: <controller URL>/screens/cmnutil/execUiQuery.xml
+     * Request Method: POST
+     * Accept: application/xml, text/xml, *\/*; q=0.01
+     * Content-Type: text/plain
+     * Cookie: SESSION=<session ID after login>
+     * 
+     * query=<content of ArubaControllerClientsQuery.xml>&UIDARUBA=<session ID after login>
+     * 
+     * Result: <content of ArubaControllerClientsResults.xml>
+     * 
+     */
+    
+    public function getArubaControllerClients() {
+      
+      $AurbaControllers = new ArubaControllers();
+      
+      echo 'Welcome to Aruba Controller Clients test. <br />';
+      echo 'use GET parameter: <br />'
+      . '<i>school_id=<school_id></i><br />';
+      echo '<br />';
+      
+      $schools = School::whereNotNull('controller_url')->get()->toArray();
+      if (!empty($schools)) {
+        $schools = array_map_by_key($schools, 'id');
+      }
+      
+      //
+      if (!empty($_GET['school_id'])) {
+        echo '<hr />';
+        $school = School::where('id', '=', $_GET['school_id'])->first()->toArray();
+        echo "School data: <pre>";
+        print_r($school);
+        echo "</pre>";
+        echo '<br />';
+        
+        if (empty($school['controller_url'])) {
+          echo 'Missing Controller URL';
+          echo '<br />';
+          echo 'Finished.';
+          return;
+        }
+        else {
+          echo 'Controller Ready: <br />';
+          echo "<pre>";
+          print_r($school['controller_url']);
+          echo "</pre>";
+          echo '<br />';
+        }
+        
+        $params = array();
+        
+        //General parameters
+        $query_params = array();
+        $query_params['query'] = array(
+          'qname' => 'comp_nw_client_tbl',
+          'type' => 'list',
+          'list_query' => array(
+            'device_type' => 'sta',
+            'requested_columns' => '
+                client_user_name client_health client_ip_address radio_band radio_ht_phy_type 
+                client_ht_phy_type client_dev_type client_role_name 
+                client_fwd_mode snr speed max_negotiated_rate 
+                avg_data_rate total_data_throughput total_data_frames 
+                tx_data_transmitted tx_data_retried tx_data_dropped 
+                rx_data rx_data_retried ssid ap_name channel_str 
+                total_moves successful_moves steer_capability ucc_status 
+                airgroup_status speed_qualitative avg_data_rate_qualitative tx_data_retried_qualitative 
+                tx_data_dropped_qualitative sta_mac_address
+              ',
+            'sort_by_field' => 'total_data_throughput',
+            'sort_order' => 'desc',
+            'pagination' => array(
+              'key_value' => '',
+              'start_row' => 0,
+              'num_rows' => 50,
+            )
+          ),
+          'filter' => array(
+            'global_operator' => 'and',
+            'filter_list' => array(
+              'filter_item_entry' => array(
+                'field_name' => 'client_fwd_mode',
+                'comp_operator' => 'equals',
+                'value' => '<![CDATA[0]]>',
+              )
+            )
+          )
+        );
+        
+        echo 'General params: <br />';
+        echo "<pre>";
+        print_r($query_params);
+        echo "</pre>";
+        
+        $params['query'] = Formatter::make($query_params, Formatter::ARR)->toXML();
+        $params['query'] = '<aruba_queries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="/screens/monxml/monitoring_schema.xsd">' . $params['query'] . '</aruba_queries>';
+    
+        if (empty($params)) {
+          echo 'Missing parameters. <br />';
+        }
+        else {
+          
+          echo 'Query Params: <br />';
+          echo "<pre>";
+          print_r($params);
+          echo "</pre>";
+        
+          //Get Clients
+          $clients = $AurbaControllers->getClientsFromControllerUIQuery($school['controller_url'], $params);
+          echo 'Clients: <br />';
+          if (!empty($clients)) {
+            echo "<pre>";
+            print_r($clients);
+            echo "</pre>";
+            echo '<br />';
+          }
+          else {
+            echo 'Didn\'t found any Clients.';
+            echo '<br />';
+          }
+        }
+      } 
+      
+      //
+      echo '<hr>';
+      echo "Available schools: <pre>";
+      print_r($schools);
+      echo "</pre>";
+      
+      echo '<br />';
+      echo 'Finished.';
+      return;
+    }
+    
 }
