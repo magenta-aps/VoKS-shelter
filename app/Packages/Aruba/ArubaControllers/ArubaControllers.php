@@ -54,7 +54,7 @@ class ArubaControllers {
         
         if (empty($controller_url)) $ret_val;
         if (empty($params)) $ret_val;
-        
+        $post_param = '';
         if (!empty($params['ip'])) {
           $post_param = '<ipaddr>'. $params['ip'] .'</ipaddr>';
         }
@@ -87,6 +87,51 @@ class ArubaControllers {
             )->execute();
 
         return $ret_val;
+    }
+    
+    /**
+     * Get Clients from ALE controllers
+     *
+     * @return array
+     * @throws \BComeSafe\Libraries\CurlRequestException
+     */
+    public function getClientsFromControllerUIQuery($controller_url, $params) { 
+        $ret_val = array();
+        if (!config('aruba.controllers.enabled')) return $ret_val;
+        
+        if (empty($controller_url)) $ret_val;
+        if (empty($params)) $ret_val;
+        
+        $login_url = $controller_url . ':' . config('aruba.controllers.port') . config('aruba.controllers.login.url');
+        $post_request = array();
+        $post_request['needxml'] = 0;
+        $post_request['opcode'] = 'login';
+        $post_request['url'] = config('aruba.controllers.login.url');
+        $post_request['uid'] = config('aruba.controllers.login.username');
+        $post_request['passwd'] = config('aruba.controllers.login.password');
+        $post_request['destination'] = config('aruba.controllers.uiQueryUrl');
+        $post_request['next_action'] = config('aruba.controllers.uiQueryUrl');
+        
+        try {
+            $data = (new CurlRequest())
+            ->setUrl($login_url)
+            ->setCookieJar(config('aruba.cookies.controller'))
+            ->setPostRequest($post_request)
+            ->expect(
+                CurlRequest::CUSTOM_RESPONSE,
+                function ($response) {
+                    //return Formatter::make($response, Formatter::XML)->toArray();
+                    return $response;
+                }
+            )->execute();
+        } catch (\Exception $e) {
+            return array(
+              'login_url' => $login_url,
+              'post_request' => $post_request,
+              'error' => $e->getMessage()
+            );
+        }
+        return $data;
     }
     
     /**
