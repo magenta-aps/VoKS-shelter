@@ -66,10 +66,20 @@ return [
         ]
     ],
     'cookies'   => [
-        'airwave' => storage_path('app/airwave-cookies')
+        'airwave' => storage_path('app/airwave-cookies'),
+        'controller' => storage_path('app/controller-cookies')
     ],
     'controllers' => [
         'enabled' => env('ARUBA_CONTROLLERS_ENABLED', true),
+        'port' => env('ARUBA_CONTROLLERS_PORT', 4343),
+        'login' => [
+            'url' => '/api/login',
+            'username' => env('ARUBA_CONTROLLERS_USERNAME'),
+            'password' => env('ARUBA_CONTROLLERS_PASSWORD'),
+        ],
+        'devices' => [
+            'url' => '/v1/configuration/showcommand?command=show+user-table',
+        ],
         'key' => env('ARUBA_CONTROLLERS_KEY'),
     ]
 ];
