@@ -30,6 +30,7 @@ class Kernel extends ConsoleKernel
         'BComeSafe\Console\Commands\ArubaSyncActive',
         'BComeSafe\Console\Commands\ArubaSyncDetails',
         'BComeSafe\Console\Commands\ArubaSyncCoordinates',
+        'BComeSafe\Console\Commands\ArubaSyncControllers',
 		//'BComeSafe\Console\Commands\ArubaSyncClearpass', //Not ready
         'BComeSafe\Console\Commands\CiscoSyncClients',
         'BComeSafe\Console\Commands\CiscoSyncDetails',

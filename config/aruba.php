@@ -13,6 +13,9 @@ $clearpass = env('ARUBA_CLEARPASS_URL');
 
 return [
     'enabled'  => env('ARUBA_ENABLED', false),
+    'roles' => [
+      'remove' => env('ARUBA_ROLES_REMOVE', '')
+    ],
     'ale'       => [
         'enabled'  => env('ARUBA_ALE_ENABLED', false),
         'aleServersCount' => env('ARUBA_ALE_SERVERS_COUNT', 1),
@@ -73,13 +76,16 @@ return [
         'enabled' => env('ARUBA_CONTROLLERS_ENABLED', true),
         'port' => env('ARUBA_CONTROLLERS_PORT', 4343),
         'login' => [
-            'url' => '/api/login',
+            'url' => '/v1/api/login',
             'username' => env('ARUBA_CONTROLLERS_USERNAME'),
             'password' => env('ARUBA_CONTROLLERS_PASSWORD'),
         ],
-        'devices' => [
-            'url' => '/v1/configuration/showcommand?command=show+user-table',
+        'logout' => [
+            'url' => '/v1/api/logout'
         ],
-        'key' => env('ARUBA_CONTROLLERS_KEY'),
+        'devices' => [
+            'url' => '/v1/configuration/showcommand',
+        ],
+        'key' => env('ARUBA_CONTROLLERS_KEY')
     ]
 ];

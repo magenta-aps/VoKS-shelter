@@ -221,7 +221,7 @@ class Device extends BaseModel
               $device = $ArubaClearpass->getByMac($this->getAttribute('mac_address'));
             }
           }
-          //Aruba Controller
+          //Aruba Controller 
           if (config('aruba.controllers.enabled')) {
             $AurbaControllers = new ArubaControllers();
             $school_id = !empty($this->school_id) ? $this->school_id : NULL;
@@ -230,6 +230,7 @@ class Device extends BaseModel
               $device['ap_name'] = $ap_name;
             }
           }
+          //@Todo
           if (!isset($device['mac_address'])) {
             throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
           }
@@ -782,5 +783,15 @@ class Device extends BaseModel
      */
     public static function generateToken() {
       return md5(rand(1, 10) . microtime());
+    }
+    
+    /**
+     * @return string
+     */
+    public static function generateApproximateCoordinatesAroundAP($coordinate, $max = 30) {
+      $coordinates_adj = rand(1, $max);
+      if (rand(1,2) % 2 == 0) $coordinates_adj = $coordinates_adj * -1;
+      $coordinate += $coordinates_adj;
+      return $coordinate;
     }
 }

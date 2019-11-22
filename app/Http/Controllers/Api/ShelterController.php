@@ -388,42 +388,42 @@ class ShelterController extends Controller
      */
     public function getCoordinates(Request $request)
     {
-        if ($request->has('list')) {
-            $macs = $request->get('list');
+      if ($request->has('list')) {
+          $macs = $request->get('list');
 
-            $list = [];
-            $i = 1;
+          $list = [];
+          $i = 1;
 
-            foreach ($macs as $mac) {
-                $list['mac:' . $i] = $mac;
-            }
-            
-            \Artisan::call('sync:macs', $list);
-            
-            $devices = Device::whereIn('mac_address', $macs)->get();
-        } else {
-            // fetch all clients that are active and belong to this school
+          foreach ($macs as $mac) {
+              $list['mac:' . $i] = $mac;
+          }
 
-            $floors = Floor::where('school_id', '=', \Shelter::getID())->get();
-            $floorIds = [];
+          \Artisan::call('sync:macs', $list);
 
-            foreach ($floors as $floor) {
-                $floorIds[] = $floor->id;
-            }
+          $devices = Device::whereIn('mac_address', $macs)->get();
+      } else {
+          // fetch all clients that are active and belong to this school
 
-            $devices =
-                Device::where('active', '=', 1)
-                      ->whereIn('floor_id', $floorIds)->get();
-        }
+          $floors = Floor::where('school_id', '=', \Shelter::getID())->get();
+          $floorIds = [];
 
-        $response = [];
-        foreach ($devices as $device) {
-            $response[] = Device::mapDeviceCoordinates($device, SchoolStatus::getStatusAlarm());
-        }
+          foreach ($floors as $floor) {
+              $floorIds[] = $floor->id;
+          }
 
-        SchoolStatus::updateActivity();
+          $devices =
+              Device::where('active', '=', 1)
+                    ->whereIn('floor_id', $floorIds)->get();
+      }
 
-        return response()->json($response);
+      $response = [];
+      foreach ($devices as $device) {
+          $response[] = Device::mapDeviceCoordinates($device, SchoolStatus::getStatusAlarm());
+      }
+
+      SchoolStatus::updateActivity();
+
+      return response()->json($response);
     }
 
     /**
