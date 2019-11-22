@@ -148,7 +148,7 @@ class AleLocation
                 if (empty($data)) {
                     return [];
                 }
-                $remove_roles = env('ARUBA_ALE_REMOVE_ROLES');
+                $remove_roles = config('aruba.roles.remove');
                 $remove_roles_arr = !empty($remove_roles) ? explode(',', $remove_roles) : array();
                 $stations = array('active' => [], 'other' => []);
                 foreach ($data['Station_result'] as $station) {

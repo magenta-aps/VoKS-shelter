@@ -139,6 +139,18 @@ class CurlRequest
     }
 
     /**
+     * @param $cookieFile
+     *
+     * @return $this
+     */
+    public function setCookieFile($cookieFile)
+    {
+        $this->options[CURLOPT_COOKIEFILE] = $cookieFile;
+
+        return $this;
+    }
+    
+    /**
      * @param $type
      *
      * @return $this
