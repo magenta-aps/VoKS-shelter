@@ -55,15 +55,6 @@ class ArubaSyncControllers extends Command
      */
     private $debug;
     
-    public function __construct()
-    {
-      $aps = Aps::all();
-      if ($aps) {
-        $this->aps = array_map_by_key($aps->toArray(), 'ap_name');
-      }
-      parent::__construct();
-    }
-    
     /**
       * Get the console command arguments.
       *
@@ -85,7 +76,12 @@ class ArubaSyncControllers extends Command
      */
     public function handle()
     { 
-      
+      if (!$this->aps) {
+        $aps = Aps::all();
+        if ($aps) {
+          $this->aps = array_map_by_key($aps->toArray(), 'ap_name');
+        }
+      }
       //\Artisan::call('aruba:sync:controllers', ['school_id' => \Shelter::getID(), 'no_debug' => 1, 'force' => 1]);
       
       //*** Debug ***
