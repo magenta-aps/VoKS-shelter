@@ -41,7 +41,7 @@ class CreateEventLogTable extends Migration {
 	 */
 	public function down()
 	{
-	    DB::unprepared('DROP TRIGGER `copy_alarm_timestamp`');
+	    DB::unprepared('DROP TRIGGER IF EXISTS `copy_alarm_timestamp`');
 		Schema::drop('event_logs');
 	}
 
