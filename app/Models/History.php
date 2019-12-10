@@ -133,6 +133,8 @@ class History extends BaseModel
                     $message = \Lang::get($item['message'], array(), $lang);
                     $item['data']['message'] = $message;
                     break;
+                default:
+                    \Log::debug("Item has no known type:" . json_encode($item));
             }
 
             unset($item['id']); // ensure we get a new auto-incremented id

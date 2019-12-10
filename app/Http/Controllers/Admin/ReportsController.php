@@ -80,7 +80,7 @@ class ReportsController extends BaseController
             ,   'Pragma'              => 'public'
         ];
 
-        $list = EventLog::where('school_id', '=', $school_id)->where('triggered_at', '=', $triggered_at)->get()->toArray();
+        $list = EventLog::where('school_id', '=', $school_id)->where('triggered_at', '=', $triggered_at)->orderBy('id', 'desc')->get()->toArray();
 
         # add headers for each column in the CSV download
         array_unshift($list, array_keys($list[0]));
