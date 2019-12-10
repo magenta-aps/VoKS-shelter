@@ -133,6 +133,13 @@ class History extends BaseModel
                     $message = \Lang::get($item['message'], array(), $lang);
                     $item['data']['message'] = $message;
                     break;
+
+                case 'email':
+                    $item['log_type'] = EventLOG::EMAIL_SENT;
+                    $item['data'] = json_decode($item['result'], true);
+                    $item['data']['message'] = $item['message'];
+                    break;
+
                 default:
                     \Log::debug("Item has no known type:" . json_encode($item));
             }
