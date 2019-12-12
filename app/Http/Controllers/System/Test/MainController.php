@@ -418,9 +418,9 @@ class MainController extends BaseController
     /**
      * Test Aruba Controller
      *
-     * URL: /system/test/aruba-controller
+     * URL: /system/test/aruba-controller-clients-old
      */
-    public function getArubaController() {
+    public function getArubaControllerClientsOld() {
       
       $AurbaControllers = new ArubaControllers();
       
@@ -714,12 +714,14 @@ class MainController extends BaseController
     public function getArubaControllerClients() {
       
       $AurbaControllers = new ArubaControllers();
-      $controller_url = !empty($_GET['controller_url']) ? $_GET['controller_url'] : '';
       
-      echo 'Welcome to Aruba Controller ArubaOS 8.x API Clients test. <br />';
+      echo 'Welcome to Aruba Controller ArubaOS 6.x / 8.x API Clients test. <br />';
       echo 'use GET parameter: <br />'
-      . '<i>school_id=<school_id></i><br />'
-      . '<i>controller_url=<controller_url></i><br />';
+      . '<i>school_id=<school_id></i> <br /><br />'
+      . 'AND <i>device_ip=<ip_address></i> <br />'
+      . 'OR <i>device_mac=<mac_address></i> <br />'
+      . 'OR <i>device_username=<username></i>';
+      echo '<br /><br />';
       echo '<br />';
       
       $schools = School::whereNotNull('controller_url')->get()->toArray();
@@ -751,42 +753,42 @@ class MainController extends BaseController
       }
       
       echo 'Controller Ready: <br />';
-      echo "<pre>";
-      print_r($controller_url);
-      echo "</pre>";
+      echo 'Controller URL: ' . $controller_url . '<br />';
+      echo 'Controller Version: ' . $school['controller_version'] . '<br />';
       echo '<br />';
       
-      //Login to Controller
-      $data = $AurbaControllers->loginToArubaControllerOS8x($controller_url);
-      echo 'Controller login data: <br />';
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-      echo '<br />';
-      
-      //Get Clients
+      //Get Clients / Client
       $params = array();
-      $params['UIDARUBA'] = $data['_global_result']['UIDARUBA'];
-      $clients = $AurbaControllers->getClientsFromControllerOS8x($controller_url, $params);
-      echo 'Clients: <br />';
-      if (!empty($clients)) {
+      if (!empty($_GET['device_ip'])) {
+        $params['ip'] = $_GET['device_ip'] . '<br />';
+        echo 'Searching device by IP: ', $params['ip'];
+      }
+      if (!empty($_GET['device_mac'])) {
+        $params['mac_address'] = $_GET['device_mac'] . '<br />';
+        echo 'Searching device by Mac: ', $params['mac_address'];
+      }
+      if (!empty($_GET['device_username'])) {
+        $params['username'] = $_GET['device_username'] . '<br />';
+        echo 'Searching device by Username: ', $params['username'];
+      }
+      if (!empty($params)) {
+        $data = $AurbaControllers->getClientFromController($controller_url, $params, $school['controller_version']);
+      }
+      else {
+        $data = $AurbaControllers->getClientsFromController($controller_url, $school['controller_version']);
+      }
+      
+      echo 'Data: <br />';
+      if (!empty($data)) {
         echo "<pre>";
-        print_r($clients);
+        print_r($data);
         echo "</pre>";
         echo '<br />';
       }
       else {
-        echo 'Didn\'t found any Clients.';
+        echo 'Didn\'t found anything in Controller.';
         echo '<br />';
       }
-      
-      //Login to Controller
-      $data = $AurbaControllers->logoutFromArubaControllerOS8x($controller_url);
-      echo 'Controller logout data: <br />';
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-      echo '<br />';
       
       //
       echo '<hr>';

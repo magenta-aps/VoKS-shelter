@@ -204,6 +204,66 @@ class ArubaControllers {
     }
     
     /**
+     * Aruba Controllers ArubaOS 8.x: Get single clients
+     *
+     * @return array
+     * @throws \BComeSafe\Libraries\CurlRequestException
+     */
+    public function getClientFromControllerOS8x($controller_url, $params) { 
+      $ret_val = array();
+      if (!config('aruba.controllers.enabled')) return $ret_val;
+
+      if (empty($controller_url)) $ret_val;
+      if (empty($params)) $ret_val;
+      
+      $params['command'] = 'show+user-table';
+      if (!empty($params['ip'])) {
+        $params['command'] .= '+IP+'. $params['ip'];
+      }
+      elseif (!empty($params['mac_address'])) {
+        $params['command'] .= '+MAC+'. $params['mac_address'];
+      }
+      elseif (!empty($params['username'])) {
+        $params['command'] .= '+Name+'. $params['username'];
+      }
+        
+      $url = $controller_url . ':' . config('aruba.controllers.port') . config('aruba.controllers.devices.url');
+      $url .= '?command=' . $params['command'] . '&UIDARUBA=' . $params['UIDARUBA'];
+      
+      echo "<pre>";
+      print_r($url);
+      echo "</pre>";
+
+
+      try {
+          $data = (new CurlRequest())
+          ->setUrl($url)
+          ->setCookieFile(config('aruba.cookies.controller'))
+          ->expect(
+              CurlRequest::JSON_RESPONSE,
+              function ($response) {
+                if (!empty($response['Users'])) {
+                  echo "<pre>";
+                  print_r($response);
+                  echo "</pre>";
+                  die(__FILE__);
+
+                  return $response['Users'];
+                }
+                return [];
+              }
+          )->execute();
+      } catch (\Exception $e) {
+          return array(
+            'url' => $url,
+            'params' => $params,
+            'error' => $e->getMessage()
+          );
+      }
+      return $data;
+    }
+    
+    /**
      * Aruba Controllers: Get all clients
      *
      * @return array
@@ -216,6 +276,9 @@ class ArubaControllers {
       $clients = [];
       
       switch($aruba_os) {
+        case '6.x':
+          //Do nothing
+          break;
         case '8.x':
           $data = $this->loginToArubaControllerOS8x($controller_url);
           if (empty($data)) {
@@ -226,11 +289,39 @@ class ArubaControllers {
           $clients = $this->getClientsFromControllerOS8x($controller_url, $params);
           
           $this->logoutFromArubaControllerOS8x($controller_url);
-        default;
+          break;
       }
-      
       return $clients;
+    }
+    
+    /**
+     * Aruba Controllers: Get single client
+     *
+     * @return array
+     */
+    public function getClientFromController($controller_url, $params, $aruba_os = '8.x') {
+      $ret_val = array();
+      if (!config('aruba.controllers.enabled')) return $ret_val;
       
+      if (empty($controller_url)) $ret_val;
+      $client = [];
+      
+      switch($aruba_os) {
+        case '6.x':
+          $client = $this->getClientFromControllerOS6x($controller_url, $params);
+          break;
+        case '8.x':
+          $data = $this->loginToArubaControllerOS8x($controller_url);
+          if (empty($data)) {
+            return $client;
+          }
+          $params['UIDARUBA'] = $data['_global_result']['UIDARUBA'];
+          $client = $this->getClientFromControllerOS8x($controller_url, $params);
+          
+          $this->logoutFromArubaControllerOS8x($controller_url);
+          break;
+      }
+      return $client;
     }
     
     /**

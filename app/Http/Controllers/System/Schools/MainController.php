@@ -33,7 +33,7 @@ class MainController extends BaseController
 	    $default = SchoolDefault::getDefaults();
 
 	    $data = [
-        'shelterId'           => config('alarm.default_id'),
+        'shelterId'           => School::getDefaultSchoolID(),
         'use_gps'             => $default->is_gps_location_source,
         'use_non_gps'         => $default->is_non_gps_location_source,
         'phone_provider'      => $default->phone_system_provider ? true : false,
@@ -65,7 +65,8 @@ class MainController extends BaseController
           'ad_id', 
           'phone_system_id', 
           'campus_id',
-          'controller_url', 
+          'controller_url',
+          'controller_version',
           'name',
           'url',
           'police_number',
@@ -97,6 +98,7 @@ class MainController extends BaseController
         	$data['display'] = isset($data['display']) ? $data['display'] : 0;
         	$data['public'] = isset($data['public']) ? $data['public'] : 1;
         	$data['controller_url'] = isset($data['controller_url']) ? $data['controller_url'] : '';
+        	$data['controller_version'] = isset($data['controller_version']) ? $data['controller_version'] : '';
 
         	$item = School::create($data);
 
