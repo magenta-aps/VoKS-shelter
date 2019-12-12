@@ -43,6 +43,7 @@
                           @endif
                           @if ( $controllers_enabled )
                             <th>{{ Lang::get('system.contents.school.table.controller') }}</th>
+                            <th>{{ Lang::get('system.contents.school.table.version') }}</th>
                           @endif
                           <th class="-cell-options">{{ Lang::get('system.contents.school.table.options') }}</th>
                         </tr>
@@ -69,6 +70,7 @@
                             @endif
                             @if ( $controllers_enabled )
                                 <td><span e-class="textarea-block__input-text -medium" editable-text="school.controller_url" e-name="controller_url" e-form="rowform" e-required><% school.controller_url || '{{ Lang::get('system.contents.defaults.none') }}' %></span></td>
+                                <td><span e-class="textarea-block__input-text -medium" editable-text="school.controller_version" e-name="controller_version" e-form="rowform" e-required><% school.controller_version || '{{ Lang::get('system.contents.defaults.none') }}' %></span></td>
                             @endif
                             <td class="-cell-options">
                                 <form editable-form name="rowform" onbeforesave="saveItem(school, $index)" oncancel="cancel(school.id, $index)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == school">

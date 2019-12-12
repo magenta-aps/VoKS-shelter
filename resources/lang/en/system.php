@@ -72,7 +72,8 @@ return [
             'use_gps' => 'Use GPS',
             'display' => 'Display',
             'public' => 'Public',
-            'controller' => 'Controller'
+            'controller' => 'Controller',
+            'version' => 'Version'
         ]
     ],
     'maps' => [

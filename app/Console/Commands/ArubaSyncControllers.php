@@ -25,8 +25,6 @@ use Symfony\Component\Console\Input\InputArgument;
  */
 class ArubaSyncControllers extends Command
 {
-    const RUNS_PER_MINUTE = 6;
-
     /**
      * The console command name.
      *

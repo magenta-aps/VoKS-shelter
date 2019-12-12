@@ -72,7 +72,8 @@ return [
             'use_gps' => 'Користуйтесь GPS',
             'display' => 'Дисплей',
             'public' => 'Публічний',
-            'controller' => 'Контролер'
+            'controller' => 'Контролер',
+            'version' => 'Version'
         ]
     ],
     'maps' => [
