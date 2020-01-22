@@ -218,13 +218,13 @@ class ArubaControllers {
       
       $params['command'] = 'show+user-table';
       if (!empty($params['ip'])) {
-        $params['command'] .= '+IP+'. $params['ip'];
+        $params['command'] .= '+ip+'. $params['ip'];
       }
       elseif (!empty($params['mac_address'])) {
-        $params['command'] .= '+MAC+'. $params['mac_address'];
+        $params['command'] .= '+mac+'. $params['mac_address'];
       }
       elseif (!empty($params['username'])) {
-        $params['command'] .= '+Name+'. $params['username'];
+        $params['command'] .= '+name+'. $params['username'];
       }
         
       $url = $controller_url . ':' . config('aruba.controllers.port') . config('aruba.controllers.devices.url');
