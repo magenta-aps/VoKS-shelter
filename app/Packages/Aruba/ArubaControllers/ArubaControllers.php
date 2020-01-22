@@ -262,28 +262,32 @@ class ArubaControllers {
      *
      * @return array
      */
-    public function getClientsFromController($controller_url, $aruba_os = '8.x') {
+    public function getClientsFromController($param_controller_url, $aruba_os = '8.x') {
       $ret_val = array();
       if (!config('aruba.controllers.enabled')) return $ret_val;
       
-      if (empty($controller_url)) $ret_val;
+      if (empty($param_controller_url)) $ret_val;
+      //Multiple controllers
+      $multiple_controller_url = cexplode(',', $param_controller_url);
       $clients = [];
-      
-      switch($aruba_os) {
-        case '6.x':
-          //Do nothing
-          break;
-        case '8.x':
-          $data = $this->loginToArubaControllerOS8x($controller_url);
-          if (empty($data)) {
-            return $clients;
-          }
-          $params = array();
-          $params['UIDARUBA'] = $data['_global_result']['UIDARUBA'];
-          $clients = $this->getClientsFromControllerOS8x($controller_url, $params);
-          
-          $this->logoutFromArubaControllerOS8x($controller_url);
-          break;
+      foreach($multiple_controller_url as $controller_url) {
+        switch($aruba_os) {
+          case '6.x':
+            //Do nothing
+            break;
+          case '8.x':
+            $data = $this->loginToArubaControllerOS8x(trim($controller_url));
+            if (empty($data)) {
+              continue;
+            }
+            $params = array();
+            $params['UIDARUBA'] = $data['_global_result']['UIDARUBA'];
+            $new_clients = $this->getClientsFromControllerOS8x(trim($controller_url), $params);
+            $clients = array_merge($clients, $new_clients);
+
+            $this->logoutFromArubaControllerOS8x(trim($controller_url));
+            break;
+        }
       }
       return $clients;
     }
