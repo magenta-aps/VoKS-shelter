@@ -446,7 +446,7 @@ class MainController extends BaseController
       //By IP
       if (!empty($_GET['device_ip'])) {
         echo 'Search AP name by IP only <br />';
-        $ap_name = $AurbaControllers->getAPByIp($_GET['device_ip'], null, $schools);
+        $ap_name = $AurbaControllers->getAPByParams(['ip' => $_GET['device_ip']], null, $schools);
         if (!empty($ap_name)) {
           echo 'App name: ' . $ap_name . '<br />';
           if (!empty($aps[$ap_name])) {
@@ -791,10 +791,46 @@ class MainController extends BaseController
       }
       
       //Check AP by IP
+      ////Aps
+      $aps = Aps::get()->toArray();
+      if (!empty($aps)) {
+        $aps = array_map_by_key($aps, 'ap_name');
+      }
+      
       //By IP
       if (!empty($_GET['device_ip'])) {
         echo 'Search AP name by IP only <br />';
-        $ap_name = $AurbaControllers->getAPByIp($_GET['device_ip'], null, $schools);
+        $ap_name = $AurbaControllers->getAPByParams(['ip' => $_GET['device_ip']], null, $schools);
+        if (!empty($ap_name)) {
+          echo 'App name: ' . $ap_name . '<br />';
+          if (!empty($aps[$ap_name])) {
+            echo 'Ap by Ap name: <br />';
+            echo "<pre>";
+            print_r($aps[$ap_name]);
+            echo "</pre>";
+            //
+            if (!empty($schools[$aps[$ap_name]['school_id']])) {
+              echo 'School by Ap name: <br />';
+              echo "<pre>";
+              print_r($schools[$aps[$ap_name]['school_id']]);
+              echo "</pre>";
+            }
+            else {
+              echo 'School not found. <br />';
+            }
+          }
+          else {
+            echo 'Ap not found. <br />';
+          }
+        }
+        else {
+          echo 'Ap name not found in Controllers. <br />';
+        }
+      }
+      //By MAC
+      if (!empty($_GET['device_mac'])) {
+        echo 'Search AP name by MAC only <br />';
+        $ap_name = $AurbaControllers->getAPByParams(['mac_address' => $_GET['device_mac']], null, $schools);
         if (!empty($ap_name)) {
           echo 'App name: ' . $ap_name . '<br />';
           if (!empty($aps[$ap_name])) {

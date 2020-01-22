@@ -242,7 +242,7 @@ class ArubaControllers {
                 if (!empty($response['_data']) && !empty($response['_data'][17]) && strpos($response['_data'][17], 'AP name/group') !== false) {
                   $rows = explode('AP name/group: ', $response['_data'][17]);
                   $rows2 = explode('/', $rows[1]);
-                  return ['location' => $rows[0]];
+                  return ['location' => $rows2[0]];
                 }
                 return [];
               }
@@ -319,22 +319,22 @@ class ArubaControllers {
     }
     
     /**
-     * Aruba Controllers: Get AP name by IP
+     * Aruba Controllers: Get AP name by params
      * 
-     * @param string $device_ip
+     * @param string $params
      * @param int $possible_school_id - will be checked first
      * @param array $schools - all schools
      * @return string $ap_name
      */
-    public function getAPByIp($device_ip, $possible_school_id = null, $schools = array()) {
+    public function getAPByParams($params, $possible_school_id = null, $schools = array()) {
       $ret_val = null;
-      if (empty($device_ip)) return $ret_val;
+      if (empty($params['id']) && empty($params['mac_address']) && empty($params['username'])) return $ret_val;
       
       //Check first possible school
       if ($possible_school_id) {
         $school = School::where('id', '=', $possible_school_id)->first()->toArray();
         if (!empty($school['controller_url'])) {
-          $device = $this->getClientFromController($school['controller_url'], array('ip' => $device_ip));
+          $device = $this->getClientFromController($school['controller_url'], $params);
           if (!empty($device['location'])) {
             $ret_val = $device['location'];
             return $ret_val;
@@ -353,7 +353,7 @@ class ArubaControllers {
       }
       
       foreach($schools as $school) {
-        $device = $this->getClientFromController($school['controller_url'], array('ip' => $device_ip));
+        $device = $this->getClientFromController($school['controller_url'], $params);
         if (!empty($device['location'])) {
           $ret_val = $device['location'];
           break;
