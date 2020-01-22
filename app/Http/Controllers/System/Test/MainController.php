@@ -760,16 +760,16 @@ class MainController extends BaseController
       //Get Clients / Client
       $params = array();
       if (!empty($_GET['device_ip'])) {
-        $params['ip'] = $_GET['device_ip'] . '<br />';
-        echo 'Searching device by IP: ', $params['ip'];
+        $params['ip'] = $_GET['device_ip'];
+        echo 'Searching device by IP: ', $params['ip'] . '<br />';
       }
       if (!empty($_GET['device_mac'])) {
-        $params['mac_address'] = $_GET['device_mac'] . '<br />';
-        echo 'Searching device by Mac: ', $params['mac_address'];
+        $params['mac_address'] = $_GET['device_mac'];
+        echo 'Searching device by Mac: ', $params['mac_address'] . '<br />';
       }
       if (!empty($_GET['device_username'])) {
-        $params['username'] = $_GET['device_username'] . '<br />';
-        echo 'Searching device by Username: ', $params['username'];
+        $params['username'] = $_GET['device_username'];
+        echo 'Searching device by Username: ', $params['username'] . '<br />';
       }
       if (!empty($params)) {
         $data = $AurbaControllers->getClientFromController($controller_url, $params, $school['controller_version']);

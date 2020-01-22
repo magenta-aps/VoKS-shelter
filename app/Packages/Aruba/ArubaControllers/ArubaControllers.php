@@ -229,12 +229,6 @@ class ArubaControllers {
         
       $url = $controller_url . ':' . config('aruba.controllers.port') . config('aruba.controllers.devices.url');
       $url .= '?command=' . $params['command'] . '&UIDARUBA=' . $params['UIDARUBA'];
-      
-      echo "<pre>";
-      print_r($url);
-      echo "</pre>";
-
-
       try {
           $data = (new CurlRequest())
           ->setUrl($url)
@@ -243,11 +237,6 @@ class ArubaControllers {
               CurlRequest::JSON_RESPONSE,
               function ($response) {
                 if (!empty($response['Users'])) {
-                  echo "<pre>";
-                  print_r($response);
-                  echo "</pre>";
-                  die(__FILE__);
-
                   return $response['Users'];
                 }
                 return [];
