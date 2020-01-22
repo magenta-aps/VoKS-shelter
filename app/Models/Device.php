@@ -224,7 +224,7 @@ class Device extends BaseModel
           //Aruba Controller 
           if (config('aruba.controllers.enabled')) {
             /*if (empty($this->ap_name)) {
-              //Todo - rewrite active devices sync.
+              //@Todo - rewrite active devices sync.
               $AurbaControllers = new ArubaControllers();
               $school_id = !empty($this->school_id) ? $this->school_id : NULL;
               $ap_name = $AurbaControllers->getAPByIp($this->getAttribute('ip_address'), $school_id);

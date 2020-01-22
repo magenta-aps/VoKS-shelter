@@ -325,29 +325,30 @@ class ArubaControllers {
       $ret_val = null;
       if (empty($device_ip)) return $ret_val;
       
-      //@Todo - get single possible school first from DB and check for device data.
+      //Check first possible school
+      if ($possible_school_id) {
+        $school = School::where('id', '=', $possible_school_id)->first()->toArray();
+        if (!empty($school['controller_url'])) {
+          $device = $this->getClientFromController($school['controller_url'], array('ip' => $device_ip));
+          if (!empty($device['location'])) {
+            $ret_val = $device['location'];
+            return $ret_val;
+          }
+        }
+      }
       
       // Get all schools list
-      if (empty($schools)) {
+      if(empty($schools)) {
         $schools = School::whereNotNull('controller_url')->get()->toArray();
         if (empty($schools)) return $ret_val;
         $schools = array_map_by_key($schools, 'id');
-      }
-      
-      // Check possible school first
-      if ($possible_school_id && !empty($schools[$possible_school_id])) {
-        $device = $this->getClientFromControllerOS6x($schools[$possible_school_id]['controller_url'], array('ip' => $device_ip));
-        if (!empty($device['location'])) {
-          $ret_val = $device['location'];
-          return $ret_val;
-        }
-        else {
+        if ($possible_school_id) {
           unset($schools[$possible_school_id]);
         }
       }
       
       foreach($schools as $school) {
-        $device = $this->getClientFromControllerOS6x($school['controller_url'], array('ip' => $device_ip));
+        $device = $this->getClientFromController($school['controller_url'], array('ip' => $device_ip));
         if (!empty($device['location'])) {
           $ret_val = $device['location'];
           break;
