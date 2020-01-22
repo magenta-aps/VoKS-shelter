@@ -338,6 +338,10 @@ class ArubaControllers {
           if (!empty($device['location'])) {
             $ret_val = $device['location'];
             return $ret_val;
+          } elseif (!empty($device[0])) {
+            $device = reset($device);
+            $ret_val = $device['AP name'];
+            return $ret_val;
           }
         }
       }
