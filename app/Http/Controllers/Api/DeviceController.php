@@ -152,6 +152,9 @@ class DeviceController extends Controller
             'user_phone_confirm' => $device->user_phone_confirm,
             'need_phone' => $device->need_phone,
             'need_tac' => $device->need_tac,
+            'mac_address' => $device->mac_address,
+            'ap_name' => $device->ap_name,
+            'ip_address' => $device->ip_address,
             'tac_text' => \Lang::get('app.tac.default', [], $lang) //@Todo - make administrated.
             ]
         );

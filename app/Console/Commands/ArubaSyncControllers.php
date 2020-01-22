@@ -54,6 +54,13 @@ class ArubaSyncControllers extends Command
     private $debug;
     
     /**
+     * MAC's for debug
+     *
+     * @var array
+     */
+    private $macs_for_debug = [];
+    
+    /**
       * Get the console command arguments.
       *
       * @return array
@@ -84,6 +91,10 @@ class ArubaSyncControllers extends Command
       
       //*** Debug ***
       $this->debug = config('app.debug');
+      $macs_for_debug = config('alarm.macs_for_debug');
+      if (!empty($macs_for_debug)) {
+        $this->macs_for_debug = explode(',',$macs_for_debug);
+      }
       $no_debug = $this->argument('no_debug');
       if ($no_debug) {
         $this->debug = FALSE;
@@ -256,9 +267,14 @@ class ArubaSyncControllers extends Command
     {
       //Check Role
       $AurbaControllers = new ArubaControllers();
+      $mac = strtoupper($client['MAC']);
+      if ($this->debug && !empty($this->macs_for_debug)) {
+        if (in_array($mac, $this->macs_for_debug)) {
+          echo 'Debug client: ', print_r($client, true), PHP_EOL;
+        }
+      }
       if (!$AurbaControllers->checkClientRole($client['Role'])) return FALSE;
       
-      $mac = strtoupper($client['MAC']);
       $ap_name = $client['AP name'];
       
       //Get Device from DB which has the same AP name
