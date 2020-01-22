@@ -90,8 +90,8 @@ class User
                             case 'Display Name':
                                 $profile['fullname'] = $value;
                                 break;
-                            case 'Source':
-                                $profile['ap_name'] = $value;
+//                            case 'Source':
+//                                $profile['ap_name'] = $value;
                         }
                     }
 
