@@ -223,17 +223,15 @@ class Device extends BaseModel
           }
           //Aruba Controller 
           if (config('aruba.controllers.enabled')) {
-            /*if (empty($this->ap_name)) {
-              //@Todo - rewrite active devices sync.
+            if (empty($this->ap_name)) {
               $AurbaControllers = new ArubaControllers();
               $school_id = !empty($this->school_id) ? $this->school_id : NULL;
-              $ap_name = $AurbaControllers->getAPByParams(['ip' => $this->getAttribute('ip_address')'], $school_id);
+              $ap_name = $AurbaControllers->getAPByParams(['mac_address' => $device['mac_address']], $school_id);
               if (!empty($ap_name)) {
                 $device['ap_name'] = $ap_name;
               }
-            }*/
+            }
           }
-          //@Todo
           if (!isset($device['mac_address'])) {
             throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
           }

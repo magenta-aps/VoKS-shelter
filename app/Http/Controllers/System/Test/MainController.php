@@ -781,7 +781,7 @@ class MainController extends BaseController
         }
         $ap_name = $AurbaControllers->getAPByParams($params, null, $schools);
         if (!empty($ap_name)) {
-          echo 'Found AP name: ' . $ap_name;
+          echo 'Found AP name: ' . $ap_name . '<br />';
           if (!empty($aps[$ap_name])) {
             echo 'AP by AP name: <br />';
             echo "<pre>";
