@@ -120,7 +120,7 @@ class SyncMacs extends Command
             }
             //Aruba Controllers
             if (config('aruba.controllers.enabled')) {
-              $ap_name = $AurbaControllers->getAPByParams(['ip' => $device->ip_address], $device->school_id, $schools);
+              $ap_name = $AurbaControllers->getAPByParams(['mac_address' => $device->mac_address], $device->school_id, $schools);
               //Found AP name
               if (!empty($ap_name) && !empty($aps[$ap_name])) {
                 //AP has changed

@@ -46,6 +46,11 @@ class MainController extends BaseController
       return [];
     }
 
+    /**
+     * Aruba Controller: Sync macs
+     *
+     * URL: /system/test/coords
+     */
     public function getCoords() {
       if (!empty($_GET['macs'])) {
         $macs = is_array($_GET['macs']) ? $_GET['macs'] : array($_GET['macs']);
