@@ -239,6 +239,11 @@ class ArubaControllers {
                 if (!empty($response['Users'])) {
                   return $response['Users'];
                 }
+                if (!empty($response['_data']) && !empty($response['_data'][17]) && strpos($response['_data'][17], 'AP name/group') !== false) {
+                  $rows = explode('AP name/group: ', $response['_data'][17]);
+                  $rows2 = explode('/', $rows[1]);
+                  return ['location' => $rows[0]];
+                }
                 return [];
               }
           )->execute();
