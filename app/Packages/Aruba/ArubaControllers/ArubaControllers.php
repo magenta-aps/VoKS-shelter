@@ -328,7 +328,7 @@ class ArubaControllers {
      */
     public function getAPByParams($params, $possible_school_id = null, $schools = array()) {
       $ret_val = null;
-      if (empty($params['id']) && empty($params['mac_address']) && empty($params['username'])) return $ret_val;
+      if (empty($params['ip']) && empty($params['mac_address']) && empty($params['username'])) return $ret_val;
       
       //Check first possible school
       if ($possible_school_id) {
