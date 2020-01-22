@@ -268,7 +268,7 @@ class ArubaControllers {
       
       if (empty($param_controller_url)) $ret_val;
       //Multiple controllers
-      $multiple_controller_url = cexplode(',', $param_controller_url);
+      $multiple_controller_url = explode(',', $param_controller_url);
       $clients = [];
       foreach($multiple_controller_url as $controller_url) {
         switch($aruba_os) {
