@@ -317,8 +317,9 @@ class ArubaControllers {
             }
             $params['UIDARUBA'] = $data['_global_result']['UIDARUBA'];
             $new_client = $this->getClientFromControllerOS8x(trim($controller_url), $params);
-            $client = array_merge($client, $new_client);
-
+            if (!empty($new_client)) {
+              $client = $new_client;
+            }
             $this->logoutFromArubaControllerOS8x(trim($controller_url));
             break;
         }
