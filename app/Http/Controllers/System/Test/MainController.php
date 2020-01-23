@@ -46,6 +46,11 @@ class MainController extends BaseController
       return [];
     }
 
+    /**
+     * Aruba Controller: Sync macs
+     *
+     * URL: /system/test/coords
+     */
     public function getCoords() {
       if (!empty($_GET['macs'])) {
         $macs = is_array($_GET['macs']) ? $_GET['macs'] : array($_GET['macs']);
@@ -446,7 +451,7 @@ class MainController extends BaseController
       //By IP
       if (!empty($_GET['device_ip'])) {
         echo 'Search AP name by IP only <br />';
-        $ap_name = $AurbaControllers->getAPByIp($_GET['device_ip'], null, $schools);
+        $ap_name = $AurbaControllers->getAPByParams(['ip' => $_GET['device_ip']], null, $schools);
         if (!empty($ap_name)) {
           echo 'App name: ' . $ap_name . '<br />';
           if (!empty($aps[$ap_name])) {
@@ -760,19 +765,48 @@ class MainController extends BaseController
       //Get Clients / Client
       $params = array();
       if (!empty($_GET['device_ip'])) {
-        $params['ip'] = $_GET['device_ip'] . '<br />';
-        echo 'Searching device by IP: ', $params['ip'];
+        $params['ip'] = $_GET['device_ip'];
+        echo 'Searching device by IP: ', $params['ip'] . '<br />';
       }
       if (!empty($_GET['device_mac'])) {
-        $params['mac_address'] = $_GET['device_mac'] . '<br />';
-        echo 'Searching device by Mac: ', $params['mac_address'];
+        $params['mac_address'] = $_GET['device_mac'];
+        echo 'Searching device by Mac: ', $params['mac_address'] . '<br />';
       }
       if (!empty($_GET['device_username'])) {
-        $params['username'] = $_GET['device_username'] . '<br />';
-        echo 'Searching device by Username: ', $params['username'];
+        $params['username'] = $_GET['device_username'];
+        echo 'Searching device by Username: ', $params['username'] . '<br />';
       }
       if (!empty($params)) {
         $data = $AurbaControllers->getClientFromController($controller_url, $params, $school['controller_version']);
+        
+        //Aps
+        $aps = Aps::get()->toArray();
+        if (!empty($aps)) {
+          $aps = array_map_by_key($aps, 'ap_name');
+        }
+        $ap_name = $AurbaControllers->getAPByParams($params, null, $schools);
+        if (!empty($ap_name)) {
+          echo 'Found AP name: ' . $ap_name . '<br />';
+          if (!empty($aps[$ap_name])) {
+            echo 'AP by AP name: <br />';
+            echo "<pre>";
+            print_r($aps[$ap_name]);
+            echo "</pre>";
+            //
+            if (!empty($schools[$aps[$ap_name]['school_id']])) {
+              echo 'School by Ap name: <br />';
+              echo "<pre>";
+              print_r($schools[$aps[$ap_name]['school_id']]);
+              echo "</pre>";
+            }
+            else {
+              echo 'School not found. <br />';
+            }
+          }
+          else {
+            echo 'AP not found by AP name. <br />';
+          }
+        }
       }
       else {
         $data = $AurbaControllers->getClientsFromController($controller_url, $school['controller_version']);

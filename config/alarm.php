@@ -9,16 +9,17 @@
 
 return [
     'notification' => [
-        'limit' => 144
+      'limit' => 144
     ],
     'wol_port' => env('WOL_PORT', 7),
     'mode' => 1,
     'default' => [
-        'mac' => env('MAC_ADDRESS', null)
+      'mac' => env('MAC_ADDRESS', null)
     ],
     'use_mac_address_for_pcapp' => env('USE_MAC_ADDRESS_FOR_PCAPP', false),
     'use_mac_address_for_ios' =>  env('USE_MAC_ADDRESS_FOR_IOS', false),
     'use_mac_address_for_android' =>  env('USE_MAC_ADDRESS_FOR_ANDROID', true),
+    'macs_for_debug' => env('MACS_FOR_DEBUG', null),
     'registration_status'		=> env('REGISTRATION_STATUS', false),
     'secure' => env('SSL_ON', false),
     'default_id' => env('SCHOOL_ID', null),

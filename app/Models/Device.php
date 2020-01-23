@@ -223,14 +223,15 @@ class Device extends BaseModel
           }
           //Aruba Controller 
           if (config('aruba.controllers.enabled')) {
-            $AurbaControllers = new ArubaControllers();
-            $school_id = !empty($this->school_id) ? $this->school_id : NULL;
-            $ap_name = $AurbaControllers->getAPByIp($this->getAttribute('ip_address'), $school_id);
-            if (!empty($ap_name)) {
-              $device['ap_name'] = $ap_name;
+            if (empty($this->ap_name)) {
+              $AurbaControllers = new ArubaControllers();
+              $school_id = !empty($this->school_id) ? $this->school_id : NULL;
+              $ap_name = $AurbaControllers->getAPByParams(['mac_address' => $device['mac_address']], $school_id);
+              if (!empty($ap_name)) {
+                $device['ap_name'] = $ap_name;
+              }
             }
           }
-          //@Todo
           if (!isset($device['mac_address'])) {
             throw new IntegrationException('Couldn\'t fetch the MAC Address. Are you sure you\'re connected to Wifi?');
           }
@@ -317,10 +318,13 @@ class Device extends BaseModel
             
         //Multi Shelter
         } else {
-            //Aruba Clearpass or Controllers
-            if (config('aruba.controllers.enabled') || config('aruba.clearpass.enabled')) {
-              //Access Point name is updated from Controller or Clearpass
-              $ap_name = $this->getAttribute('ap_name');
+            //Aruba Controllers
+            if (config('aruba.controllers.enabled')) {
+              //Access Point name is updated from Controller during periodical sync.
+              if (empty($this->ap_name)) {
+                throw new IntegrationException('Your Device is not found in network yet. Please restart and try again.');
+              }
+              /*
               if (!empty($ap_name)) {
                 $ap = Aps::where('ap_name', '=', $ap_name)->get()->first();
                 $device['school_id'] = $ap->school_id;
@@ -329,7 +333,7 @@ class Device extends BaseModel
                 $device['y'] = $ap->y;
                 $device['active'] = 1;
               }
-              return $device;
+              return $device;*/
             }
             //Aruba ALE
             if ($default->client_data_source == SchoolDefaultFields::DEVICE_LOCATION_SOURCE_ARUBA && config('aruba.ale.enabled')) {

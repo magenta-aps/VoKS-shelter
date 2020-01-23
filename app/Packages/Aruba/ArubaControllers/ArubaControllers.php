@@ -218,23 +218,17 @@ class ArubaControllers {
       
       $params['command'] = 'show+user-table';
       if (!empty($params['ip'])) {
-        $params['command'] .= '+IP+'. $params['ip'];
+        $params['command'] .= '+ip+'. $params['ip'];
       }
       elseif (!empty($params['mac_address'])) {
-        $params['command'] .= '+MAC+'. $params['mac_address'];
+        $params['command'] .= '+mac+'. $params['mac_address'];
       }
       elseif (!empty($params['username'])) {
-        $params['command'] .= '+Name+'. $params['username'];
+        $params['command'] .= '+name+'. $params['username'];
       }
         
       $url = $controller_url . ':' . config('aruba.controllers.port') . config('aruba.controllers.devices.url');
       $url .= '?command=' . $params['command'] . '&UIDARUBA=' . $params['UIDARUBA'];
-      
-      echo "<pre>";
-      print_r($url);
-      echo "</pre>";
-
-
       try {
           $data = (new CurlRequest())
           ->setUrl($url)
@@ -243,12 +237,12 @@ class ArubaControllers {
               CurlRequest::JSON_RESPONSE,
               function ($response) {
                 if (!empty($response['Users'])) {
-                  echo "<pre>";
-                  print_r($response);
-                  echo "</pre>";
-                  die(__FILE__);
-
                   return $response['Users'];
+                }
+                if (!empty($response['_data']) && !empty($response['_data'][17]) && strpos($response['_data'][17], 'AP name/group') !== false) {
+                  $rows = explode('AP name/group: ', $response['_data'][17]);
+                  $rows2 = explode('/', $rows[1]);
+                  return ['location' => $rows2[0]];
                 }
                 return [];
               }
@@ -268,28 +262,32 @@ class ArubaControllers {
      *
      * @return array
      */
-    public function getClientsFromController($controller_url, $aruba_os = '8.x') {
+    public function getClientsFromController($param_controller_url, $aruba_os = '8.x') {
       $ret_val = array();
       if (!config('aruba.controllers.enabled')) return $ret_val;
       
-      if (empty($controller_url)) $ret_val;
+      if (empty($param_controller_url)) $ret_val;
+      //Multiple controllers
+      $multiple_controller_url = explode(',', $param_controller_url);
       $clients = [];
-      
-      switch($aruba_os) {
-        case '6.x':
-          //Do nothing
-          break;
-        case '8.x':
-          $data = $this->loginToArubaControllerOS8x($controller_url);
-          if (empty($data)) {
-            return $clients;
-          }
-          $params = array();
-          $params['UIDARUBA'] = $data['_global_result']['UIDARUBA'];
-          $clients = $this->getClientsFromControllerOS8x($controller_url, $params);
-          
-          $this->logoutFromArubaControllerOS8x($controller_url);
-          break;
+      foreach($multiple_controller_url as $controller_url) {
+        switch($aruba_os) {
+          case '6.x':
+            //Do nothing
+            break;
+          case '8.x':
+            $data = $this->loginToArubaControllerOS8x(trim($controller_url));
+            if (empty($data)) {
+              continue;
+            }
+            $params = array();
+            $params['UIDARUBA'] = $data['_global_result']['UIDARUBA'];
+            $new_clients = $this->getClientsFromControllerOS8x(trim($controller_url), $params);
+            $clients = array_merge($clients, $new_clients);
+
+            $this->logoutFromArubaControllerOS8x(trim($controller_url));
+            break;
+        }
       }
       return $clients;
     }
@@ -299,66 +297,76 @@ class ArubaControllers {
      *
      * @return array
      */
-    public function getClientFromController($controller_url, $params, $aruba_os = '8.x') {
+    public function getClientFromController($param_controller_url, $params, $aruba_os = '8.x') {
       $ret_val = array();
       if (!config('aruba.controllers.enabled')) return $ret_val;
       
-      if (empty($controller_url)) $ret_val;
+      if (empty($param_controller_url)) $ret_val;
+      //Multiple controllers
+      $multiple_controller_url = explode(',', $param_controller_url);
       $client = [];
-      
-      switch($aruba_os) {
-        case '6.x':
-          $client = $this->getClientFromControllerOS6x($controller_url, $params);
-          break;
-        case '8.x':
-          $data = $this->loginToArubaControllerOS8x($controller_url);
-          if (empty($data)) {
-            return $client;
-          }
-          $params['UIDARUBA'] = $data['_global_result']['UIDARUBA'];
-          $client = $this->getClientFromControllerOS8x($controller_url, $params);
-          
-          $this->logoutFromArubaControllerOS8x($controller_url);
-          break;
+      foreach($multiple_controller_url as $controller_url) {
+        switch($aruba_os) {
+          case '6.x':
+            $client = $this->getClientFromControllerOS6x(trim($controller_url), $params);
+            break;
+          case '8.x':
+            $data = $this->loginToArubaControllerOS8x(trim($controller_url));
+            if (empty($data)) {
+              continue;
+            }
+            $params['UIDARUBA'] = $data['_global_result']['UIDARUBA'];
+            $new_client = $this->getClientFromControllerOS8x(trim($controller_url), $params);
+            if (!empty($new_client)) {
+              $client = $new_client;
+            }
+            $this->logoutFromArubaControllerOS8x(trim($controller_url));
+            break;
+        }
       }
       return $client;
     }
     
     /**
-     * Aruba Controllers: Get AP name by IP
+     * Aruba Controllers: Get AP name by params
      * 
-     * @param string $device_ip
+     * @param string $params
      * @param int $possible_school_id - will be checked first
      * @param array $schools - all schools
      * @return string $ap_name
      */
-    public function getAPByIp($device_ip, $possible_school_id = null, $schools = array()) {
+    public function getAPByParams($params, $possible_school_id = null, $schools = array()) {
       $ret_val = null;
-      if (empty($device_ip)) return $ret_val;
+      if (empty($params['ip']) && empty($params['mac_address']) && empty($params['username'])) return $ret_val;
       
-      //@Todo - get single possible school first from DB and check for device data.
+      //Check first possible school
+      if ($possible_school_id) {
+        $school = School::where('id', '=', $possible_school_id)->first()->toArray();
+        if (!empty($school['controller_url'])) {
+          $device = $this->getClientFromController($school['controller_url'], $params);
+          if (!empty($device['location'])) {
+            $ret_val = $device['location'];
+            return $ret_val;
+          } elseif (!empty($device[0])) {
+            $device = reset($device);
+            $ret_val = $device['AP name'];
+            return $ret_val;
+          }
+        }
+      }
       
       // Get all schools list
-      if (empty($schools)) {
+      if(empty($schools)) {
         $schools = School::whereNotNull('controller_url')->get()->toArray();
         if (empty($schools)) return $ret_val;
         $schools = array_map_by_key($schools, 'id');
-      }
-      
-      // Check possible school first
-      if ($possible_school_id && !empty($schools[$possible_school_id])) {
-        $device = $this->getClientFromControllerOS6x($schools[$possible_school_id]['controller_url'], array('ip' => $device_ip));
-        if (!empty($device['location'])) {
-          $ret_val = $device['location'];
-          return $ret_val;
-        }
-        else {
+        if ($possible_school_id) {
           unset($schools[$possible_school_id]);
         }
       }
       
       foreach($schools as $school) {
-        $device = $this->getClientFromControllerOS6x($school['controller_url'], array('ip' => $device_ip));
+        $device = $this->getClientFromController($school['controller_url'], $params);
         if (!empty($device['location'])) {
           $ret_val = $device['location'];
           break;

@@ -60,10 +60,6 @@ class SyncMacs extends Command
             } elseif (config('aruba.controllers.enabled')) {
               //Controller
               $AurbaControllers = new ArubaControllers();
-              //Schools
-              $schools = School::whereNotNull('controller_url')->get()->toArray();
-              if (empty($schools)) return;
-              $schools = array_map_by_key($schools, 'id');
               //Aps
               $aps = Aps::get()->toArray();
               if (empty($aps)) return;
@@ -105,6 +101,7 @@ class SyncMacs extends Command
         echo "</pre>";*/
         
         $updates = [];
+        $school_id = \Shelter::getID();
         //
         foreach ($devices as $device) {
           //Aruba
@@ -120,7 +117,10 @@ class SyncMacs extends Command
             }
             //Aruba Controllers
             if (config('aruba.controllers.enabled')) {
-              $ap_name = $AurbaControllers->getAPByIp($device->ip_address, $device->school_id, $schools);
+              if (!empty($device->school_id)) {
+                $school_id = $device->school_id;
+              }
+              $ap_name = $AurbaControllers->getAPByParams(['mac_address' => $device->mac_address], $school_id);
               //Found AP name
               if (!empty($ap_name) && !empty($aps[$ap_name])) {
                 //AP has changed
