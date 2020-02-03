@@ -65,11 +65,8 @@ class DeviceController extends Controller
             //Search in Database
             $device_data = Device::getByDeviceId($device_id);
             $id = !empty($device_data['id']) ? $device_data['id'] : null;
-            //Find or Create model
-            $device = Device::findOrNew($id);
-            //Set Attributes
-            $device->setAttribute('device_type', $device_type);
-            $device->setAttribute('device_id', $device_id);
+            
+            //Find by Mac address
             $mac_address = $request->get('mac_address', config('alarm.default.mac'));
             //Iphone exceptions
             if (!config('alarm.use_mac_address_for_ios') && $mac_address == '00:00:00:00:00') {
@@ -83,13 +80,29 @@ class DeviceController extends Controller
             if (!config('alarm.use_mac_address_for_android') && $device_type == 'android') {
               $mac_address = NULL;
             }
+            
+            if (empty($id) && !empty($mac_address)) {
+              $device_data = Device::getByMac($mac_address);
+              $id = !empty($device_data['id']) ? $device_data['id'] : null;
+            }
+            
+            //For debuging IP address
+            $ip_address = !empty($request->get('ip_address')) ? $request->get('ip_address') : \Request::ip();
+            if (empty($id) && !empty($ip_address)) {
+              $device_data = Device::getByIP($ip_address);
+              $id = !empty($device_data['id']) ? $device_data['id'] : null;
+            }
+            
+            //Find or Create model
+            $device = Device::findOrNew($id);
+            //Set Attributes
+            $device->setAttribute('device_type', $device_type);
+            $device->setAttribute('device_id', $device_id);
+            $device->setAttribute('ip_address', $ip_address);
             $device->setAttribute('mac_address', $mac_address);
             $device->setAttribute('push_notification_id', $request->get('gcm_id'));
             $device->setAttribute('fullname', $request->get('user_name'));
             $device->setAttribute('user_email', $request->get('user_email'));
-            //For debuging IP address
-            $ip_address = !empty($request->get('ip_address')) ? $request->get('ip_address') : \Request::ip();
-            $device->setAttribute('ip_address', $ip_address);
             $device->updateDeviceProfile();
 
         } catch (\Exception $e) {
