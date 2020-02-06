@@ -49,6 +49,10 @@ class Device extends BaseModel
      *
      */
     const COORDINATES_NOT_MAPPED  = 2;
+    /**
+     *
+     */
+    const CONTROLLER_UNAVAILABLE  = 3;
 
     /**
      * @type array
@@ -159,7 +163,7 @@ class Device extends BaseModel
     {
         $device = static::where('mac_address', '=', $mac)->first(
             [
-                'mac_address', 'device_id', 'fullname', 'push_notification_id', 'device_type'
+                'id', 'mac_address', 'device_id', 'fullname', 'push_notification_id', 'device_type', 'ap_name'
             ]
         );
 
@@ -170,6 +174,26 @@ class Device extends BaseModel
         return [];
     }
 
+    /**
+     * @param $mac
+     *
+     * @return array
+     */
+    public static function getByIP($ip)
+    {
+        $device = static::where('ip_address', '=', $ip)->first(
+            [
+                'id', 'mac_address', 'device_id', 'fullname', 'push_notification_id', 'device_type', 'ap_name'
+            ]
+        );
+
+        if ($device) {
+            return $device->toArray();
+        }
+
+        return [];
+    }
+    
     /**
      * @param $deviceId
      */

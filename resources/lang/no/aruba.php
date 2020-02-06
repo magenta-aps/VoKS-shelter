@@ -13,5 +13,10 @@ return [
             'unsynchronized' => 'Det mangler koordinater eller lokasjonen er ikke synkronisert. Vennligst vent.',
             'unavailable' => 'Ikke mulig å lokalisere deg. Vennligst vent.'
         ]
+    ],
+    'controller' => [
+        'errors' => [
+          'unavailable' => 'The Controller was not available. Please wait. Will retry again.'
+        ]
     ]
 ];

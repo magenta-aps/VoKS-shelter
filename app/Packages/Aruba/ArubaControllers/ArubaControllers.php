@@ -11,6 +11,7 @@ namespace BComeSafe\Packages\Aruba\ArubaControllers;
 
 use BComeSafe\Libraries\CurlRequest;
 use BComeSafe\Models\School;
+use BComeSafe\Models\Device;
 use SoapBox\Formatter\Formatter;
 
 /**
@@ -175,6 +176,7 @@ class ArubaControllers {
 
       if (empty($controller_url)) $ret_val;
       if (empty($params)) $ret_val;
+      if (empty($params['UIDARUBA'])) $ret_val;
       
       $params['command'] = 'show+user-table';
       $url = $controller_url . ':' . config('aruba.controllers.port') . config('aruba.controllers.devices.url');
@@ -215,6 +217,7 @@ class ArubaControllers {
 
       if (empty($controller_url)) $ret_val;
       if (empty($params)) $ret_val;
+      if (empty($params['UIDARUBA'])) $ret_val;
       
       $params['command'] = 'show+user-table';
       if (!empty($params['ip'])) {
@@ -280,6 +283,11 @@ class ArubaControllers {
             if (empty($data)) {
               continue;
             }
+            if (empty($data['_global_result']['UIDARUBA'])) {
+              $message = !empty($data['_global_result']['status_str']) ? $data['_global_result']['status_str'] : 'UIDARUBA is missing';
+              throw new \Exception($message, Device::CONTROLLER_UNAVAILABLE);
+              continue;
+            }
             $params = array();
             $params['UIDARUBA'] = $data['_global_result']['UIDARUBA'];
             $new_clients = $this->getClientsFromControllerOS8x(trim($controller_url), $params);
@@ -313,6 +321,11 @@ class ArubaControllers {
           case '8.x':
             $data = $this->loginToArubaControllerOS8x(trim($controller_url));
             if (empty($data)) {
+              continue;
+            }
+            if (empty($data['_global_result']['UIDARUBA'])) {
+              $message = !empty($data['_global_result']['status_str']) ? $data['_global_result']['status_str'] : 'UIDARUBA is missing.';
+              throw new \Exception($message, Device::CONTROLLER_UNAVAILABLE);
               continue;
             }
             $params['UIDARUBA'] = $data['_global_result']['UIDARUBA'];
