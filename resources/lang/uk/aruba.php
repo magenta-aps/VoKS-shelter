@@ -13,5 +13,10 @@ return [
             'unsynchronized' => 'Немає координат або інформація від шкіл не синхронізується. Будь ласка зачекайте.',
             'unavailable' => 'Ми не можемо визначити Ваше місцезнаходження. Будь ласка зачекайте.'
         ]
+    ],
+    'controller' => [
+        'errors' => [
+          'unavailable' => 'The Controller was not available. Please wait. Will retry again.'
+        ]
     ]
 ];

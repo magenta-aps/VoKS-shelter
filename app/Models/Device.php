@@ -49,6 +49,10 @@ class Device extends BaseModel
      *
      */
     const COORDINATES_NOT_MAPPED  = 2;
+    /**
+     *
+     */
+    const CONTROLLER_UNAVAILABLE  = 3;
 
     /**
      * @type array

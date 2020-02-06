@@ -115,6 +115,11 @@ class DeviceController extends Controller
                 case Device::COORDINATES_NOT_MAPPED:
                     $message = \Lang::get('aruba.ale.errors.unsynchronized', [], $lang);
                     break;
+                case Device::CONTROLLER_UNAVAILABLE:
+                    if (!config('app.debug')) {
+                      $message = \Lang::get('aruba.controller.errors.unavailable', [], $lang);
+                    }
+                    break;
             }
 
             return response()->json(

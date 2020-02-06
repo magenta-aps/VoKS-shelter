@@ -13,5 +13,10 @@ return [
             'unsynchronized' => 'There are no coordinates or campuses not synchronized. Please wait.',
             'unavailable' => 'We could not locate you. Please wait.'
         ]
+    ],
+    'controller' => [
+        'errors' => [
+          'unavailable' => 'The Aruba Controller was not available. Please wait. Will retry again.'
+        ]
     ]
 ];
